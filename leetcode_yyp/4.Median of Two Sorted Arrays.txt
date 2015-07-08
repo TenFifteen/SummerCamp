@@ -1,0 +1,84 @@
+/*
+题目大意：
+	给定两个排好序的数组，长度分别是m和n，要求返回这两个数组的中位数。复杂度要求O(log(m+n)).
+解题思路：
+	用寻找第k小的数的思路，若两数组数的个数（m+n）为奇数，则寻找第（m+n）/2小的数，为偶数则寻找第(m+n)/2和(m+n)/2+1小的数。
+	寻找第k小数的思想，比较两个数组第k/2位置的数（若数组长度小于k/2，则取该数组长度，另一个数组取k减去该长度），该数小所在的数组当前第一个数的下标到k/2的数一），该数小所在的数组当前第一个数的下标到k/2的数一定小于第k小的数，将该数组第一个数下标移动到k/2(或数组长度)+1的位置，递归，每次k值减半，直到k为1，返回两数组最小的数。
+注意的点：
+	注意边界处理，如当一个数组的值都放入小中位数后，即该数组第一个数的下标指示到数组长度；k=1需返回最小数时需判断是否一个数组是否还有数值可以取。
+*/
+class Solution {
+public:
+void findkmin(vector<int>& nums1, vector<int>& nums2, int l1, int l2, int k, int & x)
+{
+	if(l1 == nums1.size())
+	{
+		x = nums2[l2 + k - 1];
+		return;
+	}
+	else if(l2 == nums2.size())
+	{
+		x = nums1[l1 + k - 1];
+		return;
+	}
+	if(k == 1)
+	{
+		if(l1 == nums1.size())
+		{
+			x = nums2[l2];
+			return;
+		}	
+		else
+		{
+			x = nums1[l1] < nums2[l2] ? nums1[l1] : nums2[l2];
+			return; 
+		}	
+	}
+	int l = nums1.size();
+	int m = min(k / 2, l - l1), n = k - m;
+	if(nums1[l1 + m - 1] < nums2[l2 + n - 1])
+	{
+		findkmin(nums1, nums2, l1 + m, l2,k - m, x);
+	}
+	else
+	{
+		findkmin(nums1, nums2, l1, l2 + n,k - n, x);
+	}
+}
+double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2)
+{
+	if(nums1.size() > nums2.size())
+	{
+		return findMedianSortedArrays(nums2, nums1);
+	}
+    if(nums1.size() == 0)
+    {
+        if(nums2.size() % 2 == 0)
+            return (nums2[nums2.size() / 2] + nums2[nums2.size() / 2 - 1]) / 2.0;
+        else
+            return nums2[nums2.size() / 2];
+    }
+    if(nums2.size() == 0)
+    {
+        if(nums1.size() % 2 == 0)
+            return (nums1[nums1.size() / 2] + nums1[nums1.size() / 2 - 1]) / 2.0;
+        else
+            return nums1[nums1.size() / 2];
+    }
+	int sum = nums1.size() + nums2.size(), k;
+	int x = 0, y = 0;
+	if(sum % 2 == 0)
+	{
+		k = sum / 2;
+		findkmin(nums1, nums2, 0, 0, k, x);
+		findkmin(nums1, nums2, 0, 0, k + 1, y);
+	}
+	else
+	{
+		k = sum / 2 + 1;
+		findkmin(nums1, nums2, 0, 0, k, x);
+		y = x;
+	}
+	return (x + y) / 2.0;
+}
+};

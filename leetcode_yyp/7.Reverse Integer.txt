@@ -1,0 +1,36 @@
+/*
+题目大意：
+	给定一个整数，翻转该数的数位，如给定123，返回321.若翻转数字后溢出的情况，返回0.
+解题思路:
+	先标记给定数的正负，然后取绝对值，然后通过除和取余，逐步翻转，考虑到可能越界，翻转过程存储数据的值用long long保存
+注意的点：
+	翻转过程中的数可能越界，所以用long long存储
+
+*/
+class Solution {
+public:
+int reverse(int x)
+{
+	long long n = 0;
+	int flag = 1;
+	if(x < 0)
+	{
+		flag = -1;
+		x = -x;
+	}
+	while(x)
+	{
+		n = n * 10 + x % 10;
+		x = x / 10;
+	}
+	n = n * flag;
+	if(n > INT_MAX || n < INT_MIN)
+	{
+		return 0;
+	}
+	else
+	{
+		return n;
+	}
+}
+};

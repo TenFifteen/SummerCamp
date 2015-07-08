@@ -1,0 +1,68 @@
+/*
+题目大意：
+	给定一个无序数组，从中寻找两个数的和等于一个指定的数（target）。
+	要求返回这两个数的下标，且下标1小于下标2。
+	只存在一组解。
+
+解题思路：
+	将数组进行复制，然后对其进行排序，设置两个指针，一个从头向后扫，一个从后向前扫。
+	若二者值之和大于target，后指针前移；小于target，前指针后移；等于target则记录这两个值退出。
+	从原数组中遍历寻找这两个值。
+注意的点：
+	可能存在这两个值相等的情况。
+	网上更优的解是用hashmap，扫一遍将数据存入hashmap，然后找元素num[i]对应的target-num[i]是否存在容器中，只有一个解，找到后可直接退出。
+*/
+class Solution {
+public:
+static bool compare(int a, int b)
+{
+	return a < b;
+}
+vector<int> twoSum(vector<int> &numbers, int target)
+{
+    vector<int>copy;
+    for(int i = 0; i < numbers.size();i++)
+    {
+        copy.push_back(numbers[i]);
+    }
+	sort(numbers.begin(), numbers.end(),compare);
+	vector<int> res;
+	int i = 0, j = numbers.size() - 1;
+	int sum, x1, x2, index1 = -1, index2 = -1;
+	while(i < j)
+	{
+		sum = numbers[i] + numbers[j];
+		if(sum == target)
+		{
+			x1 = numbers[i];
+			x2 = numbers[j];
+			break;
+		}
+		else if(sum > target)
+		{
+			j--;
+		}
+		else
+		{
+			i++;
+		}
+	}
+	for(int k = 0; k < copy.size(); k++)
+	{
+		if(copy[k] == x1 || copy[k] == x2)
+		{
+			if(index1 != -1)
+			{
+				index2 = k;
+				res.push_back(index1 + 1);
+				res.push_back(index2 + 1);
+				return res;
+			}
+			else
+			{
+				index1 = k;
+			}
+		}
+	}
+}
+};

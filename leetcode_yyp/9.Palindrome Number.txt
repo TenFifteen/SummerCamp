@@ -1,0 +1,38 @@
+/*
+题目大意：
+	判断一个数是否是回文数，不能用额外的空间。
+解题思路：
+	如果给定的数为整数边界，或者小于0，则返回false。否则，先得到10的x的位数的次幂（用l表示）。然后每步取最高位和最低位，若不相等则返回false，否则更新数和l，再循环处理。
+	考虑到数字中有0的情况，如102121，所以需在处理完后判断l是否等于1，以判断是否对数的每一个数字都进行了处理，如果l不等于1且数x不等于0，则返回false，否则返回true
+注意的点：
+	负数不是回文数。需注意数中含有0的情况。
+
+*/
+class Solution {
+public:
+bool isPalindrome(int x)
+{
+    if(x == INT_MAX || x == INT_MIN || x < 0)
+        return false;
+	int y = x, l = 1;
+	int m, n;
+	while(y >= 10)
+	{
+		l *= 10;
+		y /= 10;
+	}   
+	while(x >= 10)
+	{
+		m = x / l;
+		n = x % 10;
+		if(m != n)
+			return false;
+		x %= l;
+		x /= 10;
+		l /= 100;
+	}
+	if(l > 1 && x != 0)
+	    return false;
+	return true;
+}
+};

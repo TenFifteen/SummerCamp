@@ -1,0 +1,50 @@
+/*
+题目大意：
+	实现atoi函数，将字符串转换成整数。
+解题思路：
+	先去掉字符串头部的空白字符。然后判断首字符是否是标识正负的“+”和“-”。然后逐步将字符转换成数字，由于可能越界，所以存储的数类型为long long，处理过程中如果遇到非数字字符，则退出for循环，若越界，也退出for循环。然后返回对应的值。
+注意的点：
+	需忽略字符串中的空白字符。若该字符串中含有其他字符则为不合法字符串，返回0。若转换后的值越界，则返回对应的INT_MAX或者INT_MIN。字符串中“+”和“-”为合法字符，标识正负。
+*/
+class Solution {
+public:
+int myAtoi(string str)
+{
+	int i = 0;
+	long long x = 0;
+	int flag = 1;
+	while(str[i] == ' ')
+	    i++;
+	if(str[i] == '-')
+	{
+	    flag = -1;
+	    i++;
+	}
+	else if(str[i] == '+')
+	{
+	    i++;
+	}
+	for(; i < str.length(); i++)
+	{
+		if(str[i] >= '0' && str[i] <= '9')
+		{
+			x = x * 10 + (str[i] - '0');
+			if(x > INT_MAX)
+				break;
+		}
+		else
+		{
+		    break;
+		}
+	}
+	x = x * flag;
+	if(flag == 0)
+		return 0;
+	if(x > INT_MAX)
+		return INT_MAX;
+	else if(x < INT_MIN)
+		return INT_MIN;
+	else
+		return x;	   
+}
+};
