@@ -1,0 +1,24 @@
+/*
+题目大意：
+	给定n个非负整数，每个代表一个点（i,ai），标示在下标i处，有一个ai长的柱子，寻找两根柱子，使得两根柱子和x轴构成的容器的容量最大。不可倾斜柱子。
+解题思路：
+	设两个指针，一个放在数组头，一个放在数组尾。若头指针指向的柱子比尾指针指向的柱子矮，则头指针后移，否则尾指针前移，每次若容量比max（初始为0）大，则更新max为当前容量
+*/
+class Solution {
+public:
+int maxArea(vector<int>& height)
+{
+	if(height.size() < 2)
+		return 0;
+	int max = 0, tmp;
+	int left = 0, right = height.size() - 1;
+	while(left < right)
+	{
+		tmp = (right - left) * min(height[left], height[right]);
+		if(tmp > max)
+			max = tmp;
+		height[left] > height[right] ? right-- : left++;
+	}
+	return max;
+}
+};

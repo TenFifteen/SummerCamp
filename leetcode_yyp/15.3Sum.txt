@@ -1,0 +1,58 @@
+/*
+题目大意：
+	给定一个含有n个数字的数组，寻找三个数，使其和为0，要求解中a<=b<=c,且去掉重复的解
+解题思路：
+	先对数组进行排序。然后设置三个指针，固定第一个指针，另外的两个指针一个纸向当前指针的下一个位置，另一个指向数组尾部，若三个数的和大于0则尾指针前移，小于0前指针后移，等于0则将解加入容器中。若固定的数，即三个数里最小的数，大于0，则已不存在其他解，退出循环。因为要去掉重复的解，所以当找到一个解后，前指针和尾指针都分别继续移动，直到其指向的值与找到的解的值不同。对固定的指针做相同的操作，找到当前固定的指针的所有解后，指针后移直至与该指针指向的值不同为止。
+注意的点：
+	利用跳过相同数的方法去重。
+
+*/
+class Solution {
+public:
+static bool comp(int x, int y)
+{
+	return x < y;
+}
+vector<vector<int> > threeSum(vector<int>& nums)
+{
+	vector<vector<int> >res;
+	if(nums.size() < 3)
+	    return res;
+	sort(nums.begin(), nums.end(),comp);
+	vector<int>tmp;
+	int sum, j, k;
+	for(int i = 0; i < nums.size() - 2; i++)
+	{
+	    j = i + 1, k = nums.size() - 1; 
+	    if(nums[i] > 0)
+	        break;
+		while(j < k)
+		{
+			sum = nums[i] + nums[j] + nums[k];
+			if(sum == 0)
+			{
+				tmp.push_back(nums[i]);
+				tmp.push_back(nums[j]);
+				tmp.push_back(nums[k]);
+				res.push_back(tmp);
+				tmp.clear();
+				j++;
+				k--;
+				while(j  < nums.size() - 1 && nums[j] == nums[j - 1])
+				    j++;
+				while(k > j && nums[k] == nums[k + 1])
+				    k--;
+			}
+			else
+			{
+				sum > 0 ? k-- : j++; 
+			}
+		}
+		while(i < nums.size() - 2 && nums[i] == nums[i + 1]) 
+		{
+			i++;
+		}
+	}
+	return res;
+}
+};

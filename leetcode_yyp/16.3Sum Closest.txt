@@ -1,0 +1,43 @@
+/*
+题目大意：
+	给定n个数的数组，和一个目标值（target），寻找三个数之和最接近target的解，有唯一解。
+解题思路：
+	与3sum思路相近，只是由于有唯一解，所以不需要考虑去重的操作，设置三个指针，一个固定，另外两个一个从当前指针后一个位置向后，一个从尾部向前，若和大于target后指针前移，小于target前指针后移，每次判断和是否更接近target，若是，则进行更新。若等于target，直接退出。
+*/
+class Solution {
+public:
+static bool comp(int x, int y)
+{
+	return x < y;
+}
+int threeSumClosest(vector<int>& nums, int target)
+{
+	vector<vector<int> >res;
+	if(nums.size() < 3)
+	    return 0;
+	sort(nums.begin(), nums.end(),comp);
+	vector<int>tmp;
+	int sum, close = nums[0] + nums[1] + nums[2];
+	for(int i = 0; i < nums.size() - 2; i++)
+	{
+		int j = i + 1, k = nums.size() - 1; 
+		while(j < k)
+		{
+			sum = nums[i] + nums[j] + nums[k];
+			if(sum == target)
+			{
+				return sum;
+			}
+			else
+			{
+				sum > target ? k-- : j++; 
+				if(abs(sum - target) < abs(close - target))
+				{
+					close = sum;
+				}
+			}
+		}
+	}
+	return close;
+}
+};

@@ -1,0 +1,33 @@
+/*
+题目大意：
+	将给定的罗马数字转换成整数，且保证输入数据范围是1-3999。
+解题思路：
+	首先将罗马数字对应的数字存入字典，然后将每位罗马数字转换为对应的数，其中，若相邻的两个罗马数字，左边的小于右边的时，需要加右边的，减左边的，即对应4和9的情况。
+注意的点：
+	4和9是用减的形式表示的，所以需进行判断单独处理。
+*/
+class Solution {
+public:
+int romanToInt(string s)
+{
+	map<char, int>dict;
+	dict.insert(pair<char, int>('I', 1));
+	dict.insert(pair<char, int>('V', 5));
+	dict.insert(pair<char, int>('X', 10));
+	dict.insert(pair<char, int>('C', 100));
+	dict.insert(pair<char, int>('M', 1000));
+	dict.insert(pair<char, int>('L', 50));
+	dict.insert(pair<char, int>('D', 500));
+	int res = 0, cur;
+	if(s.length() == 0)
+		return res;
+	for(int i = 0; i < s.length(); i++)
+	{
+		cur = dict[s[i]];
+		if(i + 1 < s.length() && cur < dict[s[i + 1]])
+			cur = -cur;
+		res += cur;
+	}
+	return res;
+}
+};
