@@ -1,0 +1,40 @@
+/*
+题目大意：
+	给定一个字符串，用zigzag的模式写成给定数的行，然后按行读取，如convert("PAYPALISHIRING", 3)应该返回"PAHNAPLSIIGYIR".
+解题思路：
+	第一行和最后一行单独处理，注意到后一个字符的下标是前一个的下标加2*(numRows - 1),中间位置，奇数列（通过k / (numRows - 1)是奇数还是偶数判断）下标等于前一个字符位置加2*i(i表示当前行号),偶数位置等于前一个位置下标加2 * (numRows - i - 1)
+注意的点：
+	中间位置的点需分奇数和偶数列进行处理
+
+*/
+class Solution {
+public:
+string convert(string s, int numRows)
+{
+    if(numRows == 1)
+        return s;
+	string res;
+	int i = 0;
+	while(i < s.length())
+	{
+		res += s[i];
+		i = i + 2 * (numRows - 1);
+	}
+	for(i = 1; i < numRows - 1; i++)
+	{
+		int k = i;
+		while(k < s.length())
+		{
+			res += s[k];
+			k = k / (numRows - 1) % 2 == 0 ? k + 2 * (numRows - i - 1) : k + 2 * i;
+		}
+	}
+	i = numRows - 1;
+	while(i < s.length())
+	{
+		res += s[i];
+		i = i + 2 * (numRows - 1);
+	}
+	return res;
+}
+};

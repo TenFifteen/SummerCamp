@@ -1,0 +1,38 @@
+/*
+题目大意：
+	求给定所有字符串的最长公共子前缀。
+解题思路：
+	遍历字符串数组，每次用当前最长的前缀与当前字符串进行比较得到新的最长公共字前缀。
+注意的点：
+	还有一种更优的方法是，以第一个字符串的每个字符，比较所有的字符串，直到当前字符不匹配退出，这种方法可以减少比较次数
+*/
+class Solution {
+public:
+  string longestCommonPrefix(vector<string>& strs)
+{
+	string res;
+	if(strs.size() < 1)
+		return res;
+	res = strs[0];
+	for(int i = 1; i < strs.size(); i++)
+	{
+		int l = min(strs[i].size(), res.size());
+		int j = 0;
+		for(; j < l; j++)
+		{
+			if(strs[i][j] != res[j])
+			{
+				if(j == 0)
+					return "";
+				res = res.substr(0, j);
+				break;
+			}
+		}
+		if(j == l)
+		{
+			res = res.substr(0, l);
+		}
+	}
+	return res;
+}
+};

@@ -1,0 +1,45 @@
+/*
+题目大意：
+	给定一个字符串，找不包括重复字符的最长连续子串。如，abcabcbb的最长无重复字符子串是abc。
+解题思路：
+	首先建一个标示字典，初始化为-1，标示每个字符到现在都没出现过。
+	然后两个指针同时扫，一个指示当前子串的头，另一个指示尾。后移尾部。若当前字符在现在的子串中未出现过，则将字符的下标保存到字典中；若当前字符在之前出现过，则将头指针移动到该字符，并将该字符之前的字符在字典中的下标都更新为-1,更改字典中该字符的下标为尾指针下标。
+	每步判断，若当前子串长度大于之前的最长无重复字符子串长度max，则更新max为当前子串长度。
+注意的点：
+	后指针指示的字符在当前子串中出现过时，需要更新字典。
+*/
+
+class Solution {
+public:
+int lengthOfLongestSubstring(string s)
+{
+	map<char, int>dict;
+	for(int i = 0; i < s.length(); i++)
+	{
+		dict.insert(pair<char, int>(s[i], -1));
+	}
+	int max = 0;
+	int i = 0, j = 0;
+	while(j < s.length())
+	{
+		if(dict[s[j]] != -1)
+		{
+			int k = i;
+			i = dict[s[j]] + 1;
+			for(; k < i; k++)
+				dict[s[k]] = -1;		
+			dict[s[j]] = j;
+		}
+		else
+		{
+			dict[s[j]] = j;
+		}
+		if(j - i + 1 > max)
+		{
+			max = j - i + 1;
+		}
+		j++;
+	}
+	return max;
+}
+};

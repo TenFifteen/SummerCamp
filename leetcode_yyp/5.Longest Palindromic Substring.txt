@@ -1,0 +1,64 @@
+/*
+题目大意：
+	给定一个字符串，找其中最长的回文子串。s的长度最长是1000，且只有一个解。
+解题思路：
+	从字符串头扫到尾部，以当前位置为中间位置，两种情况：回文子串长度为奇数时，判断以该字符(下标为cur)为中间位置，左右两边对称的长度（即cur-i和cur+i）；为偶数时，为cur-i和cur+i+1的位置，直到需判断的两字符不相等，更新max，跳出当前位置，到下一个字符。
+注意的点：
+	回文子串奇数和偶数需分开处理，且保证加减的过程中不超出数组边界
+*/	
+class Solution {
+public:
+string longestPalindrome(string s)
+{
+	int max = 0, index1, index2;
+	int low, high, len;
+	for(int i = 0; i < s.length(); i++)
+	{
+		low = i -1;
+		high = i + 1;
+		len = 1;
+		while(low >= 0 && high < s.length())
+		{
+			if(s[low] == s[high])
+			{
+				low--;
+				high++;
+				len += 2;
+			}
+			else
+			{
+				break;
+			}
+		}
+		if(len > max)
+		{
+			max = len;
+			index1 = low + 1;
+			index2 = high -1; 
+		}
+		len = 0;
+		low = i;
+		high = i + 1;
+		while(low >= 0 && high < s.length())
+		{
+			if(s[low] == s[high])
+			{
+				low--;
+				high++;
+				len += 2;
+			}
+			else
+			{
+				break;
+			}
+		}
+		if(len > max)
+		{
+			max = len;
+			index1 = low + 1;
+			index2 = high -1; 
+		}
+	}
+	return s.substr(index1, max);
+}
+};
