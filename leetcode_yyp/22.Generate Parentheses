@@ -1,0 +1,43 @@
+/*
+题目大意：
+	给n对圆括号，写一个函数生成所有合法的括号组合。如n=3时，应返回"((()))", "(()())", "(())()", "()(())", "()()()"
+解题思路：
+	用递归的思想。left和right分别标记还可用的左括号和右括号的数。合法的情况是左括号剩余的量总是小于等于右括号的数。所以若当前左括号数小于右括号，则当前字符串可以加入左括号，左括号剩余数减一继续递归，或者当前字符串加入右括号，右括号剩余数减一，递归；若当前左括号数等于右括号数，此时只能在当前字符串加入左括号，左括号剩余数减一，递归。
+注意的点：
+	只有左括号数剩余数小于等于右括号数，当前字符串才合法。
+*/
+class Solution {
+public:
+void getpar(int left, int right, string cur, vector<string>& res)
+{
+	if(left == 0 && right == 0)
+	{
+		res.push_back(cur);
+		return;
+	}
+	if(left < right)
+	{
+		if(left > 0)
+		{
+			getpar(left - 1, right, cur + '(', res);
+		}
+		if(right > 0)
+		{
+			getpar(left, right - 1, cur + ')', res);
+		}
+	}
+	else
+	{
+		getpar(left - 1, right, cur + '(', res);
+	}
+}
+vector<string> generateParenthesis(int n)
+{
+	vector<string>res;
+	string cur;
+	if(n == 0)
+		return res;
+	getpar(n, n, cur, res);        
+	return res;
+}
+};
