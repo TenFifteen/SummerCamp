@@ -1,0 +1,45 @@
+/*
+题目大意：
+	给定一个数字串，返回所有可能的字母组合。其中每个数字对应的字母是手机键盘中数字所对应的字母。
+解题思路：
+	用dfs的思想，从头到尾扫给定的数字串，每次读取一位，然后将其对应的每一个字符分别加入当前串，递归，直到当前读到数字串尾部，将当前的字符串加入结果容器中，返回。
+注意的点：
+	以当前字符串加当前字符的形式传给递归函数，所以可以避免出栈恢复的过程。
+*/
+class Solution {
+public:
+void comb(map<char,string>&dict, string digits, vector<string>&res, string now)
+{
+	if(digits.size() == 0)
+	{
+		res.push_back(now);
+		return;
+	}
+	char cur = digits[0];
+	digits = digits.substr(1, digits.size() - 1);
+	string alpha = dict[cur];
+	for(int i = 0; i < alpha.size(); i++)
+	{
+		comb(dict, digits, res, now + alpha[i]);
+	}
+}
+vector<string> letterCombinations(string digits)
+{
+	vector<string>res;
+	if(digits.size() == 0)
+	    return res;
+	map<char,string>dict;
+	dict['1'] = ""; 
+	dict['2'] = "abc";
+	dict['3'] = "def";
+	dict['4'] = "ghi";
+	dict['5'] = "jkl";
+	dict['6'] = "mno";
+	dict['7'] = "pqrs";
+	dict['8'] = "tuv";
+	dict['9'] = "wxyz";
+	dict['0'] = " ";
+	comb(dict, digits, res, "");
+	return res;
+}
+};

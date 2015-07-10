@@ -1,0 +1,44 @@
+/*
+题目大意：
+	给定一个链表，去掉倒数第n个节点，返回头指针。
+解题思路：
+	设置两个指针，一个指针先走n个节点，然后两个一块移动，直到前指针走到头，后指针指向的下一个节点就是要删除的节点。
+注意的点：
+	删除的是头指针的情况需要多加注意，通过前指针先走的过程就可以判断是否是删除的头指针，如果是，头指针后移一位，返回即可。
+	
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+ListNode* removeNthFromEnd(ListNode* head, int n)
+{
+    if(head == NULL || head->next == NULL)
+        return NULL;
+	ListNode * cur = head;
+	ListNode * pre = head;
+	int i = 0;
+	while(i < n)
+	{
+		pre = pre->next;
+		i++;
+		if(pre == NULL && i == n)
+			return head->next;
+	}        
+	while(pre->next != NULL)
+	{
+		cur = cur->next;
+		pre = pre->next;
+	}
+	cur->next = cur->next->next;
+	return head;
+}
+
+};
+

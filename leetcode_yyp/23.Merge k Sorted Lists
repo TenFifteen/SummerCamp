@@ -1,0 +1,75 @@
+/*
+题目大意：
+	合并k个排好序的链表，返回新有序链表的头。
+解题思路：
+	用合并排序的思想，i从0到（链表长度）/2,每次合并两个链表lists[2*i]和lists[2*i + 1]，将结果放入lists[i]中，直到链表总数为1，得到的就是要求的有序链表。由于
+	2*i一定大于等于i，所以在处理到2*i时，下标为i的链表已经处理过，所以不用考虑数据覆盖的问题。合并两个链表的思路同21题。时间复杂度为O（nlogn）
+注意的点：
+	链表数目为计数时，最后一个链表直接存入下标/2的位置即可。另外，取两个元素，得到的结果与下一个链表再合并，直到最后一个链表的情况会超时。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+ListNode* mergeTwoLists(ListNode* l1, ListNode* l2)
+{
+    ListNode * head = new ListNode(0);
+    ListNode * cur = head;
+    while(l1 != NULL && l2 != NULL)
+    {
+        if(l1->val < l2->val)
+        {
+            cur->next = l1;
+            l1 = l1->next;
+        }
+        else
+        {
+            cur->next = l2;
+            l2 = l2->next;
+        }
+        cur = cur->next;
+    }
+    if(l1 == NULL)
+    {
+        cur->next = l2;
+    }
+    else
+    {
+        cur->next = l1;
+    }
+    return head->next;    
+}
+ListNode* mergeKLists(vector<ListNode*>& lists) 
+{
+	ListNode * tmp = NULL;
+	int l = lists.size();
+	if(l == 0)
+	    return tmp;
+	if(l == 1)
+		return lists[0];
+	while(l > 1)
+	{
+		for(int i = 0; i <= l / 2; i++)
+		{
+			if(2 * i + 1 >= l)
+			{
+				lists[i] = lists[2 * i];
+			}
+			else
+			{
+				tmp = mergeTwoLists(lists[2 * i], lists[2 * i + 1]);
+				lists[i] = tmp;
+			}
+		}
+		l = (l + 1) / 2;
+	}
+	return lists[0];   
+}
+
+};
