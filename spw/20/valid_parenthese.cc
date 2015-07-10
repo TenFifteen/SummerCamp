@@ -29,6 +29,18 @@ bool isValid(string s)
 	stack<char> left;
 	for (int i = 0; i < len; ++i) {
 		char now = s[i];
+		if (p_table.find(now) != p_table.end()) {
+			left.push(now);
+		} else {
+			if (left.empty() || p_table[left.top()] ^ now)  {
+				return false;	
+			}
+			left.pop();
+		}
+
+		/**
+		 * the sequence of the judgement can result in different lengh of the code
+		 *
 		if (left.empty()) {
 			if (p_table.find(now) == p_table.end()) {
 				return false;
@@ -47,6 +59,7 @@ bool isValid(string s)
 				left.push(now);
 			}
 		}
+		*/
 	}	        
 
 	return left.empty();
