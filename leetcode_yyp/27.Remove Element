@@ -1,0 +1,28 @@
+/*
+题目大意：
+	给定一个数组，移除其中等于某给定值的数，返回新数组的长度。
+解题思路：
+	思路同移除重复项。
+
+*/
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val)
+{        
+	if(nums.size() == 0)
+		return 0;
+	int cur = 0, index = 0;
+	while(cur < nums.size())
+	{
+		if(nums[cur] == val)
+		{
+			cur++;
+		}
+		else
+		{
+			nums[index++] = nums[cur++];
+		}
+	}
+	return index;
+}
+};

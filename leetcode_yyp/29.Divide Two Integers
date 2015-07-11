@@ -1,0 +1,52 @@
+/*
+题目大意：
+	求两数相除的商。不允许使用乘除和取余运算。如果越界，返回MAX_INT.
+解题思路：
+	用位运算进行操作。每个整数都可以写成二进制表示的形式，即以2的次幂为底的数的线性组合，而且左移一位相当于乘2。所以，先将除数左移至大于被除数，左移一位（此时，移动的位数为k），然后被除数减去除数，结果值增加2^k，然后除数右移至小于当前被除数，再减，直至被除数为0。
+注意的点：
+	需要注意整数越界的问题。另外，abs传入的值如果是int型，而取绝对值后得到的值越过int边界，则返回的是原值，开始没发现这个问题。
+*/
+class Solution {
+public:
+int divide(int dividend, int divisor)
+{
+    int flag = 1;
+    long long n1 = dividend, n2 = divisor;
+    if((dividend > 0 && divisor < 0) || (dividend < 0 && divisor > 0))
+    	flag = -1;
+    n1 = abs(n1);
+    n2 = abs(n2);
+	if(n2 == 1)
+	{
+		if(flag * n1 > INT_MAX || flag * n1 < INT_MIN)
+			return INT_MAX;
+		return flag * n1;
+	} 
+    if(n1 < n2)
+        return 0;
+	long long  x = n2, l = 0;
+	long long res = 0;;
+	while(x <= n1)
+	{
+	 	x = x << 1;
+		l++;
+	}
+	x = x >> 1;
+	l--;
+	while(n1 > 0)
+	{
+		n1 = n1 - x;
+		res += pow(2, l);
+		while(x > n1)
+		{
+			x = x >> 1;
+			l--;
+		}
+	}
+	res = res * flag;
+	cout << res << endl;
+	if(res > INT_MAX || res < INT_MIN)
+		return INT_MAX;
+    return res;   
+}
+};

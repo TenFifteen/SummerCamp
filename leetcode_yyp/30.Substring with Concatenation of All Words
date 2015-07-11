@@ -1,0 +1,50 @@
+/*
+题目大意：
+	给定一个字符串和一个字符串数组，字符串数组中的字符串都是等长的，寻找其中恰好包含字符串中所有字符串且每个只有一次的所有子串的起始位置。
+解题思路：
+	想到的一个一个匹配，复杂度很高，参考网上的做法（“http://www.tuicool.com/articles/zMfeyi”）。由于字符串定长（l），所以可以每次取定长字符串进行判断。首先将字符串数组中的字符串加入字典中，值是该字符串的数量。然后，设置两个指针维护一个窗口，若当前字符串存在字典中，且数量不超过要求的数量，则向右移动l个位置，取下一个长为l的字符串；若超过要求的数量，或者当前长为l的字符串不存在字典中，则停止移动右指针退出。之后判断当前合法的窗口里是否包含所有字符串数组中的字符串，若是，则将起始位置加入结果数组中；最后，左窗口向右移动一个位置，重复上述过程，直到移动到字符串长度-l的位置。
+*/
+
+
+class Solution {
+public:
+ vector<int> findSubstring(string s, vector<string>& words)
+{
+	vector<int>res;
+	if(words.size() == 0 || s.size() == 0 || words[0].size() > s.size() || s.size() < words.size() * words[0].size())
+		return res;
+	int l = words[0].size();
+	map<string, int>dict;
+	map<string, int>count;
+	for(int i = 0; i < words.size(); i++)
+	{
+		dict[words[i]]++;
+	}        
+	for(int i = 0; i <= s.size() - l; i++)
+	{
+		int j = i;
+		for( ; j <= s.size() - l; j += l)
+		{
+			string t = s.substr(j, l);
+			if(dict.find(t) != dict.end())
+			{
+				count[t]++;
+				if(count[t] > dict[t])
+				{
+					break;
+				}
+			}
+			else
+			{
+				break;
+			}
+		}
+		if((j - i) / l == words.size())
+		{
+			res.push_back(i);
+		}
+		count.clear();
+	}
+	return res;
+}
+};
