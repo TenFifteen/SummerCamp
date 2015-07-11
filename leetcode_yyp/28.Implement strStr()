@@ -1,0 +1,53 @@
+/*
+题目大意：
+	实现strStr(),返回首次出现的下标，如果没出现，则返回-1.
+解题思路：
+	用kmp算法进行匹配。用传统的字符匹配也能过。
+
+*/
+class Solution {
+public:
+    void getnext(string s, int *next)
+{
+	next[0] = -1;
+	int i = 0, j = -1;
+	while(i < s.length())
+	{
+		if(j == -1 || s[i] == s[j])
+		{
+			j++;
+			i++;
+			next[i] = j;
+		}
+		else
+		{
+			j = next[j];
+		}
+	}
+}
+int strStr(string haystack, string needle)
+{
+	int next[needle.size()];
+	getnext(needle, next);
+	int i = 0, j = 0;
+	int l1 = haystack.size(), l2 = needle.size();
+	while(i < l1 && j < l2)
+	{
+		if(j == -1 || haystack[i] == needle[j])
+		{
+			i++;
+			j++;
+		}
+		else
+		{
+			j = next[j];
+		}
+		cout << j << "\t" << i << endl;
+	}
+	cout << j << "\t" << i << endl;
+	if(j == needle.size())
+		return i - j;
+	else
+		return -1;
+}
+};
