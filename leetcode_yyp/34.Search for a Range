@@ -1,0 +1,47 @@
+/*
+题目大意：
+	给定一个有序整数数组，找数组中等于给定值（target）的开始和结束下标。要求时间复杂度是O（logn）,如果数组中没有等于target的值，则返回[-1, -1]。
+解题思路：
+	用二分查找数组中等于target的位置，然后从该位置向前和向后分别扫，得到开始和结束下标，返回。
+
+*/
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target)
+{
+	vector<int>res;
+	res.push_back(-1);
+	res.push_back(-1);
+	if(nums.size() == 0 || nums[0] > target || nums[nums.size() - 1] < target)
+		return res;
+	int low = 0, high = nums.size() -1, med;
+	while(low <= high)
+	{
+		med = (low +  high) / 2;
+		if(nums[med] > target)
+		{
+			high = med -1;
+		}
+		else if(nums[med] < target)
+		{
+			low = med + 1;
+		}
+		else
+		{
+			int i = med,j = med + 1;
+			while(i >= 0 && nums[i] == target)
+			{
+				i--;
+			}
+			while(j < nums.size() && nums[j] == target)
+			{
+				j++;
+			}
+			res[0] = i + 1;
+			res[1] = j - 1;
+			return res;
+		}	
+	} 
+	return res;    
+}
+};
