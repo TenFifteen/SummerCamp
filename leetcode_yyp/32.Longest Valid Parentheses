@@ -1,0 +1,39 @@
+/*
+题目大意：
+	给定一个只包括'('和')'的字符串，寻找其中最长的合法子串长度。如")()()"的合法最长子串是4
+解题思路：
+	开始时通过设置两个指针，控制一个合法窗口的方法实现，复杂度是O(n^2)，提交超时。看网上其他人的做法，只需要维护一个栈就可以实现，遇到'('压入栈中，遇到')'，若当前栈顶是'(',则弹出栈顶元素，并比较当前元素下标减现在栈顶元素的下标得到的合法子串的长度与当前max的值，若大于max，则更新max。
+注意的点：
+	括号匹配等问题一般都可通过栈来实现！本题栈中维护的是上一个可能的左边际。
+
+*/
+class Solution {
+public:
+    int longestValidParentheses(string s)
+{
+	int max = 0;
+	vector<int> sta;
+	sta.push_back(-1);
+	for(int i = 0; i < s.size(); i++)
+	{
+		if(s[i] == '(')
+		{
+			sta.push_back(i);
+		}
+		else
+		{
+			if(sta[sta.size() - 1] >= 0 && s[sta[sta.size() - 1]] == '(')
+			{
+				sta.pop_back();
+				if(max < i - sta[sta.size() - 1])
+					max = i - sta[sta.size() - 1];
+			}
+			else
+			{
+				sta.push_back(i);
+			}
+		}
+	}
+    return max;   
+}
+};

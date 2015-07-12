@@ -1,0 +1,30 @@
+/*
+题目大意：
+	给定一个排好序的数组和一个目标值（target）,如果在数组中找到target，返回其下标，否则返回应该插入的下标。数组中没有重复值。
+解题思路：
+	二分查找。若target值大于当前段最大值（nums[high]），返回high+1，小于当前段最小值，返回low，否则，进行二分查找的思想，与中间值比较，若等于中间值则返回中间值下标，否则更新low或者high，来缩小当前段长度。
+
+*/
+class Solution {
+public:
+    int searchInsert(vector<int>& nums, int target)
+    {
+        if(nums.size() == 0)
+            return 0;
+    	int low = 0, high = nums.size() - 1, med;
+    	while(low <= high)
+    	{
+    		if(target > nums[high])
+    			return high + 1;
+    		if(target < nums[low])
+    			return low;
+    		med = (low + high) / 2;
+    		if(nums[med] > target)
+    			high = med - 1;
+    		else if(nums[med] < target)
+    			low = med + 1;
+    		else
+    			return med;
+    	}        
+    }
+};
