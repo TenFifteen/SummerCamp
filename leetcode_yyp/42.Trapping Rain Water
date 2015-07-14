@@ -1,0 +1,38 @@
+/*
+题目大意：
+	给定n个非负整数代表一个高度图，其宽度为1，计算这个容器最多能放多少水。
+解题思路：
+	参考网上http://blog.csdn.net/linhuanmars/article/details/20888505。
+
+*/
+class Solution {
+public:
+    int trap(vector<int>& height)
+	{
+		int s = 0, m;
+		int l = 0, r = height.size() - 1;
+		while(l < r)
+		{
+			m = min(height[l], height[r]);
+			if(height[l] ==  m)
+			{
+				l++;
+				while(l < r && height[l] < m)
+				{
+					s += m - height[l];
+					l++;
+				}
+			}
+			else
+			{
+				r--;
+				while(l < r && height[r] < m)
+				{
+					s += m - height[r];
+					r--;
+				}
+			}
+		}
+		return s;	     
+	}
+};

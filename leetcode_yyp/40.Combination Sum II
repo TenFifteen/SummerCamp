@@ -1,0 +1,37 @@
+/*
+题目大意：
+	给定一组候选数据C和一个目标值T,找到可以用C中数据相加得到T的所有不重复方案，C中每个数只可取一次。C和T都是正整数，最后返回结果中数据要求递增，方案不重复。
+解题思路：
+	同combination sum，只是每个元素只能取一次。
+*/
+class Solution {
+public:
+    void combine(vector<vector<int> >& res, vector<int>& candidates, vector<int>tmp, int target, int now, int index)
+	{
+		if(now > target)
+		{
+			return;
+		}
+		if(now == target)
+		{
+			res.push_back(tmp);	
+			return;
+		}
+		for(int i = index; i < candidates.size(); i++)
+		{
+			while(i < candidates.size() && i > index && candidates[i] == candidates[i - 1])
+				i++;
+			tmp.push_back(candidates[i]);
+			combine(res, candidates, tmp, target, now + candidates[i], i + 1);
+			tmp.pop_back();
+		}
+	}
+	vector<vector<int> > combinationSum2(vector<int>& candidates, int target)
+	{
+		vector<vector<int> >res;
+		vector<int>tmp;
+		sort(candidates.begin(), candidates.end());
+		combine(res, candidates, tmp, target, 0, 0);
+		return res;
+	}
+};
