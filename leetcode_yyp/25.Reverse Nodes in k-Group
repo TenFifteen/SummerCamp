@@ -1,0 +1,60 @@
+/*
+题目大意：
+	给定一个链表，逆置k个相邻节点的值，返回头指针。如果剩下的链表的节点的数目小于k，则剩下的节点不动。要求只能用常数空间。
+解题思路：
+	每次逆置前，先判断剩下的元素是否够k个，如果不够，将剩下的元素原样加到现在队列的尾部，结束；否则，将这k个元素依次插入以新队列当前尾指针为头指针的新队列的头部，以实现逆序，每次取k个处理，直至结束。
+注意的点：
+	需要一个指针来标记新队列的尾部，以实现依次将节点插入该节点的下一个来实现逆序。还要注意当元素个数不够k个时，直接将剩下节点添加到尾节点后面即可。
+
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k)
+{
+    if(head == NULL || head->next == NULL)
+        return head;
+	ListNode * newhead = new ListNode(0);
+	ListNode * tail = newhead, *tmp, *flag = NULL;
+	ListNode * pre = head, *cur = head;
+	int i;
+	while(true)
+	{
+		i = 0;
+		while(i < k && pre != NULL)
+		{
+			pre = pre->next;
+			i++;
+		}
+		if(pre == NULL && i < k)
+		{
+			tail->next = cur;
+			break;
+		}
+		else
+		{
+			i = 0;
+			flag = NULL;
+			while(i < k)
+			{
+				tmp = cur;
+				cur = cur->next;
+				tmp->next = tail->next;
+				tail->next = tmp;
+				if(flag == NULL)
+					flag = tail->next;
+				i++;
+			}
+			tail = flag;
+		}
+	}
+    return newhead->next;
+}
+};

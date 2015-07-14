@@ -1,0 +1,38 @@
+/*
+题目大意：
+	给定一个乱序数组，寻找其中第一个丢失的正整数。要求时间复杂度是O(n)，空间复杂度用常数空间。
+解题思路：
+	遍历时，如果下标加一不等于该下标下的数，交换该数到其应该在的位置，然后一直交换该位置的数直到当前下标所在的数为下标加一的数，或者违法数（非整数或超过数组下标长度的数），然后跳到下一个下标，直到遍历结束。从当前数组中找到第一个下标加一不等于该下标所在的数的下标，返回第一个缺失的正整数，否则，返回数组长度加一。
+注意的点：
+	写完后看了一下网上的做法，发现代码可以写的更简单，即把for里面的while循环和for合并，在for里面直接交换（见http://blog.csdn.net/nanjunxiao/article/details/12973173），方法思路一致，但是该网上的代码更简洁。
+*/
+class Solution {
+public:
+    int firstMissingPositive(vector<int>& nums)
+{
+    if(nums.size() == 0)
+        return 1;
+	int tmp, j;
+	for(int i = 0; i < nums.size(); i++)
+	{
+		if(nums[i] == i + 1 || nums[i] < 1 || nums[i] > nums.size())
+			continue;
+		j = nums[i] - 1;
+		while(j >= 0 && j < nums.size() && nums[j] != j + 1)
+		{
+			tmp = nums[j];
+			nums[j] = j + 1;
+			if(tmp > 0 && tmp <= nums.size())
+				j = tmp - 1;
+			else
+				break;
+		}
+	}
+	for(int i = 0; i < nums.size(); i++)
+	{
+		if(nums[i] != i + 1)
+			return i + 1;
+	}
+	return nums.size() + 1;
+}
+};

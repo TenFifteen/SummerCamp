@@ -1,0 +1,56 @@
+/*
+题目大意：
+	给定一个排列，求按字典序比当前排列大的下一个排列。如果当前排列已经是最大的排列，则返回最小的排列。替换要原地进行，不允许申请额外空间。
+解题思路：
+	字典序比当前排列大的下一个排列也就是，从右向左遍历当前排列，找到第一个右边的值存在大于当前值的位置，找到右边的值中大于当前值的最小值，将两者交换，然后将当前值右边的所有数从小到大排序，即可得到当前排列的下一个排列。
+注意的点：
+	找到第一个右边值大于左边值的位置后，要将后面的数从小到大排序。
+*/
+class Solution {
+public:
+static bool comp(int a, int b)
+{
+	return a < b;
+}
+void nextPermutation(vector<int>& nums)
+{
+	if(nums.size() <= 1)
+		return;
+	int i, j, index;
+	for(i = nums.size() - 2; i >= 0; i--)
+	{
+		index = -1;
+		for(j = i + 1; j < nums.size(); j++)
+		{
+			if(nums[i] < nums[j])
+			{
+				if(index == -1)
+				{
+					index = j;
+				}
+				else if(nums[j] - nums[i] < nums[index] - nums[i])
+				{
+					index = j;
+				}
+			}
+		}
+		if(index != -1)
+		{
+			break;
+		}
+	}
+	if(index == -1)	
+	{
+		sort(nums.begin(),nums.end(),comp);
+	}
+	else
+	{
+		int tmp = nums[i];
+		nums[i] = nums[index];
+		nums[index] = tmp;
+		sort(nums.begin() + i + 1, nums.end(),comp);
+	}
+	return;
+}
+
+};
