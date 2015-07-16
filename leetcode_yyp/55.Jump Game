@@ -1,0 +1,25 @@
+/*
+题目大意：
+	给定一个非负数组，开始时位于第一个下标处，每个下标处的数代表能从当前下标跳出的最大距离，判断给定数组能否到达最后一个下标。
+解题思路：
+	记录当前能跳出的最远下标，每遍历到一个下标，若当前下标能跳到的最远下标大于当前最远下标则更新，直到跳到数组尾部或者不能再跳。判断若到达数组尾部则为true，否则为false
+*/
+class Solution {
+public:
+   bool canJump(vector<int>& nums)
+	{
+		if(nums.size() < 2)
+			return true;
+		int dist = nums[0], i;
+		for(i = 1; i < nums.size() && i <= dist; i++)
+		{
+			if(nums[i] + i > dist)
+			{
+				dist = nums[i] + i;
+			}
+		}
+		if(i == nums.size())
+			return true;
+		return false;   
+	}
+};
