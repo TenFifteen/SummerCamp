@@ -1,0 +1,19 @@
+/*
+题目大意：
+	给定一个包含大小写字母和空格的字符串，返回它最后一个字符串的长度，如果这样的字符串不存在，返回0。
+解题思路：
+	从后向前遍历，找到第一个非空字符串，返回长度即可。
+*/
+class Solution {
+public:
+    int lengthOfLastWord(string s)
+	{
+		int res = 0;
+		int i = s.length() - 1;;
+		while(i >= 0 && s[i] == ' ')
+				i--;
+		for(; i >= 0 && s[i] != ' '; i--)
+			res++;
+		return res;
+	}
+};
