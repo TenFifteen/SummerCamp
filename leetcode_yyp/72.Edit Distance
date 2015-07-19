@@ -1,0 +1,33 @@
+/*
+题目大意：
+	给定两个单词word1和word2，计算这两个单词的最小编辑距离。允许三种操作：插入一个字符，删除一个字符，或者替换一个字符。
+解题思路：
+	动归。对word1的子串0-i-1和word2的子串0-j-1，其编辑距离dis[i][j]是word1子串0-i-2和word2子串0-j-1编辑距离加一、word1子串0-i-1和word2子串0-j-2编辑距离加一和word1子串0-i-2和word2子串0-j-2编辑距离加一(word[i - 1] != word[j - 1])或0的小值。
+*/
+class Solution {
+public:
+	int minDistance(string word1, string word2)
+	{
+		int l1 = word1.size(), l2 = word2.size();
+		if(l1 == 0)
+			return l2;
+		if(l2 == 0)
+			return l1;
+		int dis[l1 + 1][l2 + 1];
+		dis[0][0] = 0;
+		for(int i = 1; i <= l1; i++)
+			dis[i][0] = i;
+		for(int j = 1; j <= l2; j++)
+			dis[0][j] = j;
+		for(int i = 1; i <= l1; i++)
+		{
+			for(int j = 1; j <= l2; j++)
+			{
+				dis[i][j] = min(dis[i - 1][j], dis[i][j - 1]) + 1;
+				int x = word1[i -1] == word2[j - 1] ? dis[i - 1][j - 1] : dis[i - 1][j - 1] + 1;
+				dis[i][j] = min(dis[i][j], x);
+			}
+		}
+		return dis[l1][l2];    
+	}
+};

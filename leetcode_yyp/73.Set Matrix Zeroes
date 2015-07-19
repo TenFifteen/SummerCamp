@@ -1,0 +1,62 @@
+/*
+题目大意：
+	给定一个m*n的矩阵，如果一个元素是0，则另这个元素所在的行和列都设置为0.
+解题思路：
+	用第一行第一列标记其所在行和列最终是否设置为0.为避免第一行第一列初始0元素对最终结果的影响，首先遍历第一行第一列，记录最终是否将第一行和第一列设置为0，然后遍历其他元素，若某元素为0，则设置其对应行和列的第一个元素设置为0.然后遍历第一行和第一列，将为0的元素所在的行和列都设置为0，最后根据最初的标记，设置第一行和第一列的0.
+*/
+class Solution {
+public:
+    void setZeroes(vector<vector<int> >& matrix)
+	{
+		int flag1 = -1, flag2 = -1;
+		for(int i = 0; i < matrix[0].size(); i++)
+			if(matrix[0][i] == 0)
+			{
+				flag1 = 0;
+				break;
+			}
+		for(int i = 0; i < matrix.size(); i++)
+			if(matrix[i][0] == 0)
+			{
+				flag2 = 0;
+				break;
+			}
+		for(int i = 1; i < matrix.size(); i++)
+		{
+			for(int j = 1; j < matrix[0].size(); j++)
+			{
+				if(matrix[i][j] == 0)
+				{
+					matrix[0][j] = 0;
+					matrix[i][0] = 0;	
+				}	
+			}	
+		}   
+		for(int i = 1; i < matrix.size(); i++)
+		{
+			if(matrix[i][0] == 0)
+			{
+				for(int j = 1; j < matrix[0].size(); j++)
+				{
+					matrix[i][j] = 0;	
+				}	
+			}	
+		} 
+		for(int i = 1; i < matrix[0].size(); i++)
+		{
+			if(matrix[0][i] == 0)
+			{
+				for(int j = 1; j < matrix.size(); j++)
+				{
+					matrix[j][i] = 0;	
+				}	
+			}	
+		} 
+		if(flag1 == 0)
+			for(int i = 0; i < matrix[0].size(); i++)
+				matrix[0][i] = 0;
+		if(flag2 == 0)
+			for(int i = 0; i < matrix.size(); i++)
+				matrix[i][0] = 0;
+	}
+};

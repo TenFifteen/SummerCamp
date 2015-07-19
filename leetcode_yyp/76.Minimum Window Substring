@@ -1,0 +1,70 @@
+/*
+题目大意：
+	给定一个字符串S和字符串T，在S中找包含T中所有字符的最小窗口。
+解题思路：
+	设置两个指针来标记左右窗口。当窗口中不包含所有字符时，右指针右移，当都包含时移动左指针到最小包含窗口，若小于之前的最小窗口，将最小窗口更新，然后左指针前移一个位置，继续移动右指针，重复上述过程，直到移动到字符串尾部。
+注意的点：
+	当T只包含一个字符时，需要单独处理。
+*/
+class Solution {
+public:
+string minWindow(string s, string t)
+{
+	map<char, int>dict;
+	for(int i = 0; i < t.size(); i++)
+	{
+		dict[t[i]]++;	
+	}   
+	int num = dict.size();
+	map<char, int>record;
+	string res;
+	int i = 0,j = 0, min = s.size();
+	while(i < s.size() && j < s.size())
+	{
+		if(num == 0)
+		{
+			while(i < j)
+			{
+				if(dict.find(s[i]) != dict.end())
+				{
+					record[s[i]]--;
+					if(record[s[i]] < dict[s[i]])
+					{
+						num++;
+						i++;
+						break;
+					}
+				}
+				i++;
+			}
+			if(i == j && t.size() == 1)
+				return s.substr(i, 1);
+			string tmp = s.substr(i - 1, j - i + 2);
+			if(tmp.size() <= min)
+			{
+				min = tmp.size();
+				res = tmp;
+			}
+			j++;
+		}
+		else
+		{
+			while(j < s.size())
+			{
+				if(dict.find(s[j] )!= dict.end())
+				{
+					record[s[j]]++;
+					if(record[s[j]] == dict[s[j]])
+					{
+						num--;
+						if(num == 0)
+							break;
+					}
+				}
+				j++;
+			}
+		}
+	}
+	return res;
+}
+};
