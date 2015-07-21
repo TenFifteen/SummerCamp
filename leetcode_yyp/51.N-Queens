@@ -1,0 +1,62 @@
+/*
+题目大意：
+	n皇后问题，即在一个n*n棋盘上放n个皇后，使得他们不能互相攻击（同行、同列、对角线）
+解题思路：
+	按行放置皇后（避免了行冲突），在n列中选不冲突的位置放皇后，到下一行，递归解决。
+*/
+class Solution {
+public:
+	bool check(vector<int>cur, int location, int n)
+	{
+		if(cur.size() == 0)
+			return true;
+		for(int i = 0; i< cur.size(); i++)
+		{
+			if(cur[i] == location)
+				return false;
+		}
+		int x = cur.size(), y = location;
+		for(int i = 1; x - i >= 0; i++)
+		{
+			if(x - i >= 0 && y - i >= 0 && cur[x - i] == y - i || x - i >= 0 && y + i < n && cur[x - i] == y + i)
+				return false;
+		}
+		return true;
+	}
+	void queen(vector<vector<string> >&res, int n, int index, vector<int>&cur)
+	{
+		if(index == n)
+		{
+			char ch;
+			vector<string>v;
+			for(int i = 0; i < n; i++)
+			{
+				string tmp;
+				for(int j = 0; j < n; j++)
+				{
+					ch = cur[i] == j ? 'Q' : '.';
+					tmp += ch;
+				}
+				v.push_back(tmp);
+			}
+			res.push_back(v);
+			return;
+		}
+		for(int i = 0; i < n; i++)
+		{
+			if(check(cur, i, n))
+			{
+				cur.push_back(i);
+				queen(res, n, index + 1, cur);
+				cur.pop_back();
+			}
+		}
+	}
+	vector<vector<string> > solveNQueens(int n)
+	{
+		vector<vector<string> >res;
+		vector<int>cur;
+		queen(res, n, 0, cur);
+		return res; 
+	}
+};

@@ -1,0 +1,51 @@
+/*
+题目大意：
+	n皇后问题，即在一个n*n棋盘上放n个皇后，使得他们不能互相攻击（同行、同列、对角线），求方案数
+解题思路：
+	
+*/
+class Solution {
+public:
+	bool check(vector<int>cur, int location, int n)
+	{
+		if(cur.size() == 0)
+			return true;
+		for(int i = 0; i< cur.size(); i++)
+		{
+			if(cur[i] == location)
+				return false;
+		}
+		int x = cur.size(), y = location;
+		for(int i = 1; x - i >= 0; i++)
+		{
+			if(x - i >= 0 && y - i >= 0 && cur[x - i] == y - i || x - i >= 0 && y + i < n && cur[x - i] == y + i)
+				return false;
+		}
+		return true;
+	}
+	void queen(int & res, int n, int index, vector<int>&cur)
+	{
+		if(index == n)
+		{
+			res++;
+			return;
+		}
+		for(int i = 0; i < n; i++)
+		{
+			if(check(cur, i, n))
+			{
+				cout << index << "\t" << i << endl;
+				cur.push_back(i);
+				queen(res, n, index + 1, cur);
+				cur.pop_back();
+			}
+		}
+	}
+	int totalNQueens(int n)
+	{
+		int res;
+		vector<int>cur;
+		queen(res, n, 0, cur);
+		return res; 
+	}
+};

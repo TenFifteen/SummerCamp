@@ -1,0 +1,20 @@
+/*
+题目大意：
+	爬一个有n步的梯子，每次可以爬一步或者两步，返回到顶的方案数
+解题思路：
+	斐波那契数列。
+*/
+class Solution {
+public:
+    int climbStairs(int n)
+	{
+		int fac1 = 1, fac0 = 1, tmp;
+		for(int i = 2; i <= n; i++)
+		{
+			tmp = fac1 + fac0;
+			fac0 = fac1;
+			fac1 = tmp;
+		}
+		return fac1;
+	}
+};

@@ -1,0 +1,23 @@
+/*
+题目大意：
+	一个机器人开始放置在m*n格子的左上角，机器人每次只能向右或者向下运动，问有多少条不同的路径可以走到格子的右下角。
+解题思路：
+	
+*/
+class Solution {
+public:
+	int uniquePaths(int m, int n)
+	{
+		if(m < 2 || n < 2)
+			return 1;
+		long long res = 0, i = 1;
+		long long  x = m + n - 2, y = min(m - 1, n - 1);
+		res = x;
+		while(i < y)
+		{
+			++i;
+			res = res * (x - i + 1) / i ;
+		}
+		return res;
+	}
+};

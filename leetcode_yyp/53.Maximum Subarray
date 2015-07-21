@@ -1,0 +1,21 @@
+/*
+题目大意：
+	寻找一个数组中最大连续子串和。
+解题思路：
+	用maxsofar标记以当前下标结束的子串的最大和，如果大于max，则更新max。
+*/
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums)
+	{
+		if(nums.size() == 0)
+			return 0;  
+		int maxsofar = nums[0], max = nums[0];
+		for(int i = 1; i < nums.size(); i++)
+		{
+			maxsofar = (maxsofar + nums[i]) > nums[i] ? maxsofar + nums[i] : nums[i];
+			max = maxsofar > max ? maxsofar : max;
+		}
+		return max;
+	}
+};

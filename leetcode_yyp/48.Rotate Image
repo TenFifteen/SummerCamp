@@ -1,0 +1,32 @@
+/*
+题目大意：
+	给定一个用n*n的2D矩阵代表的图，将该图顺时针旋转90度。要求原地换。
+解题思路：
+	先将矩阵沿对角线对应元素交换，然后沿中轴线对应元素交换，得到的就是旋转90度的矩阵。
+*/
+class Solution {
+public:
+	void rotate(vector<vector<int> >& matrix)
+	{
+		int tmp;
+		int n = matrix.size();
+		for(int i = 0; i < n; i++)
+		{
+			for(int j = 0; j < i; j++)
+			{
+				tmp = matrix[i][j];
+				matrix[i][j] = matrix[j][i];
+				matrix[j][i] = tmp;
+			}
+		}
+		for(int i = 0; i < n; i++)
+		{
+			for(int j = 0; j < n / 2; j++)
+			{
+				tmp = matrix[i][j];
+				matrix[i][j] = matrix[i][n - j - 1];
+				matrix[i][n - j - 1] = tmp;
+			}	
+		} 
+	}
+};

@@ -1,0 +1,44 @@
+/*
+题目大意：
+	给定一个绝对路径，简化成unix下的路径
+解题思路：
+	每次读取两个/之间的内容，若为..,则弹出用栈保存的上一级文件夹，若为.或为空，则不作处理，若为字符串，将当前文件夹名压入栈中。最后若栈为空，返回/，否则，返回整个路径。
+*/
+class Solution {
+public:
+string simplifyPath(string path)
+{
+	stack<string>st;
+	string res;
+	for(int i = 1; i < path.size(); i++)
+	{
+		string tmp;
+		while(i < path.size() && path[i] != '/')
+		{
+			tmp += path[i];
+			i++;
+		}
+		if(tmp == "..")
+		{
+			if(!st.empty())
+				st.pop();
+		}
+		else if(tmp == "." || tmp.size() == 0)
+		{
+			continue;
+		}
+		else
+		{
+			st.push("/" + tmp);
+		}
+	}
+	if(st.empty())
+		return "/";
+	while(!st.empty())
+	{
+		res = st.top() + res;
+		st.pop();
+	}
+	return res;
+}
+};

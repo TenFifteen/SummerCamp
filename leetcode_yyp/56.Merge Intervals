@@ -1,0 +1,49 @@
+/*
+题目大意：
+	给一些时间段，将他们合并成不重复的时间段。
+解题思路：
+	首先对时间段按照开始时间进行排序，然后将下标为i的时间段与当前段（tmp）进行比较，若下标为i的时间的开始时间比tmp的结束时间大，则将tmp加入结果，tmp的开始时间和结束时间更新为下标为i的时间段的开始和结束时间，否则，tmp的结束时间取tmp和下标为i的时间的结束时间的大值。
+注意的点：
+	不要忘记将最后一段加入结果中。
+*/
+/**
+ * Definition for an interval.
+ * struct Interval {
+ *     int start;
+ *     int end;
+ *     Interval() : start(0), end(0) {}
+ *     Interval(int s, int e) : start(s), end(e) {}
+ * };
+ */
+class Solution {
+public:
+	static bool comp(Interval n1, Interval n2)
+	{
+		return n1.start < n2.start;		
+	}
+	vector<Interval> merge(vector<Interval>& intervals)
+	{
+		vector<Interval>res;
+		if(intervals.size() == 0)
+			return res;
+		sort(intervals.begin(), intervals.end(), comp);
+		Interval tmp;
+		tmp.start = intervals[0].start;
+		tmp.end = intervals[0].end;
+		for(int i = 1; i < intervals.size(); i++)
+		{
+			if(intervals[i].start > tmp.end)
+			{
+				res.push_back(tmp);
+				tmp.start = intervals[i].start;
+				tmp.end = intervals[i].end;
+			}
+			else
+			{
+				tmp.end = max(tmp.end, intervals[i].end);
+			}
+		}
+		res.push_back(tmp);
+		return res;  
+	}
+};

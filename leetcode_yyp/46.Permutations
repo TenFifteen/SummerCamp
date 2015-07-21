@@ -1,0 +1,32 @@
+/*
+题目大意：
+	给定一些数，生成这些数所有可能的排列。
+解题思路：
+	每次将当前下标index的数与后面的每一位进行交换，得到当前位的所有可能，然后移动到下一位，再与其后面的数进行交换，依次进行，直到最后一个数。
+
+*/
+void permutation(vector<int>& nums, vector<vector<int> >&res, int index)
+{
+	if(index == nums.size())
+	{
+		res.push_back(nums);
+		return;
+	}
+	for(int i = index; i < nums.size(); i++)
+	{
+		int x = nums[i];
+		nums[i] = nums[index];
+		nums[index] = x;
+		permutation(nums, res, index + 1);
+		x = nums[i];
+		nums[i] = nums[index];
+		nums[index] = x;
+	}
+}
+vector<vector<int> > permute(vector<int>& nums)
+{
+	vector<vector<int> >res;
+	if(nums.size() == 0)
+		return res;
+	permutation(nums, res, 0);
+}

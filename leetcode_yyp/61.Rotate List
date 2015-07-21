@@ -1,0 +1,44 @@
+/*
+题目大意：
+	给定一个链表，向右移动k个位置。如给定1-2-3-4-5-NULL,k=2,应返回4-5-1-2-3-NULL
+解题思路：
+	首先求得链表长度，将k对链表长度取余。然后设置两个指针，前面一个先走k个位置，然后两个一起向前移动，直到前面的指针的下一个位置为空时表示已走到头，此时将尾指针指向头指针，后面指针的下一个指针为新的头指针，保存，然后将后面指针的下一个指针设置为NULL,返回现在的头指针。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k)
+	{
+		int i = 0, l = 0;
+		ListNode * pre = head, *cur = head, *tmp;
+		while(pre != NULL)
+		{
+			pre = pre->next;
+			l++;
+		}
+		k = l == 0 ? 0 : k % l;
+		if(head == NULL || head->next == NULL || k == 0)
+			return head;
+		pre = head;
+		for(;i < k; i++)
+		{
+			pre = pre->next;
+		}
+		while(pre->next != NULL)
+		{
+			pre = pre->next;
+			cur = cur->next;
+		}
+		tmp = cur->next;
+		cur->next = NULL;
+		pre->next = head;
+		return tmp;
+	}
+};
