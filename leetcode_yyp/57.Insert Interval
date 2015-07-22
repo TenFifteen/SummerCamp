@@ -1,0 +1,58 @@
+/*
+题目大意：
+	给定一些不重合的时间段，插入一个新的时间段，使得最后得到的时间段集合不重复。
+解题思路：
+	先找到需要插入的位置，然后将冲突的合并。
+注意的点：
+	在一些比较的地方注意是否有等于。一些边界和情况，需要小心处理。
+
+*/
+/**
+ * Definition for an interval.
+ * struct Interval {
+ *     int start;
+ *     int end;
+ *     Interval() : start(0), end(0) {}
+ *     Interval(int s, int e) : start(s), end(e) {}
+ * };
+ */
+class Solution {
+public:
+vector<Interval> insert(vector<Interval>& intervals, Interval newInterval)
+{	
+	if(intervals.size() == 0  || intervals[intervals.size() - 1].end < newInterval.start)
+	{
+		intervals.push_back(newInterval);
+		return intervals;
+	}
+	if(intervals[0].start > newInterval.end)
+	{
+		intervals.insert(intervals.begin(), newInterval);
+		return intervals;
+	}
+	int i;
+	for(i = 0; i < intervals.size() - 1; i++)
+	{
+		if(intervals[i].start <= newInterval.start && intervals[i + 1].start > newInterval.start || intervals[0].start > newInterval.start)
+		{
+			break;
+		}
+	}
+	if(newInterval.end < intervals[i + 1].start && newInterval.start > intervals[i].end)
+	{
+		intervals.insert(intervals.begin() + i + 1, newInterval);
+	}
+	else 
+	{
+		if(newInterval.start > intervals[i].end)
+			i++;
+		intervals[i].start = min(newInterval.start, intervals[i].start);
+		int j = i + 1;
+		while(j < intervals.size() && intervals[j].start <= newInterval.end)
+			j++;
+		intervals[i].end = max(intervals[j - 1].end, newInterval.end);
+		intervals.erase(intervals.begin() + i + 1, intervals.begin() + j);
+	}
+    return intervals;  
+}
+};

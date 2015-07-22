@@ -1,0 +1,23 @@
+/*
+题目大意：
+	给定一个m*n的用非负数填充的格子矩阵，找一条从左上到右下的通路使得路径上的数的和最小，只能向右向下走。
+解题思路：
+	用动归解决。当前格子的最小和为上面和左面格子的较小值加当前格子的值。
+*/
+class Solution {
+public:
+    int minPathSum(vector<vector<int> >& grid)
+	{
+		int m = grid.size(), n = grid[0].size();
+		int sum[m][n];
+		sum[0][0] = grid[0][0];
+		for(int i = 1; i < m; i++)
+			sum[i][0] = sum[i - 1][0] + grid[i][0];
+		for(int j = 1; j < n; j++)
+			sum[0][j] = sum[0][j - 1] + grid[0][j];
+		for(int i = 1; i < m; i++)
+			for(int j = 1; j < n; j++)
+				sum[i][j] = grid[i][j] + min(sum[i - 1][j], sum[i][j - 1]);
+		return sum[m - 1][n - 1];
+	}
+};

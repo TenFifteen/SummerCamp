@@ -1,0 +1,36 @@
+/*
+题目大意：
+	实现pow(x, n)
+解题思路：
+	每个整数都可以表示成以2为底的幂次的线性组合，所以将n表示成二进制形式，每次取最后一位，若为1，乘当前幂次，向右移动，直到n为0。
+注意的点：
+	当n为负数时需返回1/res.
+*/
+class Solution {
+public:
+	double myPow(double x, int n)
+	{
+		if(n == 0 || x == 1)
+			return 1;
+		double res = 1;
+		double cur = x;
+		int flag = 1;
+		if(n < 0)
+		{
+			flag = -1;
+			n = abs(n);
+		}
+		while(n > 0)
+		{
+			if(n & 0x1)
+			{
+				res *= cur;
+			}
+			cur *= cur;
+			n = n >> 1;
+		} 
+		if(flag == -1)
+			return 1/ res;
+		return res;
+	}
+};

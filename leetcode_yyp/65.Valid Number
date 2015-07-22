@@ -1,0 +1,61 @@
+/*
+题目大意：
+	判断一个给定的字符串是不是十进制数。
+解题思路：
+	比较繁琐。数据可以以小数点开头或结尾(如.3,9.)，但不能只有小数点，小数点后面可以接e和数据(如6.e3,9.1)，但前面不可以有e。e可以放在数据或者小数点后面，e后面必须是数字或者+-号。+-号必须放在e后面数字前面。空格可以放在数据的最前面或者最后面。其他情况都是错误情况。
+注意的点：
+	用条件判断非常繁琐。看网上解法用的是有限状态自动机。
+*/
+class Solution {
+public:
+	bool isNumber(string s)
+	{
+		int i = 0, flagd = -1, flage = -1, flags = -1;
+		while(i < s.length() && s[i] == ' ')
+			i++;
+		if(i == s.length())return false;
+		if(s[i] == '-' || s[i] == '+')
+			i++;
+		for(; i < s.length(); i++)
+		{
+			if(s[i] == '.')
+			{
+				if(flagd == -1 && flage == -1  && (i + 1 < s.length() && s[i + 1] >= '0' && s[i + 1] <= '9' || i - 1 >= 0 && s[i - 1] >= '0' && s[i - 1] <= '9'))
+					flagd = 1;
+				else
+					return false;
+			}
+			else if(s[i] == 'e')
+			{
+				if(flage == -1 && i + 1 < s.length() && (s[i + 1] >= '0' && s[i + 1] <= '9' || s[i + 1] == '+' || s[i + 1] == '-') && i - 1 >= 0 && (s[i - 1] == '.' || s[i - 1] >= '0' && s[i - 1] <= '9'))
+					flage = 1;
+				else
+					return false;	
+			}
+			else if(s[i] >= '0' && s[i] <= '9')
+			{
+				continue;
+			}
+			else if(s[i] == ' ')
+			{
+				break;
+			}
+			else if(s[i] == '+' || s[i] == '-')
+			{
+				if(flags == -1 && flage == 1 && i + 1 < s.length() && s[i + 1] >= '0' && s[i + 1] <= '9')
+					flags = 1;
+				else
+					return false;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		while(s[i] == ' ')
+			i++;
+		if(i != s.length())
+			return false;
+		return true;
+	}
+};

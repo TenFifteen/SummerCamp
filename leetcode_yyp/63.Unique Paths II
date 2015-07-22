@@ -1,0 +1,33 @@
+/*
+题目大意：
+	一个机器人开始放置在m*n格子的左上角，机器人每次只能向右或者向下运动，格子中会有障碍不通，用1表示，问有多少条不同的路径可以走到格子的右下角。
+解题思路：
+	用动归解决，当前点若为障碍点，则当前点的方案数为0，否则，到当前点的方案数为它的上边格子和左边格子的方案和。
+*/
+class Solution {
+public:
+	int uniquePathsWithObstacles(vector<vector<int> >& obstacleGrid)
+	{
+		int m = obstacleGrid.size(), n = obstacleGrid[0].size();
+		int grid[m][n];
+		if(obstacleGrid[0][0] == 1)
+			return 0;
+		grid[0][0] = 1;
+		for(int i = 1; i < n; i++)
+		{
+			grid[0][i] = obstacleGrid[0][i] == 1 ? 0 : grid[0][i - 1];	
+		}
+		for(int i = 1; i < m; i++)
+		{
+			grid[i][0] = obstacleGrid[i][0] == 1 ? 0 : grid[i - 1][0];	
+		}
+		for(int i = 1; i < m; i++)
+		{
+			for(int j = 1; j < n; j++)
+			{
+				grid[i][j] = obstacleGrid[i][j] == 1 ? 0 : grid[i - 1][j] + grid[i][j - 1];
+			}
+		}
+		return grid[m - 1][n - 1];
+	}
+};

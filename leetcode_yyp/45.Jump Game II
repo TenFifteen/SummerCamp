@@ -1,0 +1,26 @@
+/*
+题目大意：
+	给定一个非负整数的数组，开始时指针位于第一个位置，下标代表最多能从这个位置跳出的长度，目标是找跳到最后一个位置的最少跳数。
+解题思路：
+	开始时用动归的思想，可是超时，后更改下一个开始位置为当前候选节点能跳出的最远距离，出错，因为最优方案不一定是每次跳到最远处。然后看网上的解法（如下），很赞。（链接http://www.cnblogs.com/lichen782/p/leetcode_Jump_Game_II.html）
+*/
+class Solution {
+public:
+int jump(vector<int>& nums)
+{
+	if(nums.size() <= 1)
+		return 0;
+	int jmp = 0;
+	int last = 0, cur = 0;
+	for(int i = 0; i < nums.size(); i++)
+	{
+		if(i > last)
+		{
+			jmp++;
+			last = cur;
+		}
+		cur = max(cur, i + nums[i]);
+	}
+	return jmp;       
+}
+};

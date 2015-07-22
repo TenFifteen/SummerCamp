@@ -1,0 +1,31 @@
+/*
+题目大意：
+	给定一个m*n的矩阵，从这个矩阵中查找一个值。这个矩阵每行从左到右递增，每行第一个数大于上一行最后一个数。
+解题思路：
+	二分查找。根据矩阵的特性，按行展开后得到的数组是有序的，所以通过元素对应到数组的下标得到在矩阵中的位置即可。
+*/
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int> >& matrix, int target)
+	{
+		int m = matrix.size(), n = matrix[0].size();
+		int med, low = 0, high = m * n - 1;
+		while(low <= high)
+		{
+			med = (low + high) / 2;
+			if(matrix[med / n][med % n] == target)
+			{
+				return true;
+			}
+			else if(matrix[med / n][med % n] > target)
+			{
+				high = med - 1;
+			}
+			else
+			{
+				low = med + 1;
+			}
+		}
+		return false;
+	}
+};

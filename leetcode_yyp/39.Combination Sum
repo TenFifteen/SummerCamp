@@ -1,0 +1,40 @@
+/*
+题目大意：
+	给定一组候选数据C和一个目标值T,找到可以用C中数据相加得到T的所有不重复方案，C中每个数可取无限次。C和T都是正整数，最后返回结果中数据要求递增，方案不重复。
+解题思路：
+	先对候选数数组进行排序，以保证最后结果中数字按升序排序存储。然后用dfs做。
+注意的点：
+	由于每个元素可以取无限次，所以每次取完后，进入下一步时仍然可以取当前点。
+	
+*/
+class Solution {
+public:
+void combine(vector<vector<int> >& res, vector<int>& candidates, vector<int>tmp, int target, int now, int index)
+{
+	if(now > target)
+	{
+		return;
+	}
+	if(now == target)
+	{
+		res.push_back(tmp);	
+		return;
+	}
+	for(int i = index; i < candidates.size(); i++)
+	{
+		while(i < candidates.size() && i > index && candidates[i] == candidates[i - 1])
+			i++;
+		tmp.push_back(candidates[i]);
+		combine(res, candidates, tmp, target, now + candidates[i], i);
+		tmp.pop_back();
+	}
+}
+vector<vector<int> > combinationSum(vector<int>& candidates, int target)
+{
+	vector<vector<int> >res;
+	vector<int>tmp;
+	sort(candidates.begin(), candidates.end());
+	combine(res, candidates, tmp, target, 0, 0);
+	return res;
+}
+};

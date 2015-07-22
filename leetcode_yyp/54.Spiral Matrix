@@ -1,0 +1,44 @@
+/*
+题目大意：
+	给定一个m*n的矩阵，返回按螺旋方式读取该矩阵得到的数组。
+解题思路：
+	分为向右、向下、向左、向上四个方向，每圈按四个方向依次读取，读取元素的下标与圈相关。
+注意的点：
+	注意边界情况。
+*/
+class Solution {
+public:
+	vector<int> spiralOrder(vector<vector<int> >& matrix)
+	{
+		vector<int>res;
+		if(matrix.size() == 0)
+			return res;
+		int r = 0, cnt = 0;
+		int m = matrix.size(), n = matrix[0].size();
+		while(cnt < m * n)
+		{
+			for(int j = r; j < n - r; j++)
+			{
+				res.push_back(matrix[r][j]);
+				cnt++;
+			}
+			for(int j = r + 1; j <= m - r - 1; j++)
+			{
+				res.push_back(matrix[j][n - r - 1]);
+				cnt++;
+			}
+			for(int j = n - r - 2; j >= 0 && j >= r && m - r - 1 > r; j--)
+			{
+				res.push_back(matrix[m - r - 1][j]);
+				cnt++;
+			}
+			for(int j = m - r - 2; j >= 0 && j >= r + 1 && r < n - r - 1; j--)
+			{
+				res.push_back(matrix[j][r]);
+				cnt++;
+			}
+			r++;
+		}
+		return res;
+	}
+};

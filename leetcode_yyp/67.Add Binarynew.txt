@@ -1,0 +1,30 @@
+/*
+题目大意：
+	给定两个用字符串表示的二进制串，求和返回字符串。
+解题思路：
+	从后向前加，遍历。保存进位。
+*/
+class Solution {
+public:
+    string addBinary(string a, string b)
+	{
+		char ch;
+		string res;
+		int x, y, r = 0, sum;
+		int i = a.size() - 1, j = b.size() - 1;
+		while(i >= 0 || j >= 0)
+		{
+			x = i >= 0 ? a[i] - '0' : 0;
+			y = j >= 0 ? b[j] - '0': 0;
+			sum = x + y + r;
+			r = sum / 2;
+			ch = '0' + sum % 2; 
+			res = ch + res;
+			i--;
+			j--;
+		}  
+		if(r == 1) 
+			res = '1' + res;   
+		return res; 
+	}
+};

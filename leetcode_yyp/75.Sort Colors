@@ -1,0 +1,31 @@
+/*
+题目大意：
+	给定一个包括n个物体的颜色的矩阵，包括红、白和蓝，调整至同一个颜色相邻，最终顺序为红、白、蓝。用0，1,2代表红，白，蓝。
+解题思路：
+	扫描一遍，若为红色，白色加一，红色和蓝色往后搬移，若为白色，白色加一，蓝色搬移，若为蓝色，蓝色搬移。
+*/
+class Solution {
+public:
+    void sortColors(vector<int>& nums)
+	{
+		int r = 0, w = 0, b = 0;
+		for(int i = 0; i < nums.size(); i++)
+		{
+			if(nums[i] == 0)
+			{
+				nums[b++] = 2;
+				nums[w++] = 1;
+				nums[r++] = 0;
+			}
+			else if(nums[i] == 1)
+			{
+				nums[b++] = 2;
+				nums[w++] = 1;
+			}
+			else
+			{
+				nums[b++] = 2;
+			}
+		}
+	}
+};

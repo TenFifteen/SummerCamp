@@ -1,0 +1,29 @@
+/*
+题目大意：
+	实现int sqrt(x)
+解题思路：
+	二分查找。
+注意的点：
+	判断当前数的平方是否大于x时，若用乘法会越界，所以要用除法！
+*/
+class Solution {
+public:
+   int mySqrt(int x)
+	{
+		if(x == 0 || x == 1)
+			return x;
+		int low = 0, high = x, med, div;
+		while(low <= high)
+		{
+			med = (low + high) / 2;
+			div = x / med;
+			if(div == med)
+				return med;
+			else if(div < med)
+				high = med - 1;
+			else
+				low = med + 1;
+		}
+		return high;
+	}
+};

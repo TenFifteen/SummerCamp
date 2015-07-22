@@ -1,0 +1,32 @@
+/*
+题目大意：
+	给定两个正整数n和k，返回所有可能的从1-n中选k个数的集合。
+解题思路：
+	递归。到当前数时，可取的数是当前数后面的所有数，当取到的数到k后，压入结果容器。
+*/
+class Solution {
+public:
+    void comb(vector<vector<int> >&res, int n, int k, int num, vector<int>&tmp)
+	{
+		if(tmp.size() == k)
+		{
+			res.push_back(tmp);
+			return;
+		}
+		for(int i = num; i <= n; i++)
+		{
+			tmp.push_back(i);
+			comb(res, n, k, i + 1, tmp);
+			tmp.pop_back();
+		}
+	}
+	vector<vector<int> > combine(int n, int k)
+	{
+		vector<vector<int> >res;
+		if(k == 0)
+			return res;
+		vector<int>tmp;
+		comb(res, n, k, 1, tmp);
+		return res;	
+	}
+};

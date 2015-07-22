@@ -1,0 +1,28 @@
+/*
+题目大意：
+	数和说数列如下：1,11,21,1211,111221.……，其中，1读作one 1或11，11读作two 1s或21,21读作one 2 one 1或1211……给定一个整数n，生成第n个这样的序列。
+解题思路：
+	遍历当前字符串，遇到相同数字时一直数，直到遇到不同数字，将个数和当前数字输入到结果字符串中，直到n个。
+*/
+class Solution {
+public:
+    string countAndSay(int n)
+	{
+		string s = "1";
+		for(int i = 1; i < n; i++)
+		{
+			string t;
+			for(int j = 0; j < s.length(); j++)
+			{
+				int k = j + 1;
+				while(k < s.length() && s[k] == s[j])
+					k++;
+				char ch = '0' + (k - j);
+				t = t + ch + s[j]; 
+				j = k - 1;
+			}
+			s = t;
+		}
+		return s;   
+	}
+};

@@ -1,0 +1,24 @@
+/*
+题目大意：
+	给定一个用数组中数字代表的非负数，返回该数加一得到的值。数组中前面保存的是高位数字。
+解题思路：
+	个位加一，保存进位，直到最高位。
+*/
+class Solution {
+public:
+    vector<int> plusOne(vector<int>& digits)
+	{
+		int r = 1, tmp;
+		for(int i = digits.size() - 1; i >= 0; i--)
+		{
+			tmp = digits[i] + r;
+			digits[i] = tmp % 10;
+			r = tmp / 10;
+		}
+		if(r == 1)
+		{
+			digits.insert(digits.begin(), 1);
+		}
+		return digits;
+	}
+};
