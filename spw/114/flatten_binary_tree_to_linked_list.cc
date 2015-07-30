@@ -17,3 +17,34 @@ void flatten(TreeNode* root) {
 	root->right = prev;
 	prev = root;
 }
+
+/**
+ * My own
+ */
+TreeNode *inorder(TreeNode *root) {
+	if (root == NULL) return NULL;
+
+	TreeNode *left = inorder(root->left);
+	TreeNode *right = inorder(root->right);
+
+	root->left = NULL;
+	if (left != NULL) {
+		root->right = left;
+
+		TreeNode *pre = left;
+		while (left) {
+			pre = left;
+			left = left->right;
+		}
+		pre->right = right;
+		pre->left = NULL;
+	} else {
+		root->right = right;
+	}
+
+	return root;
+}
+
+void flatten(TreeNode* root) {
+	root = inorder(root);
+}
