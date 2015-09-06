@@ -1,65 +1,52 @@
 #include <stdio.h>
 
 
-double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Size) {
-
+/**
+ * Problem: There are two sorted arrays nums1 and nums2 of size m and n respectively. 
+ *          Find the median of two sorted arrays, The overall run time complexity 
+ *          should be O(log(m+n))
+ * Solve: I use the log(n) alogrithm.
+ * Tips: see below 
+ */
+double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Size) 
+{
 	int total_size = nums1Size + nums2Size;
-	int mid1, mid2;
-	if (total_size == 0) return 0.00;
-	if (total_size & 1) {
-		mid1 = mid2 = total_size / 2;
-	} else {
-		mid1 = (total_size - 1) / 2;
-		mid2 = mid1 + 1;
-	}
-		printf("mid1=%d, mid2=%d\n", mid1, mid2);
+	int mid_pos = (total_size-1) / 2; // Please don't forget to minus 1
 
-	int i, j, k;
-	int f = 0;
-	for (i = j = k = 0; i < nums1Size && j < nums2Size && k <= mid1; ++k) {
-		if (nums1[i] < nums2[j]) {
-			++i;
-			f = 0;
-		} else {
+	int mid = 0;
+	int i = 0, j = 0;
+	int flag = 0;
+	while (i < nums1Size || j < nums2Size) {
+		if (i == nums1Size) {
+			flag = 1;
 			++j;
-			f = 1;
-		}	
-	}
-	while (i < nums1Size && k <= mid1) {
-		++i;
-		++k;
-		f = 0;
-	}
-	while (j < nums2Size && k <= mid1) {
-		++j;
-		++k;
-		f = 1;
-	}
-
-	if (mid1 ^ mid2) {
-		if (f) {
-			mid1 = nums2[j-1];	
+		} else if (j == nums2Size || nums1[i] < nums2[j]) {
+			flag = 0;
+			++i;
 		} else {
-			mid1 = nums1[i-1];
+			flag = 1;
+			++j;
 		}
 
-		if (nums1[i] < nums2[j]) {
-			mid2 = nums1[i];
-		} else {
-			mid2 = nums2[j];
+		if (i + j == mid_pos+1) {
+			if (flag) mid = nums2[j-1];
+			else mid = nums1[i-1];
+			break;
 		}
-		if (i >= nums1Size) 
-			mid2 = nums2[j];
-		else if (j >= nums2Size)
-			mid2 = nums2[i];
-
-		printf("f = %d, i = %d, j = %d, k = %d\n", f, i, j, k);
-		printf("mid1=%d, mid2=%d\n", mid1, mid2);
-		return (mid2 + mid1) / 2.0;
 	}
-	
-	if(f) return nums2[j-1];
-	else return nums1[i-1];
+
+	if (total_size % 2 == 1) return mid;
+	else {
+		int mid1 = 0;
+		if (i == nums1Size) {
+			mid1 = nums2[j];
+		} else if (j == nums2Size || nums1[i] < nums2[j]) {
+			mid1 = nums1[i];
+		} else {
+			mid1 = nums2[j];
+		}
+		return ((double)mid + mid1) / 2;
+	}
 }
 
 int main()
