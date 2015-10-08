@@ -13,7 +13,7 @@ struct Interval {
     Interval(int s, int e) : start(s), end(e) {}
 };
 
-bool comp(const Interval &a, const Interval &b)
+static bool comp(const Interval &a, const Interval &b)
 {
 	return a.start < b.start;
 }
