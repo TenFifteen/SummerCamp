@@ -1,0 +1,42 @@
+/*
+题目大意：
+	给定一棵二叉树，返回其中序遍历得到的节点值数组。
+解题思路：
+	对于当前结点，若为空，则从栈里弹出节点访问，然后更新当前结点为弹出节点的右孩子，否则，将当前节点压入栈中。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root)
+    {
+    	vector<int>res;
+    	if(root == NULL)
+    		return res;
+        stack<TreeNode*>st;
+        TreeNode * cur = root;
+        while(!st.empty() || cur != NULL)
+        {
+        	if(cur == NULL)
+        	{
+        		TreeNode *tmp = st.top();
+        		st.pop();
+        		res.push_back(tmp->val);
+        		cur = tmp->right;
+			}
+			else
+			{
+				st.push(cur);
+				cur = cur->left;
+			}
+		}
+        return res;
+    }
+};

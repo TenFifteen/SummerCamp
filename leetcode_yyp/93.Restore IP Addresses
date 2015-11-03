@@ -1,0 +1,50 @@
+/*
+题目大意：
+	给定一个只包含数字的字符串，将其转换为合法的ip地址。
+解题思路：
+	将字符串划分为四部分，每部分都是0-255，且每段字符串开始字符不是‘0’。
+*/
+class Solution {
+public:
+bool check(string s)
+{
+	int x = 0;
+	if(s.size() > 1 && s[0] == '0')
+		return false;
+	for(int i = 0; i < s.size(); i++)
+	{
+		x = x * 10 + (s[i] - '0');
+	}
+	if(x >= 0 && x <= 255)
+		return true;
+}
+void ip(string s, int index, vector<string>& res, vector<string>& cur)
+{
+	if(ceil((s.length() - index) / 3) + cur.size() > 4 || cur.size() + s.length() - index < 4)
+		return;
+	if(index == s.length())
+	{
+		string t = cur[0] + "." + cur[1] + "." + cur[2] + "." + cur[3];
+		res.push_back(t);
+		return;
+	}
+	for(int i = 1; i <= 3; i++)
+	{
+		string tmp = s.substr(index, i);
+		if(check(tmp))
+		{
+			cur.push_back(tmp);
+			ip(s, index + i, res, cur);
+			cur.pop_back();
+		}
+	}
+}
+vector<string> restoreIpAddresses(string s)
+{
+	vector<string>res, cur;
+	if(s.length() == 0)
+		return res;
+	ip(s, 0, res, cur);
+	return res;
+}
+};

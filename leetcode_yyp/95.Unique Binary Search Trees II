@@ -1,0 +1,51 @@
+/*
+题目大意：
+	给定n生成节点储存1-n值的所有二叉搜索树。
+解题思路：
+	划分左右子树，递归构造。
+注意的点：
+	开始时用vector<TreeNode*>存储的，提交发现超出空间复杂度，后搜索发现要用指针，因为变量在栈上分配，返回时需要拷贝构造函数重构vector，所以需要用指针和堆存储变量。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<TreeNode*> *tree(int left, int right)
+    {
+        vector<TreeNode*>*res = new vector<TreeNode*>();
+        if(left > right)
+        {
+            res->push_back(NULL);
+            return res;
+        }
+        for(int i = left; i <= right; ++i)
+        {
+            vector<TreeNode*>*ltree = tree(left, i - 1);
+            vector<TreeNode*>*rtree = tree(i + 1, right);
+            for(int j = 0; j < ltree->size(); j++)
+            {
+                for(int k = 0; k < rtree->size(); k++)
+                {
+                    TreeNode* root = new TreeNode(i);
+                    root->left = (*ltree)[j];
+                    root->right = (*rtree)[k];
+                    res->push_back(root);
+                }
+            }
+        }
+        return res;
+    }
+    vector<TreeNode*> generateTrees(int n)
+    {
+        vector<TreeNode*>res;
+        res = *tree(1, n);
+        return res;
+    }
+};

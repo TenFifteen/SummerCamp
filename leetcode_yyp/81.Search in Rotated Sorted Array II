@@ -1,0 +1,38 @@
+/*
+题目大意：
+	在Search in Rotated Sorted Array基础上，元素可能有重复。
+解题思路：
+	因为存在重复元素，所以当med处值与low（或high）相等时，low-med段的数据可能全部相等，也可能一部分元素相等一部分递增，所以当med处值与low、high两个边界值相等时，high减一即可。会导致最坏时间复杂度变为O(n)。
+*/
+class Solution {
+public:
+    bool search(vector<int>& nums, int target)
+	{
+		int low = 0, high = nums.size() - 1, med;
+		while(low <= high)
+		{
+			med = (low + high) / 2;
+			if(nums[med] == target)
+			{
+				return true;
+			}
+			else if(nums[med] < nums[high])
+			{
+				if(target > nums[med] && target <= nums[high])
+					low = med + 1;
+				else
+					high = med - 1;
+			}
+			else if(nums[med] > nums[high])
+			{
+				if(target < nums[med] && target >= nums[low])
+					high = med - 1;
+				else
+					low = med + 1;
+			}
+			else
+				high--;
+		}
+		return false;      
+	}
+};

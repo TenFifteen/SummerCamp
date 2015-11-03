@@ -1,0 +1,41 @@
+/*
+题目大意：
+	给定n个非负整数分布代表柱状图的柱的高度，宽度为1，找在柱状图中的最大矩形。
+解题思路：
+	最直观的解法是对每一个柱子，找到左边的最大矩形，但是会超时。然后错误的以为同最大连续子数组和思路，错误。查网上解法，用一个栈保存递增序列的下标，当遇到元素小于当前栈顶指示的元素的时，出栈直到当前栈顶元素指示的元素不大于当前元素。为处理方便，在原数组最后加入一个0元素（http://www.cnblogs.com/lichen782/p/leetcode_Largest_Rectangle_in_Histogram.html）
+*/
+class Solution {
+public:
+int largestRectangleArea(vector<int>& height)
+{
+	if(height.size() == 0)
+		return 0;
+	int area = 0;
+	stack<int>st;
+	height.push_back(0);
+	for(int i = 0; i < height.size(); i++)
+	{
+		if(st.empty() || height[i] > height[st.top()])
+		{
+			st.push(i);
+		}
+		else
+		{
+			int tmp = height[st.top()], x = st.top();
+			while(!st.empty() && height[st.top()] > height[i])
+			{
+				tmp = height[st.top()];
+				st.pop();
+				x = st.empty() ? i : i - st.top() - 1;
+				if(x * tmp > area)
+				{
+					area = x * tmp;
+				}
+			}
+			
+			st.push(i);
+		}
+	}  
+	return area;
+}
+};

@@ -1,0 +1,29 @@
+/*
+题目大意：
+	给定一棵完全二叉树，设置每个节点的next指针指向它右边的结点，如果右边没有节点则设置成NULL.开始时树中所有节点的next值都设成NULL。
+解题思路：
+	由于要求使用常数空间，所以不可以使用层次遍历的方法。由于是完全二叉树，所以左子树的next是该根的右子树，该根右子树的next是根的next的左子树。
+*/
+/**
+ * Definition for binary tree with next pointer.
+ * struct TreeLinkNode {
+ *  int val;
+ *  TreeLinkNode *left, *right, *next;
+ *  TreeLinkNode(int x) : val(x), left(NULL), right(NULL), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void connect(TreeLinkNode *root)
+    {
+        if(root == NULL || root->left == NULL)
+            return;
+        root->left->next = root->right;
+        if(root->next != NULL)
+            root->right->next = root->next->left;
+        else
+            root->right->next = NULL;
+        connect(root->left);
+        connect(root->right);
+    }
+};

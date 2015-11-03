@@ -1,0 +1,37 @@
+/*
+题目大意：
+	给定一个可能包含重复数据的数组nums，返回它所有的子集。
+解题思路：
+	思路同Subsets，只是包含重复元素，用一个visited数组来标记一个元素是否被用过，对于重复元素而言，只有前面的元素被取过，才能取后面与其相等的元素。
+*/
+class Solution {
+public:
+    void subset(vector<int>& nums, vector<vector<int> >& res, vector<int>& cur, int index, vector<int>& visited)
+	{
+		if(index >= nums.size())
+		{
+			res.push_back(cur);
+			return;
+		}
+		if((index - 1 >= 0 && nums[index - 1] == nums[index] && visited[index - 1] == 1) || index - 1 < 0 || nums[index - 1] != nums[index])
+		{
+			cur.push_back(nums[index]);
+			visited[index] = 1;
+			subset(nums, res, cur, index + 1, visited);
+			visited[index] = 0;
+			cur.pop_back();
+		}
+		subset(nums, res, cur, index + 1, visited);
+	}
+	vector<vector<int> > subsetsWithDup(vector<int>& nums)
+	{
+		vector<vector<int> >res;
+		if(nums.size() == 0)
+			return res;
+		vector<int>cur;
+		vector<int>visited(nums.size(), 0);
+		sort(nums.begin(), nums.end());
+		subset(nums, res, cur, 0, visited);
+		return res;     
+	}
+};

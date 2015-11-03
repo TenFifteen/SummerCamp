@@ -1,0 +1,38 @@
+/*
+题目大意：
+	给定一棵二叉树，将其原地拉成一条链表。
+解题思路：
+	按照先序遍历的顺序访问元素，依次添加到新链表的尾部，递归完成，还有一种方法是迭代完成，即将左子树的最后结点与当前根的右子树连接起来。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void flat(TreeNode* root, TreeNode* &pre)
+    {
+        if(root == NULL)
+            return;
+        pre->left = NULL;
+        pre->right = root;
+        pre = root;
+        TreeNode*t = root->right;
+        flat(root->left, pre);
+        flat(t, pre);
+    }
+    void flatten(TreeNode* root)
+    {
+        if(root == NULL)
+            return;
+        TreeNode *pre = new TreeNode(0);
+        TreeNode*tmp = pre;
+        flat(root, pre);
+        root = tmp->right;
+    }
+};

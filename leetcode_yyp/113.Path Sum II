@@ -1,0 +1,42 @@
+/*
+题目大意：
+	给定一棵二叉树，找到所有从根到叶的路径使得其路径上的值的和等于给定值。
+解题思路：
+	同Path Sum，只是将每次等于给定值时加入结果容器中。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+void check(TreeNode* root, int sum, vector<vector<int> >&res, vector<int> cur, int now)
+{
+	now += root->val;
+	cur.push_back(root->val);
+	if(root->left == NULL && root->right == NULL)
+	{
+		if(now == sum)
+			res.push_back(cur);
+		return;
+	}
+	if(root->left != NULL)
+		check(root->left, sum, res, cur, now);
+	if(root->right != NULL)
+		check(root->right, sum, res, cur, now);
+}
+vector<vector<int> > pathSum(TreeNode* root, int sum)
+{
+	vector<vector<int> >res;
+	vector<int>cur;
+	if(root == NULL)
+		return res;
+	check(root, sum, res, cur, 0);
+	return res;
+}
+};

@@ -1,0 +1,38 @@
+/*
+题目大意：
+	给定一个有序链表，删除其中的重复元素，使得每个元素只出现一次。
+解题思路：
+	遍历一遍，当前元素与标记元素相同则跳过（即删除），否则添加到链表标记位置的下一个位置。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head)
+    {
+        ListNode * cur = head;
+        ListNode * tmp = head;
+        if(head == NULL)
+            return head;
+        int pre = tmp->val;
+        tmp = tmp->next;
+        while(tmp != NULL)
+        {
+            if(tmp->val != pre)
+            {
+                cur->next = tmp;
+                cur = tmp;
+                pre = tmp->val;
+            }
+            tmp = tmp->next;
+        }
+        cur->next = NULL;
+        return head;
+    }
+};

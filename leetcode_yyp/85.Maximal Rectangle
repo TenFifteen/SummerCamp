@@ -1,0 +1,53 @@
+/*
+题目大意：
+	给定一个2d用0和1填充的二维矩阵，寻找这个区域内最大的由1组成的最大矩阵。
+解题思路：
+	(http://www.tuicool.com/articles/6vmyyi).Largest Rectangle in Histogram的扩展。将矩阵看做以每行为底的柱状图，然后求在该柱状图中的最大矩阵。为节省空间和时间，以每行为底的柱状图的高由上一行得到，若当前元素为0，则该列高为0，否则为上一行该列的列高加一。最后可得到最大的矩形。
+*/
+class Solution {
+public:
+int largest(vector<int>& height)
+{
+	int m = 0, tmp;
+	stack<int>st;
+	for(int i = 0; i < height.size(); i++)
+	{
+		if(st.empty() || height[i] >= height[st.top()])
+		{
+			st.push(i);
+		}
+		else
+		{
+			while(!st.empty() && height[st.top()] > height[i])
+			{
+			    int index = st.top();
+			    st.pop();
+			    tmp = st.empty() ? i * height[index] : (i - st.top() - 1) * height[index];
+				if(tmp > m)
+				{
+					m = tmp;
+				}	
+			}
+			st.push(i);
+ 		}
+	}
+	return m;
+}
+int maximalRectangle(vector<vector<char> >& matrix)
+{
+    if(matrix.size() == 0)
+        return 0;
+    int m = 0;
+    vector<int>height(matrix[0].size(), 0);
+    height.push_back(-1);
+    for(int i = 0; i < matrix.size(); i++)
+    {
+    	for(int j = 0; j < matrix[0].size(); j++)
+    	{
+    		height[j] = matrix[i][j] == '0' ? 0 : height[j] + 1;
+		}
+		m = max(largest(height), m);
+	}
+	return m;
+}
+};

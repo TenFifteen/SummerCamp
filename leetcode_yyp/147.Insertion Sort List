@@ -1,0 +1,37 @@
+/*
+题目大意：
+	用插入排序给一个链表排序。
+解题思路：
+	插入排序。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* insertionSortList(ListNode* head)
+    {
+        if(head == NULL || head->next == NULL)
+            return head;
+        ListNode * cur;
+        ListNode *newhead = new ListNode(0);
+        while(head != NULL)
+        {
+            cur = head->next;
+            ListNode *tmp = newhead;
+            while(tmp->next != NULL && head->val > tmp->next->val)
+            {
+                tmp = tmp->next;
+            }
+            head->next = tmp->next;
+            tmp->next = head;
+            head = cur;
+        }
+        return newhead->next;
+    }
+};

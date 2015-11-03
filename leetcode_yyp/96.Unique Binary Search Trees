@@ -1,0 +1,19 @@
+/*
+题目大意：
+	给定一个数n，返回可能的二叉搜索树的数目。
+解题思路：
+	卡特兰数。对1-n，有n种可能的根，对每一个可能，剩下的是fi * fn-i-1种可能，所以总的可能性是fn = f0fn-1+f1fn-2+……+fn-2f1+fn-1f0.是卡特兰数的定义，其递推公式是fn+1=2(2n+1)/n+2fn.
+*/
+class Solution {
+public:
+	int numTrees(int n)
+	{
+		long long  f1 = 1, f2;
+		for(int i = 1; i < n; i++)
+		{
+			f2 = 2 * (2 * i + 1) * f1/ (i + 2);
+			f1 = f2;
+		}  
+		return f1;
+	}
+};

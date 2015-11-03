@@ -1,0 +1,31 @@
+/*
+题目大意：
+	给定两个有序数组nums1和nums2，将两个数组合并成一个有序数组。其中数组1有足够的空间容纳两个数组的元素。开始时nums1和nums2中元素个数分别为m和n。
+解题思路：
+	从后向前（从大到小）将元素添加到nums1中，复杂度低且不会覆盖元素。
+*/
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n)
+    {
+        if(n == 0)
+            return;
+        int index = m + n - 1;
+        --m;
+        --n;
+        while(index >= 0)
+        {
+            if(m >= 0 && (n < 0 || nums1[m] > nums2[n]))
+            {
+                nums1[index] = nums1[m];
+                --m;
+            }
+            else
+            {
+                nums1[index] = nums2[n];
+                --n;
+            }
+            --index;
+        }
+    }
+};

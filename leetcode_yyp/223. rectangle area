@@ -1,0 +1,21 @@
+/*
+题目大意：
+	给定两个矩形的左下和右上角坐标，求两个矩形的覆盖面积。
+解题思路：
+	本以为很简单，结果想错了，分情况讨论了，结果情况很多，后来参考网上知道只需要简单求出覆盖面积即可，难过！没有把分出的情况进行总结。
+*/
+class Solution {
+public:
+    int computeArea(int A, int B, int C, int D, int E, int F, int G, int H) {
+        int r1 = (C - A) * (D - B);
+        int r2 = (G - E) * (H - F);
+        int res = r1 + r2;
+        int x1 = max(A, E);
+        int x2 = min(C, G);
+        int y1= max(B, F);
+        int y2 = min(D, H);
+        if(x1 > x2 || y1 > y2)
+            return res;
+        return res - (x1 - x2) * (y1 - y2);
+    }
+};

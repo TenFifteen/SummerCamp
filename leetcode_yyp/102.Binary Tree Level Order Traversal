@@ -1,0 +1,47 @@
+/*
+题目大意：
+	给定一棵二叉树，返回其层次遍历得到的数组。
+解题思路：
+	利用队列实现，将同一层的结点放入队列中，依次取出队列中的结点，读取其存储的元素，并将其左右结点压入新的队列中，一层读取完毕后，将当期队列更新为新的队列。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int> > levelOrder(TreeNode* root)
+    {
+        queue<TreeNode*>q;
+        TreeNode*r;
+        vector<vector<int> >res;
+        if(root == NULL)
+            return res;
+        q.push(root);
+        while(q.size() != 0)
+        {
+            vector<int>tmp;
+            queue<TreeNode*>p;
+            while(q.size() != 0)
+            {
+                r = q.front();
+                q.pop();
+                if(r != NULL)
+                {
+                    tmp.push_back(r->val);
+                    p.push(r->left);
+                    p.push(r->right);
+                }
+            }
+            if(tmp.size() > 0)
+                res.push_back(tmp);
+            q = p;
+        }
+        return res;
+    }
+};

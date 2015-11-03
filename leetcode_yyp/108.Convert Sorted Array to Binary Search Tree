@@ -1,0 +1,35 @@
+/*
+题目大意：
+	给定一个递增数组，将其转换为平衡二叉搜索树。
+解题思路：
+	为使生成的树是平衡树，每次取当前数组中间的数为根，使左右子树结点数最多差1，递归构造。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* bst(vector<int>& nums, int low, int high)
+    {
+        if(low > high)
+            return NULL;
+        int med = (low + high) / 2;
+        TreeNode *root = new TreeNode(nums[med]);
+        root->left = bst(nums, low, med - 1);
+        root->right = bst(nums, med + 1, high);
+        return root;
+    }
+    TreeNode* sortedArrayToBST(vector<int>& nums)
+    {
+        if(nums.size() == 0)
+            return NULL;
+        TreeNode *root = bst(nums, 0, nums.size() - 1);
+        return root;
+    }
+};

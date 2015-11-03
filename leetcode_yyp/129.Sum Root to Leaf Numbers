@@ -1,0 +1,36 @@
+题目大意：
+	给定一棵结点值只为0-9的二叉树，每一条从根到叶子的路径代表一个数，计算所有数的和。
+解题思路：
+	dfs求解。
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void rtol(TreeNode * root, int &sum, int now)
+    {
+        if(root->left == NULL && root->right == NULL)
+        {
+            sum += now * 10 + root->val;
+            return;
+        }
+        if(root->left != NULL)
+            rtol(root->left, sum, now * 10 + root->val);
+        if(root->right != NULL)
+            rtol(root->right, sum, now * 10 + root->val);
+    }
+    int sumNumbers(TreeNode* root)
+    {
+        int sum = 0;
+        if(root == NULL)
+            return sum;
+        rtol(root, sum, 0);
+        return sum;
+    }
+};

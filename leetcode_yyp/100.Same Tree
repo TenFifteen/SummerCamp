@@ -1,0 +1,30 @@
+/*
+题目大意：
+	给定两棵二叉树，写一个函数返回这两棵树是否相同。
+解题思路：
+	若两棵树当前结点都为空则相同，若一个为空则不同，若都不为空，则值相同且左右子树都相同则两棵树相同，否则不同。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isSameTree(TreeNode* p, TreeNode* q)
+    {
+        if(p == NULL)
+            return q == NULL ? true : false;
+        if(q == NULL)
+            return p == NULL ? true : false;
+        if(p->val == q->val)
+            return isSameTree(p->left, q->left) && isSameTree(p->right, q->right);
+        else
+            return false;
+        
+    }
+};

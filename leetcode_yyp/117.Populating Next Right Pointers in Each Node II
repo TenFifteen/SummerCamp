@@ -1,0 +1,94 @@
+/*
+题目大意：
+	给定一棵普通二叉树，设置每个节点的next指针指向它右边的结点，如果右边没有节点则设置成NULL.开始时树中所有节点的next值都设成NULL。
+解题思路：
+	开始用的树的层次遍历的思想，但是后来发现要求用常数空间，层次遍历不符合要求。思路同116，通过根结点连接其孩子结点，若当前结点的左右孩子均不空，左孩子的next是右孩子，右孩子以及只有一个孩子时其next是根结点的next的第一个不为空的孩子。
+注意的点：
+	要通过next指针找到下一个有子结点的同层结点，这样的话就必须首先保证树的右边部分的next指针有效。
+*/
+/**
+ * Definition for binary tree with next pointer.
+ * struct TreeLinkNode {
+ *  int val;
+ *  TreeLinkNode *left, *right, *next;
+ *  TreeLinkNode(int x) : val(x), left(NULL), right(NULL), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void connect(TreeLinkNode *root)
+    {
+        if(root == NULL)
+            return;
+        TreeLinkNode * child = root->left;
+        TreeLinkNode * node = root->next;
+        if(root->left != NULL && root->right != NULL)
+        {
+            root->left->next = root->right;
+        }
+        if(root->right != NULL)
+        {
+            child = root->right;
+        }
+        if(child != NULL)
+        {
+            while(node != NULL && node->left == NULL && node->right == NULL)
+            {
+                node = node->next;
+            }
+            if(node != NULL)
+            {
+                if(node->left != NULL)
+                {
+                    child->next = node->left;
+                }
+                else
+                {
+                    child->next = node->right;
+                }
+            }
+        }
+        if(root->right != NULL)
+            connect(root->right);
+        if(root->left != NULL)
+            connect(root->left);
+        
+    }
+};
+
+ /*
+class Solution {
+public:
+    void connect(TreeLinkNode *root)
+    {
+        queue<TreeLinkNode*>q;
+        TreeLinkNode*cur, *tmp;
+        if(root == NULL)
+            return;
+        q.push(root);
+        while(!q.empty())
+        {
+            cur = NULL;
+            queue<TreeLinkNode*>p;
+            while(!q.empty())
+            {
+                tmp = q.front();
+                q.pop();
+                if(tmp->left != NULL)
+                    p.push(tmp->left);
+                if(tmp->right != NULL)
+                    p.push(tmp->right);
+                if(cur == NULL)
+                    cur = tmp;
+                else
+                {
+                    cur->next = tmp;
+                    cur = tmp;   
+                }
+            }
+            cur->next = NULL;
+            q = p;
+        }
+    }
+};
+*/
