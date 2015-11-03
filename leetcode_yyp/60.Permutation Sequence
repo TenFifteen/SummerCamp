@@ -1,0 +1,32 @@
+/*
+题目大意：
+	1-n的数能生成n!个排列，按照字典序进行排序，给定n和k，返回第k大的排列。其中，1<=n<=9.
+解题思路：
+	用组合数学的方法。首先将k减一，将1-n映射到0-n-1。然后将k表示成1-n阶乘的线性组合，从高阶到低阶遍历，得到从首位到最后一位的数字，返回。
+*/
+class Solution {
+public:
+    string getPermutation(int n, int k)
+	{
+		string res;
+		char ch;
+		vector<int>num;
+		int fac = 1, t;
+		for(int i = 1; i <= n; i++)
+		{
+			num.push_back(i);
+			fac *= i;
+		}
+		k--;
+		for(int i = 0; i < n; i++)
+		{
+			fac /= (n - i);
+			t = k / fac;
+			ch = '0' + num[t];
+			res += ch;
+			num.erase(num.begin() + t);
+			k %= fac;
+		}
+		return res;
+	}
+};

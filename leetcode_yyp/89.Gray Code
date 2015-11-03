@@ -1,0 +1,25 @@
+/*
+题目大意：
+	给定一个非负整数n，返回右n位数字组成的格雷码。
+解题思路：
+	n位格雷码由n-1位格雷码n位为1，然后逆序相加得到。
+*/
+class Solution {
+public:
+    vector<int> grayCode(int n)
+{
+	vector<int>res;
+	res.push_back(0);
+	if(n == 0)
+		return res;
+	while(n--)
+	{
+		int tmp = res.size();
+		for(int i = res.size() - 1; i >= 0; i--)
+		{
+			res.push_back(res[i] + tmp);
+		}
+	}
+	return res;
+}
+};

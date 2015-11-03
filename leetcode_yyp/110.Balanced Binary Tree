@@ -1,0 +1,38 @@
+/*
+题目大意：
+	给定一棵二叉树，判断其是否是平衡二叉树。
+解题思路：
+	判断当前根结点的左子树和右子树的树高是否相差小于2，以及两棵子树是否是平衡二叉树，若不是，则返回false，否则置当前树高为左右子树的大值加一，并返回true。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool check(TreeNode * root, int &height)
+    {
+        if(root == NULL)
+        {
+            height = 0;
+            return true;
+        }
+        int h1, h2;
+        bool x1 = check(root->left, h1);
+        bool x2 = check(root->right, h2);
+        if(x1 == false || x2 == false || abs(h1 - h2) > 1)
+            return false;
+        height = max(h1, h2) + 1;
+        return true;
+    }
+    bool isBalanced(TreeNode* root)
+    {
+        int height;
+        return check(root, height);
+    }
+};

@@ -1,0 +1,22 @@
+/*
+题目大意：
+	给定一个整数的数组，除了一个元素只出现过一次，其他的都出现过三次。
+解题思路：
+	位运算。统计每一位出现1的次数除3取余得到的即是出现一次的数的1的位。用二进制模拟三进制。每当某位1的个数到达3时1清零。（http://www.cnblogs.com/daijinqiao/p/3352893.html）
+*/
+class Solution {
+public:
+    int singleNumber(vector<int>& nums)
+    {
+        int one = 0, two = 0, three = 0;
+        for(int i = 0; i < nums.size(); i++)
+        {
+            two |= one & nums[i];
+            one ^= nums[i];
+            three = ~(one & two);
+            one &= three;
+            two &= three;
+        }
+        return one;
+    }
+};

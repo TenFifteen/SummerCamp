@@ -1,0 +1,46 @@
+/*
+题目大意：给定一棵二叉树，返回其从底向上层次遍历得到的结点值。
+解题思路：
+	同层次遍历，只是放入结果的顺序逆序，即层次遍历将从上到下的结果依次插入结果容器的尾部，从下往上层次遍历则是依次插入容器头部。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int> > levelOrderBottom(TreeNode* root)
+    {
+        queue<TreeNode*>q;
+        TreeNode*r;
+        vector<vector<int> >res;
+        if(root == NULL)
+            return res;
+        q.push(root);
+        while(q.size() != 0)
+        {
+            vector<int>tmp;
+            queue<TreeNode*>p;
+            while(q.size() != 0)
+            {
+                r = q.front();
+                q.pop();
+                if(r != NULL)
+                {
+                    tmp.push_back(r->val);
+                    p.push(r->left);
+                    p.push(r->right);
+                }
+            }
+            if(tmp.size() > 0)
+                res.insert(res.begin(), tmp);
+            q = p;
+        }
+        return res;
+    }
+};

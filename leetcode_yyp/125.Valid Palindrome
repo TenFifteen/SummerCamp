@@ -1,0 +1,57 @@
+/*
+题目大意：
+	给定一个字符串，判断它是不是回文串，只考虑其中的字母和数字。
+解题思路：
+	设置两个指针，一个从前往后，一个从后往前，分别找到其当前标示的位置的下一个字母或数字，若不同，则不是回文串，若相同，继续比较，直到两个指针相遇。
+*/
+class Solution {
+public:
+    bool isPalindrome(string s)
+    {
+        if(s.size() == 0)
+            return true;
+        string tmp;
+        char ch1, ch2;
+        int low = 0, high = s.size() - 1;
+        while(low < high)
+        {
+            while(low < high)
+            {
+                if(s[low] >= 'A' && s[low] <= 'Z')
+                {
+                    ch1 = 'a' + (s[low] - 'A');
+                    break;
+                }
+                else if(s[low] >= 'a' && s[low] <= 'z' || s[low] >= '0' && s[low] <= '9')
+                {
+                    ch1 = s[low];
+                    break;
+                }
+                low++;
+            }
+            while(low < high)
+            {
+                if(s[high] >= 'A' && s[high] <= 'Z')
+                {
+                    ch2 = 'a' + (s[high] - 'A');
+                    break;
+                }
+                else if(s[high] >= 'a' && s[high] <= 'z' || s[high] >= '0' && s[high] <= '9')
+                {
+                    ch2 = s[high];
+                    break;
+                }
+                high--;
+            }
+            if(low == high)
+                return true;
+            if(low > high || ch1 != ch2)
+            {
+                return false;
+            }
+            low++;
+            high--;
+        }
+        return true;
+    }
+};

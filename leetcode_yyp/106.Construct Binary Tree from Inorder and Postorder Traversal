@@ -1,0 +1,47 @@
+/*
+题目大意：
+	给定一棵二叉树的后序和中序比那里的结果，构造这棵二叉树。
+解题思路：
+	后序遍历的最后一个结点是当前子树的根节点，在中序遍历中找到该结点，其左边的结点是当前根结点的左子树，右边的是右子树，递归构造。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* build(vector<int>& postorder, vector<int>& inorder, int l1, int h1, int l2, int h2)
+    {
+        if(l1 > h1)
+            return NULL;
+        TreeNode* root = new TreeNode(postorder[h1]);
+        if(l1 == h1)
+            return root;
+        int i = 0;
+        for(; i <= h2; i++)
+        {
+            if(inorder[i] == postorder[h1])
+                break;
+        }
+        if(i <= h2)
+        {
+            TreeNode*l = build(postorder, inorder, l1, l1 + i - l2 - 1, l2, i - 1);
+            TreeNode*r = build(postorder, inorder, l1 + i - l2, h1 - 1, i + 1, h2);
+            root->left = l;
+            root->right = r;
+        }
+        return root;
+    }
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder)
+    {
+        if(postorder.size() == 0)
+            return NULL;
+        TreeNode* root = build(postorder, inorder, 0, postorder.size()-1, 0, inorder.size()-1);
+        return root;   
+    }
+};

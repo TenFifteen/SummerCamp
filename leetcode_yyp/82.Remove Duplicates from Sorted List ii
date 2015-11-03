@@ -1,0 +1,56 @@
+/*
+题目大意：
+	给定一个有序链表，若一个元素重复，则删除链表中所有该元素，只留下原链表中出现过一次的元素。
+解题思路：
+	与Remove Duplicates from Sorted List不同的是，将元素添加到新链表的时间不同，在当前位置与前一位置元素不同时决定前一元素是否添加到新链表中，加入标记变量flag来标记元素是否出现过。
+注意的点：
+	别忘判断是否添加最后一个元素。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head)
+    {
+        ListNode * newhead = new ListNode(0);
+        ListNode * tail = newhead;
+        ListNode * tmp = head, *cur = head;
+        if(head == NULL)
+            return head;
+        int pre = tmp->val;
+        tmp = tmp->next;
+        int flag = -1;
+        while(tmp != NULL)
+        {
+            if(tmp->val == pre)
+            {
+                flag = 1;
+            }
+            else 
+            {
+                if(flag == -1)
+                {
+                    tail->next = cur;
+                    tail = cur;
+                }
+                pre = tmp->val;
+                cur = tmp;
+                flag = -1;
+            }
+            tmp = tmp->next;
+        }
+        if(flag == -1)
+        {
+            tail->next = cur;
+            tail = cur;
+        }
+        tail->next = NULL;
+        return newhead->next;
+    }
+};

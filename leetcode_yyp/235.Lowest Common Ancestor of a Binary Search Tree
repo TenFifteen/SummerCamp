@@ -1,0 +1,32 @@
+/*
+题目大意：
+	给定一个二叉搜索树，找两个给定结点的最近公共祖先。
+解题思路：
+	利用二叉搜索树的性质，两个结点的值与当前祖先结点的值进行比较，判断当前结点是最近共同祖先还是最近共同祖先位于、右孩子。
+/*
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) 
+    {
+        int x = min(p->val, q->val);
+        int y = max(p->val, q->val);
+        int t = root->val;
+        if(t <= y && t >= x)
+            return root;
+        else if(t >= x && t >= y)
+            return lowestCommonAncestor(root->left, p, q);
+        else
+            return lowestCommonAncestor(root->right,p, q);
+        
+    }
+};

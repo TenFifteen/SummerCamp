@@ -1,0 +1,31 @@
+/*
+题目大意：
+	有n个围成一个圆形的加油站，每个的储油量是gas[i],现有一个车油箱无限的车，从加油站i到加油站i+1需要耗费cost[i]的油。返回能绕所有加油站一圈的起始加油站的下标，若不存在，返回-1.
+解题思路：
+	类似于最大连续子数组和，首先用gas[i]-cost[i]得到从当前加油站出发到i+1加油站的余量0，并求和，若总余额为负，说明无法绕加油站一圈，返回-1,否则，每到一个加油站，加上当前余额，若小于0，则表示当前为负值且从当前标记的index出发无法绕行一圈，更新index为i+1，从index出发的余额amount更新为0.
+*/
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost)
+    {
+        int amount = 0, index = 0;
+        for(int i = 0; i < gas.size(); i++)
+        {
+            gas[i] = gas[i] - cost[i];
+            amount += gas[i];
+        }
+        if(amount < 0)
+            return -1;
+        amount = 0;
+        for(int i = 0; i < gas.size(); i++)
+        {
+            amount += gas[i];
+            if(amount < 0)
+            {
+                amount = 0;
+                index = i + 1;
+            }
+        }
+        return index;
+    }
+};

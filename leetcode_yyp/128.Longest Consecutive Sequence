@@ -1,0 +1,38 @@
+/*
+题目大意：
+	给定一个无序数组，找其中最长的连续数列，返回其长度。
+解题思路：
+	用空间换时间，要求时间复杂度为o(n),将元素存储在set中，然后对数组中每个元素，查找……nums[i]-1,nums[i]+1,nums[i]+2……是否在容器中，记录长度，返回最大值。
+*/
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums)
+    {
+        int tmp, res = 1, count = 0;
+        set<int>s;
+        for(int i = 0; i < nums.size(); i++)
+        {
+            s.insert(nums[i]);
+        }
+        for(int i = 0; i < nums.size(); i++)
+        {
+            count = 1;
+            tmp = nums[i] - 1;
+            while(s.find(tmp) != s.end())
+            {
+                count++;
+                s.erase(tmp);
+                tmp--;
+            }
+            tmp = nums[i] + 1;
+            while(s.find(tmp) != s.end())
+            {
+                count++;
+                s.erase(tmp);
+                tmp++;
+            }
+            res = max(res, count);
+        }
+        return res;
+    }
+};

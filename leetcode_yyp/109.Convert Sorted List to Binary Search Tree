@@ -1,0 +1,46 @@
+/*
+题目大意：
+	给定一个递增链表，将其转换为平衡二叉搜索树。
+解题思路：
+	为使生成的树是平衡树，每次取当前链表中间的数为根，使左右子树结点数最多差1，递归构造。而要取链表中间，采用的方法是双指针，一个每次走一步，一个每次走两步，最后慢指针停留的位置就是中间或者中间前一个位置。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* sortedListToBST(ListNode* head)
+    {
+        if(head == NULL)
+            return NULL;
+        TreeNode* root = new TreeNode(head->val);
+        if(head->next == NULL) 
+            return root;
+        ListNode * pre = head->next->next, * post = head;
+        while(pre!= NULL && pre->next != NULL)
+        {
+            post = post->next;
+            pre = pre->next->next;
+        }
+        root->val = post->next->val;
+        ListNode*tmp = post->next->next;
+        post->next = NULL;
+        root->left = sortedListToBST(head);
+        root->right = sortedListToBST(tmp);
+        return root;
+    }
+};

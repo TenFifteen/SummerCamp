@@ -1,0 +1,38 @@
+/*
+题目大意：
+	将一条消息的A-Z编码为对应的数字1-26，现给定一个编码后的字符串，返回反编码回原字符串的方案数。
+解题思路：
+	编译到当前字符时s[i]时，若s[i]是‘0’，则只能与前一个字符组合，否则，若s[i-1]-s[i-2]在10-26之间，则到s[i]处的方案数为f[i-2] + f[i-1]，否则等于f[i-1]，若当前字符为非法字符，则返回0.
+*/
+class Solution {
+public:
+int numDecodings(string s)
+{
+    if(s.size() == 0 || s[0] <= '0' || s[0] > '9')
+        return 0;
+	int tmp = 0, pre1 = 1, pre2 = 1, x1 = 0, x = 0;
+	for(int i = 1; i < s.length(); i++)
+	{
+		if(s[i] < '0' || s[i] > '9')
+			return 0;
+		x1 = 0;
+		tmp = s[i - 1] - '0';
+		tmp = tmp * 10 + (s[i] - '0');
+		if(tmp >= 10 && tmp <= 26)
+		{
+			x1 = pre1;
+		}
+		if(s[i] == '0')
+		{
+			x = x1;
+		}
+		else
+		{
+			x = x1 + pre2;
+		}
+		pre1 = pre2;
+		pre2 = x;
+	}
+	return pre2;
+}
+};

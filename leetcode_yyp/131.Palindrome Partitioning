@@ -1,0 +1,49 @@
+/*
+题目大意：
+	给定一个字符串s，划分s使得它的每个子串都是回文串，返回所有回文划分。
+解题思路：
+	dfs。分两种情况，一，当前下标x指示的字符与前面的串（now）组成一个子串，若当前子串为回文子串，则加入暂存划分容器中，清空now，递归调用，否则只有第二种情况；二，更新now为当前字符加上前面的串形成新的now串，下标后移。当下标走到最后，如果是一个回文划分，则now串一定为空，否则不是一个可行解，返回。
+*/
+class Solution {
+public:
+    bool ispal(string s)
+    {
+        if(s.size() == 1)
+            return true;
+        int l = 0, h = s.size() - 1;
+        while(l <= h)
+        {
+            if(s[l] != s[h])
+                return false;
+            l++;
+            h--;
+        }
+        return true;
+    }
+    void dfs(vector<vector<string> > & res, string s, int x, string tmp, vector<string>& now)
+    {
+        if(x == s.size())
+        {
+            if(tmp.size() == 0)
+                res.push_back(now);
+            return;
+        }
+        string t = tmp + s[x];
+        if(ispal(t))
+        {
+            now.push_back(t);
+            dfs(res, s, x + 1, "", now);
+            now.pop_back();
+        }
+        dfs(res, s, x + 1, t, now);
+    }
+    vector<vector<string> > partition(string s)
+    {
+        vector<vector<string> >res;
+        if(s.size() == 0)
+            return res;
+        vector<string>now;
+        dfs(res, s, 0, "", now);
+        return res;
+    }
+};

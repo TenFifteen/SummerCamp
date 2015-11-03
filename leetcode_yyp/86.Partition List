@@ -1,0 +1,42 @@
+/*
+题目大意：
+	给定一个链表和一个值x，划分链表使得小于x的结点放到大于等于x的结点的前面，且要保证小于和不小于的划分里结点顺序相对原来顺序不变。
+解题思路：
+	设置两个新链表头，将小于和不小于x的结点分别接到两个链表上，最后合并即可。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x)
+    {
+        if(head == NULL)
+            return head;
+        ListNode * h1 = new ListNode(0);
+        ListNode * h2 = new ListNode(0);
+        ListNode * cur1 = h1, *cur2 = h2, *cur = head;
+        while(cur != NULL)
+        {
+            if(cur->val >= x)
+            {
+                cur1->next = cur;
+                cur1 = cur;
+            }
+            else
+            {
+                cur2->next = cur;
+                cur2 = cur;
+            }
+            cur = cur->next;
+        }
+        cur2->next = h1->next;
+        cur1->next = NULL;
+        return h2->next;
+    }
+};
