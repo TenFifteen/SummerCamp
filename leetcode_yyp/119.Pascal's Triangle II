@@ -1,0 +1,28 @@
+/*
+题目大意：
+	给定一个数rowIndex，返回帕斯卡三角形的第rowIndex行。
+解题思路：
+	帕斯卡三角形的特点是，当前行的元素（除了第一行）首元素和最后一个元素是1，其他的是上一行相邻两元素的和。
+*/
+class Solution {
+public:
+    vector<int> getRow(int rowIndex)
+    {
+        vector<int>pre, cur;
+        if(rowIndex < 0)
+            return pre;
+        pre.push_back(1);
+        for(int i = 0; i < rowIndex; i++)
+        {
+            cur.push_back(1);
+            for(int j = 1; j < pre.size(); j++)
+            {
+                cur.push_back(pre[j - 1] + pre[j]);
+            }
+            cur.push_back(1);
+            pre = cur;
+            cur.clear();
+        }
+        return pre;   
+    }
+};

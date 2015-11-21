@@ -1,0 +1,38 @@
+/*
+题目大意：
+	给定一个字符串s，划分s使得它的每个子串都是回文串，返回最少切割数。
+解题思路：
+	用I中dfs的方法会超时，剪枝仍然超时，看网上用的dp。对字符串s从i到尾部的子串而言，若从i到中间j为回文串，则其最小切割数cut[i]为min(cut[i], cut[j + 1] + 1);而判断i-j的子串是否是回文串亦可以用dp。dp[i][j]的串是否是回文串,若s[i]==s[j]则i+1 == j或dp[i+1][j-1]==true时，dp[i][j]=true.返回dp[0]-1即是结果。
+*/
+class Solution {
+public:
+    int minCut(string s)
+    {
+        if(s.size() == 0)
+            return 0;
+        int len = s.size();
+        vector<vector<bool> >dp;
+        vector<bool>tmp(len, false);
+        for(int i = 0; i < len; i++)
+        {
+            dp.push_back(tmp);
+        }
+        int cut[len + 1] = {0};
+        for(int i = len; i >= 0; i--)
+        {
+            cut[i] = len - i;
+        }
+        for(int i = len - 1; i >= 0; i--)
+        {
+            for(int j = i; j < len; j++)
+            {
+                if(s[i] == s[j] && (i == j || i + 1 == j || dp[i + 1][j - 1] == true))
+                {
+                    dp[i][j] = true;
+                    cut[i] = min(cut[i], cut[j + 1] + 1);
+                }
+            }
+        }
+        return cut[0] - 1;
+    }
+};

@@ -1,0 +1,65 @@
+/*
+题目大意：
+	给定一棵二叉树，判断它是不是自己的镜像。
+解题思路：
+	对当前两个根，判断左根的左子树与右根的右子树是否相同。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+ //递归解法
+class Solution {
+public:
+    bool check(TreeNode*r1, TreeNode*r2)
+    {
+        if(r1 == NULL && r2 == NULL)
+            return true;
+        if(r1 == NULL || r2 == NULL)
+            return false;
+        if(r1->val != r2->val)
+            return false;
+        return check(r1->left, r2->right) && check(r1->right, r2->left);
+    }
+    bool isSymmetric(TreeNode* root)
+    {
+        if(root == NULL)
+            return true;
+        return check(root->left, root->right);
+    }
+};
+
+//非递归解法
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root)
+    {
+        if(root == NULL)
+            return true;
+        queue<TreeNode*>q;
+        TreeNode*t1,*t2;
+        q.push(root->left);
+        q.push(root->right);
+        while(q.size() != 0)
+        {
+            t1 = q.front();
+            q.pop();
+            t2 = q.front();
+            q.pop();
+            if(t1 == NULL && t2 == NULL)
+                continue;
+            if(t1 == NULL || t2 == NULL || t1->val != t2->val)
+                return false;
+            q.push(t1->left);
+            q.push(t2->right);
+            q.push(t1->right);
+            q.push(t2->left);
+        }
+        return true;
+    }
+};

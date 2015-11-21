@@ -1,0 +1,40 @@
+/*
+题目大意：
+	给定一个三角形，找从顶到底路径最小和的路径，每一步都只能往下一行临近元素移动。
+解题思路：
+	动态规划求解。计算到每行每个点的最小路径和，在最后一行中找出最小值就是整个三角形从上到下的最小路径和。
+注意的点：
+	递归求解会超时，因为会有很多重复计算。注意相邻的元素是上一行下标相同下标（如果合法）和下标减一（如果合法）的元素。
+*/
+class Solution {
+public:
+    int minimumTotal(vector<vector<int> >& triangle)
+    {
+        if(triangle.size() == 0)
+            return 0;
+        int minsum , x, y, z;
+        vector<int>cur(triangle[triangle.size() - 1].size());
+        vector<int>tmp = cur;
+        cur[0] = triangle[0][0];
+        for(int i = 1; i < triangle.size(); i++)
+        {
+            for(int j = 0; j < triangle[i].size(); j++)
+            {
+                x = j < triangle[i - 1].size() ? cur[j] : INT_MAX;
+                y = j - 1 >= 0 ? cur[j - 1] : x; 
+                tmp[j] = min(x, y) + triangle[i][j];
+            }
+            cur = tmp;
+        }
+        minsum = cur[0];
+        for(int i = 0; i < triangle[triangle.size() - 1].size(); i++)
+        {
+            cout << cur[i] << endl;
+            if(cur[i] < minsum)
+            {
+                minsum = cur[i];
+            }
+        }
+        return minsum;
+    }
+};

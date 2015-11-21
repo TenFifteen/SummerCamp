@@ -1,0 +1,58 @@
+/*
+题目大意：
+	给定一个二叉树，求两个给定结点的最邻近共同祖先。
+解题思路：
+	两种情况，要么两个结点分别位于祖先结点的左右子树，要么一个结点是另一个结点的祖先，所以，当前根节点、左子树、右子树中有两个里有目标结点时，当前根结点即是两个给定结点的最近共同祖先；否则，若当前根结点及其左右子树只有一个有目标结点时，返回当前根结点;若都没有，返回NULL.
+注意的点：
+	开始比较用的是结点的值，但是树中可能有值相同的点，应该比较的是地址。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    TreeNode * res = NULL;
+public:
+    
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q)
+    {
+        if(root == NULL || p == NULL || q == NULL)
+            return NULL;
+        if(res != NULL)
+            return res;
+        TreeNode * r1 = NULL, * r2 = NULL, * r3 = NULL;
+        if(root == p || root == q)
+        {
+            r3 = root;
+        }
+        if(root->left != NULL)
+            r1 = lowestCommonAncestor(root->left, p, q);
+        if(root->right != NULL)
+            r2 = lowestCommonAncestor(root->right, p, q);
+        if(res != NULL)
+            return res;
+        if((r2 != NULL && r3 != NULL) || (r1 != NULL && r3 != NULL) || (r1 != NULL && r2 != NULL))
+        {
+            res = root;
+        }
+        if(r1 != NULL || r2 != NULL || r3 != NULL)
+            return root;
+        else
+            return NULL;
+    }
+};
+/*
+//简单代码
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+    if (!root || root == p || root == q) return root;
+    TreeNode* left = lowestCommonAncestor(root->left, p, q);
+    TreeNode* right = lowestCommonAncestor(root->right, p, q);
+    return !left ? right : !right ? left : root;
+}
+*/

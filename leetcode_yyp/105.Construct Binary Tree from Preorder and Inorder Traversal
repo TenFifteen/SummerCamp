@@ -1,0 +1,47 @@
+/*
+题目大意：
+	给定一棵二叉树的先序和中序比那里的结果，构造这棵二叉树。
+解题思路：
+	先序遍历的第一个结点是当前子树的根节点，在中序遍历序列中，该结点左边的点是该根节点的左子树，右边的点是该根节点的右子树，递归构造。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* build(vector<int>& preorder, vector<int>& inorder, int l1, int h1, int l2, int h2)
+    {
+        if(l1 > h1)
+            return NULL;
+        TreeNode* root = new TreeNode(preorder[l1]);
+        if(l1 == h1)
+            return root;
+        int i = 0;
+        for(; i <= h2; i++)
+        {
+            if(inorder[i] == preorder[l1])
+                break;
+        }
+        if(i <= h2)
+        {
+            TreeNode*l = build(preorder, inorder, l1 + 1, l1 + i - l2, l2, i - 1);
+            TreeNode*r = build(preorder, inorder, l1 + i + 1 - l2, h1, i + 1, h2);
+            root->left = l;
+            root->right = r;
+        }
+        return root;
+    }
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder)
+    {
+        if(preorder.size() == 0)
+            return NULL;
+        TreeNode* root = build(preorder, inorder, 0, preorder.size()-1, 0, inorder.size()-1);
+        return root;
+    }
+};

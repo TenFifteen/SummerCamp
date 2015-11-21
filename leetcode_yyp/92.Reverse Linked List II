@@ -1,0 +1,43 @@
+/*
+题目大意：
+	反正一个链表中从m到n的结点。要求扫描一遍，原地进行。
+解题思路：
+	首先找到需要反转的开始位置，然后后面的节点依次插入新插入节点的前面，直到需要反转的结点结束，将后面的结点加到新链表的后面即可。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseBetween(ListNode* head, int m, int n)
+    {
+        if(m == n)
+            return head;
+        ListNode * newhead = new ListNode(0);
+        ListNode * tail = newhead, *cur = head, *tmp, *t, *end = NULL;
+        for(int i = 1; i < m; i++)
+        {
+            tail->next = cur;
+            tail = tail->next;
+            cur = cur->next;
+        }
+        tail->next = NULL;
+        for(int i = m; i <= n; i++)
+        {
+            t = cur->next;
+            tmp = tail->next;
+            tail->next = cur;
+            cur->next = tmp;
+            cur = t;
+            if(end == NULL)
+                end = tail->next;
+        }
+        end->next = cur;
+        return newhead->next;
+    }
+};

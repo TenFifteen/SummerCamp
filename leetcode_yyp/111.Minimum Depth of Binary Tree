@@ -1,0 +1,31 @@
+/*
+题目大意：
+	给定一棵二叉树，返回其最小深度。
+解题思路：
+	若当前结点为叶节点返回1，若当前结点左（右）子树为空，返回右（左）子树的最小深度，否则返回左右子树深度的较小值加一。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int minDepth(TreeNode* root)
+    {
+        if(root == NULL)
+            return 0;
+        if(root->left == NULL && root->right == NULL)
+            return 1;
+        int x1 = INT_MAX, x2 = INT_MAX;
+        if(root->left != NULL)
+            x1 = minDepth(root->left);
+        if(root->right != NULL)
+            x2 = minDepth(root->right);
+        return min(x1, x2) + 1;
+    }
+};

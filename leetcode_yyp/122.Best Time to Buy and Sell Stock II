@@ -1,0 +1,30 @@
+/*
+题目大意：
+	给定一个数组，第i个元素代表的是第i天的股票价格。可以多次买入卖出，但是每次手上只能有一支股票，即在卖掉现有股票前，不允许买入新的股票。
+解题思路：
+	xmin、xmax分别保存i天前的最小股票价格和最大股票价格，若第i天股票价格高于xmax，则更新xmax，即可以xmin买入的股票可以卖出更高的价钱；若小于xmax，则在价格是xmax时卖出股票，在第i天买入新的股票。
+*/
+class Solution {
+public:
+    int maxProfit(vector<int>& prices)
+    {
+        if(prices.size() < 2)
+            return 0;
+        int xmin = prices[0], xmax = prices[0], result = 0;
+        for(int i = 1; i < prices.size(); i++)
+        {
+            if(prices[i] > xmax)
+            {
+                xmax = prices[i];
+            }
+            else
+            {
+                result += xmax - xmin;
+                xmin = prices[i];
+                xmax = prices[i];
+            }
+        }
+        result += xmax - xmin;
+        return result;
+    }
+};

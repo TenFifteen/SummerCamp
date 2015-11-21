@@ -1,0 +1,46 @@
+/*
+题目大意：
+	给定一个数组，第i个元素代表的是第i天的股票价格。最多可以买卖两次，但是每次手上只能有一支股票，即在卖掉现有股票前，不允许买入新的股票。
+解题思路：
+	因为最多可以进行两次交易，对于第i天，最大利润是其左边天数的最大利润和右边天数的最大利润，然后求出n天中的最大利润即可。即，从左向右扫一遍，获得当前i天左边交易的最大利润，再从右向左扫一遍，获得当前i天右边的最大交易利润，求利润最大值即可。
+*/
+class Solution {
+public:
+    int maxProfit(vector<int>& prices)
+    {
+        if(prices.size() < 2)
+            return 0;
+        int result = 0, min = prices[0],count = 0, max = prices[prices.size() - 1];;
+        vector<int>left(prices.size());
+        for(int i = 1; i < prices.size(); i++)
+        {
+            if(prices[i] < min)
+            {
+                min = prices[i];
+            }
+            if(result < prices[i] - min)
+            {
+                result = prices[i] - min;
+            }
+            left[i] = result;
+        }
+        result = 0;
+        count = left[prices.size() - 1];
+        for(int i = prices.size() - 2; i >= 0; i--)
+        {
+            if(prices[i] > max)
+            {
+                max = prices[i];
+            }
+            if(result < max - prices[i])
+            {
+                result = max - prices[i];
+            }
+            if(i - 1 >= 0 && left[i - 1] + result > count)
+            {
+                count = left[i - 1] + result;
+            }
+        }
+        return count;
+    }
+};

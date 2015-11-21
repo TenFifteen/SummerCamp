@@ -1,0 +1,27 @@
+/*
+题目大意：
+	给定一个数组，第i个元素代表的是第i天的股票价格，如果只允许买一次卖一次股票，给定最大利益的方法。
+解题思路：
+	求最大利益即找n天中最大利益差，对第i天卖，最大利益是前i天利益最小值时买入。
+*/
+class Solution {
+public:
+    int maxProfit(vector<int>& prices)
+    {
+        if(prices.size() < 2)
+            return 0;
+        int minpre = prices[0], result = 0;
+        for(int i = 1; i < prices.size(); i++)
+        {
+            if(prices[i] - minpre > result)
+            {
+                result = prices[i] - minpre;
+            }
+            if(prices[i] < minpre)
+            {
+                minpre = prices[i];
+            }
+        }
+        return result;
+    }
+};

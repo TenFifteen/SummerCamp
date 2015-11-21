@@ -1,0 +1,42 @@
+/*
+题目大意：
+	有n个孩子站成一排，每个孩子都有一个等级。现在要给他们分糖，要求：每个孩子至少一块糖，比邻居等级高的孩子糖果数也要比邻居多。要求返回需要的最少的糖果数。
+解题思路：
+	孩子i的糖果数是由左右孩子的等级和他们的糖果数决定的，先从左向右扫一遍，求出能根据左邻居得到的糖果数，然后从右向左扫一遍，求出能根据右邻居得到的糖果数。通过后看网上的解法，都是扫两遍，只是判断条件可以更简单，即从左到右扫时，若当前孩子比左邻居等级高则等于其糖果数加一，否则为1（或者都初始化为1,等级高加一，不高继续），从右向左时维护根据右邻居得到的糖果。（http://blog.csdn.net/linhuanmars/article/details/21424783）
+*/
+class Solution {
+public:
+    int candy(vector<int>& ratings)
+    {
+        int l = ratings.size();
+        if(l < 2)
+            return l;
+        vector<int>num(l, -1);
+        int res = 0;
+        for(int i = 0; i < l; i++)
+        {
+            if((i == 0 && ratings[i] <= ratings[i + 1]) || (i == l - 1 && ratings[i] <= ratings[i - 1]) || (i > 0 && i < l && ratings[i] <= ratings[i - 1] && ratings[i] <= ratings[i + 1]))
+            {
+                num[i] = 1;
+            }
+            else if(i > 0 && num[i - 1] != -1 && ratings[i] > ratings[i - 1])
+            {
+                num[i] = num[i - 1] + 1;
+            }
+        }
+        for(int i = l - 2; i >= 0; i--)
+        {
+            if((i == 0 && ratings[i] > ratings[i + 1]) || (ratings[i] > ratings[i + 1] && ratings[i] <= ratings[i - 1]))
+            {
+                num[i] = num[i + 1] + 1;
+            }
+            else if(ratings[i] > ratings[i + 1] && ratings[i] > ratings[i - 1])
+            {
+                num[i] = max(num[i - 1], num[i + 1]) + 1;
+            }
+        }
+        for(int i = 0; i < l; i++)
+            res += num[i];
+        return res;
+    }
+};

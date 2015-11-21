@@ -1,0 +1,32 @@
+/*
+题目大意：
+	给定一棵二叉树，判断它是否是一棵合法的二叉搜索树。
+解题思路：
+	限制每个节点的最大值和最小值，若超出范围则不合法，否则合法。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool ifvalid(TreeNode* root, long min, long max)
+    {
+        if(root == NULL)
+            return true;
+        if(root->val > min && root->val < max && ifvalid(root->left, min, root->val) && ifvalid(root->right, root->val, max))
+            return true;
+        return false;
+    }
+    bool isValidBST(TreeNode* root)
+    {
+        if(root == NULL)
+            return true;
+        return ifvalid(root, LONG_MIN, LONG_MAX);
+    }
+};
