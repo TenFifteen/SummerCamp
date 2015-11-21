@@ -8,14 +8,15 @@ using namespace std;
 
 /**
  * Time Exceeded
+ * because I did not stop when the answer has been found.
  */
 bool ans = false;
 void dfs(bool **flag, char **board, int boardRowSize, int boardColSize, int i, int j, char *word, int now) {
     if (word[now] == '\0') {
         ans = true;
         return;
-
     }
+    if (ans) return;
 
     if (i+1 < boardRowSize && !flag[i+1][j] && board[i+1][j] == word[now]) {
         flag[i+1][j] = true;
@@ -47,6 +48,7 @@ void dfs(bool **flag, char **board, int boardRowSize, int boardColSize, int i, i
 }
 
 bool exist(char** board, int boardRowSize, int boardColSize, char* word) {
+    ans = false;
     bool **flag = (bool **)malloc(sizeof(bool *) * boardRowSize) ;
     int i, j;
 
