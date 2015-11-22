@@ -6,6 +6,12 @@ LANG: C++11
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
+#include <climits>
+#include <set>
+#include <unordered_set>
+#include <map>
+#include <unordered_map>
 
 using namespace std;
 
