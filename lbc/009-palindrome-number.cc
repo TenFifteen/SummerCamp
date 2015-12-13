@@ -11,6 +11,25 @@
 
 遇到的问题：
 这个题目竟然一次通过，感觉还可以。
+
+再次阅读：
+这道题目属于很简单的题目，不过要求不能使用额外的空间。
+之前的做法也是可以的的了。
+但是现在在DISCUSS中竟然找到一个更好地方法。是通过翻转整数的方式来做的。
+但是只是翻转一半就可以了。想法非常的精妙：
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        if(x<0|| (x!=0 &&x%10==0)) return false;
+        int sum=0;
+        while(x>sum)
+        {
+            sum = sum*10+x%10;
+            x = x/10;
+        }
+        return (x==sum)||(x==sum/10);
+    }
+};
 */
 class Solution {
 public:
