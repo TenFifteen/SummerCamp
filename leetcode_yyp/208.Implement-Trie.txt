@@ -1,0 +1,72 @@
+题目大意：
+	实现前缀树（字典树）的插入，搜索，始于方法。
+解题思路：
+	每个节点的值包括是否是单词标识和包括的26个孩子节点。也可用map<char,TrieNode*>node的形式。
+class TrieNode {
+public:
+    bool isleef;
+    TrieNode* children[26];
+    // Initialize your data structure here.
+    TrieNode()
+    {
+        for(int i = 0; i < 26; i++)
+        {
+            children[i] = NULL;
+        }
+        isleef = false;
+    }
+};
+
+class Trie {
+public:
+    Trie() {
+        root = new TrieNode();
+    }
+    // Inserts a word into the trie.
+    void insert(string word) {
+        TrieNode *tmp = root;
+        for(int i = 0; i < word.length() && tmp != NULL; i++)
+        {
+            if(tmp->children[word[i] - 'a'] == NULL)
+            {
+                TrieNode * node = new TrieNode();
+                tmp->children[word[i] -  'a'] = node;
+            }
+            tmp = tmp->children[word[i] - 'a'];
+        }
+        tmp->isleef = true;
+    }
+
+    // Returns if the word is in the trie.
+    bool search(string word) {
+        TrieNode* tmp = root;
+        for(int i  = 0; i < word.length() && tmp != NULL; i++)
+        {
+            tmp = tmp->children[word[i] - 'a'];
+        }
+        if(tmp == NULL)
+            return false;
+        return tmp->isleef;
+    }
+
+    // Returns if there is any word in the trie
+    // that starts with the given prefix.
+    bool startsWith(string prefix) {
+        TrieNode* tmp = root;
+        for(int i  = 0; i < prefix.length() && tmp != NULL; i++)
+        {
+            tmp = tmp->children[prefix[i] - 'a'];
+        }
+        if(tmp == NULL)
+            return false;
+        return true;
+    }
+
+private:
+    TrieNode* root;
+};
+
+// Your Trie object will be instantiated and called as such:
+// Trie trie;
+// trie.insert("somestring");
+// trie.search("key");

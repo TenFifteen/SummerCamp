@@ -1,0 +1,44 @@
+题目大意：
+	给定一个包含n个正数的数组和一个正数s，寻找数组中最短子数组使得其和大于等于s。
+解题思路：
+	卡尺，一前一后两个指针，先移动前指针使当前子数组和大于等于s，然后往前缩后指针至和小于s，更新最小长度l。
+	写的代码思路虽对，但是代码有些冗长，看了答案，简短易懂。另外，Nlogn用的算法是求和，二分查找。
+class Solution {
+public:
+    int minSubArrayLen(int s, vector<int>& nums) {
+        int sum = 0, i = 0, j, l = nums.size();
+        while(j < nums.size() && sum < s)
+        {
+            sum += nums[j];
+            ++j;
+        }
+        j--;
+        if(sum < s)
+            return 0;
+        l = min(l, j - i + 1);
+        if(l == 1)
+            return 1;
+        while(j < nums.size() && i < nums.size())
+        {
+            while(i <= j && sum >= s)
+            {
+                sum -= nums[i];
+                i++;
+                if(sum >= s)
+                {
+                    l = min(l, j - i + 1);
+                    if(l == 1)
+                        return 1;
+                }
+            }
+            j++;
+            if(j < nums.size())
+            {
+                for(;j < nums.size() && sum < s; j++)
+                    sum += nums[j];
+                j--;
+            }
+        }
+        return l;
+    }
+};

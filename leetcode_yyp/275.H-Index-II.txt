@@ -1,0 +1,25 @@
+题目大意：
+	同H-Index,但给定的数组有序。
+解题思路：
+	二分搜索。
+问题：
+	写二分搜索时经常为细节问题没想明白而卡住很久！以后多加注意，想明白了再写。
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        int low = 0, high = citations.size() - 1, med, count = 0, res = 0;
+        if(citations.size() < 1 || citations[citations.size() - 1] == 0)
+            return 0;
+        while(low <= high)
+        {
+            med = (low + high) / 2;
+            count = citations.size() - med;
+            res = max(res, min(count, citations[med]));
+            if(citations[med] < count)
+                low = med + 1;
+            else
+                 high = med - 1;
+        }
+        return res;
+    }
+};

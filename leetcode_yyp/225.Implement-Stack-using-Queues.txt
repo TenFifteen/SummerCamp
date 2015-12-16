@@ -1,0 +1,42 @@
+题目大意；
+	用队列实现栈。
+解题思路：
+	入队和判空操作简单。出栈和取栈顶元素需要先将除队尾元素都移动到队尾的后面，再将该队尾弹出或者取出即可。也可在入队时就将队列顺序调整为先入后出的顺序。
+class Stack {
+private:
+    queue<int>q;
+public:
+    void ops()
+    {
+        int n = q1.size();
+        for(int i = 0; i < n - 1; i++)
+        {
+            q.push(q1.front());
+            q.pop();
+        }
+    }
+    // Push element x onto stack.
+    void push(int x) {
+        q.push(x);
+    }
+
+    // Removes the element on top of the stack.
+    void pop() {
+        ops();
+        q.pop();
+    }
+
+    // Get the top element.
+    int top() {
+        ops();
+        int x = q.front();
+        q.push(x);
+        q.pop();
+        return x;
+    }
+
+    // Return whether the stack is empty.
+    bool empty() {
+        return q.empty();
+    }
+};

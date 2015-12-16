@@ -1,0 +1,36 @@
+题目大意：
+	判断一个字符串是否遵循一个样式。
+解题思路：
+	设置两个map对应即可。
+class Solution {
+public:
+    bool wordPattern(string pattern, string str) {
+        unordered_map<char, string>dic1;
+        unordered_map<string, char>dic2;
+        stringstream stream(str);
+        string tmp;
+        for(int i = 0; i < pattern.size(); i++)
+        {
+            stream >> tmp;
+            if(tmp.size() == 0)
+                return false;
+            if(dic1.find(pattern[i]) != dic1.end())
+            {
+                if(dic1[pattern[i]] != tmp)
+                    return false;
+            }
+            else
+                dic1[pattern[i]] = tmp;
+            if(dic2.find(tmp) != dic2.end())
+            {
+                if(dic2[tmp] != pattern[i])
+                    return false;
+            }
+            else
+                dic2[tmp] = pattern[i];
+        }
+        if(stream >> tmp)
+            return false;
+        return true;
+    }
+};

@@ -1,0 +1,10 @@
+题目大意：
+	两个人玩拿石子游戏，一次可以拿1-3块，最后拿走石块的人算赢。
+解题思路：
+	石子数目是4的倍数的时候后拿的人肯定赢。
+class Solution {
+public:
+    bool canWinNim(int n) {
+        return n % 4 != 0;
+    }
+};

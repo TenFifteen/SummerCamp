@@ -1,0 +1,24 @@
+题目大意：
+	给定一个非负数组，把他们按照顺序排起来，获得最大数。	
+解题思路：
+	快排，对数据进行排序，不过排序中应用的比较算法是若ab>ba，则a>b.
+class Solution {
+public:
+    static bool compare(int x, int y)
+    {
+        string a, b;
+        a = to_string(x);
+        b = to_string(y);
+        return a+ b > b + a;
+    }
+
+    string largestNumber(vector<int>& nums) {
+        sort(nums.begin(), nums.end(), compare);
+        string res;
+        if(nums[0] == 0)
+            return "0";
+        for(int i = 0; i < nums.size(); i++)
+            res = res + to_string(nums[i]);
+        return res;
+    }
+};

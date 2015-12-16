@@ -1,0 +1,13 @@
+题目大意：
+	给定一个数组，其中只有一个数只出现了一次，其他的数都出现了两次。返回这个数。
+解题思路：
+	异或所有数即可。
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int res = 0;
+        for(int i: nums)
+            res ^= i;
+        return res;
+    }
+};

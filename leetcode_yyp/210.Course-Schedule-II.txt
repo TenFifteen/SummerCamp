@@ -1,0 +1,39 @@
+题目大意：
+	同I，只是需要将一个正确的顺序输出，若没有，输出空数组。
+解题思路：
+	同I.
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<pair<int, int> >& prerequisites) {
+        vector<int>res, tmp;
+        vector<int>in(numCourses, 0);
+        vector<unordered_set<int> >m(numCourses);
+        int a, b, i;
+        for(i = 0; i < prerequisites.size(); i++)
+        {
+            a = prerequisites[i].first;
+            b = prerequisites[i].second;
+            if(m[b].find(a) == m[b].end())
+            {
+                m[b].insert(a);
+                in[a]++;
+            }
+        }
+        for(int k = 0; k < numCourses; k++)
+        {
+            for(i = 0; i < numCourses && in[i] != 0; i++);
+            cout << i << endl;
+            if(i == numCourses)
+            {
+                return vector<int>();
+            }
+            for(auto j = m[i].begin(); j != m[i].end(); j++)
+            {
+                in[*j]--;
+            }
+            res.push_back(i);
+            in[i] = -1;
+        }
+        return res;
+    }
+};

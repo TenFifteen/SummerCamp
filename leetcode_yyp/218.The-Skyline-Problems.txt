@@ -1,0 +1,34 @@
+题目大意：
+	给定一些用矩形代表的建筑，求出这些建筑的外形轮廓
+解题思路：
+	想到分左右线且对所有线排序，没想到高怎么处理。参考网上解法http://yuanhsh.iteye.com/blog/2217735。有用到multiset和priority两种。
+class Solution {
+public:
+    vector<pair<int, int> > getSkyline(vector<vector<int> >& buildings) {
+        vector<pair<int, int> >res, med;
+        multiset<int>h;
+        for(int i = 0; i < buildings.size(); i++)
+        {
+            med.push_back(pair<int, int>(buildings[i][0], -buildings[i][2]));
+            med.push_back(pair<int, int>(buildings[i][1], buildings[i][2]));
+        }
+        sort(med.begin(), med.end());
+        h.insert(0);
+        int prev = 0, cur;
+        for(int i = 0; i < med.size(); i++)
+        {
+            if(med[i].second < 0)
+                h.insert(-med[i].second);
+            else
+                h.erase(h.find(med[i].second));
+                
+            cur = *h.rbegin();
+            if(cur != prev)
+            {
+                res.push_back(pair<int, int>(med[i].first, cur));
+                prev = cur;
+            }
+        }
+        return res;
+    }
+};

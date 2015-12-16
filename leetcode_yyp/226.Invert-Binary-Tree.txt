@@ -1,0 +1,25 @@
+题目大意：
+	倒转一颗二叉树。
+解题思路：
+	深搜。到达一个节点，先将该节点的左子树和右子树分别逆序，然后将左右子树逆序即可。
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        if(root == NULL)
+            return root;
+        TreeNode *tmp;
+        tmp = invertTree(root->left);
+        root->left = invertTree(root->right);
+        root->right = tmp;
+        return root;
+    }
+};

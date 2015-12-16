@@ -1,0 +1,25 @@
+题目大意：
+	给定一个有序无重复元素数组，返回它们代表的区间。
+解题思路：
+	找每一段连续数组标记前后，然后输出。
+class Solution {
+public:
+    vector<string> summaryRanges(vector<int>& nums) {
+        vector<string>res;
+        if(nums.size() == 0)
+            return res;
+        int begin, end;
+        for(int i = 0; i < nums.size();)
+        {
+            begin = i;
+            while(i + 1 < nums.size() && nums[i] == nums[i + 1] - 1)
+                i++;
+            if(begin == i)
+                res.push_back(to_string(nums[begin]));
+            else
+                res.push_back(to_string(nums[begin]) + "->" + to_string(nums[i]));
+            i++;
+        }
+        return res;
+    }
+};

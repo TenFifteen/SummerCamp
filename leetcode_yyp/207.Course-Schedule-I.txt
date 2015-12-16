@@ -1,0 +1,78 @@
+题目大意：
+	共有n个课程，编号0-n-1,一些课程有前驱课程的话，必须前驱课程上完才能上这个课程。给定k对前驱对，判断这些课程是否能按照合法顺序上完。
+解题思路：
+	拓扑排序。但是写的较为啰嗦，其实只需要一个入度数组和一个前驱vector<set<>int>集合即可。
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<pair<int, int> >& prerequisites) {
+        unordered_map<int, set<int> >dic, f;
+        queue<int>q;
+        set<int>tmp;
+        pair<int, int>x;
+        int n = prerequisites.size(), a;
+        for(int i = 0; i < n; i++)
+        {
+            tmp.clear();
+            x = prerequisites[i];
+            
+            if(dic.find(x.second) == dic.end())
+                dic[x.second] = tmp;
+            if(dic.find(x.first) != dic.end())
+            {
+                tmp = dic[x.first];
+                tmp.insert(x.second);
+                dic[x.first] = tmp;
+            }
+            else
+            {
+                tmp.insert(x.second);
+                dic[x.first] = tmp;
+            }
+            
+            tmp.clear();
+            if(f.find(x.second) == f.end())
+            {
+                tmp.insert(x.first);
+                f[x.second] = tmp;
+            }
+            else
+            {
+                tmp = f[x.second];
+                tmp.insert(x.first);
+                f[x.second] = tmp;
+            }
+        }
+        for(auto i = dic.begin(); i != dic.end(); i++)
+        {
+            a = i->first;
+            tmp = i->second;
+            if(tmp.size() == 0)
+            {
+                q.push(a);
+            }
+        }
+        while(!q.empty())
+        {
+            a = q.front();
+            q.pop();
+            if(f.find(a) == f.end())
+                continue;
+            for(auto i = f[a].begin(); i != f[a].end(); i++)
+            {
+                tmp = dic[*i];
+                tmp.erase(a);
+                dic[*i] = tmp;
+                if(tmp.size() == 0)
+                    q.push(*i);
+            }
+        }
+        for(auto i = dic.begin(); i != dic.end(); i++)
+        {
+            a = i->first;
+            tmp = i->second;
+            if(tmp.size() != 0)
+                return false;
+        }
+        return true;
+    }
+};

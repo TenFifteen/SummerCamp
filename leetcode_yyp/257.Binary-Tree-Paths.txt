@@ -1,0 +1,42 @@
+题目大意：
+	给定一棵二叉树，返回它所有从跟到叶子的路径。
+解题思路；
+	递归。
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void path(TreeNode* root, vector<string>& res, string cur)
+    {
+        cur = cur + "->" + to_string(root->val);
+        if(root->left == NULL && root->right == NULL)
+        {
+            res.push_back(cur);
+            return;
+        }
+        if(root->left != NULL)
+            path(root->left, res, cur);
+        if(root->right != NULL)
+            path(root->right, res, cur);
+    }
+    vector<string> binaryTreePaths(TreeNode* root) {
+        vector<string>res;
+        if(root == NULL)
+            return res;
+        string cur = to_string(root->val);
+        if(root->left == NULL && root->right == NULL)
+            res.push_back(cur);
+        if(root->left != NULL)
+            path(root->left, res, cur);
+        if(root->right != NULL)
+            path(root->right, res, cur);
+        return res;
+    }
+};

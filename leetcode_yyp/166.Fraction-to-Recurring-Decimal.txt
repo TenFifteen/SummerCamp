@@ -1,0 +1,40 @@
+题目大意：
+	给定两个整数分别代表分子和分母，返回用字符串表示的求值后的结果。若有循环体，用括号括起来表示。
+解题思路：
+	用map的key存储曾经的除数，value存储该除数除以被除数得到的值在结果字符串中的位置，以便有循环体的话插入括号。
+问题：
+	值转换时，当int n = INT_MIN时，要用long x = -(long)n的形式，否则对n而言，-n超出int表示范围。
+class Solution {
+public:
+    string fractionToDecimal(int numerator, int denominator) {
+        string res = "";
+        long x = (long)numerator, y = (long)denominator, l = -1, tmp;
+        string flag = x * y < 0 ? "-" : "";
+        x = x < 0 ? -x : x;
+        y = y < 0 ? -y : y;
+        long r = x / y;
+        x = x % y;
+        if(x == 0)
+            return flag + to_string(r);
+        unordered_map<int, int>dic;
+        while(x)
+        {
+            l++;
+            tmp = (x * 10) / y;
+            if(dic.find(x) == dic.end())
+            {
+                char a = '0' + tmp;
+                res = res + a;
+                dic.insert(pair<int, int>(x, l));
+            }
+            else
+            {
+                res.insert(dic[x], "(");
+                res = res + ")";
+                return flag + to_string(r)  + "." + res;
+            }
+            x = (x * 10) % y;
+        }
+        return flag + to_string(r)  + "." + res;
+    }
+};

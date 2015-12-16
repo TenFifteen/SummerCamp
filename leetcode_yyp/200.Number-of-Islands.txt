@@ -1,0 +1,32 @@
+题目大意：
+	给定一个包括'0''1'的2d矩阵，返回里面包括的小岛数目，即互补联通的1块的数目。
+解题思路：
+	开始以为是考察并查集，结果可能是写错了哪里，总是不对，后意识到用深搜就可以解决。
+class Solution {
+public:
+    void dfs(vector<vector<char> >& grid, int i, int j)
+    {
+        if(grid[i][j] == '0')
+            return;
+        grid[i][j] = '0';
+        if(i - 1 >= 0)
+            dfs(grid, i - 1, j);
+        if(j - 1 >= 0)
+            dfs(grid, i, j - 1);
+        if(i + 1 < grid.size())
+            dfs(grid, i + 1, j);
+        if(j + 1 < grid[0].size())
+            dfs(grid, i, j+ 1);
+    }
+    int numIslands(vector<vector<char> >& grid) {
+        int res = 0;
+        for(int i = 0; i < grid.size(); i++)
+            for(int j = 0; j < grid[0].size(); j++)
+                if(grid[i][j] == '1')
+                {
+                    res++;
+                    dfs(grid, i, j);
+                }
+        return res;
+    }
+};

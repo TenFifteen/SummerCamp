@@ -1,0 +1,23 @@
+题目大意：
+	返回第n个丑陋数（约数只有2，3，5）
+解题思路：
+	动归,res[i] = min(2*res[x2], 3*res[x3],5*res[x5]),根据最小值是2，3，5的倍数，更新2，3，5的下标。
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        vector<int>res(n);
+        res[0] = 1;
+        int x2 = 0, x3 = 0, x5 = 0, i;
+        for(i = 1; i < n; i++)
+        {
+            res[i] = min(2 * res[x2], min(3 * res[x3], 5 * res[x5]));
+            if(res[i] == 2 * res[x2])
+                x2++;
+            if(res[i] == 3 * res[x3])
+                x3++;
+            if(res[i] == 5 * res[x5])
+                x5++;
+        }
+        return res[n - 1];
+    }
+};

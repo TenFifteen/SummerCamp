@@ -1,0 +1,57 @@
+题目大意：
+	实现一个二叉搜索树的迭代器，该迭代器初始是树根。其中next()返回树的最小值，hasNext()返回判断树是否还有下一个最小值。
+解题思路：
+	用栈实现，初始化为树的最左路径上的各个节点，则栈顶是当前树的最小节点。每弹出一个最小节点，将该节点的右子树的最左路径加入栈中。
+/**
+ * Definition for binary tree
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class BSTIterator {
+private:
+    stack<TreeNode*>st;
+public:
+    BSTIterator(TreeNode *root) {
+        while(root != NULL)
+        {
+            st.push(root);
+            root = root->left;
+        }
+    }
+
+    /** @return whether we have a next smallest number */
+    bool hasNext() {
+        return !st.empty();
+    }
+
+    /** @return the next smallest number */
+    int next() {
+        if(!st.empty())
+        {
+            TreeNode *tmp = st.top();
+            st.pop();
+            int res = tmp->val;
+            if(tmp->right)
+            {
+                st.push(tmp->right);
+                tmp = tmp->right->left;
+                while(tmp)
+                {
+                    st.push(tmp);
+                    tmp = tmp->left;
+                }
+            }
+            return res;
+        }
+    }
+};
+
+/**
+ * Your BSTIterator will be called like this:
+ * BSTIterator i = BSTIterator(root);
+ * while (i.hasNext()) cout << i.next();
+ */
