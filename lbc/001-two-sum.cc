@@ -11,6 +11,34 @@
 一开始觉得既然结果是唯一的，那么两个数都是唯一的，没有其他的数据与之相同，然后用map
 将原来的数和下标存储下来了，然后对原数组进行了排序。结果发现有可能这两个数本身是相等的，
 所以得出了错误的结果。
+
+再次阅读：
+最笨的方法就是选定一个数，搜索剩下的所有数，n*n的复杂度。但是优点就是空间复杂度为O(1).
+然后就是想到的排序后卡尺。
+但是看到遇到的问题的地方的时候，感觉自己当时是不是有点笨啊。
+完全可以直接从前往后遍历，找target-nums[i]是否在hash表中啊。
+看了一下DISCUSS，的确最好的解法就是这样的：
+vector<int> twoSum(vector<int> &numbers, int target)
+{
+    //Key is the number and value is its index in the vector.
+    unordered_map<int, int> hash;
+    vector<int> result;
+    for (int i = 0; i < numbers.size(); i++) {
+        int numberToFind = target - numbers[i];
+
+            //if numberToFind is found in map, return them
+        if (hash.find(numberToFind) != hash.end()) {
+                    //+1 because indices are NOT zero based
+            result.push_back(hash[numberToFind] + 1);
+            result.push_back(i + 1);            
+            return result;
+        }
+
+            //number was not found. Put it in the map.
+        hash[numbers[i]] = i;
+    }
+    return result;
+}
 */
 class Solution {
 public:

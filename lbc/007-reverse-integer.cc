@@ -8,6 +8,27 @@
 
 遇到的问题：
 一开始没考虑溢出的问题。感觉这种整数操作都需要考虑溢出的问题，所以简单题更要细心。
+
+再次阅读：
+这道题本身主要是考察整数的属于范围以及溢出等情况的。
+原来的做法并没有太大问题，不过我在DISCUSS上看到了一个更简便的方法，如下（java）：
+public int reverse(int x)
+{
+    int result = 0;
+
+    while (x != 0)
+    {
+        int tail = x % 10;
+        int newResult = result * 10 + tail;
+        if ((newResult - tail) / 10 != result)
+        { return 0; }
+        result = newResult;
+        x = x / 10;
+    }
+
+    return result;
+}
+
 */
 class Solution {
 public:

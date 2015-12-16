@@ -16,6 +16,28 @@
 这个题目一开始使用了动态规划的方法，是标准的n*n的复杂度。
 但是竟然是超时。我都开始怀疑是自己写错了，还是它要求太严格了。
 下面的代码中，包括了动态规划的代码，还是值得借鉴的。
+
+再次阅读：
+感觉这个题目的最优解就是Manchester算法了。但是看到DISCUSS里面竟然不是用这个算法做的。如下：
+string longestPalindrome(string s) {
+    if (s.empty()) return "";
+    if (s.size() == 1) return s;
+    int min_start = 0, max_len = 1;
+    for (int i = 0; i < s.size();) {
+      if (s.size() - i <= max_len / 2) break;
+      int j = i, k = i;
+      while (k < s.size()-1 && s[k+1] == s[k]) ++k; // Skip duplicate characters.
+      i = k+1;
+      while (k < s.size()-1 && j > 0 && s[k + 1] == s[j - 1]) { ++k; --j; } // Expand.
+      int new_len = k - j + 1;
+      if (new_len > max_len) { min_start = j; max_len = new_len; }
+    }
+    return s.substr(min_start, max_len);
+}
+虽然这个算法看起来是n*n的。但是他有个比较厉害的地方就是直接跳过重复的字母。而且，可以不用考虑奇偶性。
+感觉好像的确是也挺好的。但是我可以找到一个n*n的例子：
+abababababababababababa
+这个例子应该对于这道题目来说就是一个n*n的例子。但是既然这个代码可以过，那说明剪枝做的还是不错的。
 */
 class Solution {
 public:
