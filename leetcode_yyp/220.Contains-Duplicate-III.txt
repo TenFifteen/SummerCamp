@@ -1,0 +1,29 @@
+题目大意：
+	给定一个整数数组，判定是否在数组中存在两个下标ij（i!= j),使得nums[i]和nums[j]的差值最大为t，下标i和j的差值最大为k.
+解题思路：
+	开始时想维护k个值的小顶堆，然后移动、判断的方法，但是忘记小顶堆的写法。后看网上，一种解法是java的treeset类似小顶堆，另一个中k窗口+桶，还有一种是用c++的lower_bound。
+://leetcode.com/discuss/38206/ac-o-n-solution-in-java-using-buckets-with-explanation
+http://www.cnblogs.com/grandyang/p/4545261.html
+
+class Solution {
+public:
+    bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
+        if(t < 0 || k < 1 || nums.size() < 2) return false;
+        map<long, long>bucket;
+        long tmp, newnum;
+        for(int i = 0; i < nums.size(); i++)
+        {
+            newnum =  long(nums[i]) - INT_MIN;
+            tmp = newnum / ((long)t + 1);
+            if(bucket.find(tmp) != bucket.end() || (bucket.find(tmp + 1) != bucket.end() && bucket[tmp + 1] - nums[i] <= t) || (bucket.find(tmp - 1) != bucket.end() && nums[i] - bucket[tmp - 1] <= t ))
+                return true;
+            if(bucket.size() >= k)
+            {
+                bucket.erase(bucket.find(((long)nums[i - k] - INT_MIN) / ((long)t + 1)));
+            }
+            bucket[tmp] = nums[i];
+        }
+        
+        return false;
+    }
+};

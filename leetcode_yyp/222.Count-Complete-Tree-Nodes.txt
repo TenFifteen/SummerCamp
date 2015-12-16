@@ -1,0 +1,62 @@
+题目大意：
+	给定一棵完全二叉树，数其节点数目。
+解题思路：
+	二分查找，因为完全二叉树只有最后一行叶子不全，所以其实是求最下层叶子数目。对当前根节点，若其左子树的左路径长度与右子树的右路径长度相同，则当前子树已经是完全二叉树，更新叶子数目。否则找中间路径右子树的左路径（或者左子树的右路径）长度，若其加一与左子树的左路径长度相同，则更新当前根节点为右子树，并更新叶子节点即加上当前子树叶子节点的一半，否则，更新当前节点为左子树。
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+    
+public:
+    int height(TreeNode * root, int flag)
+    {
+        int h = 0;
+        while(root != NULL)
+        {
+            root = flag == 1 ? root->left : root->right;
+            h++;
+        }
+        return h;
+    }
+
+    void count(TreeNode* root, int h, int &leef)
+    {
+        if(root == NULL)
+            return;
+        int l = height(root, 1), r = height(root, -1);
+        int rl;
+        if(l == r)
+        {
+            leef += pow(2, l-1);
+            return;
+        }
+        rl = height(root->right, 1);
+        if(rl + 1 == l)
+        {
+            leef += pow(2, l - 2);
+            count(root->right, h, leef);
+        }
+        else
+        {
+            count(root->left, h, leef);
+        }
+    }
+
+    int countNodes(TreeNode* root) {
+        if(root == NULL)
+            return 0;
+        if(root->left == NULL && root->right == NULL)
+            return 1;
+        int res = 0, leef = 0, h;
+        h = height(root, 1);
+        count(root, h, leef);
+        res = pow(2, h - 1) - 1 + leef;
+        return res;
+    }
+};

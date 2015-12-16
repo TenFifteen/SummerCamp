@@ -1,0 +1,40 @@
+题目大意：
+	给定一个只包含数字和+，-，*运算符的字符串，加括号按照不同的顺序进行运算，返回所有可能的结果。
+解题思路：
+	递归。对表达式中的任一运算符，不同的运算顺序是，运算符左边的表达式所有的结果，与运算符右边表达式所有可能的结果，一一对应按运算符进行运算。
+class Solution {
+public:
+    int cal(int cur, char sign, int tmp)
+    {
+        if(sign == '+')
+            return cur + tmp;
+        else if(sign == '-')
+            return cur - tmp;
+        else
+            return cur * tmp;
+    }
+    vector<int> diffWaysToCompute(string input)
+    {
+        vector<int>res;
+        if(input.size() == 0)
+            return res;
+        vector<int> r1, r2;
+        for(int i = 0; i < input.size(); i++)
+        {
+            if(input[i] == '+' || input[i] == '-' || input[i] == '*')
+            {
+                r1 = diffWaysToCompute(input.substr(0, i));
+                r2 = diffWaysToCompute(input.substr(i+1));
+                for(auto a: r1)
+                    for(auto b: r2)
+                    {
+                        res.push_back(cal(a, input[i], b));
+                    }
+                
+            }
+        }
+        if(res.size() == 0)
+            res.push_back(atoi(input.c_str()));
+        return res;
+    }
+};

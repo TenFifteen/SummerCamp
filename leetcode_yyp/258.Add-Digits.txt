@@ -1,0 +1,13 @@
+题目大意：
+	给定一个非负数num，计算其所有位数字和至为只有一个位数。
+解题思路：
+	除0外其他正整数每9个数循环一次。
+class Solution {
+public:
+    int addDigits(int num) {
+        if(num == 0)
+            return 0;
+        int x = num % 9;
+        return x == 0 ? 9 : x;
+    }
+};

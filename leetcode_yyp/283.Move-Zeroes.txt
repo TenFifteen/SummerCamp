@@ -1,0 +1,18 @@
+题目大意：
+	将数组中0元素移动到数组末端，其他元素相对位置不变
+解题思路：
+	快指针遍历数组，慢指针标识非0元素位置。
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums) {
+        int l = 0, h = 0;
+        while(h < nums.size())
+        {
+            if(nums[h] != 0)
+                nums[l++] = nums[h];
+            h++;
+        }
+        while(l < nums.size())
+            nums[l++] = 0;
+    }
+};

@@ -1,0 +1,77 @@
+题目大意：
+	设计一个数据结构，使其支持插入和查找单词。查找的单词包括a-z和..其中.可以看成任意单一字符。
+解题思路：
+	用字典树即可。
+问题：
+	还是不熟练，类构造函数开始没写，后来写错。
+class TrieNode{
+public:
+    bool isleaf;
+    TrieNode * child[26];
+    TrieNode(): isleaf(false){
+        for(int i = 0; i < 26; i++)
+            child[i] = NULL;
+    }
+};
+class WordDictionary {
+public:
+    WordDictionary() {
+        root = new TrieNode();
+    }
+    // Adds a word into the data structure.
+    void addWord(string word) {
+        TrieNode * tmp = root;
+        for(int i = 0; i < word.length(); i++)
+        {
+            if(tmp->child[word[i] - 'a'] == NULL)
+            {
+                TrieNode * node = new TrieNode();
+                tmp->child[word[i] - 'a'] = node;
+            }
+            tmp = tmp->child[word[i] - 'a'];
+        }
+        tmp->isleaf = true;
+    }
+
+    // Returns if the word is in the data structure. A word could
+    // contain the dot character '.' to represent any one letter.
+    bool search(string word) {
+        return find(word, 0, root);
+    }
+private:
+    TrieNode *root;
+    bool find(string word, int index, TrieNode* root)
+    {
+        if(word[index] != '.')
+        {
+            if(root->child[word[index] - 'a'] == NULL)
+                return false;
+            if(index == word.size() - 1)
+                return root->child[word[index] - 'a']->isleaf;
+            return find(word, index + 1, root->child[word[index] - 'a']);
+        }
+        else
+        {
+            for(int i = 0; i < 26; i++)
+            {
+                if(root->child[i] != NULL)
+                {
+                    if(index == word.size() - 1)
+                    {
+                        if(root->child[i]->isleaf == true)
+                            return true;
+                    }
+                    else if(find(word, index + 1, root->child[i]) == true)
+                        return true;
+                }
+                
+            }
+            return false;
+        }
+    }
+};
+
+// Your WordDictionary object will be instantiated and called as such:
+// WordDictionary wordDictionary;
+// wordDictionary.addWord("word");
+// wordDictionary.search("pattern");

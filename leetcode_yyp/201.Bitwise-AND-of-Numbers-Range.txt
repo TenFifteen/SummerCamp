@@ -1,0 +1,34 @@
+题目大意：
+	给定一个数据范围[m,n],其中0<=m<=n<=2147483647，返回这个范围内所有数的与值。
+解题思路：
+	只要比较m和n就可以，从二者最高位至最低位比较，数字相同则加到结果中一起移动，遇到不同的则跳出，然后对结果左移未移动的位数即可。
+class Solution {
+public:
+    int rangeBitwiseAnd(int m, int n) {
+        
+        if(m == n || m == 0)
+            return m;
+        unsigned int l = 0, a = m, b = n, i1, i2, j1, j2, res = 0;
+        int flag = -1;
+        while(a && b)
+        {
+            l++;
+            i1 = a >> 31;
+            a <<= 1;
+            i2 = b >> 31;
+            b <<= 1;
+            if(i1 == i2)
+            {
+                res = (res << 1) + i1;
+            }
+            else
+            {
+                flag = 1;
+                break;
+            }
+        }
+        if(flag != 1)
+            return res << (32 - l);
+        return res << (33 - l);
+    }
+};

@@ -1,0 +1,38 @@
+题目大意：
+	给定一棵二叉搜索树，返回第k小的节点的值。
+解题思路：
+	数左子树的节点数目l，若恰好为k-1，则当前根节点为第k小节点，否则，在右子树中寻找第k-l-1小的节点。
+注意的点：
+	看了别人做的感觉自己的递归思路不够清楚，见https://leetcode.com/discuss/43771/implemented-java-binary-search-order-iterative-recursive。
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode *res = NULL;
+    int findk(TreeNode *root, int k)
+    {
+        if(root == NULL)
+            return 0;
+        int l = findk(root->left, k);
+        if(res != NULL)
+            return 0;
+        if(l == k - 1) 
+        {
+            res = root;
+            return 0;
+        }
+        int r = findk(root->right, k - l - 1);
+        return l + r + 1;
+    }
+    int kthSmallest(TreeNode* root, int k) {
+        int t = findk(root,k);
+        return res->val;
+    }
+};

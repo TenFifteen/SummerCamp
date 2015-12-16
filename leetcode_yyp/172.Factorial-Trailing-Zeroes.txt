@@ -1,0 +1,17 @@
+题目大意：
+	给定一个数n，求n!结果后尾部有多少个0.
+解题思路：
+	n!能生成尾部的0是质数分解后5^x*2^y，而2的指数显然大于5的，所以求小于等于n的数中质因子5的个数即可。
+
+class Solution {
+public:
+    int trailingZeroes(int n) {
+        int res = 0;
+        while(n)
+        {
+            n /= 5;
+            res += n;
+        }
+        return res;
+    }
+};

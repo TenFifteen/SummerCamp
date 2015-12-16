@@ -1,0 +1,32 @@
+题目大意：
+	给定一个2d矩阵，公主放在右下格子里，勇士放在左上格子里，每个格子有正负数字，当勇士到达正数格子时，能量加，到达负数节点时，能量减掉相应的数，为0时，不加不减，勇士的能量值一旦为0，勇士马上死亡，求勇士开始时最少需要多少能量值才能救到公主。
+解题思路：
+	动归。对任一节点，当前加点需要的最少能量值是在扣除（加上）当前能量值后，能满足右边和下边的最少需要的能量值，即res[i][j]=min(res[i+1][j], res[i][j+1])-dungeon[i][j];同时，需要注意，因为勇士能量值要时刻最少为1，所以当所求最少能量值小于1时，赋值成1.
+class Solution {
+public:
+    int calculateMinimumHP(vector<vector<int> >& dungeon) {
+        vector<vector<int> >res;
+        int m = dungeon.size(), n = dungeon[0].size();
+        long x1, x2;
+        vector<int>tmp(n, 0);
+        for(int i = 0; i < m; i++)
+            res.push_back(tmp);
+        for(int i = m - 1; i >= 0; i--)
+        {
+            for(int j = n - 1; j >= 0; j--)
+            {
+                x1 = j + 1 < n ? res[i][j + 1] : INT_MAX;
+                x2 = i + 1 < m ? res[i + 1][j] : INT_MAX;
+                if(x1 == INT_MAX && x2 == INT_MAX)
+                {
+                    res[i][j] = (1 - dungeon[i][j]) <= 0 ? 1 : (1 - dungeon[i][j]);
+                    continue;
+                }
+                x1 = x1 - dungeon[i][j];
+                x2 = x2 - dungeon[i][j];
+                res[i][j] = min(x1, x2) <= 0 ? 1 : min(x1, x2);
+            }
+        }
+        return res[0][0];
+    }
+};

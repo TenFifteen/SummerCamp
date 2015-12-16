@@ -1,0 +1,20 @@
+题目大意：
+	给定一个数判断是不是丑陋数（约数只有2，3，5）
+解题思路：
+	循环除以2，3，5约数，若最后为1，则是丑陋数
+class Solution {
+public:
+    bool isUgly(int num) {
+        if(num == 1)
+            return true;
+        if(num < 1)
+            return false;
+        while(num % 2 == 0)
+            num /= 2;
+        while(num % 3 == 0)
+            num /= 3;
+        while(num % 5 == 0)
+            num /= 5;
+        return num == 1;
+    }
+};

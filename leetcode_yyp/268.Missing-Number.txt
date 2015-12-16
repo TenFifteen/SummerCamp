@@ -1,0 +1,26 @@
+题目大意：
+	给定一个包括n个不同数的数组，数值范围是0-n，找到缺失的数。
+解题思路：
+	想复杂了。把i位置的数换到那数的位置上。
+	有很多解，如位操作，i^nums[i]……所有位置和数异或即可。或者所有位置的和减数的和，或者求所有数的和减去数组中所有数的和等等。
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int i = 0, tmp;
+        nums.push_back(INT_MAX);
+        while(i< nums.size() - 1)
+        {
+            if(i != nums[i] && nums[i] != INT_MAX)
+            {
+                tmp = nums[i];
+                nums[i] = nums[tmp];
+                nums[tmp] = tmp;
+            }
+            else
+                i++;
+        }
+        for(int i = 0; i < nums.size(); i++)
+            if(i != nums[i])
+                return i;
+    }
+};

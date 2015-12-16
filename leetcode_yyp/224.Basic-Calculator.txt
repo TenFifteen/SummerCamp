@@ -1,0 +1,83 @@
+题目大意：
+	给定一个只包含(,),+,-, 和非负数的字符串，求其运算值。
+解题思路：
+	用栈模拟运算过程，当遇到数字时添加到操作数栈，遇到空格时跳过，遇到加减号入操作符栈，遇到左括号时用INT_MIN标记左括号入操作数栈，遇到右括号时，出栈运算至遇到左括号。最后，若操作符栈中还有操作符，则对两个栈进行运算，输出结果。
+注意的点：
+	网上的解法：https://leetcode.com/discuss/39553/iterative-java-solution-with-stack
+	此题感觉有些麻烦。一是数字和字符，字符串转换，二是运算时要从后往前算，要注意边界。
+class Solution {
+public:
+    int calculate(string s) {
+        stack<int>num;
+        stack<char>cal;
+        stringstream stream;
+        string tmp;
+        int x, res = 0, m = 0;
+        char a;
+        for(int i = 0; i < s.length(); i++)
+        {
+            if(s[i] == ' ')
+                continue;
+            else if(s[i] == '+' || s[i] == '-')
+            {
+                cal.push(s[i]);
+            }
+            else if(s[i] == '(')
+            {
+                num.push(INT_MIN);
+            }
+            else if(s[i] >= '0' && s[i] <= '9')
+            {
+                tmp = "";
+                while(i < s.length() && s[i] >= '0' && s[i] <= '9')
+                {
+                    tmp += s[i];
+                    i++;
+                }
+                stream.clear();
+                stream << tmp;
+                stream >> x;
+                i--;
+                num.push(x);
+            }
+            else
+            {
+                res = 0;
+                m = num.top();
+                num.pop();
+                while( !num.empty() && num.top() != INT_MIN && !cal.empty())
+                {
+                    a = cal.top();
+                    cal.pop();
+                    
+                    if(a == '+')
+                        res += m;
+                    else if(a == '-')
+                        res -= m;
+                        
+                    m = num.top();
+                    num.pop();
+                }
+                num.pop();
+                num.push(res + m);
+                cout << res + m << endl;
+            }
+        }
+        if(cal.empty())
+            return num.top();
+        res = 0;
+        while(!num.empty() && !cal.empty())
+        {
+            m = num.top();
+            a = cal.top();
+            if(a == '+')
+                res += m;
+            else if(a == '-')
+                res -= m;
+            num.pop();
+            cal.pop();
+        }
+        
+        return res + num.top();
+    }
+};

@@ -1,0 +1,20 @@
+题目大意：
+	给定一个整数n，判断是否是2的次幂。
+解题思路：
+	将n左移l位至0，将n右移32-l位得到左移l位移出的数若为0，则是2的次幂数，否则不是。
+	看网上解法直接判断n&(n - 1)即可。
+class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+        if(n == 0) return false;
+        int tmp = n, l = 0;
+        while(tmp)
+        {
+            tmp <<= 1;
+            l++;
+        }
+        if(n >> (33 - l) != 0)
+            return false;
+        return true;
+    }
+};

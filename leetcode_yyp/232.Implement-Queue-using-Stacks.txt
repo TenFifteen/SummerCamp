@@ -1,0 +1,40 @@
+题目大意：
+	用栈实现队列。
+解题思路：
+	用两个栈模拟队列，当需要pop或者peek的时候将st1的元素pop到st2中，保持了入队顺序。
+class Queue {
+private:
+    stack<int>st1, st2;       
+public:
+    void store(void) {
+        int n = st1.size();
+        for(int i = 0; i < n; i++)
+        {
+            st2.push(st1.top());
+            st1.pop();
+        }
+    }
+    // Push element x to the back of queue.
+    void push(int x) {
+        st1.push(x);
+    }
+
+    // Removes the element from in front of queue.
+    void pop(void) {
+        if(st2.size() == 0)
+            store();
+        st2.pop();
+    }
+
+    // Get the front element.
+    int peek(void) {
+        if(st2.size() == 0)
+            store();
+        return st2.top();
+    }
+
+    // Return whether the queue is empty.
+    bool empty(void) {
+        return st2.size() == 0 && st1.size() == 0;
+    }
+};

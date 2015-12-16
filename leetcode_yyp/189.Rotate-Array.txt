@@ -1,0 +1,28 @@
+题目大意：
+	给定一个数组，向右循环移动k步
+解题思路：
+	首先k对数组长度取余，然后先对前半部分（0到n-k-1）取反，再对剩下的取反，最后整体取反，得到的就是最终的结果。
+class Solution {
+public:
+    void func(vector<int>& nums, int l, int m)
+    {
+        int tmp;
+        while(l < m)
+        {
+            tmp = nums[l];
+            nums[l] = nums[m];
+            nums[m] = tmp;
+            l++;
+            m--;
+        }
+    }
+    void rotate(vector<int>& nums, int k) {
+        int n = nums.size();
+        k = k % n;
+        if(k == 0)
+            return;
+        func(nums, 0, n - k - 1);
+        func(nums, n - k, n - 1);
+        func(nums, 0, n - 1);
+    }
+};

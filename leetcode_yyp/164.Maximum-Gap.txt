@@ -1,0 +1,52 @@
+题目大意：
+	给定一个无序数组，返回在有序后相邻两个数的最大差值。
+解题思路：
+	用桶实现，即有序后两个数的最大差值一定存在于一个桶中的最大和最小的差值或者相邻两个桶后一个桶的小值与前一个桶的大值。
+class Solution {
+public:
+    int maximumGap(vector<int>& nums) {
+        if(nums.size() < 2)
+            return 0;
+        map<int, vector<int> >bucket;
+        vector<int>vec;
+        int small = nums[0], big = nums[0], tmp, dif, res = 0;
+        for(int i = 1; i< nums.size(); i++)
+        {
+            small = min(small, nums[i]);
+            big = max(big, nums[i]);
+        }
+        dif = (big - small) / nums.size() + 1;
+        if(dif == 0)
+            return 0;
+        for(int i = 0; i < nums.size(); i++)
+        {
+            tmp = (nums[i] - small) / dif;
+            if(bucket.find(tmp) == bucket.end())
+            {
+                vec.clear();
+                vec.push_back(nums[i]);
+                vec.push_back(nums[i]);
+                bucket[tmp] = vec;
+            }
+            else
+            {
+                vec = bucket[tmp];
+                vec[0] = min(vec[0], nums[i]);
+                vec[1] = max(vec[1], nums[i]);
+                bucket[tmp] = vec;
+            }
+        }
+        int pre = small, size = (big - small) / dif + 1;
+        for(int i = 0; i < size; i++)
+        {
+            if(bucket.find(i) != bucket.end())
+            {
+                vec = bucket[i];
+                res = max(res, vec[0] - pre);
+                res = max(res, vec[1] - vec[0]);
+                pre = vec[1];
+            }
+        }
+        return res;
+    }
+};

@@ -1,0 +1,16 @@
+题目大意：
+	求一个数的二进制表示中1的个数
+解题思路：
+	思路较多，如一次移动一位，看最低位。我用的只跟这个数中1的个数的复杂度。n&(n-1).
+class Solution {
+public:
+    int hammingWeight(uint32_t n) {
+        int res = 0;
+        while(n)
+        {
+            n = n & (n - 1);
+            res++;
+        }
+        return res;
+    }
+};

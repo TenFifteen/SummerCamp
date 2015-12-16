@@ -1,0 +1,27 @@
+题目大意：
+	将一个链表逆序。
+解题思路：
+	新建头指针，每个节点加入到新链表头阵后面即可。
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode*newhead = new ListNode(0);
+        ListNode *tmp;
+        while(head != NULL)
+        {
+            tmp = head->next;
+            head->next = newhead->next;
+            newhead->next = head;
+            head = tmp;
+        }
+        return newhead->next;
+    }
+};

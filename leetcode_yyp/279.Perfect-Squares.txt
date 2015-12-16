@@ -1,0 +1,27 @@
+题目大意：
+	给定一个正整数n，返回它最少能被几个平方数相加得到。
+解题思路：
+	动归。对i而言，res[i]=min{res[j*j]+res[i-j*j] , res[i]}(j=1-sqrt(i)).
+class Solution {
+public:
+    int numSquares(int n) {
+        int x = floor(sqrt(n)), cur = 0, tmp;
+        vector<int>res(n + 1, INT_MAX);
+        for(int i = 1; i <= x; i++)
+            res[i * i] = 1;
+        for(int i = 1; i <= n; i++)
+        {
+            if(res[i] == INT_MAX)
+            {
+                for(int j = cur; j > 0; j--)
+                {
+                    tmp = res[j * j] + res[i - j * j];
+                    res[i] = min(res[i], tmp);
+                }
+            }
+            else
+                cur++;
+        }
+        return res[n];
+    }
+};

@@ -1,0 +1,27 @@
+题目大意：
+	两个人玩猜公牛母牛游戏，一个人写一个数字串，另一个人猜同样长度的字符串，给出数字和位数都猜对的个数和只猜对数字位数不对的个数。
+解题思路：
+	数字和位数都相同的位数遍历即可，数字对而位数不对的需要用map来进行统计。
+class Solution {
+public:
+    string getHint(string secret, string guess) {
+        map<char, int>dic;
+        int bull = 0, cow = 0;
+        for(int i = 0; i < secret.size(); i++)
+        {
+            if(secret[i] == guess[i])
+                bull++;
+            else
+                dic[secret[i]]++;
+        }
+        for(int i = 0; i < secret.size(); i++)
+        {
+            if(secret[i] != guess[i] && dic.find(guess[i]) != dic.end() && dic[guess[i]] != 0)
+            {
+                dic[guess[i]]--;
+                cow++;
+            }
+        }
+        return to_string(bull) + "A" + to_string(cow) + "B";
+    }
+};
