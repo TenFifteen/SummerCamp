@@ -1,0 +1,28 @@
+题目大意：
+	给定一个DNA字符串（A,T,C,G）,判断在该字符串中哪些长度为10的子串出现过两次以上。
+解题思路：
+	用哈希表记录即可。对0-n-10的长度为10的子串分别统计，最后输出出现次数超过1的即可。
+class Solution {
+public:
+    vector<string> findRepeatedDnaSequences(string s) {
+        unordered_map<string, int>dic;
+        vector<string>res;
+        string tmp;
+        if(s.size() <= 10)
+            return res;
+        for(int i = 0; i <= s.size() - 10; i++)
+        {
+            tmp = s.substr(i, 10);
+            if(dic.find(tmp) != dic.end())
+                dic[tmp]++;
+            else
+                dic[tmp] = 1;
+        }
+        for(auto i = dic.begin(); i != dic.end(); i++)
+        {
+            if(i->second >= 2)
+                res.push_back(i->first);
+        }
+        return res;
+    }
+};

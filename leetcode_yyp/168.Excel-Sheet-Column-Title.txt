@@ -1,0 +1,17 @@
+题目大意：
+	给定一个列数，返回excel中对应的列号。
+解题思路：
+	二十六进制转换。
+class Solution {
+public:
+    string convertToTitle(int n) {
+        string res = "";
+        while(n)
+        {
+            char tmp = 'A' + (n  - 1) % 26;
+            res = tmp + res;
+            n = (n  - 1) / 26;
+        }
+        return res;
+    }
+};

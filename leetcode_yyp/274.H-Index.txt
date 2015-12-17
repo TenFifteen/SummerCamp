@@ -1,0 +1,26 @@
+题目大意：
+	给定一个人的论文引用情况，求其H指数，即至少有h篇论文的引用数超过h。
+解题思路：
+	根据h值定义，h值不可能超过论文总数。用一个0-i-n的数组保存引用数为i的论文的数量，然后从后往前加至论文数大于等于i即可。
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        int n = citations.size();
+        vector<int>res(n + 1, 0);
+        int x = 0;
+        for(int i: citations)
+        {
+            if(i > n)
+                x++;
+            else
+                res[i]++;
+        }
+        for(int i = n; i >= 0; i--)
+        {
+            x += res[i];
+            if(i <= x)
+                return i;
+        }
+        return 0;
+    }
+};

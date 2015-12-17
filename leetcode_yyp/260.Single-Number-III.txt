@@ -1,0 +1,26 @@
+题目大意：
+	给定一个数组，其中两个数组只出现了一次，其他的都出现了两次，返回这两个数。
+解题思路：
+	先异或所有数，得到这两个数的异或值，然后取异或值的最右边的1，以把两个数分到两个group里，对两个group里的数分别异或，得到这两个数。
+class Solution {
+public:
+    vector<int> singleNumber(vector<int>& nums) {
+        int diff = 0;
+        for(int i : nums)
+            diff ^= i;
+        diff = diff - ((diff - 1) & diff);
+        vector<int>res(2, 0);
+        for(int i: nums)
+        {
+            if((diff & i) == 0)
+            {
+                res[0] ^= i;
+            }
+            else
+            {
+                res[1] ^= i;
+            }
+        }
+        return res;
+    }
+};

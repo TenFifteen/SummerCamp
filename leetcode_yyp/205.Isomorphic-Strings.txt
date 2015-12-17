@@ -1,0 +1,32 @@
+题目大意：
+	判断两个字符串s和t是否同构。
+解题思路：
+	用两个map分别存储s到t和t到s的字母对应，若当前对应与已存对应冲突，则s和t不是同构。
+class Solution {
+public:
+    bool isIsomorphic(string s, string t) {
+        map<char, char>dic1, dic2;
+        for(int i = 0; i < s.length(); i++)
+        {
+            if(dic1.find(s[i]) != dic1.end())
+            {
+                if(dic1[s[i]] != t[i])
+                    return false;
+            }
+            else
+            {
+                dic1[s[i]] = t[i];
+            }
+            if(dic2.find(t[i]) != dic2.end())
+            {
+                if(dic2[t[i]] != s[i])
+                    return false;
+            }
+            else
+            {
+                dic2[t[i]] = s[i];
+            }
+        }
+        return true;
+    }
+};

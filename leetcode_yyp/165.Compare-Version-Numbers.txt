@@ -1,0 +1,66 @@
+题目大意：
+	比较两个版本号的大小。
+解题思路：
+	将两个版本号两点之间的数字都存下来，然后分别进行比较。注意后面跟0的情况。有些繁琐，并不难
+class Solution {
+public:
+    int compareVersion(string version1, string version2) {
+        vector<string>n1, n2;
+        string s;
+        int x1, x2, i;
+        for(i = 0; i < version1.size(); i++)
+        {
+            if(version1[i] == '.')
+            {
+                n1.push_back(s);
+                s = "";
+            }
+            else
+                s += version1[i];
+        }
+        n1.push_back(s);
+        s = "";
+        for(i = 0; i < version2.size(); i++)
+        {
+            if(version2[i] == '.')
+            {
+                n2.push_back(s);
+                s = "";
+            }
+            else
+                s += version2[i];
+        }
+        n2.push_back(s);
+        for(i = 0; i < n1.size() && i < n2.size(); i++)
+        {
+            x1 = atoi(n1[i].c_str());
+            x2 = atoi(n2[i].c_str());
+            if(x1 < x2)
+                return -1;
+            else if(x1 > x2)
+                return 1;
+        }
+        if(i < n1.size())
+        {
+            x1 = 0;
+            for(;i < n1.size(); i++)
+                x1 = x1 * 10 + atoi(n1[i].c_str());
+            if(x1 == 0)
+                return 0;
+            else
+                return 1;
+        }
+        else if(i < n2.size())
+        {
+            x2 = 0;
+            for(;i < n2.size(); i++)
+                x2 = x2 * 10 + atoi(n2[i].c_str());
+            if(x2 == 0)
+                return 0;
+            else
+                return -1;
+        }
+        else
+            return 0;
+    }
+};

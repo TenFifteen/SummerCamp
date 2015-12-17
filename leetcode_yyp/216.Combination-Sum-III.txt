@@ -1,0 +1,31 @@
+题目大意：
+	给定数字1-9，找到用k个数字其和为n的所有组合。且结果中数字按升序排序。
+解题思路：
+	深搜。当选取数字达到k时，若其和为n,则将当前解放入结果数组中，否则返回。若选取数少于k，则从l取到9，放入结果中递归求解。
+class Solution {
+public:
+    void comb(int k, int n, int l, int sum, vector<vector<int> >&res, vector<int>cur)
+    {
+        if(cur.size() == k)
+        {
+            if(sum == n)
+                res.push_back(cur);
+            return;
+        }
+        for(int i = l; i <= 9; i++)
+        {
+            if(cur.size() < k)
+            {
+                cur.push_back(i);
+                comb(k, n, i + 1, sum + i, res, cur);
+                cur.pop_back();
+            }
+        }
+    }
+    vector<vector<int> > combinationSum3(int k, int n) {
+        vector<vector<int> >res;
+        vector<int>cur;
+        comb(k, n, 1, 0, res, cur);
+        return res;
+    }
+};

@@ -1,0 +1,22 @@
+题目大意：
+	给定1-n的版本号，其中一个版本号的产品坏了，之后的所有产品就都坏了，找到第一个坏掉的产品号。
+解题思路：
+	二分搜索。注意的是med写成(low + high)/2就会超时，写成med = low + (high - low) / 2就不会超时。另外，注意high=med,low = med+1;
+// Forward declaration of isBadVersion API.
+bool isBadVersion(int version);
+
+class Solution {
+public:
+    int firstBadVersion(int n) {
+        int low = 1, high = n, med;
+        while(low < high)
+        {
+            med = low + (high - low) / 2;
+            if(isBadVersion(med))
+                high = med;
+            else
+                low = med + 1;
+        }
+        return low;
+    }
+};

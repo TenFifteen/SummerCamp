@@ -1,0 +1,64 @@
+题目大意：
+	给定一个只包含+,-,*,/和非负数的字符串，计算其值。
+解题思路：
+	用栈模拟计算过程。
+class Solution {
+public:
+    int calculate(string s) {
+        stack<int>ops;
+        stack<char>cal;
+        int num, cur = 0, res = 0;
+        char a, b;
+        ops.push(1);
+        stringstream stream(s);
+        while(stream >> num >> a)
+        {
+            if(a == '+' || a== '-')
+            {
+                ops.push(num);
+                ops.push(a == '+' ? 1 : -1);
+            }
+            else
+            {
+                res = num;
+                b = a;
+                while(stream >> num >> a)
+                {
+                    if(b == '*')
+                        res *= num;
+                    else
+                        res /= num;
+                    cout << res << endl;
+                    if(a == '+' || a == '-')
+                    {
+                        ops.push(res);
+                        ops.push(a == '+' ? 1 : -1);
+                        break;
+                    }
+                    b = a;
+                }
+                if(a == '*' || a == '/')
+                {
+                    if(a == '*')
+                        ops.push(res * num);
+                    else
+                        ops.push(res / num);
+                    num = 1;
+                    ops.push(0);
+                }
+            }
+        }
+        ops.push(num);
+        res = 0;
+        while(!ops.empty())
+        {
+            cur = ops.top();
+            ops.pop();
+            cout << cur << endl;
+            cur = cur * ops.top();
+            ops.pop();
+            res += cur;
+        }
+        return res;
+    }
+};

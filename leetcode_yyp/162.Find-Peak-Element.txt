@@ -1,0 +1,16 @@
+题目大意：
+	返回数组中存在的一个峰顶元素的下标。
+解题思路：
+	自己写的过了的是O(N)，看到别人的解是log(n)。每次比较中间两个元素来确定在左边还是右边继续找。
+class Solution {
+public:
+    int findPeakElement(vector<int>& nums) {
+        for(int i = 0; i < nums.size(); i++)
+        {
+            if(i == nums.size() - 1)
+                return nums.size() - 1;
+            if(nums[i] > nums[i + 1])
+                return i;
+        }
+    }
+};

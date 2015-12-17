@@ -1,0 +1,36 @@
+题目大意：
+	给定一棵二叉树，返回这棵树的右视图。
+解题思路：
+	dfs，当当前节点深度大于右侧最大深度时，将该节点值加入结果中，否则继续深入。
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void view(TreeNode* root, int &h, vector<int>& res, int curh)
+    {
+        if(root == NULL)
+            return;
+        if(curh > h)
+        {
+            res.push_back(root->val);
+            h++;
+        }
+        view(root->right, h, res, curh + 1);
+        view(root->left, h, res, curh + 1);
+    }
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int>res;
+        int h = 0;
+        if(root == NULL)
+            return res;
+        view(root, h, res, 1);
+        return res;
+    }
+};

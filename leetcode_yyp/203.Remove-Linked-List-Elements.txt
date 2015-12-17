@@ -1,0 +1,31 @@
+题目大意：
+	删除一个链表中等于指定值的节点。
+解题思路：
+	新建头指针，当前节点值不等于给定值则添加到新链表尾部即可。
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        ListNode *newhead = new ListNode(0);
+        ListNode *cur = newhead, *tmp;
+        while(head != NULL)
+        {
+            tmp = head->next;
+            if(head->val != val)
+            {
+                cur->next = head;
+                head->next = NULL;
+                cur = head;
+            }
+            head = tmp;
+        }
+        return newhead->next;
+    }
+};

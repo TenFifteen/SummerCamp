@@ -1,0 +1,35 @@
+题目大意：
+	找一个无序数组中的第k大的数。
+解题思路：
+	用快排的思想解决。还可用最大堆，优先队列，multiset来做。
+class Solution {
+public:
+    int find(vector<int>& nums, int k, int l, int r)
+    {
+        if(l == r)
+            return nums[l];
+        int tmp = nums[l];
+        int x1 = l, x2 = r;
+        while(l < r)
+        {
+            while(l < r && nums[r] > tmp)
+                r--;
+            nums[l] = l < r ? nums[r] : nums[l];
+            while(l < r && nums[l] <= tmp)
+                l++;
+            if(l < r)
+                nums[r] = nums[l];
+        }
+        nums[r] = tmp;
+        int n = x2 - r + 1;
+        if(n == k)
+            return nums[r];
+        else if(n > k)
+            return find(nums, k, r + 1, x2);
+        else
+            return find(nums, k - n, x1, r - 1);
+    }
+    int findKthLargest(vector<int>& nums, int k) {
+        return find(nums, k, 0, nums.size() - 1);
+    }
+};
