@@ -32,7 +32,8 @@ void heapify(vector<int> &A) {
     int n = A.size();
     if (n == 0) return;
     // write your code here
-    for (int i = (n-1)/2; i >= 0; --i){
+    // notice: (n - 1 - 1)
+    for (int i = (n-2)/2; i >= 0; --i){
         minHeapify(A, i, n);
     }
 }
