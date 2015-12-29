@@ -15,6 +15,17 @@
 本来这个题目原来是不会的。结果今天查了一下百度。感觉应该就是这样贪心下来的。就试了一下，结果
 竟然对了。
 
+再次阅读：
+这个题目已经做过两次了。也该记住了。
+虽然之前感觉自己做的有些麻烦，不知道怎么改进代码。
+看了DISCUSS里面，有一种解法是用空间来换时间，见下面代码（java）：
+String[] romanPieces={"","I","II","III","IV","V","VI","VII","VIII",
+"IX", "","X","XX","XXX","XL","L","LX","LXX","LXXX","XC", "","C",
+"CC","CCC","CD","D","DC","DCC","DCCC","CM", "","M","MM","MMM","MMMM"}; 
+return romanPieces[num/1000+30]+
+romanPieces[(num/100)%10+20] +
+romanPieces[(num/10)%10+10]+
+romanPieces[num%10];
 */
 class Solution {
 public:
