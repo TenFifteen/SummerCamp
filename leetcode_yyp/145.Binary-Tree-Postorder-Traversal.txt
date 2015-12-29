@@ -1,0 +1,65 @@
+题目大意：
+	给定一棵二叉树，求其后序遍历的结果。
+解题思路：
+	用栈保存未被访问过值的节点，另一个栈用来保存对应节点被访问过的次数，当某节点的访问次数为2时，即其左右节点都被访问过后，访问该节点的值，并在两个栈中都弹出该节点。
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        stack<TreeNode*>st;
+        stack<int>time;
+        vector<int>res;
+        if(root == NULL)
+            return res;
+        TreeNode *tmp;
+        int m;
+        time.push(-1);
+        while(root != NULL || !st.empty())
+        {
+            if(root == NULL)
+            {
+                m = time.top();
+                time.pop();
+                time.push(m + 1);
+                while(!st.empty() && time.top() == 2)
+                {
+                    tmp = st.top();
+                    st.pop();
+                    res.push_back(tmp->val);
+                    
+                    time.pop();
+                    m = time.top();
+                    time.pop();
+                    time.push(m + 1);
+                }
+                if(st.empty())
+                    return res;
+                else
+                    root = st.top()->right;
+            }
+            else
+            {
+                st.push(root);
+                time.push(0);
+                if(root->left != NULL)
+                    root = root->left;
+                else
+                {
+                    root = st.top()->right;
+                    time.pop();
+                    time.push(1);
+                }
+            }
+            
+        }
+        return res;
+    }
+};

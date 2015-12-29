@@ -1,0 +1,28 @@
+题目大意：
+	写程序寻找第n个超级丑陋数。即，给定一个有序质数数组，超级丑陋数的因子必须是该数组中的数。
+解题思路：
+	一个数组存储现在的超级丑陋数，一个数组存储质数数组中每个数对应的超级丑陋数数组中的下标。每次选取质数数组中与其对应的现在超级丑陋数相乘的最小数放入超级丑陋数数组中，并更新质数数组中该数对应丑陋数数组下标加1.
+class Solution {
+public:
+    int nthSuperUglyNumber(int n, vector<int>& primes) {
+        vector<int>ugly;
+        ugly.push_back(1);
+        vector<int>nums(primes.size(), 0);
+        int i = 0, mnum;
+        while(i < n)
+        {
+            mnum = INT_MAX;
+            for(int j = 0; j < primes.size(); j++)
+                mnum = min(mnum, primes[j] * ugly[nums[j]]);
+            for(int j = 0; j < primes.size(); j++)
+            {
+                if(mnum == primes[j] * ugly[nums[j]])
+                    nums[j]++;
+            }
+            ugly.push_back(mnum);
+            i++;
+        }
+        return ugly[i - 1];
+        
+    }
+};

@@ -1,0 +1,52 @@
+题目大意：
+	给定一个迭代器类，它有next()hasNext()方法，设计一个PeekingIterator迭代器类，支持peek()。
+解题思路：
+	开始没看懂题。每次next，返回顶部元素后，弹出顶部元素，更新peek。既能获得正确的Peek值，又可避免多弹出元素。
+// Below is the interface for Iterator, which is already defined for you.
+// **DO NOT** modify the interface for Iterator.
+class Iterator {
+    struct Data;
+	Data* data;
+public:
+	Iterator(const vector<int>& nums);
+	Iterator(const Iterator& iter);
+	virtual ~Iterator();
+	// Returns the next element in the iteration.
+	int next();
+	// Returns true if the iteration has more elements.
+	bool hasNext() const;
+};
+
+
+class PeekingIterator : public Iterator {
+private:
+    int num;
+    bool hasnext;
+public:
+	PeekingIterator(const vector<int>& nums) : Iterator(nums) {
+	    // Initialize any member here.
+	    // **DO NOT** save a copy of nums and manipulate it directly.
+	    // You should only use the Iterator interface methods.
+	    hasnext = Iterator::hasNext();
+	    if(hasnext)
+	        num = Iterator::next();
+	}
+
+    // Returns the next element in the iteration without advancing the iterator.
+	int peek() {
+        return num;
+	}
+
+	// hasNext() and next() should behave the same as in the Iterator interface.
+	// Override them if needed.
+	int next() {
+	    int tmp = num;
+	    hasnext = Iterator::hasNext() ? true : false;
+	    num = hasnext == true ? Iterator::next() : -1;
+	    return tmp;
+	}
+
+	bool hasNext() const {
+	    return hasnext;
+	}
+};

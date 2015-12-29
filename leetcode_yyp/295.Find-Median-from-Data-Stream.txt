@@ -1,0 +1,33 @@
+题目大意：
+	设计一个数据结构，支持两种操作，添加元素和返回中位数。
+解题思路：
+	用两个有限队列实现，small保存小的一半元素，big保存大的一半元素。
+class MedianFinder {
+private:
+    priority_queue<int>small, big;
+public:
+    // Adds a number into the data structure.
+    void addNum(int num) {
+       small.push(num);
+       big.push(-small.top());
+       small.pop();
+       if(small.size() < big.size())
+       {
+           small.push(-big.top());
+           big.pop();
+       }
+    }
+
+    // Returns the median of current data stream
+    double findMedian() {
+        if(small.size() > big.size())
+            return small.top();
+        else
+            return (small.top() - big.top()) / 2.0;
+    }
+};
+
+// Your MedianFinder object will be instantiated and called as such:
+// MedianFinder mf;
+// mf.addNum(1);
+// mf.findMedian();

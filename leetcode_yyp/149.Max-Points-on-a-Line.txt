@@ -1,0 +1,52 @@
+题目大意：
+	给定2d空间的一些点，求在同一条线上的最多点数。
+解题思路：
+	对每个节点，用hash表记录其后的节点中与其斜率为key的点数。注意与其y值相同的点。
+/**
+ * Definition for a point.
+ * struct Point {
+ *     int x;
+ *     int y;
+ *     Point() : x(0), y(0) {}
+ *     Point(int a, int b) : x(a), y(b) {}
+ * };
+ */
+class Solution {
+public:
+    int gcd(int x, int y)
+    {
+        if(y == 0)
+            return x;
+        return gcd(y, x % y);
+    }
+    int maxPoints(vector<Point>& points) {
+        int res = 0;
+        if(points.size() < 2)
+            return points.size();
+        for(int i = 0; i < points.size(); i++)
+        {
+            map<pair<int, int>, int>line;
+            int localmax = 0, vertical = 0, same = 0;
+            for(int j = i + 1; j < points.size(); j++)
+            {
+                if(points[i].x == points[j].x && points[i].y == points[j].y)
+                    same++;
+                else if(points[i].x == points[j].x)
+                    vertical++;
+                else
+                {
+                    int a = points[i].x - points[j].x;
+                    int b = points[i].y - points[j].y;
+                    int g = gcd(a, b);
+                    a /= g;
+                    b /= g;
+                    line[make_pair(a, b)]++;
+                    localmax = max(localmax, line[make_pair(a, b)]);
+                }
+                    
+            }
+            res = max(res, max(vertical, localmax + same) + 1);
+        }
+        return res;
+    }
+};

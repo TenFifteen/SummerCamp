@@ -1,0 +1,27 @@
+题目大意：
+	给定一个只包含小写字母的字符串，移出其中的重复字符并使得到的字符串字典序最小。
+解题思路：
+	贪心。对当前字符串s，从左到右扫描，当i位置的字符在当前字符串中只此一个的时候，取该位置左边的最小字符加入结果字符串中，将位置pos开始的子字符串递归求解即可。
+class Solution {
+public:
+    string removeDuplicateLetters(string s) {
+        vector<int>dic(26, 0);
+        string res = "", str = "";
+        if(s.length() == 0)
+            return res;
+        int pos = 0;
+        for(int i = 0; i < s.length(); i++)
+            dic[s[i] - 'a']++;
+        for(int i = 0; i < s.length(); i++)
+        {
+            if(s[i] < s[pos])
+                pos = i;
+            if(--dic[s[i] - 'a'] == 0)
+                break;
+        }
+        for(int i = pos + 1; i < s.length(); i++)
+            if(s[i] != s[pos])
+                str += s[i];
+        return s[pos] + removeDuplicateLetters(str);
+    }
+};

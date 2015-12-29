@@ -1,0 +1,64 @@
+题目大意：
+	给定一个包含字母和左右括号的字符串，最少的去掉左右括号使该字符串合法。
+解题思路：
+	dfs。首先得到应该去掉的左右括号数，然后进行深搜，若当前字符不为左右括号，将其加到字符串中，若为左括号，如果还要去掉的左括号多于0，则当前左括号有删除和不删除两种选择，若为右括号，如果还要去掉的右括号多于0，则当前右括号可以删除，或者当左括号未配对数多于0时，可以不删除。
+class Solution {
+private:
+    void remove(string s, unordered_set<string>&res, string cur, int index, int pair, int left, int right)
+    {
+        if(index == s.length())
+        {
+            if(left == 0 && right == 0 && pair == 0)
+                res.insert(cur);
+            return;
+        }
+        if(s[index] != '(' && s[index] != ')')
+            remove(s, res, cur + s[index], index + 1, pair, left, right);
+        if(s[index] == '(')
+        {
+            if(left > 0)
+                remove(s, res, cur, index + 1, pair, left - 1, right);
+            remove(s, res, cur + '(', index + 1, pair + 1, left, right);
+        }
+        else
+        {
+            if(right > 0)
+                remove(s, res, cur, index + 1, pair, left, right - 1);
+            if(pair > 0)
+                remove(s, res, cur + ')', index + 1, pair - 1, left, right);
+        }
+    }
+public:
+    vector<string> removeInvalidParentheses(string s) {
+        int i, j, x = 0, y = 0;
+        vector<string>res;
+        unordered_set<string>uset;
+        string tmp = "";
+        if(s.length() < 2)
+        {
+            if(s.length() == 1 && s[0] != '(' && s[0] != ')')
+                res.push_back(s);
+            else
+                res.push_back(tmp);
+            return res;
+        }
+        for(i = 0; i < s.length(); i++)
+        {
+            if(s[i] == '(')
+                x++;
+            if(s[i] == ')')
+            {
+                if(x != 0)
+                    x--;
+                else
+                    y++;
+            }
+        }
+        remove(s, uset, tmp, 0, 0, x, y);
+        for(auto k : uset)
+            res.push_back(k);
+        if(res.size() == 0)
+            res.push_back("");
+        return res;
+    }
+};

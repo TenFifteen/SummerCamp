@@ -1,0 +1,51 @@
+题目大意：
+	给定一个无序数组，返回最大递增子序列长度。	
+解题思路：
+	o(n^2)代码的思路是用一个与原数组同大小的数组来保存以元素i为最后一个元素的最长序列长度，那么对当前元素而言，只要向前一直找比其小的元素，比较序列长度并更新即可。优化后的o(nlogn)代码的思路是用一个数组来表示最大长度为i的序列的最小结尾元素，那么对当前元素，只要遍历该数组，找到第一个比它小的元素，比较并更新该长度下的最小元素即可，若当前元素比最大长度的结尾元素还大，则新增一个长度，并将当前元素放入该下标下。
+o(n^2)代码：
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        if(nums.size() == 0)
+            return 0;
+        int res = 1;
+        vector<int>lis(nums.size(), 1);
+        for(int i = 0; i < nums.size(); i++)
+        {
+            for(int j = i - 1; j >= 0; j--)
+            {
+                lis[i] = nums[j] < nums[i] ? max(lis[i], lis[j] + 1) : lis[i];
+                res = max(res, lis[i]);
+            }
+        }
+        return res;
+    }
+};
+o(nlogn)
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        if(nums.size() == 0)
+            return 0;
+        vector<int>lsmall;
+        int j;
+        lsmall.push_back(nums[0]); 
+        for(int i = 1; i < nums.size(); i++)
+        {
+            for(j = lsmall.size() - 1; j >= 0; j--)
+            {
+                if(nums[i] > lsmall[j])
+                {
+                    if(j == lsmall.size() - 1)
+                        lsmall.push_back(nums[i]);
+                    else
+                        lsmall[j + 1] = min(nums[i], lsmall[j + 1]);
+                    break;
+                }
+            }
+            if(j == -1)
+                lsmall[0] = min(lsmall[0], nums[i]);
+        }
+        return lsmall.size();
+    }
+};

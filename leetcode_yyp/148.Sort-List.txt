@@ -1,0 +1,137 @@
+题目大意：
+	将链表排序，时间复杂度为o(nlogn),空间复杂度是o(1).
+解题思路：
+	归并排序。
+问题：
+	开始用的链表快排，可是超时，应该是因为快排平均复杂度是nlogn，而归并是总数nlogn。
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    ListNode * merge(ListNode* list1, ListNode* list2)
+    {
+        ListNode * newhead = new ListNode(0);
+        ListNode *tmp = newhead;
+        int x1, x2, num;
+        while(list1 != NULL || list2 != NULL)
+        {
+            x1 = (list1 == NULL ? INT_MAX : list1->val);
+            x2 = (list2 == NULL ? INT_MAX : list2->val);
+            num = min(x1, x2);
+            if(num == x1)
+            {
+                tmp->next = list1;
+                list1 = list1->next;
+            }
+            else
+            {
+                tmp->next = list2;
+                list2 = list2->next;
+            }
+            tmp = tmp->next;
+        }
+        tmp->next = NULL;
+        return newhead->next;
+    }
+public:
+    ListNode* sortList(ListNode* head) {
+        if(head == NULL || head->next == NULL)
+            return head;
+        ListNode *slow = head, *fast = head;
+        while(fast != NULL && fast->next != NULL && fast->next->next != NULL)
+        {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        fast = slow->next;
+        slow->next = NULL;
+        return merge(sortList(head), sortList(fast));
+    }
+};
+/*
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    void quickSort(ListNode*head, ListNode * end)
+    {
+        if(head == end || head->next == end)
+            return;
+        int num = head->val, tmp;
+        ListNode *cur = head->next, *newhead = head;
+        while(cur != end)
+        {
+            if(cur->val < num)
+            {
+                newhead->val = cur->val;
+                newhead = newhead->next;
+                cur->val = newhead->val;
+            }
+            cur = cur->next;
+        }
+        newhead->val = num;
+        quickSort(head, newhead);
+        quickSort(newhead->next, end);
+        return;
+    }
+public:
+    ListNode* sortList(ListNode* head) {
+        if(head == NULL || head->next == NULL)
+            return head;
+        quickSort(head, NULL);
+        return head;
+    }
+};
+/*
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    void quickSort(ListNode*head, ListNode * end)
+    {
+        if(head == end || head->next == end)
+            return;
+        int num = head->val, tmp;
+        ListNode *cur = head->next, *newhead = head;
+        while(cur != end)
+        {
+            if(cur->val < num)
+            {
+                newhead->val = cur->val;
+                newhead = newhead->next;
+                cur->val = newhead->val;
+            }
+            cur = cur->next;
+        }
+        newhead->val = num;
+        quickSort(head, newhead);
+        quickSort(newhead->next, end);
+        return;
+    }
+public:
+    ListNode* sortList(ListNode* head) {
+        if(head == NULL || head->next == NULL)
+            return head;
+        quickSort(head, NULL);
+        return head;
+    }
+};
+*/

@@ -1,0 +1,41 @@
+题目大意：
+	给定一个只包含0-9的字符串和一个目标值，插入运算符+,-,*使得运算结果等于目标值，求所有可能的表达式。
+解题思路：
+	递归。对当前数字x，有四种可能性，1，当传入的数pre不为0时，可与其组合成pre*10+x，作为新的pre传下去，其他参数不变。2.与pre之间插入*，则因*运算符相同优先级，先将pre与之前的乘数mul相乘，然后作为新的乘数传下去。3.与pre之间插入+，因为*优先级高，先将pre与之前的乘数mul相乘，因为+与+、-的优先级相同，所以再将该数与之前的加数作加减运算，作为新的加数传下去。4，插入-与3相同。
+class Solution {
+public:
+    void cal(string num, int target, vector<string>&res, int index, string cur, long pre, int mul, char flag, int add)
+    {
+        if(index == num.size())
+        {
+            long tmp = (flag == '+' ? add + mul * pre : add - mul * pre);
+            if(tmp == target)
+                res.push_back(cur);
+            return;
+        }
+        if(pre != 0)
+            cal(num, target, res, index + 1, cur + num[index], pre * 10 + (num[index] - '0'), mul, flag, add);
+        cal(num, target, res, index + 1, cur + "*" + num[index], num[index] - '0', mul * pre, flag, add);
+        if(flag == '+')
+        {
+            cal(num, target, res, index + 1, cur + "+" + num[index], num[index] - '0', 1, '+' ,add + pre * mul);
+            cal(num, target, res, index + 1, cur + "-" + num[index], num[index] - '0', 1, '-' ,add + pre * mul);
+        }
+        else
+        {
+            cal(num, target, res, index + 1, cur + "+" + num[index], num[index] - '0', 1, '+' ,add - pre * mul);
+            cal(num, target, res, index + 1, cur + "-" + num[index], num[index] - '0', 1, '-' ,add - pre * mul);
+        }
+        
+    }
+    vector<string> addOperators(string num, int target)
+    {
+        vector<string>res;
+        if(num.size() == 0)
+            return res;
+        string tmp = "";
+        tmp = tmp + num[0];
+        cal(num, target, res, 1, tmp, num[0] - '0', 1, '+', 0);
+        return res;
+    }
+};
