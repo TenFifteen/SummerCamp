@@ -1,0 +1,35 @@
+题目大意：
+	给定一个包含数字和操作符的字符串数组，求值。
+解题思路：
+	遇数字存入栈，遇操作符弹出两个操作数进行运算，然后将结果压入栈，最后，栈顶就是结果。
+class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        stack<int>num;
+        int res = 0, x, a, b;
+        for(auto i : tokens)
+        {
+            if(i[i.size() - 1] >= '0' && i[i.size() - 1] <= '9')
+            {
+                x = atoi(i.c_str());
+                num.push(x);
+            }
+            else
+            {
+                a = num.top();
+                num.pop();
+                b = num.top();
+                num.pop();
+                if(i[0] == '+')
+                    num.push(a + b);   
+                else if(i[0] == '-')
+                    num.push(b - a);   
+                else if(i[0] == '*')
+                    num.push(a * b);   
+                else if(i[0] == '/')
+                    num.push(b / a);   
+            }
+        }
+        return num.top();
+    }
+};

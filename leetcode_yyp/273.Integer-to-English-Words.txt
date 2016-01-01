@@ -1,0 +1,40 @@
+题目大意：
+	给定一个非负数，给出它的英文单词表达。
+解题思路：
+	将1-20，整十，百，千，百万，十亿存起来，每1000进行一次处理。
+注意：
+	空格容易多，注意。
+class Solution {
+private:
+    string below20[20] = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+    string tens[10] = {"", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+    string thousands[4] = {"", "Thousand", "Million", "Billion"};
+    string helper(int x)
+    {
+        if(x < 20)
+            return below20[x];
+        else if(x < 100)
+            return tens[x / 10] + (x % 10 == 0 ? "" :" ") + helper(x % 10);
+        else 
+            return below20[x / 100] + " Hundred" + (x % 100 == 0 ? "" :" ") + helper(x % 100);
+    }
+
+public:
+    string numberToWords(int num) {
+        if(num == 0)
+            return "Zero";
+        int i = 0, x = num, tmp;
+        string res = "";
+        while(x)
+        {
+            tmp = x % 1000;
+            x = x / 1000;
+            if(tmp != 0)
+                res = helper(tmp) + " " + thousands[i] + " " + res;
+            i++;
+        }
+        while(res[res.size() - 1] == ' ')
+            res = res.substr(0, res.size() - 1);
+        return res;
+    }
+};

@@ -1,0 +1,54 @@
+题目大意：
+	给定一个有树性质的无向图，选其中一个节点为根，使得树的深度最小。返回所有结果。
+解题思路：
+	平衡树的树高最小，用剥洋葱思想，即每一轮都去掉叶子节点，直至剩下1-2个节点就是最后的结果。
+class Solution {
+public:
+    vector<int> findMinHeightTrees(int n, vector<pair<int, int> >& edges) {
+        vector<int>res;
+        if(n == 1)
+        {
+            res.push_back(n - 1);
+            return res;
+        }
+        map<int, set<int> >dic;
+        set<int>s;
+        int num = 0, x1 = 0, x2 = 0;
+        queue<int>q, newq;
+        for(auto i : edges)
+        {
+            dic[i.first].insert(i.second);
+            dic[i.second].insert(i.first);
+        }
+        for(auto i : dic)
+            if(i.second.size() == 1)
+                q.push(i.first);
+        while(n > 2)
+        {
+            n -= q.size();
+            queue<int>newq;
+            while(!q.empty())
+            {
+                int x = q.front();
+                q.pop();
+                for(auto j : dic[x])
+                {
+                    if(dic.find(j) != dic.end())
+                    {
+                        dic[j].erase(x);
+                        if(dic[j].size() == 1)
+                            newq.push(j);
+                    }
+                }
+                dic.erase(x);
+            }
+            q = newq;
+        }
+        while(!q.empty())
+        {
+            res.push_back(q.front());
+            q.pop();
+        }
+        return res;
+    }
+};

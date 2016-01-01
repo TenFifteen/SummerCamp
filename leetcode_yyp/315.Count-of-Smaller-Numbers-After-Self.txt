@@ -1,0 +1,48 @@
+题目大意：
+	给定一个数组，返回一个计数数组，即对nums[i]，返回i右边比nums[i]小的数。
+解题思路：
+	分治法。将数组分成两部分，分别求计数数组并进行排序，然后进行归并，归并时，只有左边的计数数组会发生变化，即，对左边数组中的数增加右边数组中比当前数少的个数即可。只是过程较为麻烦。
+问题：
+	解题时忘了加b<=j，而直接判断tmp[k] == order[b]，导致数组越界访问，却一直合法，导致调试半天才发现。
+class Solution {
+public:
+    void merge(vector<int>& nums, vector<int>& order, vector<int>&res, int i, int j)
+    {
+        if(i == j)
+            return;
+        int mid = (i + j) / 2, a = i, b = mid + 1, count = 0, k = 0, x;
+        vector<int>tmp(j - i + 1, 0);
+        merge(nums, order, res, i, mid);
+        merge(nums, order, res, mid + 1, j);
+        while(a <= mid || b <= j)
+        {
+            int x = (a > mid ? nums[order[b]] : (b > j ? nums[order[a]] : min(nums[order[a]], nums[order[b]])));
+            tmp[k] = (x == nums[order[a]] ? order[a] : order[b]);
+            if(b <= j && tmp[k] == order[b])
+            {
+                count++;
+                b++;
+            }
+            else
+            {
+                res[order[a]] += count;
+                a++;
+            }
+            k++;
+        }
+        for(int m = i; m <= j; m++)
+            order[m] = tmp[m - i];
+    }
+    vector<int> countSmaller(vector<int>& nums) {
+        vector<int>order, res;
+        if(nums.size() == 0)
+            return res;
+        for(int i = 0; i < nums.size(); i++)
+        {
+            order.push_back(i);
+            res.push_back(0);
+        }
+        merge(nums, order, res, 0, nums.size() - 1);
+        return res;
+    }
+};

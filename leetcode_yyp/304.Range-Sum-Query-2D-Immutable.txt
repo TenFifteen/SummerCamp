@@ -1,0 +1,38 @@
+题目大意：
+	给定一个二维矩阵，求给定左上角和右下角位置的矩形内的数的和。
+解题思路：
+	初始化时求得矩阵中所有点与0，0点的矩形内数据的和。当给定左上角和右下角的点时，只需减去多余加上多减的位置即可。
+class NumMatrix {
+private:
+    vector<vector<int> >s;
+public:
+    NumMatrix(vector<vector<int> > &matrix) {
+        if(matrix.size() != 0)
+        {
+            int cur = 0;
+            vector<int>tmp(matrix[0].size());
+            for(int i = 0; i < matrix.size(); i++)
+            {
+                s.push_back(tmp);
+                cur = 0;
+                for(int j = 0; j < matrix[0].size(); j++)
+                {
+                    cur += matrix[i][j];
+                    s[i][j] = (i - 1 >= 0 ? s[i - 1][j] : 0) + cur;
+                }
+            }
+        }
+    }
+
+    int sumRegion(int row1, int col1, int row2, int col2) {
+        if(s.size() <= 0)
+            return 0;
+        return s[row2][col2] - (row1 - 1 >= 0 ? s[row1 - 1][col2] : 0) - (col1 - 1 >= 0 ? s[row2][col1 - 1] : 0) + (row1 - 1 >= 0 && col1 - 1 >= 0 ? s[row1 - 1][col1 - 1] : 0);
+    }
+};
+
+
+// Your NumMatrix object will be instantiated and called as such:
+// NumMatrix numMatrix(matrix);
+// numMatrix.sumRegion(0, 1, 2, 3);
+// numMatrix.sumRegion(1, 2, 3, 4);
