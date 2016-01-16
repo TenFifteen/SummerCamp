@@ -7,6 +7,14 @@
 
 遇到的问题：
 一次通过。
+
+再次阅读：
+虽然之前的代码没啥问题，但是DISCUSS中总是有人写的更加简洁：
+int maxDepth(TreeNode *root)
+{
+    return root == NULL ? 0 : max(maxDepth(root -> left), maxDepth(root -> right)) + 1;
+}
+另外，还可以通过BFS的迭代方式来计算最大深度。
 */
 /**
  * Definition for a binary tree node.
