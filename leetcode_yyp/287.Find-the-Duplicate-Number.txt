@@ -1,0 +1,23 @@
+题目大意：
+	给定一个包括n+1个数的数组，里面数的范围是1-n,证明里面一定有重复的数，假设只有一个数会重复，但是只会重复一次，返回这个数。
+解题思路：
+	从0开始将该下标的数换到对应下标处，若该下标处的数已经是这个数，则该数即是重复的数。
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        int tmp, i = 0;
+        while(i < nums.size())
+        {
+            if(i + 1 != nums[i] && nums[nums[i] - 1] != nums[i])
+            {
+                tmp = nums[i];
+                nums[i] = nums[tmp - 1];
+                nums[tmp - 1] = tmp;
+            }
+            else if(i + 1 != nums[i] && nums[nums[i] - 1] == nums[i])
+                return nums[i];
+            else
+                i++;
+        }
+    }
+};

@@ -1,0 +1,14 @@
+题目大意：
+	给定一个字符串，将里面的单词逆序。
+解题思路：
+	用流逆置单词即可，流会按照空白字符分割字符串。
+class Solution {
+public:
+    void reverseWords(string &s) {
+        stringstream stream(s);
+        string res = "", tmp = "";
+        while(stream >> tmp)
+            res = tmp + " " + res;
+        s = res.substr(0, res.size() - 1);
+    }
+};

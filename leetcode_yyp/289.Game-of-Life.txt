@@ -1,0 +1,53 @@
+题目大意：
+	给定一个2d板子，上面每个格初始都有0，1代表死，生，规定，每个格子若是初始为1，其周围8个格子是1的数目小于2或者大于3的话，该格子下一个状态需要变为0，若该格子初始为0，其8个邻居格子1的数目恰好为3的话，该格子下一个状态需要变为1，更新下一个状态。
+解题思路：
+	遍历每个格子周围的8个格子，若需要0->1（周围格子>=1的格子数为3），则标记当前格子为-1（小于0），若需要1->0（周围格子>=1的格子数为2，3）,则设置当前格子为2（大于1），然后遍历一遍所有格子，将标记为-1的格子变为1，标记为2的格子变为0.
+class Solution {
+public:
+    int live(vector<vector<int> >& board, int i, int j)
+    {
+        int m = board.size(), n = board[0].size();
+        int res = 0;
+        if(i - 1 >= 0 && j - 1 >= 0)
+            res += board[i - 1][j - 1] >= 1 ? 1 : 0;
+        if(i - 1 >= 0 && j + 1 < n)
+            res += board[i - 1][j + 1] >= 1 ? 1 : 0;
+        if(i - 1 >= 0)
+            res += board[i - 1][j] >= 1 ? 1 : 0;
+        if(j - 1 >= 0)
+            res += board[i][j - 1] >= 1 ? 1 : 0;
+        if(j + 1 < n)
+            res += board[i][j + 1] >= 1 ? 1 : 0;
+        if(i + 1 < m && j - 1 >= 0)
+            res += board[i + 1][j - 1] >= 1 ? 1 : 0;
+        if(i + 1 < m && j + 1 < n)
+            res += board[i + 1][j + 1] >= 1 ? 1 : 0;
+        if(i + 1 < m )
+            res += board[i + 1][j] >= 1 ? 1 : 0;
+        return res;
+    }
+    void gameOfLife(vector<vector<int> >& board) {
+        int m = board.size(), n = board[0].size(), livenum;
+        for(int i = 0; i < m; i++)
+        {
+            for(int j = 0; j < n; j++)
+            {
+                livenum = live(board, i, j);
+                if(board[i][j] == 0 && livenum == 3)
+                    board[i][j] = -1;
+                else if(board[i][j] == 1 && (livenum < 2 || livenum > 3))
+                    board[i][j] = 2;
+            }
+        }
+        for(int i = 0; i < m; i++)
+        {
+            for(int j = 0; j < n; j++)
+            {
+                if(board[i][j] == -1)
+                    board[i][j] = 1;
+                else if(board[i][j] == 2)
+                    board[i][j] = 0;
+            }
+        }
+    }
+};

@@ -1,0 +1,23 @@
+题目大意：
+	给定一个数组，找最大连续乘积。
+解题思路：
+	动归。考虑到有负数存在，保存两个数，一个是到当前数的最大值，一个是到当前数的最小值。随时更新res即可。
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) 
+    {
+        if(nums.size() == 1)
+            return nums[0];
+        int maxendhere, minendhere;
+        int maxendpre = nums[0], minendpre = nums[0], res = nums[0];
+        for(int i = 1; i < nums.size(); i++)
+        {
+            maxendhere = max(nums[i], max(maxendpre * nums[i], minendpre * nums[i]));
+            minendhere = min(nums[i], min(maxendpre * nums[i], minendpre * nums[i]));
+            res = max(res, max(maxendhere, minendhere));
+            maxendpre = maxendhere;
+            minendpre = minendhere;
+        }
+         return res;
+    }
+};

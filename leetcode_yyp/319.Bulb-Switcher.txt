@@ -1,0 +1,10 @@
+题目大意：
+	给定n个灯泡，开始时都是灭着的，然后从1-i-n，每一次都将i的倍数的等变反，问最后剩下几盏亮着的灯。
+解题思路：
+	最后剩下的都是平方数，因为平方数有奇数个因子。
+class Solution {
+public:
+    int bulbSwitch(int n) {
+        return floor(sqrt(n));
+    }
+};

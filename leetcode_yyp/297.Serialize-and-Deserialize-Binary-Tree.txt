@@ -1,0 +1,71 @@
+题目大意：
+	序列化并能反序列化一棵二叉树，即，能将一棵树转为一个字符串，并能从这个字符串恢复为一棵树。
+解题思路：
+	实质是用队列实现层次遍历。将数中节点的值转化为字符串存入结果字符串中，若节点为空，将LONG_INT值转为字符串放入结果字符串中。恢复过程同理。
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        string res = "";
+        queue<TreeNode*>q;
+        long x = LONG_MIN;
+        TreeNode* tmp;
+        if(root == NULL)
+            return res;
+        res = to_string(root->val);
+        q.push(root);
+        while(!q.empty())
+        {
+            tmp = q.front();
+            q.pop();
+            res += " " + (tmp->left == NULL ? to_string(x) : to_string(tmp->left->val));
+            res += " " + (tmp->right == NULL ? to_string(x) : to_string(tmp->right->val));
+            if(tmp->left != NULL)
+                q.push(tmp->left);
+            if(tmp->right != NULL)
+                q.push(tmp->right);
+        }
+        return res;
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        stringstream stream(data);
+        long n1, n2, x = LONG_MIN;
+        queue<TreeNode*>q;
+        if(data.length() == 0)
+            return NULL;
+        stream >> n1;
+        TreeNode*root = new TreeNode(n1);
+        TreeNode*cur = root, *tmp;
+        q.push(cur);
+        while(stream >> n1 >> n2)
+        {
+            tmp = q.front();
+            q.pop();
+            TreeNode* node1 = (n1 == x ? NULL : new TreeNode(n1));
+            TreeNode* node2 = (n2 == x ? NULL : new TreeNode(n2));
+            tmp->left = node1;
+            tmp->right = node2;
+            if(node1 != NULL)
+                q.push(node1);
+            if(node2 != NULL)
+                q.push(node2);
+        }
+        return root;
+    }
+};
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec;
+// codec.deserialize(codec.serialize(root));

@@ -1,0 +1,52 @@
+题目大意：
+	给定二叉树，返回其先序遍历的结果。
+解题思路：
+	递归或者循环。
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    void traversal(TreeNode* root, vector<int>&res)
+    {
+        if(root == NULL)
+            return;
+        res.push_back(root->val);
+        traversal(root->left, res);
+        traversal(root->right, res);
+    }
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int>res;
+        traversal(root, res);
+        return res;
+    }
+};
+
+vector<int> preorderTraversal(TreeNode* root) {
+        vector<int>res;
+        if(root == NULL)
+            return res;
+        TreeNode * tmp;
+        stack<TreeNode*>st;
+        while(root != NULL)
+        {
+            res.push_back(root->val);
+            if(root->right != NULL)
+                st.push(root->right);
+            if(root->left == NULL && !st.empty())
+            {
+                root = st.top();
+                st.pop();
+            }
+            else
+                root = root->left;
+        }
+        return res;
+    }
