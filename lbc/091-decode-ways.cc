@@ -7,6 +7,35 @@
 
 遇到的问题：
 一开始并没有考虑会有不合法的情况。
+
+再次阅读：
+一看就知道是动归。
+但是这道题目，需要随时考虑不合法的情形。
+而且呢，动归的空间复杂度是可以压缩掉的。
+DISCUSS中有一个压缩掉空间复杂度的动归版本：
+int numDecodings(string s) {
+    if (!s.size() || s.front() == '0') return 0;
+    // r2: decode ways of s[i-2] , r1: decode ways of s[i-1] 
+    int r1 = 1, r2 = 1;
+
+    for (int i = 1; i < s.size(); i++) {
+        // zero voids ways of the last because zero cannot be used separately
+        if (s[i] == '0') r1 = 0;
+
+        // possible two-digit letter, so new r1 is sum of both while new r2 is the old r1
+        if (s[i - 1] == '1' || s[i - 1] == '2' && s[i] <= '6') {
+            r1 = r2 + r1;
+            r2 = r1 - r2;
+        }
+
+        // one-digit letter, no new way added
+        else {
+            r2 = r1;
+        }
+    }
+
+    return r1;
+}
 */
 class Solution {
 public:
