@@ -9,6 +9,31 @@
 本来46题就已经处理了重复了。
 结果发现其实是有问题的，去掉了之前的处理方式，换成了：
 while(i+1 < nums.size() && nums[i+1] == nums[i])i++;
+
+再次阅读：
+再次看这道题，依然会犯之前的错误。
+看了之前的代码，竟然感觉没有什么道理。
+看了一下DISCUSS中的解法，人家依然是那么简洁：
+class Solution {
+public:
+    void recursion(vector<int> num, int i, int j, vector<vector<int> > &res) {
+        if (i == j-1) {
+            res.push_back(num);
+            return;
+        }
+        for (int k = i; k < j; k++) {
+            if (i != k && num[i] == num[k]) continue;
+            swap(num[i], num[k]);
+            recursion(num, i+1, j, res);
+        }
+    }
+    vector<vector<int> > permuteUnique(vector<int> &num) {
+        sort(num.begin(), num.end());
+        vector<vector<int> >res;
+        recursion(num, 0, num.size(), res);
+        return res;
+    }
+};
 */
 class Solution {
 public:

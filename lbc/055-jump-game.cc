@@ -7,6 +7,16 @@
 
 遇到的问题：
 一次通过。
+
+再次阅读：
+之前的算法应该是没有什么问题了，O(n)的复杂度应该是最好的了。
+只是代码可以更简洁一些：
+bool canJump(int A[], int n) {
+    int i = 0;
+    for (int reach = 0; i < n && i <= reach; ++i)
+        reach = max(i + A[i], reach);
+    return i == n;
+}
 */
 class Solution {
 public:

@@ -8,6 +8,37 @@
 
 遇到的问题：
 竟然又一次做对了。所以呢，难题并不需要畏惧，想到了各种条件，应该就没问题。
+
+再次阅读：
+这个题目一看就不是很难，就是一个二分。只是需要在写代码的时候足够的细心，处理好各种情况。
+其实我的代码应该是没有什么问题了，除了有点啰嗦之外。在DISCUSS中找到了另一份代码，感觉
+还是挺好的，写的比较简洁：
+vector<int> searchRange(int A[], int n, int target) {
+    int i = 0, j = n - 1;
+    vector<int> ret(2, -1);
+    // Search for the left one
+    while (i < j)
+    {
+        int mid = (i + j) /2;
+        if (A[mid] < target) i = mid + 1;
+        else j = mid;
+    }
+    if (A[i]!=target) return ret;
+    else ret[0] = i;
+
+    // Search for the right one
+    j = n-1;  // We don't have to set i to 0 the second time.
+    while (i < j)
+    {
+        int mid = (i + j) /2 + 1;   // Make mid biased to the right
+        if (A[mid] > target) j = mid - 1;  
+        else i = mid;               // So that this won't make the search range stuck.
+    }
+    ret[1] = j;
+    return ret; 
+}
+尤其是在第二次搜索的时候，left从i开始，而不是从0开始，感觉这一点虽然效率上来讲可能提高了也就是一两次搜索的过程，
+但是思想非常的棒。
 */
 class Solution {
 public:

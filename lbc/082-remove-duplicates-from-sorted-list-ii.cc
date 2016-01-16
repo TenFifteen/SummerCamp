@@ -8,6 +8,37 @@
 遇到的问题：
 还是各种边界问题。
 不知道是长时间没写了还是就是不熟，总是不能一次通过。感觉边界很多很复杂。
+
+再次阅读：
+感觉题目没有什么难度，就是考察写代码的水平吧。
+感觉之前的实现还是很啰嗦的。
+下面这个是DISCUSS中比较好的解法：
+class Solution {
+public:
+    ListNode *deleteDuplicates(ListNode *head) {
+        ListNode **runner = &head;
+
+        if(!head || !head->next)return head;
+
+        while(*runner)
+        {
+            if((*runner)->next && (*runner)->next->val == (*runner)->val)
+            {
+                ListNode *temp = *runner;
+                while(temp && (*runner)->val == temp->val)
+                    temp = temp->next;
+
+                *runner = temp;
+            }
+            else
+                runner = &((*runner)->next);
+        }
+
+        return head;
+    }
+};
+通过观察可以发现，链表中，为了防止对头指针的各种判断问题，可以采用指向指针的这种形式。
+但是这种题目，最好是问一下面试官，空间到底是否需要由我们来释放。
 */
 /**
  * Definition for singly-linked list.

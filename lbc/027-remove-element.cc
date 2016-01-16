@@ -7,6 +7,16 @@
 
 遇到的问题：
 并没有问题。
+
+再次阅读：
+看了之前写的代码，感觉还是可以写的更简洁一些。
+swap其实是没有必要的。
+DISCUSS中有一个比较不错的简洁的例子：
+int removeElement(int A[], int n, int elem) {
+    int begin=0;
+    for(int i=0;i<n;i++) if(A[i]!=elem) A[begin++]=A[i];
+    return begin;
+}
 */
 class Solution {
 public:

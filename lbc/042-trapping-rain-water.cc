@@ -7,6 +7,35 @@
 
 遇到的问题：
 无问题。
+
+再次阅读：
+再次看到这个题目的时候，竟然一下子就想出来了，而且是跟原来的解法一样的。
+然后看了一下DISCUSS中的解法，其实人家比我的解法要好很多，少了一个n的空间。
+就是用两个指针的方式往中间走，不断的更新左右最高纪录，这样的话，就可以省掉了空间复杂度了。
+这样做的insight就是当前如果更新的是左边的值，说明maxleft要小于等于maxright，要不然就应该是
+先访问maxright这个值了。所以可以只用maxleft来界定水的高度。
+感觉实在是精妙啊。
+class Solution {
+public:
+    int trap(int A[], int n) {
+        int left=0; int right=n-1;
+        int res=0;
+        int maxleft=0, maxright=0;
+        while(left<=right){
+            if(A[left]<=A[right]){
+                if(A[left]>=maxleft) maxleft=A[left];
+                else res+=maxleft-A[left];
+                left++;
+            }
+            else{
+                if(A[right]>=maxright) maxright= A[right];
+                else res+=maxright-A[right];
+                right--;
+            }
+        }
+        return res;
+    }
+};
 */
 class Solution {
 public:

@@ -7,6 +7,10 @@
 
 遇到的问题：
 一次通过。
+
+再次阅读：
+之前的做法应该是没有任何问题，但是可以将set改为unordered_set，这样就可以做到n*n的
+复杂度了。
 */
 class Solution {
 public:

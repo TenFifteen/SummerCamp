@@ -8,6 +8,29 @@
 遇到的问题：
 一次通过。
 不过回头还是应该试试线性的算法。
+
+再次阅读：
+看到这个题目之后，感觉就是一遍遍历。不知道之前写的遇到的问题是什么意思了。
+然后看了一下DISCUSS中的不错的代码，跟自己想的还是比较相投的：
+vector<Interval> insert(vector<Interval>& intervals, Interval newInterval) {
+    vector<Interval> ret;
+    auto it = intervals.begin();
+    for(; it!=intervals.end(); ++it){
+        if(newInterval.end < (*it).start) //all intervals after will not overlap with the newInterval
+            break; 
+        else if(newInterval.start > (*it).end) // *it will not overlap with the newInterval
+            ret.push_back(*it); 
+        else{ //update newInterval bacause *it overlap with the newInterval
+            newInterval.start = min(newInterval.start, (*it).start);
+            newInterval.end = max(newInterval.end, (*it).end);
+        }   
+    }
+    // don't forget the rest of the intervals and the newInterval
+    ret.push_back(newInterval);
+    for(; it!=intervals.end(); ++it)
+        ret.push_back(*it);
+    return ret;
+}
 */
 /**
  * Definition for an interval.

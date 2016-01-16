@@ -8,6 +8,26 @@
 
 遇到的问题：
 不要忘记输出之后要返回。
+
+再次阅读：
+之前的解法已经足够好了。
+不过下面这种写法还是可以参考参考的。
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> res;
+        addingpar(res, "", n, 0);
+        return res;
+    }
+    void addingpar(vector<string> &v, string str, int n, int m){
+        if(n==0 && m==0) {
+            v.push_back(str);
+            return;
+        }
+        if(m > 0){ addingpar(v, str+")", n, m-1); }
+        if(n > 0){ addingpar(v, str+"(", n-1, m+1); }
+    }
+};
 */
 class Solution {
 public:

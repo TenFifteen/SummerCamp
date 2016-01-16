@@ -8,6 +8,30 @@
 
 遇到的问题：
 没有问题。代码细节。
+
+再次阅读：
+虽然感觉没有太大的思路问题，但是感觉效率稍微有点问题。
+然后看到DISCUSS中有一个用迭代的方式计算的，而且空间是一次性申请。
+感觉这个写法实在是无懈可击啊：
+string multiply(string num1, string num2) {
+    string sum(num1.size() + num2.size(), '0');
+
+    for (int i = num1.size() - 1; 0 <= i; --i) {
+        int carry = 0;
+        for (int j = num2.size() - 1; 0 <= j; --j) {
+            int tmp = (sum[i + j + 1] - '0') + (num1[i] - '0') * (num2[j] - '0') + carry;
+            sum[i + j + 1] = tmp % 10 + '0';
+            carry = tmp / 10;
+        }
+        sum[i] += carry;
+    }
+
+    size_t startpos = sum.find_first_not_of("0");
+    if (string::npos != startpos) {
+        return sum.substr(startpos);
+    }
+    return "0";
+}
 */
 class Solution {
 public:

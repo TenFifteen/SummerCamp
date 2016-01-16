@@ -12,6 +12,46 @@
 遇到的问题：
 一开始这个题目感觉像是动态规划，但是直接想到了二维的动归，而且计算起来应该是n的三次方。
 而且找到了一维动归后，还是忘记了))这种情况需要递推往前找的。
+
+再次阅读：
+一开始看到题目，首先是一个暴力的搜索。
+然后低头一看，原来用的竟然是个动归，然后就立马想起来动归的解法了。
+不过看了一下之前的代码，应该是有问题的，估计是样例不够吧，比如()()这种模式，应该就是错误的。
+不过也挺容易修复的。
+计算一下复杂度的话，大约是有可能n*n的。
+
+然后看了一下DISCUSS，竟然最好的解法都是用的栈来解决的。而且，都是线性复杂度。
+基本思路就是将一个stack来存放当前遍历过的没有匹配到的括号，然后遍历完了，之后，就知道了所有的无法
+匹配的括号的位置了。然后通过计算每个不匹配的括号之间的匹配的长度，就可以知道最后最大的匹配长度是多少了。
+感觉这个思路还是非常好的，代码如下：
+class Solution {
+public:
+    int longestValidParentheses(string s) {
+        int n = s.length(), longest = 0;
+        stack<int> st;
+        for (int i = 0; i < n; i++) {
+            if (s[i] == '(') st.push(i);
+            else {
+                if (!st.empty()) {
+                    if (s[st.top()] == '(') st.pop();
+                    else st.push(i);
+                }
+                else st.push(i);
+            }
+        }
+        if (st.empty()) longest = n;
+        else {
+            int a = n, b = 0;
+            while (!st.empty()) {
+                b = st.top(); st.pop();
+                longest = max(longest, a-b-1);
+                a = b;
+            }
+            longest = max(longest, a);
+        }
+        return longest;
+    }
+};
 */
 class Solution {
 public:

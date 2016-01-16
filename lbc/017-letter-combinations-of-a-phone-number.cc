@@ -8,6 +8,27 @@
 遇到的问题：
 并没有太大问题。不过sub函数可以再简练一点，多种情况只是判断左右边界，然后后边统一
 进行递归函数的调用。
+
+再次阅读：
+虽然之前做的没有太大问题。但是这个题可以写的更简洁一些，把每个数字对应的字母字符串
+先缓存下来，然后直接遍历就行了。另外就是注意0和1的处理。虽然这道题里没有考察这部分，
+但是还是应该注意一下的。
+下面是比较简洁的DISCUSS中的代码：
+vector<string> letterCombinations(string digits) {
+    vector<string> res;
+    string charmap[10] = {"0", "1", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    res.push_back("");
+    for (int i = 0; i < digits.size(); i++)
+    {
+        vector<string> tempres;
+        string chars = charmap[digits[i] - '0'];
+        for (int c = 0; c < chars.size();c++)
+            for (int j = 0; j < res.size();j++)
+                tempres.push_back(res[j]+chars[c]);
+        res = tempres;
+    }
+    return res;
+}
 */
 class Solution {
 public:

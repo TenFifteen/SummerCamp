@@ -7,6 +7,28 @@
 
 遇到的问题：
 本来以为这道题目需要原地归并，不能申请空间呢。结果试了一下，竟然通过了。
+
+再次阅读：
+这次第一想法已经知道了原地归并怎么做了。
+就是从后往前归并。
+如下：
+class Solution {
+public:
+    void merge(int A[], int m, int B[], int n) {
+        int i=m-1;
+        int j=n-1;
+        int k = m+n-1;
+        while(i >=0 && j>=0)
+        {
+            if(A[i] > B[j])
+                A[k--] = A[i--];
+            else
+                A[k--] = B[j--];
+        }
+        while(j>=0)
+            A[k--] = B[j--];
+    }
+};
 */
 class Solution {
 public:

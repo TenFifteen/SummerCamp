@@ -7,6 +7,36 @@
 
 遇到的问题：
 一次通过。
+
+再次阅读：
+感觉我之前的做法没有啥问题，就是这么一个递归的过程。
+但是看了一下DISCUSS之后发现，人家还有更简洁的方式来表达这个过程：
+class Solution {
+public:
+    vector<vector<int> > permute(vector<int> &num) {
+        vector<vector<int> > result;
+
+        permuteRecursive(num, 0, result);
+        return result;
+    }
+
+    // permute num[begin..end]
+    // invariant: num[0..begin-1] have been fixed/permuted
+    void permuteRecursive(vector<int> &num, int begin, vector<vector<int> > &result)    {
+        if (begin >= num.size()) {
+            // one permutation instance
+            result.push_back(num);
+            return;
+        }
+
+        for (int i = begin; i < num.size(); i++) {
+            swap(num[begin], num[i]);
+            permuteRecursive(num, begin + 1, result);
+            // reset
+            swap(num[begin], num[i]);
+        }
+    }
+};
 */
 class Solution {
 public:
