@@ -7,6 +7,9 @@
 
 遇到的问题：
 注意边界。
+
+再次阅读：
+感觉问题不大，基本就是这种思路，代码页差不多吧。
 */
 /**
  * Definition for a binary tree node.

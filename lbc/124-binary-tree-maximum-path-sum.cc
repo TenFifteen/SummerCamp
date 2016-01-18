@@ -8,6 +8,26 @@
 遇到的问题：
 各种问题，调了好一会。
 感觉这种题目需要加强训练，思维不够清晰。
+
+再次阅读：
+虽然思路相同，但是人家这种写法明显的简洁很多。
+public class Solution {
+    int maxValue;
+
+    public int maxPathSum(TreeNode root) {
+        maxValue = Integer.MIN_VALUE;
+        maxPathDown(root);
+        return maxValue;
+    }
+
+    private int maxPathDown(TreeNode node) {
+        if (node == null) return 0;
+        int left = Math.max(0, maxPathDown(node.left));
+        int right = Math.max(0, maxPathDown(node.right));
+        maxValue = Math.max(maxValue, left + right + node.val);
+        return Math.max(left, right) + node.val;
+    }
+}
 */
 /**
  * Definition for a binary tree node.

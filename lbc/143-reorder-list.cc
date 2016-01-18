@@ -8,6 +8,40 @@
 
 遇到的问题：
 还是链表指针修改次序的问题，又搞了我好久。这东西真烦人，一定要够细心。
+
+再次阅读：
+感觉这种方法比较直观，没有太大问题。
+但是代码还是稍微有些乱，可以参考一下下面的代码：
+void reorderList(ListNode *head) {
+    if (!head || !head->next) return;
+
+    // find the middle node: O(n)
+    ListNode *p1 = head, *p2 = head->next;
+    while (p2 && p2->next) {
+        p1 = p1->next;
+        p2 = p2->next->next;
+    }
+
+    // cut from the middle and reverse the second half: O(n)
+    ListNode *head2 = p1->next;
+    p1->next = NULL;
+
+    p2 = head2->next;
+    head2->next = NULL;
+    while (p2) {
+        p1 = p2->next;
+        p2->next = head2;
+        head2 = p2;
+        p2 = p1;
+    }
+
+    // merge two lists: O(n)
+    for (p1 = head, p2 = head2; p1; ) {
+        auto t = p1->next;
+        p1 = p1->next = p2;
+        p2 = t;
+    }
+}
 */
 /**
  * Definition for singly-linked list.

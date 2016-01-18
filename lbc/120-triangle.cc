@@ -7,6 +7,24 @@
 
 遇到的问题：
 一些边界问题。
+
+再次阅读：
+虽然我这种做法的时间和空间复杂度都已经达到了最优的要求，但是总是觉得有些啰嗦。
+然后就在DISCUSS中看到了下面这种解法，实在是精妙啊。从下往上走，既可以免去了空间
+使用了两个vector，又可以免去了最后一次找最大值的过程。
+int minimumTotal(vector<vector<int> > &triangle) {
+    int n = triangle.size();
+    vector<int> minlen(triangle.back());
+    for (int layer = n-2; layer >= 0; layer--) // For each layer
+    {
+        for (int i = 0; i <= layer; i++) // Check its every 'node'
+        {
+            // Find the lesser of its two children, and sum the current value in the triangle with it.
+            minlen[i] = min(minlen[i], minlen[i+1]) + triangle[layer][i]; 
+        }
+    }
+    return minlen[0];
+}
 */
 class Solution {
 public:

@@ -7,6 +7,26 @@
 
 遇到的问题；
 没有问题。
+
+再次阅读：
+这次想到的是，按照层次遍历，但是依靠的是横向的链表，而不是一个队列了。
+代码如下：
+void connect(TreeLinkNode *root) {
+    if (root == NULL) return;
+    TreeLinkNode *pre = root;
+    TreeLinkNode *cur = NULL;
+    while(pre->left) {
+        cur = pre;
+        while(cur) {
+            cur->left->next = cur->right;
+            if(cur->next) cur->right->next = cur->next->left;
+            cur = cur->next;
+        }
+        pre = pre->left;
+    }
+}
+不过，我之前写的那个递归的版本也挺好的，跟这个思路也是类似的。
+只不过，要是递归的空间复杂度也算进去的话，就不是一个常数的空间复杂度了。
 */
 /**
  * Definition for binary tree with next pointer.

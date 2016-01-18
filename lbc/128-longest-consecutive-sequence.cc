@@ -8,6 +8,29 @@
 遇到的问题：
 一开始没有考虑数字会有重复的情况。
 面试的时候一定要记得问清楚这种情况。
+
+再次阅读：
+看到之前用的方法竟然是排序。完全不符合题意呀。
+看了一下DISCUSS中的解答，有一个实在是厉害的解法：
+int longestConsecutive(vector<int> &num) {
+    unordered_map<int, int> m;
+    int r = 0;
+    for (int i : num) {
+        if (m[i]) continue;
+        r = max(r, m[i] = m[i + m[i + 1]] = m[i - m[i - 1]] = m[i + 1] + m[i - 1] + 1);
+    }
+    return r;
+}
+1) neither i+1 nor i-1 has been seen: m[i]=1;
+
+2) both i+1 and i-1 have been seen: extend m[i+m[i+1]] and m[i-m[i-1]] to each other;
+
+3) only i+1 has been seen: extend m[i+m[i+1]] and m[i] to each other;
+
+4) only i-1 has been seen: extend m[i-m[i-1]] and m[i] to each other.
+
+
+相当于是把每个元素对应的目前的长度都计算出来了。
 */
 class Solution {
 public:

@@ -7,6 +7,9 @@
 
 遇到的问题：
 一次通过。
+
+再次阅读：
+比较简单，直接用一个栈就可以了。
 */
 /**
  * Definition for a binary tree node.
