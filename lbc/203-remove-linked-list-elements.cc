@@ -7,6 +7,28 @@
 
 遇到的问题：
 一次通过。
+
+再次阅读：
+一看这道题就知道，至少这样写肯定是比较麻烦的。
+应该加一个假的prehead，或者取一个head的地址，来避免单独判断头指针的情形。
+ListNode *removeElements(ListNode *head, int val)
+{
+    ListNode **list = &head;
+
+    while (*list != nullptr)
+    {
+        if ((*list)->val == val)
+        {
+            *list = (*list)->next;
+        }
+        else
+        {
+            list = &(*list)->next;
+        }
+    }
+
+    return head;
+}
 */
 /**
  * Definition for singly-linked list.
