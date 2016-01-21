@@ -11,6 +11,10 @@
 遇到的问题：
 自己没想出来，还是看的别人的思路。
 参考：http://www.cnblogs.com/skysand/p/4179099.html
+
+再次阅读：
+这次倒是记得了桶排序了。
+这种思路简直就是好极了。
 */
 class Solution {
 public:

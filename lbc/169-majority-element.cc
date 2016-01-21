@@ -7,6 +7,26 @@
 
 遇到的问题：
 一次通过。
+
+再次阅读：
+原来这种分治的方法没啥问题，就是代码稍微麻烦一点。
+如果采用计数的方案的话，代码会简洁很多，而且还不需要递归：
+public class Solution {
+    public int majorityElement(int[] num) {
+
+        int major=num[0], count = 1;
+        for(int i=1; i<num.length;i++){
+            if(count==0){
+                count++;
+                major=num[i];
+            }else if(major==num[i]){
+                count++;
+            }else count--;
+
+        }
+        return major;
+    }
+}
 */
 class Solution {
 public:

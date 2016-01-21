@@ -10,6 +10,27 @@
 感觉这个跟翻转url的题目是很类似的。结果忘了处理多余空格的问题了。
 然后又加上了处理空格的代码才过的。
 不过感觉代码还需要整理一下，或者优化一下。
+
+再次阅读：
+一道经典老题了，这种解法应该是目前最好的了吧？
+不过在DISCUSS中还有人用一个临时的数组记录下来翻转的单词：
+class Solution {
+public:
+    void reverseWords(string &s) {
+        string result;
+        int pos = 0;
+        for (int i = 0; i < s.size(); i ++){
+            if (s[i] == ' '){
+                if (i > pos )
+                    result = s.substr(pos,i-pos)+ " " + result ;
+                pos = i + 1;
+            }
+            else if (i == s.size()-1)
+                result = s.substr(pos,s.size()-pos)+" "+result;
+        }
+        s = result.substr(0,result.size()-1) ;
+    }
+};
 */
 class Solution {
 public:

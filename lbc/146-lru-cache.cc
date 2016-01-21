@@ -10,6 +10,50 @@
 遇到的问题：
 第一次自己手动实现双向链表。感觉好多情况都没有考虑好。这个程序也是调试了很久了。
 这种程序以后一定要多多练习，多多注意。
+
+再次阅读：
+这个代码之前已经看过一次了，虽然实现的有些麻烦，不过还是实现了基本的功能。
+然后可以参考一下直接使用STL中的hash和list两种容器实现的LRU：
+class LRUCache {
+public:
+    LRUCache(int capacity) : _capacity(capacity) {}
+
+    int get(int key) {
+        auto it = cache.find(key);
+        if (it == cache.end()) return -1;
+        touch(it);
+        return it->second.first;
+    }
+
+    void set(int key, int value) {
+        auto it = cache.find(key);
+        if (it != cache.end()) touch(it);
+        else {
+            if (cache.size() == _capacity) {
+                cache.erase(used.back());
+                used.pop_back();
+            }
+            used.push_front(key);
+        }
+        cache[key] = { value, used.begin() };
+    }
+
+private:
+    typedef list<int> LI;
+    typedef pair<int, LI::iterator> PII;
+    typedef unordered_map<int, PII> HIPII;
+
+    void touch(HIPII::iterator it) {
+        int key = it->first;
+        used.erase(it->second.second);
+        used.push_front(key);
+        it->second.second = used.begin();
+    }
+
+    HIPII cache;
+    LI used;
+    int _capacity;
+};
 */
 class LRUCache{
 private:
