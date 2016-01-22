@@ -8,6 +8,36 @@
 遇到的问题：
 一开始求成了最大的矩形了。
 而且，将动态转移方程的下标写错了。
+
+再次阅读：
+首先，思路没有问题。
+然后代码有些冗余。
+而且，空间可以优化到n。
+贴一个比较好看的N*N的代码吧：
+int maximalSquare(vector<vector<char>>& matrix) {
+    int m = matrix.size();
+    if (!m) return 0;
+    int n = matrix[0].size();
+    vector<vector<int> > size(m, vector<int>(n, 0));
+    int maxsize = 0;
+    for (int j = 0; j < n; j++) {
+        size[0][j] = matrix[0][j] - '0';
+        maxsize = max(maxsize, size[0][j]);
+    }
+    for (int i = 1; i < m; i++) {
+        size[i][0] = matrix[i][0] - '0';
+        maxsize = max(maxsize, size[i][0]);
+    }
+    for (int i = 1; i < m; i++) {
+        for (int j = 1; j < n; j++) {
+            if (matrix[i][j] == '1') {
+                size[i][j] = min(size[i - 1][j - 1], min(size[i - 1][j], size[i][j - 1])) + 1;
+                maxsize = max(maxsize, size[i][j]);
+            }
+        }
+    }
+    return maxsize * maxsize;
+}
 */
 class Solution {
 public:

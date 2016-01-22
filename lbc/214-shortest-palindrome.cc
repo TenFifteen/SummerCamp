@@ -8,6 +8,46 @@
 遇到的问题：
 虽然一开始想到了这个解法，但是感觉Manchester并不能直接写出来，就试了一个朴素的解法，不出意料，超时了。
 得到的的结果就是Manchester算法一定要熟练掌握。
+
+再次阅读：
+本来以为这道题最好就是用这种Manchester算法解呢，结果看到DISCUSS中用的最多的竟然是KMP算法。
+当然了，KMP算法的next数组，正好可以表达这件事。也就是以字符串开头的最长的回文子串。
+然后就在这里贴一个如何求KMP算法的next数组的代码吧，感觉这东西好像很容易就忘了：
+void makeNext(const char P[],int next[])
+{
+    int q,k;//q:模版字符串下标；k:最大前后缀长度
+    int m = strlen(P);//模版字符串长度
+    next[0] = 0;//模版字符串的第一个字符的最大前后缀长度为0
+    for (q = 1,k = 0; q < m; ++q)//for循环，从第二个字符开始，依次计算每一个字符对应的next值
+    {
+        while(k > 0 && P[q] != P[k])//递归的求出P[0]···P[q]的最大的相同的前后缀长度k
+            k = next[k-1];          //不理解没关系看下面的分析，这个while循环是整段代码的精髓所在，确实不好理解  
+        if (P[q] == P[k])//如果相等，那么最大相同前后缀长度加1
+        {
+            k++;
+        }
+        next[q] = k;
+    }
+}
+下面这段代码就是用的KMP的思想，还是非常值得学习的：
+class Solution {
+public:
+    string shortestPalindrome(string s) {
+        string rev_s = s;
+        reverse(rev_s.begin(), rev_s.end());
+        string l = s + "#" + rev_s;
+
+        vector<int> p(l.size(), 0);
+        for (int i = 1; i < l.size(); i++) {
+            int j = p[i - 1];
+            while (j > 0 && l[i] != l[j])
+                j = p[j - 1];
+            p[i] = (j += l[i] == l[j]);
+        }
+
+        return rev_s.substr(0, s.size() - p[l.size() - 1]) + s;
+    }
+};
 */
 class Solution {
 public:

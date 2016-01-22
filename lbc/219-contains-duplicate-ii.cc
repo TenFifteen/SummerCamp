@@ -7,6 +7,10 @@
 
 遇到的问题：
 竟然min(k+1, nums.size())有语法错误。。。。。。
+
+再次阅读：
+用一个set是没有问题的。
+不过可以使用unordered_set也许更好一些。
 */
 class Solution {
 public:
