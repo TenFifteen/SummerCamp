@@ -7,6 +7,25 @@
 
 遇到的问题：
 这个题目也是在编程之美中遇到的。
+
+再次阅读：
+不得不说，天外有天，人外有人啊，下面这种算法竟然都有人可以想到。。。：
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int result = nums.size();
+        int i=0;
+
+        for(int num:nums){
+            result ^= num;
+            result ^= i;
+            i++;
+        }
+
+        return result;
+    }
+};
+当然了，还有一种是二分搜索。但是二分搜索要求数组是排序的。
 */
 class Solution {
 public:

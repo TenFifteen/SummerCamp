@@ -7,6 +7,9 @@
 
 遇到的问题：
 peek竟然忘了写return。。。
+
+再次阅读：
+感觉基本之前的这种思路已经是最好了。
 */
 class Queue {
 private:

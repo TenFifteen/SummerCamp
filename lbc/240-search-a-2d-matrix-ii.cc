@@ -7,6 +7,27 @@
 
 遇到的问题：
 竟然一次通过。
+
+再次阅读：
+首先，之前的实现有些过于麻烦了。而且，这种二分方法很难实现为迭代的。感觉主要还是思路问题吧，
+然后在DISCUSS看到大家赞的最多的答案竟然是这样，也算是长见识了：
+复杂度就是O(m+n)。
+bool searchMatrix(vector<vector<int>>& matrix, int target) {
+    int m = matrix.size();
+    if (m == 0) return false;
+    int n = matrix[0].size();
+
+    int i = 0, j = n - 1;
+    while (i < m && j >= 0) {
+        if (matrix[i][j] == target)
+            return true;
+        else if (matrix[i][j] > target) {
+            j--;
+        } else 
+            i++;
+    }
+    return false;
+}
 */
 class Solution {
 public:

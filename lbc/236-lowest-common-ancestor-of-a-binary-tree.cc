@@ -11,6 +11,17 @@
 遇到的问题：
 没有问题。
 不过感觉代码写的不是很简洁。
+
+再次阅读：
+之前的思路没有太大问题，代码的确不算是简洁的，可以参考一下下面这段比较简洁的代码：
+class Solution {
+public:
+    TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q) {
+        if (root == p || root == q || root == NULL) return root;
+        TreeNode *left = lowestCommonAncestor(root->left, p, q), *right = lowestCommonAncestor(root->right, p, q);
+        return left && right ? root : left ? left : right;
+    }
+};
 */
 /**
  * Definition for a binary tree node.

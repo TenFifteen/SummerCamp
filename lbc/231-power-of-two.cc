@@ -7,6 +7,16 @@
 
 遇到的问题：
 一开始将边界设成了32.然后就溢出了。。
+
+再次阅读：
+一看之前的实现就知道不是最优的，明明是可以检查是否只含有一个1来完成的：
+class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+        if(n<=0) return false;
+        return !(n&(n-1));
+    }
+};
 */
 class Solution {
 public:

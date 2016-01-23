@@ -8,6 +8,41 @@
 遇到的问题：
 一开始忘记了两遍结果的去重。
 并且将只有两个元素的情况搞错了。
+
+再次阅读：
+感觉除了这种递归的方式，好像没有想出更好的办法来。
+结果在DISCUSS中找到了一个类似于解决一个数超过一半的那个题目的解法的解法：
+感觉还是非常巧妙和厉害的。
+vector<int> majorityElement(vector<int>& nums) {
+    int cnt1=0, cnt2=0;
+    int a,b;
+
+    for(int n: nums){
+        if (cnt1 == 0 || n == a){
+            cnt1++;
+            a = n;
+        }
+        else if (cnt2 == 0 || n==b){
+            cnt2++;
+            b = n;
+        }
+        else{
+            cnt1--;
+            cnt2--;
+        }
+    }
+
+    cnt1=cnt2=0;
+    for(int n: nums){
+        if (n==a)   cnt1++;
+        else if (n==b) cnt2++;
+    }
+
+    vector<int> result;
+    if (cnt1 > nums.size()/3)   result.push_back(a);
+    if (cnt2 > nums.size()/3)   result.push_back(b);
+    return result;
+}
 */
 class Solution {
 public:
