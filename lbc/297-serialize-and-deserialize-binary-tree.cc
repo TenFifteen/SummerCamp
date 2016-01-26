@@ -9,6 +9,47 @@
 
 遇到的问题：
 没有问题。
+
+再次阅读：
+原来这种题目有好多种方法可以解的啊。在DISCUSS中找到了一个基于二叉树先序遍历的方法：
+仔细想想，实在是厉害极了啊。感觉自己对于二叉树的理解还是没有达到这个水准呢。实在是太厉害了。
+class Codec {
+public:
+
+    string serialize(TreeNode* root) {
+        ostringstream out;
+        serialize(root, out);
+        return out.str();
+    }
+
+    TreeNode* deserialize(string data) {
+        istringstream in(data);
+        return deserialize(in);
+    }
+
+private:
+
+    void serialize(TreeNode* root, ostringstream& out) {
+        if (root) {
+            out << root->val << ' ';
+            serialize(root->left, out);
+            serialize(root->right, out);
+        } else {
+            out << "# ";
+        }
+    }
+
+    TreeNode* deserialize(istringstream& in) {
+        string val;
+        in >> val;
+        if (val == "#")
+            return nullptr;
+        TreeNode* root = new TreeNode(stoi(val));
+        root->left = deserialize(in);
+        root->right = deserialize(in);
+        return root;
+    }
+};
 */
 /**
  * Definition for a binary tree node.

@@ -10,6 +10,9 @@ cows的值需要一个hash来做中间存储。
 
 遇到的问题：
 没有问题。
+
+再次阅读：
+太简单的题目。
 */
 class Solution {
 public:

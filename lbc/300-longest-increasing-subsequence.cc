@@ -10,6 +10,20 @@
 
 遇到的问题：
 本来知道是有nlogn的方法的，可是自己还是没有想起来到底应该二分哪个东西。
+
+再次阅读：
+这次想起来是怎么做到二分到nlogn的复杂度了。
+其实之前的代码已经很不错了。但是在DISCUSS中找到了一个用stl非常好的解法：
+int lengthOfLIS(vector<int>& nums) {
+    vector<int> res;
+    for(int i=0; i<nums.size(); i++) {
+        auto it = std::lower_bound(res.begin(), res.end(), nums[i]);
+        if(it==res.end()) res.push_back(nums[i]);
+        else *it = nums[i];
+    }
+    return res.size();
+}
+
 */
 class Solution {
 public:

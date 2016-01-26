@@ -7,6 +7,30 @@
 
 遇到的问题：
 一开始忘记了将set设置为multiset了。所以除了莫名其妙的错误，还去debug了半天。
+
+再次阅读：
+感觉自己对这道题的解法就是怎么想的就是怎么写的，一点技巧都没有用到啊。
+然后看到DISCUSS中有一个及其简单的解法，思想一样，但是过程简单到不知道哪里去了：
+class MedianFinder {
+    priority_queue<long> small, large;
+public:
+
+    void addNum(int num) {
+        small.push(num);
+        large.push(-small.top());
+        small.pop();
+        if (small.size() < large.size()) {
+            small.push(-large.top());
+            large.pop();
+        }
+    }
+
+    double findMedian() {
+        return small.size() > large.size()
+               ? small.top()
+               : (small.top() - large.top()) / 2.0;
+    }
+};
 */
 class MedianFinder {
 private:

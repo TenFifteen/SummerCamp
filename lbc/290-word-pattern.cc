@@ -8,6 +8,21 @@
 
 遇到的问题：
 没有问题。
+
+再次阅读：
+虽然感觉自己的写法已经很好了。但是还是在DISCUSS中找到了一个更简洁的，更好看的解法：
+bool wordPattern(string pattern, string str) {
+    map<char, int> p2i;
+    map<string, int> w2i;
+    istringstream in(str);
+    int i = 0, n = pattern.size();
+    for (string word; in >> word; ++i) {
+        if (i == n || p2i[pattern[i]] != w2i[word])
+            return false;
+        p2i[pattern[i]] = w2i[word] = i + 1;
+    }
+    return i == n;
+}
 */
 class Solution {
 private:

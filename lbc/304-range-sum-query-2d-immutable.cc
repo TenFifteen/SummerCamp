@@ -9,6 +9,9 @@
 
 遇到的问题：
 没有问题。
+
+再次阅读：
+看了下DISCUSS，这种解法基本算是很不错的了。
 */
 class NumMatrix {
     vector<vector<int> > buf;
