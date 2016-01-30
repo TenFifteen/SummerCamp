@@ -15,6 +15,20 @@
 遇到的问题：
 一开始用的方法虽然也挺高效的，但是会多一个logn的倍数，一般情况下已经可以过了，但是
 这道题的数据比较紧，所以还是超时。幸好在CCIW中看到了这道题。
+
+再次阅读：
+感觉这个题目做了好多次了。不过这个用k个队列的方式还是用了第一次。
+感觉上这种方式已经是最优了。但是实际上，在DISCUSS中有一个更好一点的解法：
+下面这种时间上稍微多一点点，但是空间上要省一些。
+int nthSuperUglyNumber(int n, vector<int>& primes) {
+    vector<int> index(primes.size(), 0), ugly(n, INT_MAX);
+    ugly[0]=1;
+    for(int i=1; i<n; i++){
+        for(int j=0; j<primes.size(); j++) ugly[i]=min(ugly[i],ugly[index[j]]*primes[j]);
+        for(int j=0; j<primes.size(); j++) index[j]+=(ugly[i]==ugly[index[j]]*primes[j]);
+    }
+    return ugly[n-1];
+}
 */
 class Solution {
 public:
