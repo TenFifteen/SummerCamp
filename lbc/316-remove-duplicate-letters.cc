@@ -12,7 +12,20 @@
 而且看网上人家有好多种解法。
 
 再次阅读：
-
+感觉这道题目应该是用这种栈的方式来做就是最合适的了。
+不过在DISCUSS中还找到了一个递归方式的解。其实我觉得这种方式也是可以用迭代式的来做的。
+public class Solution {
+    public String removeDuplicateLetters(String s) {
+        int[] cnt = new int[26];
+        int pos = 0; // the position for the smallest s[i]
+        for (int i = 0; i < s.length(); i++) cnt[s.charAt(i) - 'a']++;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) < s.charAt(pos)) pos = i;
+            if (--cnt[s.charAt(i) - 'a'] == 0) break;
+        }
+        return s.length() == 0 ? "" : s.charAt(pos) + removeDuplicateLetters(s.substring(pos + 1).replaceAll("" + s.charAt(pos), ""));
+    }
+}
 */
 class Solution {
 public:

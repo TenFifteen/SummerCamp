@@ -11,6 +11,13 @@
 
 遇到的问题：
 一开始用的模拟的方法，超时了。
+
+再次阅读：
+其实这道题目我应该在很久之前就知道的了。感觉这种方式还是挺好的，数学规律。
+但是可以直接用sqrt来求解也是可以的：
+int bulbSwitch(int n) {
+    return sqrt(n);
+}
 */
 class Solution {
 public:

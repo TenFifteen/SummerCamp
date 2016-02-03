@@ -7,6 +7,9 @@
 
 遇到的问题：
 第一次写这种有preHead的指针，感觉还不错吧。
+
+再次阅读：
+是一个简单题，这种拆开然后再次拼接的方式挺好的。
 */
 /**
  * Definition for singly-linked list.
