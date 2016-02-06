@@ -71,3 +71,25 @@ public:
         return ans;
     }
 };
+
+/*
+第二次做：
+这次做的比较不错了。
+*/
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        unordered_map<int, int> um;
+        for (int i = 0; i < nums.size(); ++i) {
+            if (um.find(target-nums[i]) != um.end()) {
+                vector<int> ans(2);
+                ans[0] = um[target-nums[i]]+1;
+                ans[1] = i+1;
+                return ans;
+            }
+            if (um.find(nums[i]) == um.end()) {
+                um[nums[i]] = i;
+            }
+        }
+    }
+};
