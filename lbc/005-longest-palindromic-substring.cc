@@ -139,3 +139,40 @@ public:
         }
     }
 };
+/*
+第二次做：
+这次竟然一次性通过了，看来这个Manchester算法已经算是掌握了。
+而且，这次对代码已经做过了优化了，风格上和效率上来讲，应该都是不错的。
+*/
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        string str(s.size()*2 + 1, '#');
+        for (int i = 0; i < s.size(); ++i) {
+            str[(i << 1) + 1] = s[i];
+        }
+        
+        vector<int> len(str.size(), 1);
+        int mx = 0, id = 0, mid = 0, maxlen = 1;
+        for (int i = 0; i < str.size(); ++i) {
+            if (mx > i) {
+                len[i] = min(len[(id << 1)-i], mx-i+1);
+            }
+            
+            while (i-len[i] >= 0 && i+len[i] < str.size() && str[i-len[i]] == str[i+len[i]]) {
+                len[i]++;
+                if (i + len[i] - 1 > mx) {
+                    mx = i + len[i] - 1;
+                    id = i;
+                }
+            }
+            
+            if (len[i] > maxlen) {
+                maxlen = len[i];
+                mid = i;
+            }
+        }
+        
+        return s.substr((mid-len[mid]+1) >> 1, len[mid]-1);
+    }
+};

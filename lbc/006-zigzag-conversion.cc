@@ -47,3 +47,31 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+看了一下，感觉既然是个简单题，就暂时不做优化了，直接进行了模拟。
+不过这次代码比之前短了一些，还是有点欣慰的。
+*/
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        assert(numRows > 0);
+        if (numRows == 1) return s;
+        
+        vector<string> tmp(numRows);
+        for (int i = 0; i < s.size(); ++i) {
+            int cur = i % (numRows*2-2);
+            if (cur >= numRows) {
+                cur = 2*numRows-2-cur;
+            }
+            
+            tmp[cur].push_back(s[i]);
+        }
+        
+        string ans;
+        for (auto str : tmp) {
+            ans.append(str);
+        }
+        return ans;
+    }
+};
