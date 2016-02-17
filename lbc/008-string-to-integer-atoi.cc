@@ -62,3 +62,43 @@ public:
         }
     }
 };
+/*
+第二次做：
+看了一下之前写的代码，竟然惊人的相似。。。难道一个人写的代码，真的很难改变么？？？
+不过这个题目中的各种Corner case一定要好好的想想，面试中一定要搞清楚。
+*/
+class Solution {
+private:
+    bool isDigit(char ch) {
+        return ch <= '9' && ch >= '0';
+    }
+public:
+    int myAtoi(string str) {
+        int index = 0;
+        while (index < str.size() && str[index] == ' ') index++;
+        if (index == str.size()) return 0;
+        
+        bool sign = false;
+        if (str[index] == '+') {
+            index++;
+        } else if (str[index] == '-') {
+            index++;
+            sign = true;
+        }
+        
+        int ans = 0;
+        while (index < str.size() && isDigit(str[index])) {
+            int new_ans = ans * 10;
+            new_ans += str[index++] - '0';
+            
+            if (new_ans / 10 != ans) {
+                if (sign) return INT_MIN;
+                else return INT_MAX;
+            }
+            ans = new_ans;
+        }
+        
+        if (sign) return -ans;
+        else return ans;
+    }
+};
