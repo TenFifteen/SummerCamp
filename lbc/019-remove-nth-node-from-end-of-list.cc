@@ -49,3 +49,37 @@ public:
         }
     }
 };
+/*
+第二次做：
+感觉这次做的要清晰好多了。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        ListNode prehead(0);
+        prehead.next = head;
+        
+        ListNode *last = &prehead, *cur = &prehead, *front = &prehead;
+        for (int i = 0; i < n; ++i) {
+            front = front->next;
+        }
+        while (front) {
+            front = front->next;
+            last = cur;
+            cur = cur->next;
+        }
+        
+        last->next = cur->next;
+        delete cur;
+        
+        return prehead.next;
+    }
+};
