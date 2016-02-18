@@ -87,3 +87,42 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+比较顺利，就是优先队列的比较函数写法不是很熟悉了
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+    struct Cmp {
+        bool operator() (const ListNode *l1, const ListNode *l2) const {
+            return l1->val > l2->val;
+        }
+    };
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        priority_queue<ListNode *, vector<ListNode *>, Cmp> pq;
+        ListNode preheadtmp(0), *prehead = &preheadtmp, *head = prehead;
+        
+        for (auto l : lists) {
+            if (l) pq.push(l);
+        }
+        
+        while (pq.size()) {
+            ListNode *now = pq.top();
+            pq.pop();
+            head->next = now;
+            head = head->next;
+            if (now->next) pq.push(now->next);
+        }
+        
+        head->next = nullptr;
+        return prehead->next;
+    }
+};
