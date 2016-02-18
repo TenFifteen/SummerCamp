@@ -48,3 +48,37 @@ public:
         return dp[s.size()][p.size()];
     }
 };
+/*
+第二次做：
+这次虽然直接就知道用动归了，但是还是写了一下子没写出来，还是早上起来又调试出来的，主要是哪个*的匹配条件比较多，还有初始条件
+也是需要仔细斟酌的。
+*/
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        vector<vector<bool> > dp(s.size()+1, vector<bool>(p.size()+1, false));
+        dp[0][0] = true;
+        
+        for (int i = 1; i <= p.size(); ++i) {
+            if (p[i-1] == '*') {
+                dp[0][i] = dp[0][i-1] || dp[0][i-2];
+            }
+        }
+        
+        for (int i = 1; i <= s.size(); ++i) {
+            for (int j = 1; j <= p.size(); ++j) {
+                if (p[j-1] == '*') {
+                    if (((p[j-2] == '.' || p[j-2] == s[i-1]) && (dp[i-1][j-1] || dp[i-1][j]))
+                    || dp[i][j-1]
+                    || dp[i][j-2]) {
+                        dp[i][j] = true;
+                    }
+                } else if (p[j-1] == '.' || p[j-1] == s[i-1]) {
+                    dp[i][j] = dp[i-1][j-1];
+                }
+            }
+        }
+        
+        return dp[s.size()][p.size()];
+    }
+};
