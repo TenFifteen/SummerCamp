@@ -56,3 +56,38 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+感觉这次不太在状态啊，竟然有两次死循环出现了。看来今天做的已经是够多了，该歇歇了。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        ListNode prehead(0), *ret = &prehead;
+        
+        while (head) {
+            if (head->next) {
+                ListNode *next = head->next->next;
+                
+                ret->next = head->next;
+                ret->next->next = head;
+                ret = ret->next->next;
+                head = next;
+            } else {
+                ret->next = head;
+                return prehead.next;
+            }
+        }
+        ret->next = NULL;
+        
+        return prehead.next;
+    }
+};
