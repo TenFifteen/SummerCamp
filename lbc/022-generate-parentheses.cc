@@ -59,3 +59,24 @@ public:
         }
     }
 };
+/*
+第二次做：
+这次做的很顺利。
+*/
+class Solution {
+    void dfs(vector<string> &ans, string now, int left, int right) {
+        if (right == 0) {
+            ans.push_back(now);
+            return;
+        }
+        
+        if (left != 0) dfs(ans, now+"(", left-1, right);
+        if (left != right) dfs(ans, now+")", left, right-1);
+    }
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> ans;
+        dfs(ans, "", n, n);
+        return ans;
+    }
+};
