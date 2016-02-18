@@ -71,3 +71,45 @@ public:
         }
     }
 };
+/*
+第二次做：
+这次果断选择了之前DISCUSS中的方法做了。
+*/
+class Solution {
+public:
+    vector<string> letterCombinations(string digits) {
+        vector<string> ans;
+        if (digits.size() == 0) return ans;
+        ans.push_back("");
+        
+        unordered_map<char, string> mapping;
+        mapping['1'] = "";
+        mapping['2'] = "abc";
+        mapping['3'] = "def";
+        mapping['4'] = "ghi";
+        mapping['5'] = "jkl";
+        mapping['6'] = "mno";
+        mapping['7'] = "pqrs";
+        mapping['8'] = "tuv";
+        mapping['9'] = "wxyz";
+        mapping['*'] = "*";
+        mapping['0'] = " ";
+        mapping['#'] = "#";
+        
+        for (auto ch : digits) {
+            vector<string> next;
+            for (auto s : ans) {
+                if (mapping[ch].size()) {
+                    for (auto m : mapping[ch]) {
+                        next.push_back(s + m);
+                    }
+                } else {
+                    next.push_back(s);
+                }
+            }
+            ans = next;
+        }
+        
+        return ans;
+    }
+};
