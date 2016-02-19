@@ -103,3 +103,57 @@ public:
         return last;
     }
 };
+/*
+第二次做：
+这次竟然一次通过。虽然没有之前DISCUSS中的简单，但是感觉比之前自己的代码已经简化了一些了。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    ListNode *reverse(ListNode *head) {
+        ListNode *ret = NULL;
+        while (head) {
+            ListNode *next = head->next;
+            head->next = ret;
+            ret = head;
+            head = next;
+        }
+        return ret;
+    }
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        assert(k > 0);
+        if (k == 1) return head;
+        
+        ListNode prehead(0);
+        prehead.next = head;
+        ListNode *tail = &prehead;
+        
+        while (head) {
+            ListNode *group = head, *last = head;
+            for (int i = 0; i < k; ++i) {
+                if (head == NULL) {
+                    return prehead.next;
+                }
+                last = head;
+                head = head->next;
+            }
+            
+            last->next = NULL;
+            reverse(group);
+            tail->next = last;
+            group->next = head;
+            
+            tail = group;
+        }
+        
+        return prehead.next;
+    }
+};
