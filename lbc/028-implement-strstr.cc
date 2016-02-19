@@ -40,3 +40,30 @@ public:
         return -1;
     }
 };
+/*
+第二次做：
+感觉跟之前的代码竟然完全一样的感觉。。。
+*/
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        if (haystack.size() < needle.size()) return -1;
+        
+        if (haystack == "" && needle == "") return 0;//don't know why
+        
+        for (int i = 0; i < haystack.size()+1-needle.size(); ++i) {
+            bool found = true;
+            for (int j = 0; j < needle.size(); ++j) {
+                if (haystack[i+j] != needle[j]) {
+                    found = false;
+                    break;
+                }
+            }
+            if (found) {
+                return i;
+            }
+        }
+        
+        return -1;
+    }
+};
