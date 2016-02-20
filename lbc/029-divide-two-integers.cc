@@ -54,3 +54,39 @@ public:
         }
     }
 };
+/*
+第二次做：
+这道题竟然忘了改怎么解了，实在是不应该啊。不过知道了之后，竟然代码写的跟之前基本是一样一样的。。。
+*/
+class Solution {
+public:
+    int divide(int dividend, int divisor) {
+        if (divisor == 0 || (divisor == -1 && dividend == INT_MIN)) return INT_MAX;
+        
+        long long left = dividend, right = divisor;
+        bool neg = false;
+        if (left < 0) {
+            neg = !neg;
+            left = -left;
+        }
+        if (right < 0) {
+            neg = !neg;
+            right = -right;
+        }
+        
+        int ans = 0;
+        while (left >= right) {
+            int mul = 0;
+            while (left >= (right << mul)) mul++;
+            mul--;
+            ans += (1 << mul);
+            left -= (right << mul);
+        }
+        
+        if (neg) {
+            return -ans;
+        } else {
+            return ans;
+        }
+    }
+};
