@@ -88,3 +88,38 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+这次直接做出来了。用的还是之前用的思路。跟DISCUSS中的思路还是有些不一样的，人家的思路还是要
+好好看一下。
+另外，我感觉我这种思路应该不是n*n的复杂度，应该是n的吧。因为每次计算dp[i]的时候，实际上那个循环最多循环一次，因为前面都已经做过这件事了。
+*/
+class Solution {
+public:
+    int longestValidParentheses(string s) {
+        if (s.size() < 2) return 0;
+        
+        int ans = 0;
+        vector<int> dp(s.size(), 0);
+        for (int i = 1; i < s.size(); ++i) {
+            if (s[i] == ')') {
+                if (s[i-1] == '(') {
+                    dp[i] = 2;
+                } else if (dp[i-1] && i-dp[i-1]-1 >= 0 && s[i-dp[i-1]-1] == '(') {
+                    dp[i] = dp[i-1] + 2;
+                    int index = i - dp[i];
+                }
+            }
+            
+            int index = i - dp[i];
+            while (index >= 0 && dp[index]) {
+                dp[i] += dp[index];
+                index -= dp[index];
+            }
+            
+            ans = max(ans, dp[i]);
+        }
+        
+        return ans;
+    }
+};
