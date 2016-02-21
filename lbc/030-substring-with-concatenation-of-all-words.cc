@@ -100,3 +100,56 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+这次确实是想到了滑动窗口了，或者说是看到了提示里有滑动窗口关键字了。
+不过写这个代码也是走了一些弯路的。见注释。
+*/
+class Solution {
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {//words has dups
+        vector<int> ans;
+        if (words.size() == 0 || words[0].size() == 0 || s.size() < words.size() * words[0].size()) return ans;
+        
+        int wordLen = words[0].size(), totalLen = words.size() * wordLen;
+        unordered_map<string, int> wordSet;
+        
+        for (auto w : words) {
+            wordSet[w]++;
+        }
+        
+        for (int start = 0;start < wordLen; ++start) {
+            int left = start, right = left + totalLen;
+            if (right > s.size()) continue;
+            
+            int total = 0;
+            unordered_map<string, int> now;
+            for (int i = left; i < right; i += wordLen) {
+                string cur = s.substr(i, wordLen);
+                if (wordSet.find(cur) != wordSet.end()) {
+                    now[cur]++;
+                    if (now[cur] == wordSet[cur]) total++;
+                }
+            }
+            
+            while (right <= s.size()) {
+                if (total == wordSet.size()) {
+                    ans.push_back(left);
+                }
+                string toRemove = s.substr(left, wordLen), toAdd = s.substr(right, wordLen);
+                if (wordSet.find(toRemove) != wordSet.end()) {
+                    now[toRemove]--;
+                    if (now[toRemove]+1 == wordSet[toRemove])total--;
+                }
+                if (wordSet.find(toAdd) != wordSet.end()) {
+                    now[toAdd]++;
+                    if (now[toAdd] == wordSet[toAdd]) total++;
+                }
+                left += wordLen;
+                right += wordLen;
+            }
+        }
+        
+        return ans;
+    }
+};
