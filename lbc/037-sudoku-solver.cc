@@ -119,3 +119,53 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+感觉这次的代码跟上次的代码惊人的相似啊。
+*/
+class Solution {
+private:
+    vector<vector<bool> > row, col, grid;
+    
+    void init(vector<vector<char> > &board) {
+        row = vector<vector<bool>>(9, vector<bool>(9, false));
+        col = row; grid = row;
+        
+        for (int i = 0; i < 9; ++i) {
+            for (int j = 0; j < 9; ++j) {
+                if (board[i][j] == '.') continue;
+                row[i][board[i][j]-'1'] = true;
+                col[j][board[i][j]-'1'] = true;
+                grid[i/3*3+j/3][board[i][j]-'1'] = true;
+            }
+        }
+    }
+    
+    bool dfs(int x, int y, vector<vector<char> > &board) {
+        if (x >= 9) return true;
+        if (y >= 9) {
+            return dfs(x+1, 0, board);
+        }
+        if (board[x][y] != '.') return dfs(x, y+1, board);
+        for (int i = 0; i < 9; ++i) {
+            if (row[x][i] || col[y][i] || grid[x/3*3+y/3][i]) continue;
+            
+            board[x][y] = '1'+i;
+            row[x][i] = true;
+            col[y][i] = true;
+            grid[x/3*3+y/3][i] = true;
+            if (dfs(x, y+1, board)) return true;
+            board[x][y] = '.';
+            row[x][i] = false;
+            col[y][i] = false;
+            grid[x/3*3+y/3][i] = false;
+        }
+        
+        return false;
+    }
+public:
+    void solveSudoku(vector<vector<char>>& board) {
+        init(board);
+        dfs(0, 0, board);
+    }
+};
