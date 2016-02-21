@@ -79,3 +79,43 @@ public:
         return -1;
     }
 };
+/*
+第二次做：
+这次的代码跟之前写的代码竟然非常的相似。。
+虽然是有一点点啰嗦，不过这代表了解题思路，没有任何的化简过程。
+*/
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        if (nums.size() == 0) return -1;
+        
+        int left = 0, right = nums.size()-1;
+        while (left <= right) {
+            int mid = (left + right) >> 1;
+            if (nums[mid] == target) return mid;
+            else if (nums[right] < nums[left]) {//has pivot
+                if (nums[mid] >= nums[left]) {//left half
+                    if (nums[mid] > target && nums[left] <= target) {
+                        right = mid-1;
+                    } else {
+                        left = mid+1;
+                    }
+                } else {//right half
+                    if (nums[mid] < target && nums[right] >= target) {
+                        left = mid+1;
+                    } else {
+                        right = mid-1;
+                    }
+                }
+            } else {//is sorted
+                if (nums[mid] < target) {
+                    left = mid+1;
+                } else {
+                    right = mid-1;
+                }
+            }
+        }
+        
+        return -1;
+    }
+};
