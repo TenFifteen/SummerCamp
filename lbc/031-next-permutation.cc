@@ -80,3 +80,40 @@ public:
         }
     }
 };
+/*
+第二次做：
+这次的代码写的还可以。不过中间又出了一点小叉子。。
+竟然直接拿last+1元素直接与last元素swap了。应该是找到last后面最小的比last元素大的元素，然后交换。
+*/
+class Solution {
+private:
+    bool isSorted(vector<int> &nums) {
+        for (int i = 1; i < nums.size(); ++i) {
+            if (nums[i] > nums[i-1]) return false;
+        }
+        return true;
+    }
+    
+    void reverse(vector<int> &nums, int left, int right) {
+        while (left < right) {
+            swap(nums[left++], nums[right--]);
+        }
+    }
+public:
+    void nextPermutation(vector<int>& nums) {
+        if (nums.size() < 2) return; 
+        if (isSorted(nums)) {
+            reverse(nums, 0, nums.size()-1);
+            return;
+        }
+        
+        int last = nums.size()-2;
+        while (nums[last] >= nums[last+1]) last--;
+        
+        int next = last+1;
+        while (next < nums.size() && nums[next] > nums[last]) next++;
+        swap(nums[last], nums[next-1]);
+        
+        reverse(nums, last+1, nums.size()-1);
+    }
+};
