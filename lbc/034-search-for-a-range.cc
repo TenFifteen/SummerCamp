@@ -92,3 +92,47 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+代码有点啰嗦，不过直接做对了。
+*/
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        vector<int> ans(2, -1);
+        if (nums.size() == 0) return ans;
+        
+        int L = INT_MAX, R = INT_MIN;
+        int left = 0, right = nums.size()-1;
+        while (left <= right) {
+            int mid = (left + right) >> 1;
+            if (nums[mid] == target) {
+                L = min(mid, L);
+                right = mid-1;
+            } else if (nums[mid] < target) {
+                left = mid+1;
+            } else {
+                right = mid-1;
+            }
+        }
+        
+        if (L == INT_MAX) return ans;
+        
+        left = 0, right = nums.size()-1;
+        while (left <= right) {
+            int mid = (left + right) >> 1;
+            if (nums[mid] == target) {
+                R = max(R, mid);
+                left = mid+1;
+            } else if (nums[mid] < target) {
+                left = mid+1;
+            } else {
+                right = mid-1;
+            }
+        }
+        
+        ans[0] = L;
+        ans[1] = R;
+        return ans;
+    }
+};
