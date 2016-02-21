@@ -36,3 +36,29 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+简单题，但是感觉已经做得不是很顺利了。应该是今天做的已经够多了吧。
+*/
+class Solution {
+public:
+    string countAndSay(int n) {
+        string ans;
+        if (n < 1) return ans;
+        
+        ans = "1";
+        for (int i = 1;i < n; ++i) {
+            string next;
+            int index = 0;
+            while (index < ans.size()) {
+                int last = index;
+                while (index < ans.size() && ans[index] == ans[last]) index++;
+                next += to_string(index-last);
+                next.push_back(ans[last]);
+            }
+            ans = next;
+        }
+        
+        return ans;
+    }
+};
