@@ -39,3 +39,46 @@ public:
         return true;
     }
 };
+/*
+第二次做：
+非常简单的一道题，这次是为了降低空间复杂度，将其拆成了三个循环了。
+*/
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char>>& board) {
+        for (int i = 0; i < 9; ++i) {
+            vector<bool> flag(9, false);
+            for (int j = 0; j < 9; ++j) {
+                if (board[i][j] != '.') {
+                    if (flag[board[i][j]-'1']) return false;
+                    flag[board[i][j]-'1'] = true;
+                }
+            }
+        }
+        
+        for (int i = 0; i < 9; ++i) {
+            vector<bool> flag(9, false);
+            for (int j = 0; j < 9; ++j) {
+                if (board[j][i] != '.') {
+                    if (flag[board[j][i]-'1']) return false;
+                    flag[board[j][i]-'1'] = true;
+                }
+            }
+        }
+        
+        for (int i = 0; i < 9; ++i) {
+            int x = i / 3, y = i % 3;
+            vector<bool> flag(9, false);
+            for (int j = 0; j < 9; ++j) {
+                int xx = x * 3 + j / 3;
+                int yy = y * 3 + j % 3;
+                if (board[xx][yy] != '.') {
+                    if (flag[board[xx][yy]-'1']) return false;
+                    flag[board[xx][yy]-'1'] = true;
+                }
+            }
+        }
+        
+        return true;
+    }
+};

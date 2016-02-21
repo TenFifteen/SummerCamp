@@ -65,3 +65,25 @@ public:
         }
     }
 };
+/*
+第二次做：
+感觉这次做的既顺利，代码又漂亮。
+*/
+class Solution {
+public:
+    int searchInsert(vector<int>& nums, int target) {
+        if (nums.size() == 0) return 0;
+        
+        int left = 0, right = nums.size();
+        while (left < right) {
+            int mid = (left + right) >> 1;
+            if (nums[mid] < target) {
+                left = mid+1;
+            } else {
+                right = mid;
+            }
+        }
+        
+        return right;
+    }
+};
