@@ -40,3 +40,35 @@ public:
         }
     }
 };
+/*
+第二次做：
+一次通过，感觉这种题已经知道该怎么做了。
+*/
+class Solution {
+private:
+    void dfs(vector<vector<int> > &ans, vector<int> &candidates, int target, int sum, int index, vector<int> &cur) {
+        if (sum == target) {
+            ans.push_back(cur);
+            return;
+        }
+        if (sum > target || index >= candidates.size()) return;
+        
+        cur.push_back(candidates[index]);
+        dfs(ans, candidates, target, sum+candidates[index], index+1, cur);
+        cur.pop_back();
+        
+        while (index+1 < candidates.size() && candidates[index] == candidates[index+1]) index++;
+        dfs(ans, candidates, target, sum, index+1, cur);
+    }
+public:
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        vector<vector<int> > ans;
+        if (candidates.size() == 0) return ans;
+        
+        sort(candidates.begin(), candidates.end());
+        
+        vector<int> cur;
+        dfs(ans, candidates, target, 0, 0, cur);
+        return ans;
+    }
+};
