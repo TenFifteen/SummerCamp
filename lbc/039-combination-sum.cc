@@ -39,3 +39,35 @@ public:
         }
     }
 };
+/*
+第二次做：
+这次只修改了一次就通过了，还算是可以吧。
+*/
+class Solution {
+private:
+    void dfs(vector<vector<int> > &ans, vector<int> &candidates, int target, int index, int sum, vector<int> &cur) {
+        if (sum == target) {
+            ans.push_back(cur);
+            return;
+        }
+        if (index >= candidates.size() || sum > target) return;
+        
+        cur.push_back(candidates[index]);
+        dfs(ans, candidates, target, index, sum + candidates[index], cur);
+        cur.pop_back();
+        
+        while (index+1 < candidates.size() && candidates[index+1] == candidates[index]) index++;
+        dfs(ans, candidates, target, index+1, sum, cur);
+    }
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int> > ans;
+        if (candidates.size() == 0) return ans;
+        
+        sort(candidates.begin(), candidates.end());
+        
+        vector<int> cur;
+        dfs(ans, candidates, target, 0, 0, cur);
+        return ans;
+    }
+};
