@@ -58,3 +58,35 @@ public:
         return true;
     }
 };
+/*
+第二次做：
+感觉这次跟上次的代码还是有异曲同工之妙啊。
+还是DISCUSS中的那种方法巧妙呀！！！！
+*/
+class Solution {
+private:
+    int getDigit(int x, int index) {
+        if (index != 1) {
+            x /= pow(10, index-1);
+        }
+        return x % 10;
+    }
+    int getLen(int x) {
+        int len = 0;
+        while (x) {
+            x /= 10;
+            len++;
+        }
+        return len;
+    }
+public:
+    bool isPalindrome(int x) {
+        if (x < 0) return false;
+        
+        int len = getLen(x);
+        for (int i = 0; i < len/2; ++i) {
+            if (getDigit(x, i+1) != getDigit(x, len-i)) return false;
+        }
+        return true;
+    }
+};

@@ -10,6 +10,38 @@
 遇到的问题：
 一次通过。
 不过不知道有没有复杂度第一点的实现方案？
+
+再次阅读：
+我还以为会有一些效率好点的方案呢。
+结果看了DISCUSS，也没有找到一种比这更好的方案。
+不过有一个只使用了一个queue的方案还是挺好的：
+class Stack {
+public:
+    queue<int> que;
+    // Push element x onto stack.
+    void push(int x) {
+        que.push(x);
+        for(int i=0;i<que.size()-1;++i){
+            que.push(que.front());
+            que.pop();
+        }
+    }
+
+    // Removes the element on top of the stack.
+    void pop() {
+        que.pop();
+    }
+
+    // Get the top element.
+    int top() {
+        return que.front();
+    }
+
+    // Return whether the stack is empty.
+    bool empty() {
+        return que.empty();
+    }
+};
 */
 class Stack {
 private:

@@ -9,6 +9,32 @@
 
 遇到的问题：
 一定要清楚的搞清楚各种情况，不重不漏。
+
+再次阅读：
+感觉之前的解法没啥问题了。但是看了一下DISCUSS，还是有些简洁的：
+class Solution {
+public:
+  bool search(int A[], int n, int target) {
+    int lo =0, hi = n-1;
+    int mid = 0;
+    while(lo<hi){
+          mid=(lo+hi)/2;
+          if(A[mid]==target) return true;
+          if(A[mid]>A[hi]){
+              if(A[mid]>target && A[lo] <= target) hi = mid;
+              else lo = mid + 1;
+          }else if(A[mid] < A[hi]){
+              if(A[mid]<target && A[hi] >= target) lo = mid + 1;
+              else hi = mid;
+          }else{
+              hi--;
+          }
+
+    }
+    return A[lo] == target ? true : false;
+  }
+};
+又看了一下，感觉实在是精妙啊。尤其是当A[mid] == A[hi]的时候。
 */
 class Solution {
 public:

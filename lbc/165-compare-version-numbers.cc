@@ -7,6 +7,41 @@
 
 遇到的问题：
 竟然1.0 == 1
+
+再次阅读：
+看到了上次的“遇到的问题”部分，感觉这次做还是会遇到的。
+另外就是这其实真是一道简单题目。不过代码还可以有另外一种写法：
+int compareVersion(string version1, string version2) {
+    int i = 0; 
+    int j = 0;
+    int n1 = version1.size(); 
+    int n2 = version2.size();
+
+    int num1 = 0;
+    int num2 = 0;
+    while(i<n1 || j<n2)
+    {
+        while(i<n1 && version1[i]!='.'){
+            num1 = num1*10+(version1[i]-'0');
+            i++;
+        }
+
+        while(j<n2 && version2[j]!='.'){
+            num2 = num2*10+(version2[j]-'0');;
+            j++;
+        }
+
+        if(num1>num2) return 1;
+        else if(num1 < num2) return -1;
+
+        num1 = 0;
+        num2 = 0;
+        i++;
+        j++;
+    }
+
+    return 0;
+}
 */
 class Solution {
 public:

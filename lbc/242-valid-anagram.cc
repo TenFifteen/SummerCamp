@@ -9,6 +9,24 @@
 遇到的问题：
 一次通过。
 这个题是cracking code interview中的一个题目。
+
+再次阅读：
+简单题，还可以用hash的方式来计数：
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if (s.length() != t.length()) return false;
+        int n = s.length();
+        int counts[26] = {0};
+        for (int i = 0; i < n; i++) { 
+            counts[s[i] - 'a']++;
+            counts[t[i] - 'a']--;
+        }
+        for (int i = 0; i < 26; i++)
+            if (counts[i]) return false;
+        return true;
+    }
+};
 */
 class Solution {
 public:

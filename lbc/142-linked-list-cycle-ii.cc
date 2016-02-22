@@ -12,6 +12,9 @@ front要追上end，需要n-m。所以两者相遇的时候，end距离起点是
 
 遇到的问题：
 自己想不出来，还是看了别人的思路。
+
+再次阅读：
+经典老题，没有问题。
 */
 /**
  * Definition for singly-linked list.

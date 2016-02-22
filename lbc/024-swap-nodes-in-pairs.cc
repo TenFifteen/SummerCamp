@@ -7,6 +7,21 @@
 
 遇到的问题：
 在返回的链表的最后一定要赋值为NULL。要不然就是死循环。
+
+再次阅读：
+这种题目一般都是直接考察写代码的能力的，要处理好各种边界条件。
+当然了，在有可能的前提下，尽量的写出一手好代码应该是很有加分的。
+所以可以参考一下下面这种简洁的写法：
+ListNode* swapPairs(ListNode* head) {
+    ListNode **pp = &head, *a, *b;
+    while ((a = *pp) && (b = a->next)) {
+        a->next = b->next;
+        b->next = a;
+        *pp = b;
+        pp = &(a->next);
+    }
+    return head;
+}
 */
 /**
  * Definition for singly-linked list.
@@ -39,5 +54,40 @@ public:
             cur = tmp;
         }
         return ret;
+    }
+};
+/*
+第二次做：
+感觉这次不太在状态啊，竟然有两次死循环出现了。看来今天做的已经是够多了，该歇歇了。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        ListNode prehead(0), *ret = &prehead;
+        
+        while (head) {
+            if (head->next) {
+                ListNode *next = head->next->next;
+                
+                ret->next = head->next;
+                ret->next->next = head;
+                ret = ret->next->next;
+                head = next;
+            } else {
+                ret->next = head;
+                return prehead.next;
+            }
+        }
+        ret->next = NULL;
+        
+        return prehead.next;
     }
 };

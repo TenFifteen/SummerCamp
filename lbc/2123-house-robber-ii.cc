@@ -7,6 +7,27 @@
 
 遇到的问题：
 被我想得稍微复杂了点。
+
+再次阅读：
+看了之前的思路，感觉跟DISCUSS中的思路差不多，但是代码明显写的没有人家好看。
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        int n = nums.size(); 
+        if (n < 2) return n ? nums[0] : 0;
+        return max(robber(nums, 0, n - 2), robber(nums, 1, n - 1));
+    }
+private:
+    int robber(vector<int>& nums, int l, int r) {
+        int pre = 0, cur = 0;
+        for (int i = l; i <= r; i++) {
+            int temp = max(pre + nums[i], cur);
+            pre = cur;
+            cur = temp;
+        }
+        return cur;
+    }
+};
 */
 class Solution {
 public:

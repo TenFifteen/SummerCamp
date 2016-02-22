@@ -8,6 +8,25 @@
 
 遇到的问题：
 一次通过。注意边界。
+
+再次阅读：
+感觉这道题也没啥困难，就是考验编码能力的。
+本来以为之前的做法已经可以了。
+结果在DISCUSS中竟然找到了下面这段代码，感觉真的是厉害极了：
+ListNode *partition(ListNode *head, int x) {
+    ListNode node1(0), node2(0);
+    ListNode *p1 = &node1, *p2 = &node2;
+    while (head) {
+        if (head->val < x)
+            p1 = p1->next = head;
+        else
+            p2 = p2->next = head;
+        head = head->next;
+    }
+    p2->next = NULL;
+    p1->next = node2.next;
+    return node1.next;
+}
 */
 /**
  * Definition for singly-linked list.

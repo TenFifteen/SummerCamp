@@ -35,3 +35,23 @@ public:
         return strs[0].substr(0,index);
     }
 };
+/*
+第二次做：
+会做了，直接写出来之前的代码，应该还更短一些。
+*/
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        if (strs.size() == 0) return "";
+        if (strs.size() == 1) return strs[0];
+        
+        int len = 0;
+        while (true) {
+            if (strs[0].size() == len) return strs[0];
+            for (int i = 1; i < strs.size(); ++i) {
+                if (strs[i].size() == len || strs[i][len] != strs[0][len]) return strs[0].substr(0, len);
+            }
+            len++;
+        }
+    }
+};

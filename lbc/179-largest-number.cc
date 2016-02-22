@@ -7,6 +7,25 @@
 
 遇到的问题：
 忘记了处理输出的前导0
+
+再次阅读：
+算法是想起来了，感觉也没啥问题。不过在DISCUSS中有一个更简单的方法，实在是厉害极了：
+class Solution {
+public:
+    string largestNumber(vector<int> &num) {
+        vector<string> arr;
+        for(auto i:num)
+            arr.push_back(to_string(i));
+        sort(begin(arr), end(arr), [](string &s1, string &s2){ return s1+s2>s2+s1; });
+        string res;
+        for(auto s:arr)
+            res+=s;
+        while(res[0]=='0' && res.length()>1)
+            res.erase(0,1);
+        return  res;
+    }
+};
+还有就是上面提到的，前导0的处理也不能忘了。
 */
 class Solution {
 private:

@@ -8,6 +8,22 @@
 
 遇到的问题：
 没有问题。
+
+再次阅读：
+比较简单，之前这种解答方式没啥问题。
+只是最近我发现有很多人对于STL的使用实在是达到了炉火纯青的地步啊：
+class NumArray {
+public:
+    NumArray(vector<int> &nums) : psum(nums.size()+1, 0) {
+        partial_sum( nums.begin(), nums.end(), psum.begin()+1);
+    }
+
+    int sumRange(int i, int j) {
+        return psum[j+1] - psum[i];
+    }
+private:
+    vector<int> psum;    
+};
 */
 class NumArray {
     vector<long long> ans;

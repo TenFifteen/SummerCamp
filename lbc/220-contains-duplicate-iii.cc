@@ -10,6 +10,30 @@
 思路是有的。只是一开始没有找到set可以直接进行二分查找的方法，然后自己手工模拟了一个，效率稍低，
 超时了。
 结果看了别人的方法，才知道有lower_bound这么一个神奇的方法。
+
+再次阅读：
+这次直接想到了之前的这种思路，因为已经知道了set的这个方法了。
+然后看DISCUSS，还看到另一种思路，就是利用桶排序的思路。如下：
+public class Solution {
+    public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+        if (k < 1 || t < 0) return false;
+        Map<Long, Long> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            long remappedNum = (long) nums[i] - Integer.MIN_VALUE;
+            long bucket = remappedNum / ((long) t + 1);
+            if (map.containsKey(bucket)
+                    || (map.containsKey(bucket - 1) && remappedNum - map.get(bucket - 1) <= t)
+                        || (map.containsKey(bucket + 1) && map.get(bucket + 1) - remappedNum <= t))
+                            return true;
+            if (map.entrySet().size() >= k) {
+                long lastBucket = ((long) nums[i - k] - Integer.MIN_VALUE) / ((long) t + 1);
+                map.remove(lastBucket);
+            }
+            map.put(bucket, remappedNum);
+        }
+        return false;
+    }
+}
 */
 class Solution {
 public:

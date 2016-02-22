@@ -8,6 +8,87 @@
 遇到的问题：
 一开始用的是动态规划的方法，感觉可以省一些时间。虽然多一些空间，感觉还是可以的，竟然超过了内存限制。
 只好改成了递归求解。一次通过。
+
+再次阅读：
+有一个很直观的分治的递归实现方案：
+class Solution {
+public:
+    vector<int> diffWaysToCompute(string input) {
+        vector<int> result;
+        int size = input.size();
+        for (int i = 0; i < size; i++) {
+            char cur = input[i];
+            if (cur == '+' || cur == '-' || cur == '*') {
+                // Split input string into two parts and solve them recursively
+                vector<int> result1 = diffWaysToCompute(input.substr(0, i));
+                vector<int> result2 = diffWaysToCompute(input.substr(i+1));
+                for (auto n1 : result1) {
+                    for (auto n2 : result2) {
+                        if (cur == '+')
+                            result.push_back(n1 + n2);
+                        else if (cur == '-')
+                            result.push_back(n1 - n2);
+                        else
+                            result.push_back(n1 * n2);    
+                    }
+                }
+            }
+        }
+        // if the input string contains only number
+        if (result.empty())
+            result.push_back(atoi(input.c_str()));
+        return result;
+    }
+};
+下面这个是对上面这个做一点点小优化的地方，不过虽然时间有话了一些，但是空间大了很多：
+class Solution {
+public:
+    vector<int> diffWaysToCompute(string input) {
+        unordered_map<string, vector<int>> dpMap;
+        return computeWithDP(input, dpMap);
+    }
+
+    vector<int> computeWithDP(string input, unordered_map<string, vector<int>> &dpMap) {
+        vector<int> result;
+        int size = input.size();
+        for (int i = 0; i < size; i++) {
+            char cur = input[i];
+            if (cur == '+' || cur == '-' || cur == '*') {
+                // Split input string into two parts and solve them recursively
+                vector<int> result1, result2;
+                string substr = input.substr(0, i);
+                // check if dpMap has the result for substr
+                if (dpMap.find(substr) != dpMap.end())
+                    result1 = dpMap[substr];
+                else
+                    result1 = computeWithDP(substr, dpMap);
+
+                substr = input.substr(i + 1);
+                if (dpMap.find(substr) != dpMap.end())
+                    result2 = dpMap[substr];
+                else
+                    result2 = computeWithDP(substr, dpMap);
+
+                for (auto n1 : result1) {
+                    for (auto n2 : result2) {
+                        if (cur == '+')
+                            result.push_back(n1 + n2);
+                        else if (cur == '-')
+                            result.push_back(n1 - n2);
+                        else
+                            result.push_back(n1 * n2);
+                    }
+                }
+            }
+        }
+        // if the input string contains only number
+        if (result.empty())
+            result.push_back(atoi(input.c_str()));
+        // save to dpMap
+        dpMap[input] = result;
+        return result;
+    }
+};
 */
 class Solution {
 public:

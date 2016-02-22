@@ -156,3 +156,30 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+是的，我觉得这次我已经会做这道题了。
+*/
+class Solution {
+public:
+    int romanToInt(string s) {
+        unordered_map<char, int> mapping;
+        mapping['I'] = 1;
+        mapping['V'] = 5;
+        mapping['X'] = 10;
+        mapping['L'] = 50;
+        mapping['C'] = 100;
+        mapping['D'] = 500;
+        mapping['M'] = 1000;
+        
+        int ans = 0;
+        for (int i = 0; i < s.size(); ++i) {
+            if (i+1 < s.size() && mapping[s[i]] < mapping[s[i+1]]) {
+                ans -= mapping[s[i]];
+            } else {
+                ans += mapping[s[i]];
+            }
+        }
+        return ans;
+    }
+};

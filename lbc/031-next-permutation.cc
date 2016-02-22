@@ -10,6 +10,53 @@
 
 遇到的问题：
 需要注意数字中有相等的情况，也就是要注意大于号号大于等于号的使用。
+
+再次阅读：
+看了一下题目，竟然上来就想错了，竟然想着把找到的cur跟后面最大的数进行交换了。
+实在是不应该啊。看了一下DISCUSS的代码，最好的情况也就是这种解法了。基本就是按照定义来的。
+但是代码可以写的更好看一点，有些功能可以封装的更好一些，例如reverse，下面是一个用java写的
+代码，不过人家的代码封装就要好很多，值得借鉴：
+public void nextPermutation(int[] num) {
+    int n=num.length;
+    if(n<2)
+        return;
+    int index=n-1;        
+    while(index>0){
+        if(num[index-1]<num[index])
+            break;
+        index--;
+    }
+    if(index==0){
+        reverseSort(num,0,n-1);
+        return;
+    }
+    else{
+        int val=num[index-1];
+        int j=n-1;
+        while(j>=index){
+            if(num[j]>val)
+                break;
+            j--;
+        }
+        swap(num,j,index-1);
+        reverseSort(num,index,n-1);
+        return;
+    }
+}
+
+public void swap(int[] num, int i, int j){
+    int temp=0;
+    temp=num[i];
+    num[i]=num[j];
+    num[j]=temp;
+}
+
+public void reverseSort(int[] num, int start, int end){   
+    if(start>end)
+        return;
+    for(int i=start;i<=(end+start)/2;i++)
+        swap(num,i,start+end-i);
+}
 */
 class Solution {
 public:
@@ -31,5 +78,42 @@ public:
         for(int i = cur+1; i < cur+1+(nums.size()-cur)/2; ++i){
             swap(nums[i], nums[nums.size()-i+cur]);
         }
+    }
+};
+/*
+第二次做：
+这次的代码写的还可以。不过中间又出了一点小叉子。。
+竟然直接拿last+1元素直接与last元素swap了。应该是找到last后面最小的比last元素大的元素，然后交换。
+*/
+class Solution {
+private:
+    bool isSorted(vector<int> &nums) {
+        for (int i = 1; i < nums.size(); ++i) {
+            if (nums[i] > nums[i-1]) return false;
+        }
+        return true;
+    }
+    
+    void reverse(vector<int> &nums, int left, int right) {
+        while (left < right) {
+            swap(nums[left++], nums[right--]);
+        }
+    }
+public:
+    void nextPermutation(vector<int>& nums) {
+        if (nums.size() < 2) return; 
+        if (isSorted(nums)) {
+            reverse(nums, 0, nums.size()-1);
+            return;
+        }
+        
+        int last = nums.size()-2;
+        while (nums[last] >= nums[last+1]) last--;
+        
+        int next = last+1;
+        while (next < nums.size() && nums[next] > nums[last]) next++;
+        swap(nums[last], nums[next-1]);
+        
+        reverse(nums, last+1, nums.size()-1);
     }
 };

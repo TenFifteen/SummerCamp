@@ -8,6 +8,16 @@
 
 遇到的问题：
 要不是回去看了26题的解法，自己还是想不出来啊。
+
+再次阅读：
+感觉之前的代码没啥太大问题了。但是竟然在DISCUSS中找到了一种更加简洁的写法：
+int removeDuplicates(vector<int>& nums) {
+    int i = 0;
+    for (int n : nums)
+        if (i < 2 || n > nums[i-2])
+            nums[i++] = n;
+    return i;
+}
 */
 class Solution {
 public:

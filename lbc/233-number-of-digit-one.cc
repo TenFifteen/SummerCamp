@@ -11,6 +11,9 @@
 遇到的问题：
 看了别人的思路才理解的。
 参考资料：http://blog.csdn.net/xudli/article/details/46798619
+
+再次阅读：
+感觉之前的思路基本没有问题，最多就是别人有把代码写的更简化的。
 */
 class Solution {
 public:

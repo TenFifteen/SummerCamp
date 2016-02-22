@@ -56,3 +56,34 @@ public:
         }
     }
 };
+/*
+第二次做：
+虽然做出来了，但是总感觉不是很简洁。
+看到之前DISCUSS中的那种写法，竟然可以不考虑负数！！！！！！！
+*/
+class Solution {
+public:
+    int reverse(int x) {
+        if (x == INT_MIN) {
+            return 0;
+        }
+        
+        bool neg = false;
+        if (x & 0x80000000) {
+            neg = true;
+            x = -x;
+        }
+        
+        int ans = 0;
+        while (x) {
+            int new_ans = ans * 10;
+            new_ans += x % 10;
+            x /= 10;
+            
+            if (new_ans/10 != ans) return 0;
+            ans = new_ans;
+        }
+        if (neg) return -ans;
+        else return ans;
+    }
+};

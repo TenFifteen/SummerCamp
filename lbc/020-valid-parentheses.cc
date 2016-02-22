@@ -9,6 +9,9 @@
 
 遇到的问题：
 没啥问题，我挺喜欢这种问题的。
+
+再次阅读：
+比较经典的用stack解决的问题。
 */
 class Solution {
 public:
@@ -32,5 +35,36 @@ public:
             return true;
         }
         return false;
+    }
+};
+/*
+第二次做：
+感觉这次已经很熟练了。虽然懒得没有用map，不过也还好啦。
+*/
+class Solution {
+public:
+    bool isValid(string s) {
+        stack<char> stk;
+        for (auto ch : s) {
+            if (ch == '(' || ch == '[' || ch == '{') {
+                stk.push(ch);
+            } else {
+                if (stk.empty()) return false;
+                switch (ch) {
+                    case ']':
+                        if (stk.top() != '[') return false;
+                        break;
+                    case ')':
+                        if (stk.top() != '(') return false;
+                        break;
+                    case '}':
+                        if (stk.top() != '{') return false;
+                        break;
+                }
+                stk.pop();
+            }
+        }
+        
+        return stk.empty();
     }
 };

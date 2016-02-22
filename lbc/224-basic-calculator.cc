@@ -7,6 +7,42 @@
 
 遇到的问题：
 一开始忘记了在匹配到括号后，还要将缓存的可以计算的符号都计算了。
+
+再次阅读：
+虽然感觉思路没啥问题，但是总感觉代码有些乱。
+下面这套代码就很简洁：仔细看一下，感觉简洁的有些过分啊。
+class Solution {
+public:
+    int calculate(string s) {
+        stack <int> nums, ops;
+        int num = 0;
+        int rst = 0;
+        int sign = 1;
+        for (char c : s) { 
+            if (isdigit(c)) {
+                num = num * 10 + c - '0';
+            }
+            else {
+                rst += sign * num;
+                num = 0;
+                if (c == '+') sign = 1;
+                if (c == '-') sign = -1;
+                if (c == '(') {
+                    nums.push(rst);
+                    ops.push(sign);
+                    rst = 0;
+                    sign = 1;
+                }
+                if (c == ')' && ops.size()) {
+                    rst = ops.top() * rst + nums.top();
+                    ops.pop(); nums.pop();
+                }
+            }
+        }
+        rst += sign * num;
+        return rst;
+    }
+};
 */
 class Solution {
 public:

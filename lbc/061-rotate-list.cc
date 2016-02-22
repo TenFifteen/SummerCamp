@@ -7,6 +7,37 @@
 
 遇到的问题：
 一开始并没有想用两个指针。看到题目提示里竟然有，所以就这么用了。
+
+再次阅读：
+这次一下子就想到了两个指针的问题了。但是看了之前的代码，感觉之前写代码从来是没有
+注释，没有空行。让人乍一看真不不太好看。所以以后刷题不光要注意解法，代码风格也是要注意
+一下的。
+下面这段代码是DISCUSS中的代码，虽然方法不太一样，但是可以借鉴一下：
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if(!head) return head;
+
+        int len=1; // number of nodes
+        ListNode *newH, *tail;
+        newH=tail=head;
+
+        while(tail->next)  // get the number of nodes in the list
+        {
+            tail = tail->next;
+            len++;
+        }
+        tail->next = head; // circle the link
+
+        if(k %= len) 
+        {
+            for(auto i=0; i<len-k; i++) tail = tail->next; // the tail node is the (len-k)-th node (1st node is head)
+        }
+        newH = tail->next; 
+        tail->next = NULL;
+        return newH;
+    }
+};
 */
 /**
  * Definition for singly-linked list.

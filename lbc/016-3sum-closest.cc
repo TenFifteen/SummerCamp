@@ -7,6 +7,10 @@
 
 遇到的问题：
 注意题目中说的是输出最接近的那个和，而不是与之的差值。
+
+再次阅读：
+与上一道题基本是一样的，只不过这次找的是最接近的那个解。
+n*n应该是最优解了。
 */
 class Solution {
 public:
@@ -36,5 +40,36 @@ public:
     int abs(int x){
         if(x < 0)return -x;
         return x;
+    }
+};
+/*
+第二次做：
+这次做的真是顺利，果然是休息一下就好了。
+*/
+class Solution {
+public:
+    int threeSumClosest(vector<int>& nums, int target) {
+        assert(nums.size() > 2);
+        
+        sort(nums.begin(), nums.end());
+        
+        int ans = nums[0] + nums[1] + nums[2];
+        for (int i = 0; i < nums.size()-2; ++i) {
+            int left = i+1, right = nums.size()-1;
+            while (left < right) {
+                int cur = nums[i] + nums[left] + nums[right];
+                if (cur == target) return cur;
+                if (abs(cur-target) < abs(ans-target)) {
+                    ans = cur;
+                }
+                if (cur < target) {
+                    left++;
+                } else {
+                    right--;
+                }
+            }
+        }
+        
+        return ans;
     }
 };

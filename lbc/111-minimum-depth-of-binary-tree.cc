@@ -7,6 +7,9 @@
 
 遇到的问题：
 一开始没注意到叶子节点是left和right同时都是NULL的情况。。
+
+再次阅读：
+这个递归写的还是很漂亮的。
 */
 /**
  * Definition for a binary tree node.

@@ -11,6 +11,54 @@
 全都遇到了。包括符号，溢出，-0.
 一开始还没有记录正确的状态，只记录了当前结果，没有记录当前的余数，所以出错了。
 感觉这个题目的细节之处真是太多啊。
+
+再次阅读：
+感觉这道题的思路没啥问题了，就是代码稍微啰嗦一点。
+如果真要参考的话，也可以参考一下这种只记录当前的余数的代码，感觉比我这种简洁一些：
+string fractionToDecimal(int64_t n, int64_t d) {
+    // zero numerator
+    if (n == 0) return "0";
+
+    string res;
+    // determine the sign
+    if (n < 0 ^ d < 0) res += '-';
+
+    // remove sign of operands
+    n = abs(n), d = abs(d);
+
+    // append integral part
+    res += to_string(n / d);
+
+    // in case no fractional part
+    if (n % d == 0) return res;
+
+    res += '.';
+
+    unordered_map<int, int> map;
+
+    // simulate the division process
+    for (int64_t r = n % d; r; r %= d) {
+
+        // meet a known remainder
+        // so we reach the end of the repeating part
+        if (map.count(r) > 0) {
+            res.insert(map[r], 1, '(');
+            res += ')';
+            break;
+        }
+
+        // the remainder is first seen
+        // remember the current position for it
+        map[r] = res.size();
+
+        r *= 10;
+
+        // append the quotient digit
+        res += to_string(r / d);
+    }
+
+    return res;
+}
 */
 class Solution {
 public:

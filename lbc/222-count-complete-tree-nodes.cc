@@ -9,6 +9,33 @@
 遇到的问题：
 边界条件搞的不是很清楚。
 一开始忘记了处理完全少了一层的情况。
+
+再次阅读：
+感觉之前这种思路还是挺好的，这次就没有想到。
+然后看了一下DISCUSS，基本也就是这样子，虽然下面的代码更简单，但是复杂度可能会稍微高一点点：
+class Solution {
+
+public:
+
+    int countNodes(TreeNode* root) {
+
+        if(!root) return 0;
+
+        int hl=0, hr=0;
+
+        TreeNode *l=root, *r=root;
+
+        while(l) {hl++;l=l->left;}
+
+        while(r) {hr++;r=r->right;}
+
+        if(hl==hr) return pow(2,hl)-1;
+
+        return 1+countNodes(root->left)+countNodes(root->right);
+
+    }
+
+};
 */
 /**
  * Definition for a binary tree node.

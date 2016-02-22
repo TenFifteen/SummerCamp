@@ -7,6 +7,9 @@
 
 遇到的问题：
 边界问题要好好处理，各种NULL的情况。
+
+再次阅读：
+没有太大问题。
 */
 /**
  * Definition for singly-linked list.

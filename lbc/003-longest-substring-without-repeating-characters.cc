@@ -59,3 +59,29 @@ public:
         return ans;
     }
 };
+
+/*
+第二次做：
+这次用的又是卡尺法，不过也算是挺好了。 但是DISCUSS那种不错的解法还是没有领悟好。
+*/
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        if (s.size() == 0) return 0;
+        
+        unordered_map<char, int> hash;
+        hash[s[0]] = 1;
+        int last = 0, ans = 1;
+        
+        for (int i = 1; i < s.size(); ++i) {
+            hash[s[i]]++;
+            while (hash[s[i]] > 1) {
+                hash[s[last++]]--;
+            }
+            
+            ans = max(ans, i-last+1);
+        }
+        
+        return ans;
+    }
+};

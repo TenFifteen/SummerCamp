@@ -9,6 +9,30 @@
 遇到的问题：
 一个一个算会超时。
 而且，这种算法明显比那样不知道低多少了。
+
+再次阅读：
+这次一下子就想到了这种算法，但是感觉之前的代码还是有点不够精简，下面这个代码
+是在DISCUSS中找到的，功能一样，但是使用资源更少，代码更精简：
+string getPermutation(int n, int k) {
+    int i,j,f=1;
+    // left part of s is partially formed permutation, right part is the leftover chars.
+    string s(n,'0');
+    for(i=1;i<=n;i++){
+        f*=i;
+        s[i-1]+=i; // make s become 1234...n
+    }
+    for(i=0,k--;i<n;i++){
+        f/=n-i;
+        j=i+k/f; // calculate index of char to put at s[i]
+        char c=s[j];
+        // remove c by shifting to cover up (adjust the right part).
+        for(;j>i;j--)
+            s[j]=s[j-1];
+        k%=f;
+        s[i]=c;
+    }
+    return s;
+}
 */
 class Solution {
 public:

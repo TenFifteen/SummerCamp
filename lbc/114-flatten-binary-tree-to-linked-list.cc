@@ -8,6 +8,28 @@
 
 遇到的问题：
 记得左右节点的左子树都要置为NULL
+
+再次阅读：
+感觉想到了一个比现在这种方法好一些的方法：就是用先序遍历，然后记录pre阶段，并且将pre的left指向
+当前节点，这样做完了一遍先序遍历之后呢，就是一个向左偏的链表。
+然后再遍历一遍，将其改为向右偏的链表即可。
+
+然后呢，在DISCUSS中还找到了一种非递归的方式来实现的，感觉碉堡了：
+void flatten(TreeNode *root) {
+    while (root) {
+        if (root->left && root->right) {
+            TreeNode* t = root->left;
+            while (t->right)
+                t = t->right;
+            t->right = root->right;
+        }
+
+        if(root->left)
+            root->right = root->left;
+        root->left = NULL;
+        root = root->right;
+    }
+}
 */
 /**
  * Definition for a binary tree node.

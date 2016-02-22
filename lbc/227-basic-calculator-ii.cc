@@ -9,6 +9,28 @@
 
 遇到的问题：
 竟然忘记了while循环中更新start了。真是罪过
+
+再次阅读：
+一直觉得自己做的不够简洁。这下好了，在DISCUSS中找到了一个简洁到令人发指的地步的代码：
+int calculate(string s) {
+    istringstream in('+' + s + '+');
+    long long total = 0, term = 0, n;
+    char op;
+    while (in >> op) {
+        if (op == '+' or op == '-') {
+            total += term;
+            in >> term;
+            term *= 44 - op;
+        } else {
+            in >> n;
+            if (op == '*')
+                term *= n;
+            else
+                term /= n;
+        }
+    }
+    return total;
+}
 */
 class Solution {
 public:

@@ -14,6 +14,52 @@
 然后又错了一次才终于AC了。
 
 看来今天实在是不适合写代码啊。这个题的代码太乱了。回头还要再好好的写一下。
+
+再次阅读：
+这次最初的想法还是跟上次一样，但是从里面往外面搜索代价会大一些。
+如果是从边缘往里面搜索的话，不需要记录状态，直接修改就行。所以还是用这种方式比较靠谱：
+class Solution {
+public:
+    void solve(vector<vector<char>>& board) {
+        int i,j;
+        int row=board.size();
+        if(!row)
+            return;
+        int col=board[0].size();
+
+        for(i=0;i<row;i++){
+            check(board,i,0,row,col);
+            if(col>1)
+                check(board,i,col-1,row,col);
+        }
+        for(j=1;j+1<col;j++){
+            check(board,0,j,row,col);
+            if(row>1)
+                check(board,row-1,j,row,col);
+        }
+        for(i=0;i<row;i++)
+            for(j=0;j<col;j++)
+                if(board[i][j]=='O')
+                    board[i][j]='X';
+        for(i=0;i<row;i++)
+            for(j=0;j<col;j++)
+                if(board[i][j]=='1')
+                    board[i][j]='O';
+    }
+    void check(vector<vector<char> >&vec,int i,int j,int row,int col){
+        if(vec[i][j]=='O'){
+            vec[i][j]='1';
+            if(i>1)
+                check(vec,i-1,j,row,col);
+            if(j>1)
+                check(vec,i,j-1,row,col);
+            if(i+1<row)
+                check(vec,i+1,j,row,col);
+            if(j+1<col)
+                check(vec,i,j+1,row,col);
+        }
+    }
+};
 */
 class Solution {
 public:

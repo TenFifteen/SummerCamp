@@ -7,6 +7,33 @@
 
 遇到的问题：
 有点水啊。
+
+再次阅读：
+感觉自己的实现完全没有用到之前的Iterator类，所以应该是有点问题的。
+感觉上应该是利用之前的next和hasNext方法，然后用一个变量来缓存peek出来的元素。
+然而，看到DISCUSS中都是用的再造一个Iterator出来用：
+class PeekingIterator : public Iterator
+{
+public:
+    PeekingIterator(const vector<int> &nums) : Iterator(nums)
+    {
+    }
+
+    int peek()
+    {
+        return Iterator(*this).next();
+    }
+
+    int next()
+    {
+        return Iterator::next();
+    }
+
+    bool hasNext() const
+    {
+        return Iterator::hasNext();
+    }
+};
 */
 // Below is the interface for Iterator, which is already defined for you.
 // **DO NOT** modify the interface for Iterator.

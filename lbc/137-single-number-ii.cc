@@ -7,6 +7,18 @@
 
 遇到的问题：
 竟然一次通过了。
+
+再次阅读：
+也是经典老题，但是感觉之前的代码很是啰嗦啊。显然是为了实现而实现的。
+下面这种才是正宗的解法。
+public int singleNumber(int[] A) {
+    int ones = 0, twos = 0;
+    for(int i = 0; i < A.length; i++){
+        ones = (ones ^ A[i]) & ~twos;
+        twos = (twos ^ A[i]) & ~ones;
+    }
+    return ones;
+}
 */
 class Solution {
 public:

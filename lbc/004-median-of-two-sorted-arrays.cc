@@ -54,3 +54,48 @@ public:
         }
     }
 };
+/*
+第二次做：
+这次竟然又不是自己完全写出来的，虽然是我已经想到了方法，但是代码真的没有写出来呢。
+最后还是看着上面的代码，然后才写出来的。
+然而我感觉，上面的代码直接变成迭代式的，好像是不太好变啊。
+之前在DISCUSS中看到的迭代不是这种思路的，是直接找中位数的。
+这种直接二分找中位数的方法简直厉害极了（https://leetcode.com/discuss/41621/very-concise-iterative-solution-with-detailed-explanation）
+下次还要认真看一下，虽然这次懂了，下次有可能就忘了。
+*/
+class Solution {
+private:
+    double findNthElement(vector<int> &nums1, int index1, vector<int> &nums2, int index2, int k) {
+        int len1 = nums1.size()-index1;
+        int len2 = nums2.size()-index2;
+        
+        if (len1 > len2) return findNthElement(nums2, index2, nums1, index1, k);
+        if (len1 == 0) return nums2[index2+k-1];
+        if (k == 1) return min(nums1[index1], nums2[index2]);
+        
+        int k1 = min(k/2, len1);
+        int k2 = k - k1;
+        int m1 = nums1[index1+k1-1];
+        int m2 = nums2[index2+k2-1];
+        
+        if (m1 == m2) {
+            return m1;
+        } else if (m1 < m2) {
+            return findNthElement(nums1, index1+k1, nums2, index2, k2);
+        } else {
+            return findNthElement(nums1, index1, nums2, index2+k2, k1);
+        }
+    }
+        
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        int total = nums1.size() + nums2.size();
+        assert(total != 0);
+        if (total & 0x1) {
+            return findNthElement(nums1, 0, nums2, 0, total/2 + 1);
+        } else {
+            return (findNthElement(nums1, 0, nums2, 0, total/2) + 
+                findNthElement(nums1, 0, nums2, 0, total/2 + 1)) / 2;
+        }
+    }
+};

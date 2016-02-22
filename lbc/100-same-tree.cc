@@ -7,6 +7,13 @@
 
 遇到的问题：
 一次通过。
+
+再次阅读：
+我也觉得应该是可以再简化一下代码的：
+bool isSameTree(TreeNode *p, TreeNode *q) {
+    if (p == NULL || q == NULL) return (p == q);
+    return (p->val == q->val && isSameTree(p->left, q->left) && isSameTree(p->right, q->right));
+}
 */
 /**
  * Definition for a binary tree node.

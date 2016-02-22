@@ -8,6 +8,27 @@
 
 遇到的问题：
 感觉题目说的返回值并不是很明确。
+
+再次阅读：
+虽然题目感觉有点问题，但是觉得应该是这样做，之前的做法基本就不错了。
+然后这里有一个DISCUSS中的比较完整的代码：
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<string, multiset<string>> mp;
+        for (string s : strs) {
+            string t = s; 
+            sort(t.begin(), t.end());
+            mp[t].insert(s);
+        }
+        vector<vector<string>> anagrams;
+        for (auto m : mp) { 
+            vector<string> anagram(m.second.begin(), m.second.end());
+            anagrams.push_back(anagram);
+        }
+        return anagrams;
+    }
+};
 */
 class Solution {
 public:

@@ -8,6 +8,14 @@
 遇到的问题：
 竟然root == NULL && sum == 0属于false的情况。。。
 
+再次阅读：
+感觉思路没有什么问题，是一个比较简单的题目，可以直接递归。
+就是感觉代码稍微有点冗余：
+bool hasPathSum(TreeNode *root, int sum) {
+    if (root == NULL) return false;
+    if (root->val == sum && root->left ==  NULL && root->right == NULL) return true;
+    return hasPathSum(root->left, sum-root->val) || hasPathSum(root->right, sum-root->val);
+}
 */
 /**
  * Definition for a binary tree node.

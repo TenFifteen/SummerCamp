@@ -8,6 +8,36 @@
 遇到的问题：
 一开始按照131的方式做，结果超时。
 看了别人的方法，才知道用动态规划并且压缩判断回文的过程才能达到时间要求。
+
+再次阅读：
+首先，判断回文的过程应该单独写一个方法，要不然体现不出编程水平。
+然后，我这次想到的方法是一个n的三次方的方法，不用递归。而是直接用动归dp[i][j]
+表示[i,j]区间这段字符串，最少的拆分数量是多少？
+
+然后，看了一下之前代码中的DP，感觉其实是一样的，只不过他们的dp[i]表示，从i到最后
+这段字符串的最少的拆分数量是多少？
+另外，就是其中的buf数组是个关键。
+DISCUSS中第二好的方案就是这个。看来当时参考的那个人也是参考的DISCUSS中的东西啊。
+
+然后，DISCUSS中还有一个更厉害的想法：
+感觉这个想法实在是好极了，但是非常的不直观的可以想出来。简直厉害🐂
+class Solution {
+public:
+    int minCut(string s) {
+        int n = s.size();
+        vector<int> cut(n+1, 0);  // number of cuts for the first k characters
+        for (int i = 0; i <= n; i++) cut[i] = i-1;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; i-j >= 0 && i+j < n && s[i-j]==s[i+j] ; j++) // odd length palindrome
+                cut[i+j+1] = min(cut[i+j+1],1+cut[i-j]);
+
+            for (int j = 1; i-j+1 >= 0 && i+j < n && s[i-j+1] == s[i+j]; j++) // even length palindrome
+                cut[i+j+1] = min(cut[i+j+1],1+cut[i-j+1]);
+        }
+        return cut[n];
+    }
+};
+
 */
 class Solution {
 public:

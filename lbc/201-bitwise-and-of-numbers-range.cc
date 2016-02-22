@@ -11,6 +11,13 @@
 一开始没有考虑到len位0的情况
 另外就是没有注意到==优先级比&优先级还要高
 还有就是一开始只考虑两个数字前面的1了，没有考虑0
+
+再次阅读：
+感觉一开始看到这道题目，不是很有清晰的思路，看了之前的代码，感觉想法还是很好的。
+然后又看了一下DISCUSS，有一个也挺不错的代码：
+int rangeBitwiseAnd(int m, int n) {
+    return (n > m) ? (rangeBitwiseAnd(m/2, n/2) << 1) : m;
+}
 */
 class Solution {
 public:

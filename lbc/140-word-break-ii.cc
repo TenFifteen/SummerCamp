@@ -7,6 +7,35 @@
 
 遇到的问题：
 一开始竟然错了一个将赋值写成了==的形式。。。找了好久
+
+再次阅读：
+没想到之前想到的竟然是这么个思路。不过感觉还是挺好的。其实吧，我觉得，这种需要输出各种方案的
+最终的结果的题目，复杂度本身都应该是很高了，所以递归的方式也没啥问题：
+public List<String> wordBreak(String s, Set<String> dict) {
+    List<String> result = new ArrayList<String>();
+    for(int j = s.length() - 1; j >= 0; j--){
+        if(dict.contains(s.substring(j)))
+            break;
+        else{
+            if(j == 0)
+                return result;
+        }
+    }
+    for(int i = 0; i < s.length()-1; i++)
+    {
+        if(dict.contains(s.substring(0,i+1)))
+        {
+            List<String> strs = wordBreak(s.substring(i+1,s.length()),dict);
+            if(strs.size() != 0)
+                for(Iterator<String> it = strs.iterator();it.hasNext();)
+                {
+                    result.add(s.substring(0,i+1)+" "+it.next());
+                }
+        }
+    }
+    if(dict.contains(s)) result.add(s);
+    return result;
+}
 */
 class Solution {
 public:

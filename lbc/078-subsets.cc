@@ -7,6 +7,28 @@
 
 遇到的问题：
 竟然忘了排序。
+
+再次阅读：
+看了下之前的代码，没有任何问题。
+但是感觉还是可以改成那种按照层次结构进行遍历的方式：
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        vector<vector<int>> subs;
+        vector<int> sub;  
+        genSubsets(nums, 0, sub, subs);
+        return subs; 
+    }
+    void genSubsets(vector<int>& nums, int start, vector<int>& sub, vector<vector<int>>& subs) {
+        subs.push_back(sub);
+        for (int i = start; i < nums.size(); i++) {
+            sub.push_back(nums[i]);
+            genSubsets(nums, i + 1, sub, subs);
+            sub.pop_back();
+        }
+    }
+};
 */
 class Solution {
 public:

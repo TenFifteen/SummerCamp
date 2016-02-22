@@ -13,6 +13,26 @@
 遇到的问题：
 哎，其中一个地方把i写成了j。
 让我检查错误检查了老半天。
+
+再次阅读：
+感觉之前自己的想法已经很不错了，用多余的数字来表示更多的状态。但是看了DISCUSS之后，
+感觉自己对于bit的操作水平还是没有达到融会贯通啊：
+void gameOfLife(vector<vector<int>>& board) {
+    int m = board.size(), n = m ? board[0].size() : 0;
+    for (int i=0; i<m; ++i) {
+        for (int j=0; j<n; ++j) {
+            int count = 0;
+            for (int I=max(i-1, 0); I<min(i+2, m); ++I)
+                for (int J=max(j-1, 0); J<min(j+2, n); ++J)
+                    count += board[I][J] & 1;
+            if (count == 3 || count - board[i][j] == 3)
+                board[i][j] |= 2;
+        }
+    }
+    for (int i=0; i<m; ++i)
+        for (int j=0; j<n; ++j)
+            board[i][j] >>= 1;
+}
 */
 class Solution {
 public:

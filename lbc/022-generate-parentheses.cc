@@ -8,6 +8,26 @@
 
 遇到的问题：
 不要忘记输出之后要返回。
+
+再次阅读：
+之前的解法已经足够好了。
+不过下面这种写法还是可以参考参考的。
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> res;
+        addingpar(res, "", n, 0);
+        return res;
+    }
+    void addingpar(vector<string> &v, string str, int n, int m){
+        if(n==0 && m==0) {
+            v.push_back(str);
+            return;
+        }
+        if(m > 0){ addingpar(v, str+")", n, m-1); }
+        if(n > 0){ addingpar(v, str+"(", n-1, m+1); }
+    }
+};
 */
 class Solution {
 public:
@@ -37,5 +57,26 @@ public:
             sub(left, right-1, ans, cur);
             cur.pop_back();
         }
+    }
+};
+/*
+第二次做：
+这次做的很顺利。
+*/
+class Solution {
+    void dfs(vector<string> &ans, string now, int left, int right) {
+        if (right == 0) {
+            ans.push_back(now);
+            return;
+        }
+        
+        if (left != 0) dfs(ans, now+"(", left-1, right);
+        if (left != right) dfs(ans, now+")", left, right-1);
+    }
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> ans;
+        dfs(ans, "", n, n);
+        return ans;
     }
 };

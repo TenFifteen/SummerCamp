@@ -41,3 +41,27 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+这次还是一下子就知道解法了，感觉这个题目的确是已经会做了啊。
+而且，竟然代码写的也是如此的相似。。。
+*/
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        if (height.size() < 2) return false;
+        
+        int ret = 0, left = 0, right = height.size()-1;
+        while (left < right) {
+            int cur = min(height[left], height[right]) * (right-left);
+            ret = max(ret, cur);
+            if (height[left] < height[right]) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+        
+        return ret;
+    }
+};

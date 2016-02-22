@@ -7,6 +7,24 @@
 
 遇到的问题：
 代码比较绕。一开始忘了将root加入到buf了。
+
+再次阅读：
+感觉之前的做法思路没啥问题，但是需要保存一个visited和一个buf稍微有点多。
+看到DISCUSS中有一个只需要保存一个的方法，感觉还是挺厉害的：这样就简洁多了。
+class Solution {
+public:
+    unordered_map<UndirectedGraphNode*, UndirectedGraphNode*> hash;
+    UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
+       if (!node) return node;
+       if(hash.find(node) == hash.end()) {
+           hash[node] = new UndirectedGraphNode(node -> label);
+           for (auto x : node -> neighbors) {
+                (hash[node] -> neighbors).push_back( cloneGraph(x) );
+           }
+       }
+       return hash[node];
+    }
+};
 */
 /**
  * Definition for undirected graph.

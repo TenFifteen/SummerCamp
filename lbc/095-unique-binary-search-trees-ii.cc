@@ -8,6 +8,9 @@
 遇到的问题：
 竟然在n==0的时候返回一个vector里，带一个NULL。
 初次之外无其他问题。
+
+再次阅读：
+感觉这种解法比较正常了。
 */
 /**
  * Definition for a binary tree node.

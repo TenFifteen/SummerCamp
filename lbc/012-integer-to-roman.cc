@@ -73,3 +73,46 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+感觉这次已经知道了这道题该怎么做了。就是直接把每个数字怎么表示放到一起就行了。
+*/
+class Solution {
+public:
+    string intToRoman(int num) {
+        unordered_map<int, char> mapping;
+        mapping[1] = 'I';
+        mapping[5] = 'V';
+        mapping[10] = 'X';
+        mapping[50] = 'L';
+        mapping[100] = 'C';
+        mapping[500] = 'D';
+        mapping[1000] = 'M';
+        
+        int mul = 1;
+        while (mul <= num) mul *= 10;
+        mul /= 10;
+        
+        string ans;
+        while (num) {
+            int digit = num / mul;
+            if (digit < 4) {
+                ans += string(digit, mapping[mul]);
+            } else if (digit == 4) {
+                ans += mapping[mul];
+                ans += mapping[mul*5];
+            } else if (digit < 9) {
+                ans += mapping[mul*5];
+                ans += string(digit-5, mapping[mul]);
+            } else {
+                ans += mapping[mul];
+                ans += mapping[mul*10];
+            }
+            
+            num %= mul;
+            mul /= 10;
+        }
+        
+        return ans;
+    }
+};

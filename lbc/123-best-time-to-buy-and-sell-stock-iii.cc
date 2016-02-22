@@ -9,6 +9,24 @@
 一开始是想着划分成两段的，但是复杂度是n*n的。所以超时了。
 又想着用动态规划，不过感觉有点难写，看了别人的解。感觉很是巧妙。
 而且写的过程中下标经常弄错。
+
+再次阅读：
+虽然这次一下子想到了这种解法，但是还是考虑着是否可以优化掉n的空间使用。
+然后就在DISCUSS中找到了这种解法：
+public class Solution {
+    public int maxProfit(int[] prices) {
+        int hold1 = Integer.MIN_VALUE, hold2 = Integer.MIN_VALUE;
+        int release1 = 0, release2 = 0;
+        for(int i:prices){                              // Assume we only have 0 money at first
+            release2 = Math.max(release2, hold2+i);     // The maximum if we've just sold 2nd stock so far.
+            hold2    = Math.max(hold2,    release1-i);  // The maximum if we've just buy  2nd stock so far.
+            release1 = Math.max(release1, hold1+i);     // The maximum if we've just sold 1nd stock so far.
+            hold1    = Math.max(hold1,    -i);          // The maximum if we've just buy  1st stock so far. 
+        }
+        return release2; ///Since release1 is initiated as 0, so release2 will always higher than release1.
+    }
+}
+感觉巧妙极了。相当于把两次买卖看做四个步骤，每看一个股价，都更新一下这四个状态。
 */
 class Solution {
 public:

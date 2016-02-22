@@ -7,6 +7,29 @@
 
 遇到的问题：
 还是各种边界问题，莫非今天不适合刷题？
+
+再次阅读：
+还是二分，但是需要考虑清楚各种情况。
+不过下面这段代码还是挺好的。
+DISCUSS里还有一种稍微简洁一点的写法，可以借鉴一下：
+int findMin(vector<int> &num) {
+    int start=0,end=num.size()-1;
+
+    while (start<end) {
+        if (num[start]<num[end])
+            return num[start];
+
+        int mid = (start+end)/2;
+
+        if (num[mid]>=num[start]) {
+            start = mid+1;
+        } else {
+            end = mid;
+        }
+    }
+
+    return num[start];
+}
 */
 class Solution {
 public:

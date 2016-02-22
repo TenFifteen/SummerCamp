@@ -7,6 +7,27 @@
 
 遇到的问题：
 一次通过。
+
+再次阅读：
+虽然之前的想法没啥问题，但是至少应该写成非递归的呀。
+然后看了一下DISCUSS，还真有一个不错的想法的代码：
+vector<vector<int>> ret;
+
+void buildVector(TreeNode *root, int depth)
+{
+    if(root == NULL) return;
+    if(ret.size() == depth)
+        ret.push_back(vector<int>());
+
+    ret[depth].push_back(root->val);
+    buildVector(root->left, depth + 1);
+    buildVector(root->right, depth + 1);
+}
+
+vector<vector<int> > levelOrder(TreeNode *root) {
+    buildVector(root, 0);
+    return ret;
+}
 */
 /**
  * Definition for a binary tree node.

@@ -10,6 +10,29 @@
 原来看到这个题目的时候，感觉好像好难好难的，没敢做。
 这次大体看了一下，感觉这个思路其实是可以做的。
 然后竟然真的做出来了。
+
+再次阅读：
+虽然这次想到的还是二分+动归。
+但是还是抱着试一试的心态看了一下DISCUSS有没有更好的解法，结果真的有人就一次动归就做出来了。。。
+class Solution {
+public:
+    int calculateMinimumHP(vector<vector<int> > &dungeon) {
+        int M = dungeon.size();
+        int N = dungeon[0].size();
+        // hp[i][j] represents the min hp needed at position (i, j)
+        // Add dummy row and column at bottom and right side
+        vector<vector<int> > hp(M + 1, vector<int>(N + 1, INT_MAX));
+        hp[M][N - 1] = 1;
+        hp[M - 1][N] = 1;
+        for (int i = M - 1; i >= 0; i--) {
+            for (int j = N - 1; j >= 0; j--) {
+                int need = min(hp[i + 1][j], hp[i][j + 1]) - dungeon[i][j];
+                hp[i][j] = need <= 0 ? 1 : need;
+            }
+        }
+        return hp[0][0];
+    }
+};
 */
 class Solution {
 public:

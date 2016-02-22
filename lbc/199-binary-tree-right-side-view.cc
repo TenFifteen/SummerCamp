@@ -7,6 +7,27 @@
 
 遇到的问题：
 几个笔误
+
+再次阅读：
+原来感觉上就是一个层次遍历。
+但是看到DISCUSS中有人利用变形的先序遍历做的时候，感觉厉害极了，
+说明三种顺序遍历并不是一成不变的，可以灵活使用才行：
+class Solution {
+public:
+    void recursion(TreeNode *root, int level, vector<int> &res)
+    {
+        if(root==NULL) return ;
+        if(res.size()<level) res.push_back(root->val);
+        recursion(root->right, level+1, res);
+        recursion(root->left, level+1, res);
+    }
+
+    vector<int> rightSideView(TreeNode *root) {
+        vector<int> res;
+        recursion(root, 1, res);
+        return res;
+    }
+};
 */
 /**
  * Definition for a binary tree node.

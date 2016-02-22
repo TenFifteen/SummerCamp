@@ -9,6 +9,9 @@
 
 遇到的问题：
 没有问题。
+
+再次阅读：
+典型的二分，没有问题。
 */
 // Forward declaration of isBadVersion API.
 bool isBadVersion(int version);

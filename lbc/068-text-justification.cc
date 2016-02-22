@@ -8,6 +8,28 @@
 遇到的问题：
 1，一开始有个边界问题搞了好久才发现。if(len > maxWidth)
 2，没看清题目条件中最后一行的特殊情况。
+
+再次阅读：
+感觉基本就是考察编程功底，贪心即可，没有什么算法可言。
+但是之前的代码还是可以再改进一下的。
+下面是一个DISCUSS中不错的代码，可以参考一下：
+vector<string> fullJustify(vector<string> &words, int L) {
+    vector<string> res;
+    for(int i = 0, k, l; i < words.size(); i += k) {
+        for(k = l = 0; i + k < words.size() and l + words[i+k].size() <= L - k; k++) {
+            l += words[i+k].size();
+        }
+        string tmp = words[i];
+        for(int j = 0; j < k - 1; j++) {
+            if(i + k >= words.size()) tmp += " ";
+            else tmp += string((L - l) / (k - 1) + (j < (L - l) % (k - 1)), ' ');
+            tmp += words[i+j+1];
+        }
+        tmp += string(L - tmp.size(), ' ');
+        res.push_back(tmp);
+    }
+    return res;
+}
 */
 class Solution {
 public:

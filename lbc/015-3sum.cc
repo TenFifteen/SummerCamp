@@ -10,6 +10,10 @@
 
 遇到的问题：
 没遇到啥问题，就是开始的边界条件忘了判断了。
+
+再次阅读：
+这道题n*n的解法已经算是最优了。
+DISCUSS中也是这种解法。
 */
 class Solution {
 public:
@@ -45,6 +49,42 @@ public:
                     while(right > left && right-1 > i && nums[right-1] == nums[right]){
                         right--;
                     }
+                    right--;
+                }
+            }
+        }
+        return ans;
+    }
+};
+/*
+第二次做：
+虽然直接有了思路，但是代码还是写的不是很顺畅，应该是今天题目做的足够多了。改时间再做吧。
+*/
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> ans;
+        if (nums.size() < 3) return ans;
+        
+        sort(nums.begin(), nums.end());
+        
+        for (int i = 0; i < nums.size()-2; ++i) {
+            if (i != 0 && nums[i] == nums[i-1]) continue;
+            
+            int left = i+1, right = nums.size()-1;
+            while (left < right) {
+                if (nums[left] + nums[right] == -nums[i]) {
+                    vector<int> tmp(3);
+                    tmp[0] = nums[i];
+                    tmp[1] = nums[left];
+                    tmp[2] = nums[right];
+                    ans.push_back(tmp);
+                    
+                    while (left < right && nums[left+1] == nums[left]) left++;
+                    left++;
+                } else if (nums[left] + nums[right] < -nums[i]) {
+                    left++;
+                } else {
                     right--;
                 }
             }

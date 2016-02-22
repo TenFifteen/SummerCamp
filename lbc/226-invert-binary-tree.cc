@@ -7,6 +7,37 @@
 
 遇到的问题：
 一次通过。
+
+再次阅读：
+虽然这个题目的递归写法非常简单，但是却从来没有思考过非递归的方式该如何处理，
+下面是DISCUSS中比较不错的非递归的方式：
+public class Solution {
+    public TreeNode invertTree(TreeNode root) {
+
+        if (root == null) {
+            return null;
+        }
+
+        final Deque<TreeNode> stack = new LinkedList<>();
+        stack.push(root);
+
+        while(!stack.isEmpty()) {
+            final TreeNode node = stack.pop();
+            final TreeNode left = node.left;
+            node.left = node.right;
+            node.right = left;
+
+            if(node.left != null) {
+                stack.push(node.left);
+            }
+            if(node.right != null) {
+                stack.push(node.right);
+            }
+        }
+        return root;
+    }
+}
+
 */
 /**
  * Definition for a binary tree node.

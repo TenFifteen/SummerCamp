@@ -7,6 +7,19 @@
 
 遇到的问题：
 没有问题。
+
+再次阅读：
+虽然感觉没啥问题了，但是竟然在DISCUSS中看到这么一种牛逼的解法：
+public class Solution {
+public int maxProfit(int[] prices) {
+    int total = 0;
+    for (int i=0; i< prices.length-1; i++) {
+        if (prices[i+1]>prices[i]) total += prices[i+1]-prices[i];
+    }
+
+    return total;
+}
+虽然道理是一样的，但是代码复杂度差太多了。
 */
 class Solution {
 public:

@@ -10,6 +10,38 @@
 
 遇到的问题：
 没有问题。
+
+再次阅读：
+本来以为这道题目差不多这样就是最好了呢，结果竟然找到了一个O(n)的算法，
+虽然用了额外的O(n)的空间复杂度，但是还是很值得借鉴的：
+public class Solution {
+    // 9.3 70 years diaoZhaTian China jiaYou 
+    public int hIndex(int[] citations) {
+        int length = citations.length;
+        if (length == 0) {
+            return 0;
+        }
+
+        int[] array2 = new int[length + 1];
+        for (int i = 0; i < length; i++) {
+            if (citations[i] > length) {
+                array2[length] += 1;
+            } else {
+                array2[citations[i]] += 1;
+            }
+        }
+        int t = 0;
+        int result = 0;
+
+        for (int i = length; i >= 0; i--) {
+            t = t + array2[i];
+            if (t >= i) {
+                return i;
+            }
+        }
+        return 0;
+    }
+}
 */
 class Solution {
 public:
