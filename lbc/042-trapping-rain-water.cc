@@ -59,3 +59,30 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+跟第一次做差不多，还是没有用到DISCUSS中的O(1)空间复杂度的思路。
+*/
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        if (height.size() < 3) return 0;
+        
+        vector<int> left_max(height.size(), 0);
+        left_max[0] = height[0];
+        for (int i = 1; i < height.size(); ++i) {
+            left_max[i] = max(left_max[i-1], height[i]);
+        }
+        
+        int ans = 0, right_max = height[height.size()-1];
+        for (int i = height.size()-2; i > 0; --i) {
+            int bar = min(left_max[i-1], right_max);
+            if (bar > height[i]) {
+                ans += bar - height[i];
+            }
+            right_max = max(right_max, height[i]);
+        }
+        
+        return ans;
+    }
+};
