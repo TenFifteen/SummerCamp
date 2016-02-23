@@ -91,3 +91,52 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+竟然写的跟第一次是基本一样的。。。
+虽然没有DISCUSS中的简洁，不过也还是挺好的啦。
+*/
+class Solution {
+    string addString(string num1, string num2) {
+        string ans(max(num1.size(), num2.size())+1, '0');
+        int i1 = num1.size()-1, i2 = num2.size()-1, ia = ans.size()-1;
+        int carry = 0;
+        
+        while (i1 >= 0 || i2 >= 0) {
+            if (i1 >= 0) carry += num1[i1--] - '0';
+            if (i2 >= 0) carry += num2[i2--] - '0';
+            ans[ia--] = '0' + carry % 10;
+            carry /= 10;
+        }
+        if (carry) ans[ia--] = '0' + carry;
+        
+        return ans.substr(ia+1, ans.size());
+    }
+    
+    string mulDigit(string num, int digit) {
+        if (digit == 0) return "0";
+        if (digit == 1) return num;
+        
+        string ans(num.size()+1, '0');
+        int in = num.size()-1, ia = ans.size()-1, carry = 0;
+        while (in >= 0) {
+            carry += (num[in--]-'0') * digit;
+            ans[ia--] = carry % 10 + '0';
+            carry /= 10;
+        }
+        if (carry) ans[ia--] = '0' + carry;
+        return ans.substr(ia+1, ans.size());
+    }
+public:
+    string multiply(string num1, string num2) {
+        assert(num1.size() && num2.size());
+        if (num1 == "0" || num2 == "0") return "0";
+        string ans = "0";
+        
+        for (int i = num1.size()-1; i >= 0; --i) {
+            ans = addString(ans, mulDigit(num2, num1[i]-'0')+string(num1.size()-i-1, '0'));
+        }
+        
+        return ans;
+    }
+};
