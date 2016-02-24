@@ -65,3 +65,38 @@ public:
         }
     }
 };
+/*
+第二次做：
+本来这次想的是上面DISCUSS中提到的代码的，结果写出来发现，结果竟然要求是有序的。
+所以就放弃了，临时改成了原来的这种思路了。
+*/
+class Solution {
+private:
+    void dfs(vector<vector<int> > &ans, vector<int> &nums, int index, vector<int> &cur, vector<bool> &flag) {
+        if (index == nums.size()) {
+            ans.push_back(cur);
+            return;
+        }
+        
+        for (int i = 0; i < nums.size(); ++i) {
+            if (flag[i]) continue;
+            cur.push_back(nums[i]);
+            flag[i] = true;
+            dfs(ans, nums, index+1, cur, flag);
+            cur.pop_back();
+            flag[i] = false;
+        }
+    }
+    
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int> > ans;
+        vector<int> cur;
+        vector<bool> flag(nums.size(), false);
+        
+        sort(nums.begin(), nums.end());
+        
+        dfs(ans, nums, 0, cur, flag);
+        return ans;
+    }
+};
