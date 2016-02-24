@@ -63,3 +63,42 @@ public:
         }
     }
 };
+/*
+第二次做：
+这次也是采用的之前自己的思路，竟然还是犯了之前的老毛病，不过这次的处理方式跟之前不同了。
+*/
+class Solution {
+private:
+    void dfs(vector<vector<int> > &ans, vector<int> &nums, vector<int> &cur, vector<bool> &flag) {
+        if (cur.size() == nums.size()) {
+            ans.push_back(cur);
+            return;
+        }
+        
+        bool valid = false;
+        int last;
+        for (int i = 0; i < nums.size(); ++i) {
+            if (flag[i] || (valid && nums[i] == last)) continue;
+            
+            cur.push_back(nums[i]);
+            flag[i] = true;
+            dfs(ans, nums, cur, flag);
+            cur.pop_back();
+            flag[i] = false;
+            
+            valid = true;
+            last = nums[i];
+        }
+    }
+
+public:
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        vector<vector<int> > ans;
+        vector<bool> flag(nums.size(), false);
+        vector<int> cur;
+        sort(nums.begin(), nums.end());
+        
+        dfs(ans, nums, cur, flag);
+        return ans;
+    }
+};
