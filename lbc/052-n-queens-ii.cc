@@ -41,3 +41,38 @@ public:
         }
     }
 };
+/*
+第二次做：
+跟上次一样，拿上一个题目的代码过来简化一下就行了。
+*/
+class Solution {
+private:
+    int dfs(vector<bool> &col, vector<bool> &left, vector<bool> &right, int row, int n) {
+        if (row == n) {
+            return 1;
+        }
+        
+        int ans = 0;
+        for (int i = 0; i < n; ++i) {
+            if (col[i] && left[row+i] && right[n-1-i+row]) {
+                col[i] = false;
+                left[row+i] = false;
+                right[n-1-i+row] = false;
+                
+                ans += dfs(col, left, right, row+1, n);
+                
+                col[i] = true;
+                left[row+i] = true;
+                right[n-1-i+row] = true;
+            }
+        }
+        return ans;
+    }
+    
+public:
+    int totalNQueens(int n) {
+        vector<bool> col(n, true), left(n*2-1, true), right(n*2-1, true);
+        
+        return dfs(col, left, right, 0, n);
+    }
+};
