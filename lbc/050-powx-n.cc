@@ -49,3 +49,35 @@ public:
         }
     }
 };
+/*
+第二次写：
+这次还是犯了很多之前犯得小毛病。这道题还真得小心点了。
+还有就是DISUCSS中那种递归的思路还是挺不错的。
+*/
+class Solution {
+private:
+    double pow(double x, long long n) {
+        if (n == 0) return 1.0;
+        if (n < 0) return 1/pow(x, -n);
+        
+        double ans = 1.0;
+        double cur = x;
+        long long mul = 1;
+        while (n) {
+            if (n & mul) {
+                n -= mul;
+                ans *= cur;
+            }
+            
+            cur *= cur;
+            mul <<= 1;
+        }
+        
+        return ans;
+    }
+    
+public:
+    double myPow(double x, int n) {
+        return pow(x, n);
+    }
+};
