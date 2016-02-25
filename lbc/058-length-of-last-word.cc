@@ -33,3 +33,23 @@ public:
         return len;
     }
 };
+/*
+第二次做：
+虽然题目很简单，但是很容易出问题。这次就忘记了最后如果cur ！= 0，那么ans中的结果就是错误的。
+*/
+class Solution {
+public:
+    int lengthOfLastWord(string s) {
+        int ans = 0, cur = 0;
+        for (auto ch : s) {
+            if (ch == ' ') {
+                if (cur) ans = cur;
+                cur = 0;
+            } else {
+                cur++;
+            }
+        }
+        if (cur) return cur;
+        return ans;
+    }
+};
