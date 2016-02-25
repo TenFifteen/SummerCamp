@@ -40,3 +40,30 @@ public:
         return ans[obstacleGrid.size()-1][obstacleGrid[0].size()-1];
     }
 };
+/*
+第二次做：
+这次做的还比较顺利，边界考虑的也比较周全。
+*/
+class Solution {
+public:
+    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+        if (obstacleGrid.size() == 0 || obstacleGrid[0].size() == 0) return 0;
+        int m = obstacleGrid.size(), n = obstacleGrid[0].size();
+        if (obstacleGrid[0][0] == 1 || obstacleGrid[m-1][n-1] == 1) return 0;
+        
+        vector<int> ans(n, 0);
+        ans[0] = 1;
+        for (int i = 0; i < m; ++i) {
+            if (obstacleGrid[i][0] == 1) ans[0] = 0;
+            for (int j = 1; j < n; ++j) {
+                if (obstacleGrid[i][j] == 0) {
+                    ans[j] += ans[j-1];
+                } else {
+                    ans[j] = 0;
+                }
+            }
+        }
+        
+        return ans[n-1];
+    }
+};
