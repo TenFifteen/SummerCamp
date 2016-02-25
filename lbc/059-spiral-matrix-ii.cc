@@ -112,3 +112,36 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+这次写的还比较顺利，代码也比之前好多了。
+不过我还以为n一定大于0呢，就写了一个assert，结果就wa了。
+*/
+class Solution {
+public:
+    vector<vector<int>> generateMatrix(int n) {
+        vector<vector<int> > ans(n, vector<int>(n));
+        if (n < 1) return ans;
+        
+        int i = 0, j = 0, m = n, N = n,cur = 1;
+        while (cur <= N*N) {
+            for (int k = j; k < n; ++k) {
+                ans[i][k] = cur++;
+            }
+            i++;
+            if (cur <= N*N) for (int k = i; k < m; ++k) {
+                ans[k][n-1] = cur++;
+            }
+            n--;
+            if (cur <= N*N) for (int k = n-1; k >= j; --k) {
+                ans[m-1][k] = cur++;
+            }
+            m--;
+            if (cur <= N*N) for (int k = m-1; k >= i; --k) {
+                ans[k][j] = cur++;
+            }
+            j++;
+        }
+        return ans;
+    }
+};
