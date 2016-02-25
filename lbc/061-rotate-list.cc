@@ -76,3 +76,50 @@ public:
         return last;
     }
 };
+/*
+第二次做：
+虽然这次写的比较顺利，还是没有想到DISCUSS那种思路，不过也还好，差不太多。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    int getListLen(ListNode *head) {
+        int len = 0;
+        while (head) {
+            len++;
+            head = head->next;
+        }
+        return len;
+    }
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if (head == NULL || head->next == NULL) return head;
+        
+        int n = getListLen(head);
+        k %= n;
+        if (k == 0) return head;
+        
+        ListNode *cur = head, *last, *front = head, *frontLast;
+        for (int i = 0; i < k; ++i) {
+            frontLast = front;
+            front = front->next;
+        }
+        while (front) {
+            frontLast = front;
+            front = front->next;
+            last = cur;
+            cur = cur->next;
+        }
+        
+        frontLast->next = head;
+        last->next = NULL;
+        return cur;
+    }
+};
