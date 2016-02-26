@@ -35,3 +35,34 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+这次做的还算是顺利，不过在使用一个小聪明的时候，反而被小聪明给wa了。
+就是下面用了&和移位来提高运行速度。结果竟然+的优先级比&要高，所以结果是错误的。
+*/
+class Solution {
+public:
+    string addBinary(string a, string b) {
+        if (a == "") return b;
+        if (b == "") return a;
+        
+        int ia = a.size()-1, ib = b.size()-1;
+        int carry = 0;
+        string ans;
+        
+        while (ia >= 0 || ib >= 0) {
+            if (ia >= 0) carry += a[ia--]-'0';
+            if (ib >= 0) carry += b[ib--]-'0';
+            ans.push_back((carry & 0x1) + '0');
+            carry >>= 1;
+        }
+        
+        if (carry) ans.push_back('1');
+        
+        for (int i = 0; i < ans.size()/2; ++i) {
+            swap(ans[i], ans[ans.size()-1-i]);
+        }
+        
+        return ans;
+    }
+};
