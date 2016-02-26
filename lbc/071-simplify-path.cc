@@ -65,3 +65,45 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+题目本身比较简单，不过这次写的感觉跟之前写的基本没有什么差别啊。
+还是没有用到DISCUSS中那么简洁的写法。
+*/
+class Solution {
+public:
+    string simplifyPath(string path) {
+        stack<string> names;
+        assert(path.size() > 0 && path[0] == '/');
+        
+        int last = 0;
+        while (last < path.size()) {
+            int next = last+1;
+            while (next < path.size() && path[next] != '/') next++;
+            if (next > last+1) {
+                string cur = path.substr(last+1, next-last-1);
+                if (cur == "..") {
+                    if (names.size() > 0) names.pop();
+                } else if (cur != ".") {
+                    names.push(cur);
+                }
+            }
+            
+            last = next;
+        }
+        
+        if (names.size() == 0) return "/";
+        
+        vector<string> tmp;
+        while (names.size() > 0) {
+            tmp.push_back(names.top());
+            names.pop();
+        }
+        string ans;
+        for (int i = tmp.size()-1; i >= 0; --i) {
+            ans.append("/");
+            ans.append(tmp[i]);
+        }
+        return ans;
+    }
+};
