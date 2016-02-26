@@ -58,3 +58,25 @@ public:
         }
     }
 };
+/*
+第二次做：
+就是一个二分，比较简单。不过这次有一个边界条件没有考虑好。见下面的注释。
+一开始left是从0开始的。
+*/
+class Solution {
+public:
+    int mySqrt(int x) {
+        assert(x >= 0);
+        if (x < 2) return x;
+        
+        int left = 1, right = x;
+        while (left < right) {
+            int mid = left + ((right-left+1) >> 1);//when x is INT_MAX, it overflows
+            int mul = x / mid;
+            if (mul == mid) return mid;
+            else if (mul > mid) left = mid;
+            else right = mid-1;
+        }
+        return left;
+    }
+};
