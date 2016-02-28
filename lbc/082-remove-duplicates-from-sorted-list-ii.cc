@@ -88,3 +88,45 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+指针的问题果然是容易出错，这次又是有两个小地方出了些问题。不过还好，代码比之前好多了。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        if (head == NULL) return head;
+        ListNode prehead(0), *phead = &prehead, *last = head;
+        
+        int dup = 0;
+        head = head->next;
+        while (head) {
+            if (head->val == last->val) {
+                dup++;
+            } else {
+                if (!dup) {
+                    phead->next = last;
+                    phead = last;
+                }
+                last = head;
+                dup = 0;
+            }
+            head = head->next;
+        }
+        
+        if (!dup) {
+            phead->next = last;
+            phead = last;
+        }
+        phead->next = NULL;
+        return prehead.next;
+    }
+};
