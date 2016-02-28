@@ -77,3 +77,45 @@ public:
         }
     }
 };
+/*
+第二次做：
+比较简单的dfs，这次用了下标数组，比之前这种样子好看一些了。
+另外就是DISCUSS中那种省掉flag数组的方式也挺好的。
+*/
+class Solution {
+private:
+    bool search(vector<vector<char> > &board, vector<vector<bool> > &flag, int x, int y, string &word, int index) {
+        if (index == word.size()) return true;
+        if (x < 0 || x >= board.size() || y < 0 || y >= board[0].size() || flag[x][y] || board[x][y] != word[index]) return false;
+        
+        const int ix[] = {-1, 0, 1, 0};
+        const int iy[] = {0, 1, 0, -1};
+        
+        flag[x][y] = true;
+        for (int i = 0; i < 4; ++i) {
+            if (search(board, flag, x+ix[i], y+iy[i], word, index+1)) {
+                return true;
+            }
+        }
+        flag[x][y] = false;
+        
+        return false;
+    }
+
+public:
+    bool exist(vector<vector<char>>& board, string word) {
+        if (board.size() == 0 || board[0].size() == 0) return false;
+        int m = board.size(), n = board[0].size();
+        
+        vector<vector<bool> > flag(m, vector<bool>(n, false));
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (search(board, flag, i, j, word, 0)) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+};
