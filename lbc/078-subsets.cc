@@ -51,3 +51,33 @@ public:
         sub(ans, nums, index+1, cur);
     }
 };
+/*
+第二次做：
+竟然没有看见结果需要排序。。。不过做的还算是顺利吧，简单题。
+*/
+class Solution {
+private:
+    void dfs(vector<vector<int> > &ans, vector<int> &now, vector<int> &nums, int cur) {
+        if (cur == nums.size()) {
+            ans.push_back(now);
+            return;
+        }
+        
+        now.push_back(nums[cur]);
+        dfs(ans, now, nums, cur+1);
+        now.pop_back();
+        dfs(ans, now, nums, cur+1);
+    }
+
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int> > ans;
+        vector<int> now;
+        
+        sort(nums.begin(), nums.end());
+        
+        dfs(ans, now, nums, 0);
+        
+        return ans;
+    }
+};
