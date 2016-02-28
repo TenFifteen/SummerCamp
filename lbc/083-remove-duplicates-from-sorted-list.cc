@@ -39,3 +39,34 @@ public:
         return head;
     }
 };
+/*
+第二次做：
+这个跟上一题比就差远了，一分钟A掉
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        if (head == NULL) return head;
+        
+        ListNode *ans = head, *tail = head;
+        head = head->next;
+        while (head) {
+            if (head->val != tail->val) {
+                tail->next = head;
+                tail = head;
+            }
+            head = head->next;
+        }
+        
+        tail->next = NULL;
+        return ans;
+    }
+};
