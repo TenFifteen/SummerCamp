@@ -43,3 +43,35 @@ public:
         }
     }
 };
+/*
+第二次做：
+虽然不是什么难题，不过写代码的时候各种条件搞错了，一开始还忘记了加.了，后来发现最后一个域没有验证。
+其实想一想的话，这个验证是否是一个合理的域应该抽象为一个函数。
+*/
+class Solution {
+private:
+    void dfs(vector<string> &ans, string now, string s, int n) {
+        if (s.size() > n*3 || s.size() < n) return;
+        if (n == 1) {
+            if (s[0] != '0' && stoi(s) <= 255 || s == "0") ans.push_back(now+"."+s);
+            return;
+        }
+        
+        int len = s.size()+1-n < 4 ? s.size()+1-n : 3;
+        if (s[0] == '0') len = 1;
+        for (int i = 1; i <= len; ++i) {
+            string cur = s.substr(0, i);
+            if (stoi(cur) > 255) break;
+            
+            if (n == 4) dfs(ans, now+cur, s.substr(i), n-1);
+            else dfs(ans, now+"."+cur, s.substr(i), n-1);
+        }
+    }
+
+public:
+    vector<string> restoreIpAddresses(string s) {
+        vector<string> ans;
+        dfs(ans, "", s, 4);
+        return ans;
+    }
+};
