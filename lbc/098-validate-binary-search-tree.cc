@@ -54,3 +54,31 @@ public:
         return false;
     }
 };
+/*
+第二次做：
+跟第一次的思路竟然是一样一样的。。。
+还是DISCUSS中的代码思路比较好，直接利用中序遍历解决了。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    bool isValid(TreeNode *root, long long low, long long high) {
+        if (root == NULL) return true;
+        if (root->val <= low || root->val >= high) return false;
+        return isValid(root->left, low, root->val) && isValid(root->right, root->val, high);
+    }
+    
+public:
+    bool isValidBST(TreeNode* root) {
+        long long low = INT_MIN, high = INT_MAX;
+        return isValid(root, low-1, high+1);
+    }
+};
