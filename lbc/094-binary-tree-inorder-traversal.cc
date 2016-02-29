@@ -49,3 +49,45 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+比较顺利，一次通过。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> ans;
+        if (root == NULL) return ans;
+        
+        stack<TreeNode *> stk;
+        while (root->left) {
+            stk.push(root);
+            root = root->left;
+        }
+        stk.push(root);
+        
+        while (stk.size()) {
+            TreeNode *cur = stk.top();stk.pop();
+            ans.push_back(cur->val);
+            cur = cur->right;
+            if (cur) {
+                while (cur->left) {
+                    stk.push(cur);
+                    cur = cur->left;
+                }
+                stk.push(cur);
+            }
+        }
+        
+        return ans;
+    }
+};
