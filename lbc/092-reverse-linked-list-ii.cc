@@ -80,3 +80,54 @@ public:
         return last;
     }
 };
+/*
+第二次做：
+比较顺利，只是其中一个变量写错了。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    ListNode *reverse(ListNode *head) {
+        ListNode *ret = NULL;
+        while (head) {
+            ListNode *next = head->next;
+            head->next = ret;
+            ret = head;
+            head = next;
+        }
+        return ret;
+    }
+
+public:
+    ListNode* reverseBetween(ListNode* head, int m, int n) {
+        if (head == NULL || m == n) return head;
+        
+        ListNode prehead(0), *phead = &prehead, *leftTail, *midHead, *midTail;
+        
+        phead->next = head;
+        for (int i = 0; i < m; ++i) {
+            leftTail = phead;
+            phead = phead->next;
+        }
+        
+        midHead = phead;
+        for (int i = 0; i < n-m+1; ++i) {
+            midTail = phead;
+            phead = phead->next;
+        }
+        
+        midTail->next = NULL;
+        reverse(midHead);
+        leftTail->next = midTail;
+        midHead->next = phead;
+        
+        return prehead.next;
+    }
+};
