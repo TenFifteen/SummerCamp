@@ -62,3 +62,34 @@ public:
         return ans[s.size()];
     }
 };
+/*
+第二次做：
+思路是有的，代码写起来比较费劲，而且也不是很好看。需要加强。
+*/
+class Solution {
+public:
+    int numDecodings(string s) {
+        if (s.size() == 0) return 0;
+        if (s.size() == 1) {
+            if (s == "0") return 0;
+            return 1;
+        }
+        
+        int n = s.size();
+        vector<int> dp(n, 0);
+        dp[n-1] = s[n-1] == '0' ? 0 : 1;
+        if (s[n-2] != '0') {
+            dp[n-2] = dp[n-1];
+            if (s[n-2] == '1' || s[n-2] == '2' && s[n-1] < '7') dp[n-2] += 1;
+        }
+        
+        for (int i = n-3; i >= 0; --i) {
+            if (s[i] != '0') {
+                dp[i] = dp[i+1];
+                if (s[i] == '1' || s[i] == '2' && s[i+1] < '7') dp[i] += dp[i+2];
+            }
+        }
+        
+        return dp[0];
+    }
+};
