@@ -69,3 +69,48 @@ public:
         ret->right = copy(head->right);
     }
 };
+/*
+第二次做：
+这次比之前做的顺利多了。
+不过这次忘记了判断n == 0的时候的情况了。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    vector<TreeNode *> sub(int left, int right) {
+        vector<TreeNode *> ans;
+        if (left > right) {
+            ans.push_back(NULL);
+            return ans;
+        }
+        
+        for (int i = left; i <= right; ++i) {
+            auto L = sub(left, i-1);
+            auto R = sub(i+1, right);
+            for (auto l : L) {
+                for (auto r : R) {
+                    auto root = new TreeNode(i);
+                    root->left = l;
+                    root->right = r;
+                    ans.push_back(root);
+                }
+            }
+        }
+        
+        return ans;
+    }
+
+public:
+    vector<TreeNode*> generateTrees(int n) {
+        if (n == 0) return vector<TreeNode *>();
+        return sub(1, n);
+    }
+};
