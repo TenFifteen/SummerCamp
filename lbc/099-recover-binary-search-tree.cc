@@ -55,3 +55,52 @@ public:
         return root;
     }
 };
+/*
+第二次做：
+虽然模模糊糊的知道怎么做，可是做的过程中感觉出了好多问题啊。
+这次自己完全重新整理了一下各种情况，好像感觉之前这种方式是不是有问题啊，少了好几种情况呢？？
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    TreeNode * find(vector<TreeNode *> &mis, vector<TreeNode *> &pres, TreeNode *root, TreeNode *pre) {
+        if (root == NULL) return pre;
+        if (root->left) pre = find(mis, pres, root->left, pre);
+        if (pre != NULL) {
+            if (root->val < pre->val) {
+                mis.push_back(root);
+                pres.push_back(pre);
+            }
+        }
+        pre = root;
+        if (root->right) pre = find(mis, pres, root->right, pre);
+        return pre;
+    }
+    
+public:
+    void recoverTree(TreeNode* root) {
+        vector<TreeNode *> mis, pres;
+        find(mis, pres, root, NULL);
+        if (mis.size() == 1) {
+            swap(mis[0]->val, pres[0]->val);
+        } else if (mis.size() == 4) {
+            swap(mis[0]->val, mis[2]->val);
+        } else if (mis.size() == 2) {
+            swap(pres[0]->val, mis[1]->val);
+        } else if (mis.size() == 3) {
+            if (mis[0] == pres[1]) {
+                swap(mis[0]->val, mis[2]->val);
+            } else {
+                swap(pres[0]->val, mis[1]->val);
+            }
+        }
+    }
+};
