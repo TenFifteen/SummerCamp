@@ -84,3 +84,58 @@ public:
         return cur;
     }
 };
+/*
+第二次做：
+这次写的竟然个DISCUSS中的思路是一样的。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    int getLength(ListNode *root) {
+        int len = 0;
+        while (root) {
+            len++;
+            root = root->next;
+        }
+        return len;
+    }
+    
+    TreeNode *build (ListNode *head, int len) {
+        if (len <= 0) return NULL;
+        if (len == 1) return new TreeNode(head->val);
+        int mid = (len>>1)+1;
+        
+        ListNode *front = head;
+        for (int i = 0; i < mid-1; ++i) {
+            front = front->next;
+        }
+        
+        
+        TreeNode *root = new TreeNode(front->val);
+        root->left = build(head, mid-1);
+        root->right = build(front->next, len-mid);
+        return root;
+    }
+
+public:
+    TreeNode* sortedListToBST(ListNode* head) {
+        int len = getLength(head);
+        return build(head, len);
+    }
+};
