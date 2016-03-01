@@ -48,3 +48,43 @@ public:
         if(next.size() != 0)sub(ans, next);
     }
 };
+/*
+第二次做：
+没啥问题，简单题。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> levelOrderBottom(TreeNode* root) {
+        vector<vector<int> > ans;
+        if (root == NULL) return ans;
+        
+        queue<TreeNode *> q;
+        q.push(root);
+        while (q.size() > 0) {
+            int len = q.size();
+            vector<int> cur;
+            for (int i = 0; i < len; ++i) {
+                TreeNode *t = q.front(); q.pop();
+                cur.push_back(t->val);
+                if (t->left) q.push(t->left);
+                if (t->right) q.push(t->right);
+            }
+            
+            ans.push_back(cur);
+        }
+        
+        for (int i = 0; i < ans.size()/2; ++i) {
+            swap(ans[i], ans[ans.size()-1-i]);
+        }
+        return ans;
+    }
+};
