@@ -38,3 +38,31 @@ public:
         return -1;
     }
 };
+/*
+第二次做：
+思路没有任何问题，不过总是感觉代码写起来特别费劲呢。
+是不是今天刷的太多了啊。
+还有就是对于只有一个station的情形，也要求可以走一圈才可以。
+*/
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        if (gas.size() < 1) return 0;
+        
+        int start = 0;
+        while (start < gas.size()) {
+            int cur = start, left = gas[start]-cost[start], steps = 0;
+            while (left >= 0 && steps < gas.size()) {
+                cur++;
+                cur %= gas.size();
+                left += gas[cur] - cost[cur];
+                steps++;
+            }
+            if (steps == gas.size()) return start;
+            start += steps+1;
+        }
+        
+        if (start < gas.size()) return start;
+        return -1;
+    }
+};
