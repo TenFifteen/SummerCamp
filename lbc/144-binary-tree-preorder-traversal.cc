@@ -37,3 +37,35 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+比较简单的题目，不过一开始竟然用成了queue了。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> ans;
+        if (root == NULL) return ans;
+        
+        stack<TreeNode *> q;
+        q.push(root);
+        
+        while (q.size()) {
+            auto cur = q.top(); q.pop();
+            ans.push_back(cur->val);
+            if (cur->right) q.push(cur->right);
+            if (cur->left) q.push(cur->left);
+        }
+        
+        return ans;
+    }
+};
