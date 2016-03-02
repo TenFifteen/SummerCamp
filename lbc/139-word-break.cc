@@ -30,3 +30,36 @@ public:
         return dp[s.size()-1];
     }
 };
+/*
+第二次做：
+还是一个动归。
+*/
+class Solution {
+public:
+    bool wordBreak(string s, unordered_set<string>& wordDict) {
+        if (wordDict.size() == 0) return false;
+        
+        int minlen = INT_MAX, maxlen = INT_MIN;
+        for (auto s : wordDict) {
+            int n = s.size();
+            minlen = min(minlen, n);
+            maxlen = max(maxlen, n);
+        }
+        
+        if (s.size() < minlen) return false;
+        int n = s.size();
+        
+        vector<bool> dp(n+1, false);
+        dp[0] = true;
+        for (int i = minlen-1; i < n; ++i) {
+            for (int j = i-minlen+1; j >= max(0, i-maxlen+1); --j) {
+                if (dp[j] && wordDict.find(s.substr(j, i-j+1)) != wordDict.end()) {
+                    dp[i+1] = true;
+                    break;
+                }
+            }
+        }
+        
+        return dp[n];
+    }
+};
