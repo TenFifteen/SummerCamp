@@ -45,3 +45,37 @@ public:
         return NULL;
     }
 };
+/*
+第二次做：
+经典老题，重温经典。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        if (head == NULL) return NULL;
+        
+        ListNode *front = head, *end = head;
+        while (front) {
+            front = front->next;
+            if (front) front = front->next;
+            end = end->next;
+            if (front == end) break;
+        }
+        
+        if (front == NULL) return NULL;
+        end = head;
+        while (end != front) {
+            front = front->next;
+            end = end->next;
+        }
+        return end;
+    }
+};
