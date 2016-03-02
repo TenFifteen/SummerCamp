@@ -50,3 +50,29 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+简单题，不过还是写错了两个地方，一个是把i--写成了i++；
+一个是把min写成了max。
+一个是写作惯性，没有用心；一个是审题不用心。
+
+另外一个很值得注意的地方就是vector的back和front方法。以前都是只会用begin和end，
+所以每次写出来取最后一个元素的代码都不好看。感觉有了这两个方法之后，取首尾元素方便多了。
+而且front和back取出来是元素类型，而不是指针。
+*/
+class Solution {
+public:
+    int minimumTotal(vector<vector<int>>& triangle) {
+        if (triangle.size() == 0) return 0;
+        
+        int n = triangle.size();
+        vector<int> ans(triangle[triangle.size()-1]);
+        for (int i = n-2; i >= 0; --i) {
+            for (int j = 0; j <= i; ++j) {
+                ans[j] = min(ans[j], ans[j+1]) + triangle[i][j];
+            }
+        }
+        
+        return ans[0];
+    }
+};
