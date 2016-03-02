@@ -21,3 +21,16 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+太经典的老题了。
+感觉闭着眼都可以做了。
+*/
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int ans = 0;
+        for (auto n : nums) ans ^= n;
+        return ans;
+    }
+};
