@@ -73,3 +73,47 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+这次写的还是很纠结。虽然最后还是写出来了。但是搞了好半天，感觉主要就是自己思路不够清晰啦。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    pair<int, int> maxPath(TreeNode *root) { // first child's max, second is maxpath including root
+        if (root->left == NULL && root->right == NULL) return make_pair(root->val, root->val);
+        
+        auto ret = make_pair(root->val, root->val);
+        int now = root->val;
+        if (root->left) {
+            auto L = maxPath(root->left);
+            if (L.second > 0) now += L.second;
+            ret.first = max(L.first, ret.first);
+            ret.second = max(ret.second, root->val+L.second);
+        }
+        if (root->right) {
+            auto R = maxPath(root->right);
+            if (R.second > 0) now += R.second;
+            ret.first = max(R.first, ret.first);
+            ret.second = max(ret.second, root->val+R.second);
+        }
+        
+        ret.first = max(ret.first, now);
+        return ret;
+    }
+    
+public:
+    int maxPathSum(TreeNode* root) {
+        if (root == NULL) return 0;
+        
+        return maxPath(root).first;
+    }
+};
