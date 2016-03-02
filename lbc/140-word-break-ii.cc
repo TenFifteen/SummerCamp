@@ -93,3 +93,44 @@ public:
         }
     }
 };
+/*
+第二次做：
+这次是按照DISCUSS这种递归的方式来做的。
+结果老是超时。最后不行了，就直接给放了一个dp数组来优化。
+*/
+class Solution {
+private:
+    int minlen, maxlen;
+
+public:
+    vector<string> wordBreak(string s, unordered_set<string>& wordDict) {
+        minlen = INT_MAX, maxlen = INT_MIN;
+        for (auto w : wordDict) {
+            int n = w.size();
+            minlen = min(n, minlen);
+            maxlen = max(n, maxlen);
+        }
+        vector<bool> dp(s.size()+1, true);
+        return wordBreak2(s, wordDict, dp);
+    }
+    
+    vector<string> wordBreak2(string s, unordered_set<string>& wordDict, vector<bool> &dp) {
+        vector<string> ans;
+        if (s.size() == 0) return ans;
+        
+        int len = s.size()-1;
+        len = min(maxlen, len);
+        for (int i = minlen-1; i < len; ++i) {
+            string sub = s.substr(0, i+1);
+            if (wordDict.find(sub) != wordDict.end() && dp[s.size()-i-1]) {
+                auto ret = wordBreak2(s.substr(i+1), wordDict, dp);
+                for (auto r : ret) {
+                    ans.push_back(sub + " " + r);
+                }
+                if (ret.size() == 0) dp[s.size()-i-1] = false;
+            }
+        }
+        if (wordDict.find(s) != wordDict.end()) ans.push_back(s);
+        return ans;
+    }
+};
