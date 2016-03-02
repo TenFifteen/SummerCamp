@@ -100,3 +100,62 @@ public:
         return last;
     }
 };
+/*
+第二次做：
+还好吧，一开始把题意弄错了。最后还是出了一点点小错误。
+链表，二叉树这种指针的问题，一定要细心啊。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    int getLength(ListNode *head) {
+        int len = 0;
+        while (head) {
+            len++;
+            head = head->next;
+        }
+        return len;
+    }
+    
+    ListNode * reverse(ListNode *head) {
+        if (head == NULL) return NULL;
+        ListNode *ret = NULL;
+        while (head) {
+            auto next = head->next;
+            head->next = ret;
+            ret = head;
+            head = next;
+        }
+        return ret;
+    }
+
+public:
+    void reorderList(ListNode* head) {
+        int len = getLength(head);
+        if (len < 3) return;
+        
+        ListNode *right = head;
+        for (int i = 0; i < (len-1)/2; ++i) {
+            right = right->next;
+        }
+        
+        ListNode *tail = right;
+        right = reverse(right->next);
+        tail->next = NULL;
+        
+        while (right) {
+            auto next = head->next;
+            head->next = right;
+            right = right->next;
+            head->next->next = next;
+            head = next;
+        }
+    }
+};
