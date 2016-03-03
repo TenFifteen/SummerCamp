@@ -91,3 +91,35 @@ public:
         return true;
     }
 };
+/*
+第二次做：
+感觉还好。
+*/
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<pair<int, int>>& prerequisites) {
+        vector<int> pres(numCourses, 0);
+        queue<int> q;
+        unordered_map<int, vector<int> > m;
+        
+        for (auto p : prerequisites) {
+            m[p.second].push_back(p.first);
+            pres[p.first]++;
+        }
+        for (int i = 0; i < numCourses; ++i) {
+            if (pres[i] == 0) q.push(i);
+        }
+        
+        int total = 0;
+        while (q.size() > 0) {
+            total++;
+            int cur = q.front(); q.pop();
+            for (auto i : m[cur]) {
+                pres[i]--;
+                if (pres[i] == 0) q.push(i);
+            }
+        }
+        
+        return total == numCourses;
+    }
+};
