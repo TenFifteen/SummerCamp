@@ -44,3 +44,20 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+比较好。唯一一点就是又没有注意到==的优先级比&的优先级高。
+*/
+class Solution {
+public:
+    int rangeBitwiseAnd(int m, int n) {
+        if (m == n) return m;
+        
+        int mask = INT_MIN;
+        while ((mask & m) == (mask & n)) {
+            mask >>= 1;
+        }
+        
+        return m & (mask << 1);
+    }
+};
