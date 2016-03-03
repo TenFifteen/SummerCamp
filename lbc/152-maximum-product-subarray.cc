@@ -30,3 +30,35 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+虽然做对了，但是那个n的空间完全可以省掉的。
+另外一点注意的是，如果我们自己定义了一个跟std中重名的函数的话，搜索范围就只限制到了当前class内部了。
+*/
+class Solution {
+private:
+    int Max(int a, int b, int c) {
+        return max(a, max(b, c));
+    }
+    
+    int Min(int a, int b, int c) {
+        return min(a, min(b, c));
+    }
+
+public:
+    int maxProduct(vector<int>& nums) {
+        if (nums.size() == 0) return 0;
+        
+        int n = nums.size(), ans = nums[0];
+        vector<int> dmax(n), dmin(n);
+        dmax[0] = dmin[0] = nums[0];
+        
+        for (int i = 1; i < n; ++i) {
+            dmax[i] = Max(nums[i], nums[i]*dmax[i-1], nums[i]*dmin[i-1]);
+            dmin[i] = Min(nums[i], nums[i]*dmax[i-1], nums[i]*dmin[i-1]);
+            ans = max(ans, dmax[i]);
+        }
+        
+        return ans;
+    }
+};
