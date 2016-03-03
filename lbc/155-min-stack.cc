@@ -100,3 +100,30 @@ public:
         return b.top();
     }
 };
+/*
+第二次做：
+这次做的还不错。用到了之前看到的优化了。
+*/
+class MinStack {
+    stack<int> s, ms;
+public:
+    void push(int x) {
+        s.push(x);
+        if (ms.size() == 0 || x <= ms.top()) {
+            ms.push(x);
+        }
+    }
+
+    void pop() {
+        int cur = s.top(); s.pop();
+        if (cur == ms.top()) ms.pop();
+    }
+
+    int top() {
+        return s.top();
+    }
+
+    int getMin() {
+        return ms.top();
+    }
+};
