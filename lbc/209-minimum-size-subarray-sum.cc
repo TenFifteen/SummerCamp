@@ -38,3 +38,27 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+没有问题，一次通过。
+*/
+class Solution {
+public:
+    int minSubArrayLen(int s, vector<int>& nums) {
+        if (nums.size() == 0) return 0;
+        
+        int ans = INT_MAX, end = 0, front = 0, sum = 0;
+        while (front < nums.size()) {
+            while (front < nums.size() && sum < s) {
+                sum += nums[front++];
+            }
+            while (sum >= s) {
+                ans = min(ans, front-end);
+                sum -= nums[end++];
+            }
+        }
+        
+        if (ans == INT_MAX) return 0;
+        return ans;
+    }
+};
