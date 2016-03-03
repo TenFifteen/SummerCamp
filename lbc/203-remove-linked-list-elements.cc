@@ -64,3 +64,32 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+虽然简单，但是还是出了点问题，ret-》next忘了置为NULL了。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        ListNode tmp(0), *ret = &tmp;
+        
+        while (head) {
+            if (head->val != val) {
+                ret->next = head;
+                ret = head;
+            }
+            head = head->next;
+        }
+        ret->next = NULL;
+        
+        return tmp.next;
+    }
+};
