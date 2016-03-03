@@ -24,3 +24,20 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+经典老题。不过要注意算法背后的原理解释。
+*/
+class Solution {
+public:
+    int trailingZeroes(int n) {
+        if (n < 5) return 0;
+        
+        int ans = 0;
+        while (n) {
+            n /= 5;
+            ans += n;
+        }
+        return ans;
+    }
+};
