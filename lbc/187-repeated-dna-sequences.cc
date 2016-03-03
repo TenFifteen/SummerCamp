@@ -54,3 +54,25 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+简单题，一次通过。
+虽然之前这种压缩的方式挺好的。不过空间利用率也就是提升了2.5倍而已。
+*/
+class Solution {
+public:
+    vector<string> findRepeatedDnaSequences(string s) {
+        unordered_map<string, int> hash;
+        int n = s.size();
+        
+        for (int i = 0; i < n-9; ++i) {
+            hash[s.substr(i, 10)]++;
+        }
+        
+        vector<string> ans;
+        for (auto h : hash) {
+            if (h.second > 1) ans.push_back(h.first);
+        }
+        return ans;
+    }
+};
