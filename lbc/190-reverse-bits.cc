@@ -34,3 +34,20 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+没有太大问题。不过还是了解一下DISCUSS这种方式比较好。毕竟ICS实验都做过了。
+还有那个countbits的题目也是这样的。
+*/
+class Solution {
+public:
+    uint32_t reverseBits(uint32_t n) {
+        uint32_t ans = 0;
+        for (int i = 0; i < 32; ++i) {
+            ans <<= 1;
+            if (n & 0x1) ans |= 0x1;
+            n >>= 1;
+        }
+        return ans;
+    }
+};
