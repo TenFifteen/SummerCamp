@@ -49,3 +49,47 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+极好的思路。
+这次代码也写得不错，一次成功。
+*/
+class Solution {
+public:
+    int maximumGap(vector<int>& nums) {
+        if (nums.size() < 2) return 0;
+        
+        int minVal = INT_MAX, maxVal = -1;
+        for (auto n : nums) {
+            minVal = min(minVal, n);
+            maxVal = max(maxVal, n);
+        }
+        int n = nums.size(), len = maxVal-minVal+1;
+        int bucketSize = len/n;
+        if (len % n) bucketSize++;
+        
+        typedef pair<int, int> bucket;
+        vector<bucket> b(n, make_pair(INT_MAX, -1));
+        
+        for (auto num : nums) {
+            int buckNum = (num-minVal)/bucketSize;
+            b[buckNum].first = min(b[buckNum].first, num);
+            b[buckNum].second = max(b[buckNum].second, num);
+        }
+        
+        bool lastValid = false;
+        bucket last;
+        int ans = 0;
+        for (auto buck : b) {
+            if (buck.first > buck.second) continue;
+            if (lastValid == false) {
+                lastValid = true;
+                last = buck;
+            } else {
+                ans = max(ans, buck.first - last.second);
+                last = buck;
+            }
+        }
+        return ans;
+    }
+};
