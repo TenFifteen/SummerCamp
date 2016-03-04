@@ -93,3 +93,43 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+DISCUSS中的代码是有问题的。对于[1,2,2,3,2,1,1,3]这个测试用例就过不了。
+所以我根据人家的思路，自己实现了一个安全的版本。
+*/
+class Solution {
+public:
+    vector<int> majorityElement(vector<int>& nums) {
+        long long a = LONG_LONG_MAX, b = a;
+        int cnt1 = 0, cnt2 = 0;
+        
+        for (auto n : nums) {
+            if (a == n) {
+                cnt1++;
+            } else if (b == n) {
+                cnt2++;
+            } else if (cnt1 == 0) {
+                cnt1 = 1;
+                a = n;
+            } else if (cnt2 == 0) {
+                cnt2 = 1;
+                b = n;
+            } else {
+                cnt1--;
+                cnt2--;
+            }
+        }
+        
+        cnt1 = cnt2 = 0;
+        for (auto n : nums) {
+            if (n == a) cnt1++;
+            else if (n == b) cnt2++;
+        }
+        
+        vector<int> ans;
+        if (cnt1 > nums.size()/3) ans.push_back(a);
+        if (cnt2 > nums.size()/3) ans.push_back(b);
+        return ans;
+    }
+};
