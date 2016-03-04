@@ -49,3 +49,69 @@ public:
         return true;
     }
 };
+/*
+第二次做：
+如果按照题目要求，不能使用额外空间的话，那么只能这样做了吧。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    int getLenght(ListNode *head) {
+        int len = 0;
+        while (head) {
+            len++;
+            head = head->next;
+        }
+        return len;
+    }
+    
+    ListNode* reverse(ListNode *head) {
+        if (head == NULL) return NULL;
+        ListNode *ret = head;
+        head = head->next;
+        ret->next = NULL;
+        while (head) {
+            auto next = head->next;
+            head->next = ret;
+            ret = head;
+            head = next;
+        }
+        return ret;
+    }
+
+public:
+    bool isPalindrome(ListNode* head) {
+        int len = getLenght(head);
+        if (len < 2) return true;
+        
+        ListNode *right = head;
+        for (int i = 0; i < (len-1)/2; ++i) {
+            right = right->next;
+        }
+        
+        ListNode *last = right;
+        right = reverse(right->next);
+        last->next = NULL;
+        
+        bool isP = true;
+        ListNode *L = head, *R = right;
+        while (L && R) {
+            if (L->val != R->val) {
+                isP = false;
+                break;
+            }
+            L = L->next;
+            R = R->next;
+        }
+        
+        last->next = reverse(right);
+        return isP;
+    }
+};
