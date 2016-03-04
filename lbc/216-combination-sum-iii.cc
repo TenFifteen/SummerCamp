@@ -33,3 +33,32 @@ public:
         }
     }
 };
+/*
+第二次做：
+没有太大问题，就是一开始把k的含义看错了。
+面试的时候一定要申清楚题目再做。
+*/
+class Solution {
+private:
+    void dfs(vector<vector<int>> &ans, vector<int> &now, int index, int k, int sum, int n) {
+        if (sum == n && now.size() == k) {
+            ans.push_back(now);
+            return;
+        }
+        if (sum > n || index > 9 || now.size() > k) return;
+        
+        for (int i = index; i <= 9; ++i) {
+            now.push_back(i);
+            dfs(ans, now, i+1, k, sum+i, n);
+            now.pop_back();
+        }
+    }
+
+public:
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<vector<int>> ans;
+        vector<int> now;
+        dfs(ans, now, 1, k, 0, n);
+        return ans;
+    }
+};
