@@ -39,3 +39,33 @@ public:
         return nums[nums.size()-k];
     }
 };
+/*
+第二次做：
+虽然这次用的是递归的快排，不过也是差不多的。
+写的还算是可以。
+*/
+class Solution {
+private:
+    int quickFind(vector<int> &nums, int left, int right, int k) {
+        if (left == right && k == 1) return nums[left];
+        
+        int mid = nums[left];
+        int L = left, R = right;
+        while (L < R) {
+            while (L < R && nums[R] < mid) R--;
+            nums[L] = nums[R];
+            while (L < R && nums[L] >= mid) L++;
+            nums[R] = nums[L];
+        }
+        nums[L] = mid;
+        
+        if (L-left == k-1) return nums[L];
+        else if (L-left < k-1) return quickFind(nums, L+1, right, k-L+left-1);
+        else return quickFind(nums, left, L-1, k);
+    }
+
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        return quickFind(nums, 0, nums.size()-1, k);
+    }
+};
