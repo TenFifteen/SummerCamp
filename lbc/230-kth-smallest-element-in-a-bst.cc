@@ -39,3 +39,31 @@ public:
         return 1 + count(root->left) + count(root->right);
     }
 };
+/*
+第二次做：
+跟第一次竟然差不多的。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    int getNumber(TreeNode *root) {
+        if (root == NULL) return 0;
+        return 1 + getNumber(root->left) + getNumber(root->right);
+    }
+
+public:
+    int kthSmallest(TreeNode* root, int k) {
+        int left = getNumber(root->left);
+        if (left+1 == k) return root->val;
+        else if (left+1 < k) return kthSmallest(root->right, k-left-1);
+        else return kthSmallest(root->left, k);
+    }
+};
