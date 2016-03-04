@@ -106,3 +106,70 @@ public:
         return ch >= '0' && ch <= '9';
     }
 };
+/*
+第二次做：
+这次想的不好，一开始就想着用一个栈来着，结果自己就想到了中间结果有可能为负这种情况，而且，
+老是字符串和数字来回转效率也不是很好。
+*/
+class Solution {
+private:
+    string deleteBlanks(const string s) {
+        string ans;
+        for (auto ch : s) {
+            if (ch != ' ') {
+                ans.push_back(ch);
+            }
+        }
+        return ans;
+    }
+    
+    bool isDigit(char ch) {
+        return ch >= '0' && ch <= '9';
+    }
+
+public:
+    int calculate(string s) {
+        string exp = deleteBlanks(s);
+        
+        stack<char> ops;
+        stack<int> nums;
+        int index = 0;
+        while (index < exp.size()) {
+            if (exp[index] == '+' || exp[index] == '-' || exp[index] == '(') {
+                ops.push(exp[index]);
+                index++;
+            } else if (exp[index] == ')') {
+                ops.pop();
+                if (ops.size() > 0 && ops.top() != '(') {
+                    int num2 = nums.top(); nums.pop();
+                    int num1 = nums.top(); nums.pop();
+                    if (ops.top() == '+') {
+                        nums.push(num1 + num2);
+                    } else {
+                        nums.push(num1 - num2);
+                    }
+                    ops.pop();
+                }
+                index++;
+            } else {
+                int end = index+1;
+                while (end < exp.size() && isDigit(exp[end])) end++;
+                int num2 = stoi(exp.substr(index, end-index));
+                if (ops.size() > 0 && ops.top() != '(') {
+                    int num1 = nums.top(); nums.pop();
+                    if (ops.top() == '+') {
+                        nums.push(num1 + num2);
+                    } else {
+                        nums.push(num1 - num2);
+                    }
+                    ops.pop();
+                } else {
+                    nums.push(num2);
+                }
+                index = end;
+            }
+        }
+        
+        return nums.top();
+    }
+};
