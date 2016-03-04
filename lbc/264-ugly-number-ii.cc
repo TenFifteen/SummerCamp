@@ -51,3 +51,34 @@ public:
         return *s.rbegin();
     }
 };
+/*
+第二次做：
+算法没有太大问题了。
+不过就是有越界的问题出现了。。。
+所以最后用的都是long long了。
+*/
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        vector<int> mul = {2, 3, 5};
+        
+        vector<queue<long long>> vq(3);
+        vq[0].push(2);
+        vq[1].push(3);
+        vq[2].push(5);
+        
+        long long cur = 1, cnt = 1;
+        while (cnt++ < n) {
+            int index = 0;
+            for (int i = 1; i < 3; ++i) {
+                if (vq[i].front() < vq[index].front()) index = i;
+            }
+            
+            cur = vq[index].front(); vq[index].pop();
+            for (int i = index; i < 3; ++i) {
+                vq[i].push(cur * mul[i]);
+            }
+        }
+        return cur;
+    }
+};
