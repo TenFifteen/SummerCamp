@@ -71,3 +71,25 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+这次还是没有自己想出来，不过看了DISCUSS中的解法之后，立马就知道了。
+这个思路一定要记好了。
+*/
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int m = matrix.size();
+        if (m == 0) return false;
+        int n = matrix[0].size();
+        if (n == 0) return false;
+        
+        int i = 0, j = n-1;
+        while (i < m && j >= 0) {
+            if (matrix[i][j] == target) return true;
+            else if (matrix[i][j] < target) i++;
+            else j--;
+        }
+        return false;
+    }
+};
