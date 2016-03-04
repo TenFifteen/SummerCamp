@@ -58,3 +58,41 @@ public:
         return make_pair(root, left.second+right.second);
     }
 };
+/*
+第二次做：
+这次的思路跟之前不太一样了，不过也是挺好的。
+DISCUSS中的思路也是可以借鉴的。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    bool findPath(TreeNode *root, TreeNode *q, vector<TreeNode *> &path) {
+        if (root == NULL) return false;
+        
+        path.push_back(root);
+        if (root == q) return true;
+        if (findPath(root->left, q, path)) return true;
+        if (findPath(root->right, q, path)) return true;
+        path.pop_back();
+        return false;
+    }
+    
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        vector<TreeNode *> p_path, q_path;
+        findPath(root, p, p_path);
+        findPath(root, q, q_path);
+        
+        int i = 0;
+        while (i < p_path.size() && i < q_path.size() && p_path[i] == q_path[i]) i++;
+        return p_path[i-1];
+    }
+};
