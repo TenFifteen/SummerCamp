@@ -29,3 +29,26 @@ public:
         delete next;
     }
 };
+/*
+第二次做：
+比较经典，还可以吧。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void deleteNode(ListNode* node) {
+        assert(node != NULL && node->next != NULL);
+        
+        auto del = node->next;
+        node->val = del->val;
+        node->next = del->next;
+        delete del;
+    }
+};
