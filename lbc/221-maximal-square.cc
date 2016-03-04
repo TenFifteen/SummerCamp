@@ -86,3 +86,38 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+这次直接将空间优化了。
+不过返回值一开始搞错了，搞成了square[n]了，然后又改成了ans了，还是错的。
+*/
+class Solution {
+public:
+    int maximalSquare(vector<vector<char>>& matrix) {
+        int m = matrix.size();
+        if (m == 0) return 0;
+        int n = matrix[0].size();
+        if (n == 0) return 0;
+        
+        int ans = 0;
+        vector<int> square(n+1, 0), col(n+1, 0);
+        for (int i = 1; i <= m; ++i) {
+            vector<int> row(n+1, 0);
+            for (int j = 1; j <= n; ++j) {
+                if (matrix[i-1][j-1] == '1') {
+                    row[j] = row[j-1]+1;
+                    col[j]++;
+                } else {
+                    col[j] = 0;
+                }
+            }
+            
+            for (int j = n; j >= 1; --j) {
+                square[j] = min(square[j-1]+1, min(col[j], row[j]));
+                ans = max(ans, square[j]);
+            }
+        }
+        
+        return ans*ans;
+    }
+};
