@@ -50,3 +50,34 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+第一次自己手动实现一个单调递减队列。
+不过两个循环可以合并成一个。
+*/
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        if (nums.size() == 0) return vector<int>();
+        
+        deque<int> d;
+        for (int i = 1; i < k; ++i) {
+            if (d.size() == 0) {
+                d.push_back(i-1);
+            } else {
+                while (d.size() > 0 && nums[d.back()] <= nums[i-1]) d.pop_back();
+                d.push_back(i-1);
+            }
+        }
+        
+        vector<int> ans;
+        for (int i = k-1; i < nums.size(); ++i) {
+            while (d.size() > 0 && d.front() < i-k+1) d.pop_front();
+            while (d.size() > 0 && nums[d.back()] <= nums[i]) d.pop_back();
+            d.push_back(i);
+            ans.push_back(nums[d.front()]);
+        }
+        
+        return ans;
+    }
+};
