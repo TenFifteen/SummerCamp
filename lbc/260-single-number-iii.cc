@@ -40,3 +40,27 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+经典老题。
+*/
+class Solution {
+public:
+    vector<int> singleNumber(vector<int>& nums) {
+        int x = 0;
+        for (auto n : nums) x ^= n;
+        
+        x -= (x & (x-1));
+        
+        int a = 0, b = 0;
+        for (auto n : nums) {
+            if (n & x) a ^= n;
+            else b ^= n;
+        }
+        
+        vector<int> ans(2);
+        ans[0] = a;
+        ans[1] = b;
+        return ans;
+    }
+};
