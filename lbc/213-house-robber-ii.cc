@@ -50,3 +50,33 @@ public:
         return max(ret,max(rob[nums.size()-1], norob[nums.size()-1]));
     }
 };
+/*
+第二次做：
+做的比较顺利。遇到了一个小问题，就是这种情况下，需要单独处理只有一家人的时候。
+*/
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        if (nums.size() == 0) return 0;
+        if (nums.size() == 1) return nums[0];
+        
+        int ans = nums[0], rob = nums[0], norob = 0;
+        for (int i = 1; i < nums.size()-1; ++i) {
+            int newrob = max(rob, norob+nums[i]);
+            norob = max(rob, norob);
+            rob = newrob;
+            ans = max(ans, rob);
+        }
+        
+        rob = nums[1], norob = 0;
+        ans = max(ans, rob);
+        for (int i = 2; i < nums.size(); ++i) {
+            int newrob = max(rob, norob+nums[i]);
+            norob = max(rob, norob);
+            rob = newrob;
+            ans = max(ans, rob);
+        }
+        
+        return ans;
+    }
+};
