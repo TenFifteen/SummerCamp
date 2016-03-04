@@ -147,3 +147,94 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+代码问题不大。
+不过有两个问题需要注意，
+第一，两个常量字符串不可以直接相加。比如 " " + "Hundred"
+第二， 注意题目中出现的0， 中间结果的0不需要翻译。
+*/
+class Solution {
+private:
+    unordered_map<int, string> m;
+    
+    string count(int n) {
+        string ans;
+        if (n >= 100) {
+            ans += " " + m[n/100];
+            ans += " Hundred";
+            n %= 100;
+        }
+        if (n >= 20) {
+            ans += " " + m[n/10*10];
+            n %= 10;
+        }
+        if (n == 0) {
+            if (ans.size() == 0) {
+                ans += " " + m[0];
+            }
+        } else {
+            ans += " " + m[n];
+        }
+        
+        return ans.substr(1);
+    }
+
+public:
+    Solution() {
+        m[0] = "Zero";
+        m[1] = "One";
+        m[2] = "Two";
+        m[3] = "Three";
+        m[4] = "Four";
+        m[5] = "Five";
+        m[6] = "Six";
+        m[7] = "Seven";
+        m[8] = "Eight";
+        m[9] = "Nine";
+        m[10] = "Ten";
+        m[11] = "Eleven";
+        m[12] = "Twelve";
+        m[13] = "Thirteen";
+        m[14] = "Fourteen";
+        m[15] = "Fifteen";
+        m[16] = "Sixteen";
+        m[17] = "Seventeen";
+        m[18] = "Eighteen";
+        m[19] = "Nineteen";
+        m[20] = "Twenty";
+        m[30] = "Thirty";
+        m[40] = "Forty";
+        m[50] = "Fifty";
+        m[60] = "Sixty";
+        m[70] = "Seventy";
+        m[80] = "Eighty";
+        m[90] = "Ninety";
+    }
+    
+    string numberToWords(int num) {
+        int mul = 1000000000;
+        vector<string> unit = {"Billion", "Million", "Thousand"};
+        string ans;
+        
+        for (int i = 0; i < 3; ++i) {
+            int tail = num / mul;
+            if (tail != 0) {
+                ans += " " + count(tail);
+                ans += " " + unit[i];
+            }
+            num %= mul;
+            mul /= 1000;
+        }
+        
+        if (num == 0) {
+            if (ans.size() == 0) {
+                ans += " " + count(0);
+            }
+        } else {
+            ans += " " + count(num);
+        }
+        
+        return ans.substr(1);
+    }
+};
