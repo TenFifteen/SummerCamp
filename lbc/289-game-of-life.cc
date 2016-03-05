@@ -76,3 +76,41 @@ public:
         }
     }
 };
+/*
+第二次做：
+没有太大问题。
+就是写的时候把x和y搞反了。。。
+*/
+class Solution {
+public:
+    void gameOfLife(vector<vector<int>>& board) {
+        int m = board.size();
+        if (m == 0) return;
+        int n = board[0].size();
+        if (n == 0) return;
+        
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                int cnt = 0;
+                
+                int left = j == 0 ? 0 : j-1, right = j == n-1 ? n-1 : j+1;
+                int top = i == 0 ? 0 : i-1, bot = i == m-1 ? m-1 : i+1;
+                
+                for (int x = top; x <= bot; ++x) {
+                    for (int y = left; y <= right; ++y) {
+                        if (x == i && y == j) continue;
+                        cnt += board[x][y] & 0x1;
+                    }
+                }
+                
+                if (cnt == 3 || (cnt == 2 && (board[i][j] & 0x1))) board[i][j] |= 0x2;
+            }
+        }
+        
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                board[i][j] >>= 1;
+            }
+        }
+    }
+};
