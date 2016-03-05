@@ -40,3 +40,24 @@ public:
         return 0;
     }
 };
+/*
+第二次做：
+这次用的就是二分。
+不过最后返回的时候直接返回了n-left了。
+应该是要判断一下的。比如[0]这个测试用例。
+*/
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        if (citations.size() == 0) return 0;
+        
+        int n = citations.size(), left = 0, right = n-1;
+        while (left < right) {
+            int mid = (left+right+1) >> 1;
+            if (n-mid >= citations[mid]) left = mid;
+            else right = mid-1;
+        }
+        if (citations[left] >= n - left) return n-left;
+        return n-left-1;
+    }
+};
