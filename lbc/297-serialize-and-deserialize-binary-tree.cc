@@ -129,3 +129,54 @@ public:
 // Your Codec object will be instantiated and called as such:
 // Codec codec;
 // codec.deserialize(codec.serialize(root));
+/*
+第二次做：
+这次写的还不错。用的是先序遍历了。
+不是之前的那种层次遍历了。其实都差不多的。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Codec {
+    TreeNode* des(string &data, int &index) {
+        if (index >= data.size()) return NULL;
+        if (data[index] == '#') {
+            index += 2;
+            return NULL;
+        }
+        
+        int end = index+1;
+        while (end < data.size() && data[end] != ' ') end++;
+        
+        int value = stoi(data.substr(index, end-index));
+        TreeNode *root = new TreeNode(value);
+        
+        index = end+1;
+        root->left = des(data, index);
+        root->right = des(data, index);
+        return root;
+    }
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        if (root == NULL) return "#";
+        return to_string(root->val) + " " + serialize(root->left) + " " + serialize(root->right);
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        int index = 0;
+        return des(data, index);
+    }
+};
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec;
+// codec.deserialize(codec.serialize(root));
