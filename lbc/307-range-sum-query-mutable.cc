@@ -214,3 +214,53 @@ public:
 // numArray.sumRange(0, 1);
 // numArray.update(1, 10);
 // numArray.sumRange(1, 2);
+/*
+第二次做：
+终于可以自己写出来树状数组了。
+感觉代码写到了之后，以前看着觉得挺难的东西，现在都可以自己相透了。
+*/
+class NumArray {
+    vector<long long> sum;
+    vector<int> old;
+    
+    long long getSum(int i) {
+        long long ret = 0;
+        while (i) {
+            ret += sum[i];
+            i &= i-1;
+        }
+        return ret;
+    }
+    
+public:
+    NumArray(vector<int> &nums) {
+        sum = vector<long long>(nums.size()+1, 0);
+        old = vector<int>(nums.size()+1, 0);
+        
+        for (int i = 1; i <= nums.size(); ++i) {
+            update(i-1, nums[i-1]);
+        }
+    }
+
+    void update(int i, int val) {
+        i++;
+        long long diff = val - old[i];
+        int index = i;
+        while (index < sum.size()) {
+            sum[index] += diff;
+            index += (index - (index&(index-1)));
+        }
+        old[i] = val;
+    }
+
+    int sumRange(int i, int j) {
+        return getSum(j+1) - getSum(i);
+    }
+};
+
+
+// Your NumArray object will be instantiated and called as such:
+// NumArray numArray(nums);
+// numArray.sumRange(0, 1);
+// numArray.update(1, 10);
+// numArray.sumRange(1, 2);
