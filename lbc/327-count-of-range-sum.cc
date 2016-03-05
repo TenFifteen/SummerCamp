@@ -117,3 +117,76 @@ public:
         return cnt;
     }
 };
+/*
+第二次做：
+这道题应该算是挺难的了。
+这次又没有想出来。
+实现的时候也有点小问题，把指针当做左右边界了。
+另外就是，如果整数都到了边界了，就没有办法计算mid了啊。加也不是，减也不是。
+*/
+class Solution {
+    typedef long long LL;
+    
+    class SegmentTreeNode {
+    public:
+        LL start, end, cnt;
+        SegmentTreeNode *left, *right;
+        SegmentTreeNode(LL s, LL e) {
+            start = s;
+            end = e;
+            cnt = 0;
+            left = right = NULL;
+        }
+    };
+    
+    SegmentTreeNode *root;
+    
+    void insert(SegmentTreeNode *node, LL val) {
+        if (node->start != node->end) {
+            LL mid = (node->start+node->end) >> 1;
+            if (val > mid) {
+                if (node->right == NULL) node->right = new SegmentTreeNode(mid+1, node->end);
+                insert(node->right, val);
+            } else {
+                if (node->left == NULL) node->left = new SegmentTreeNode(node->start, mid);
+                insert(node->left, val);
+            }
+        }
+        node->cnt++;
+        //cout << "insert " << val << " " << node->start << " " << node->end << " " << node->cnt << endl;
+    }
+    
+    LL count(SegmentTreeNode *node, LL left, LL right) {
+        //cout << "count " << left << " " << right << endl;
+        if (node == NULL || node->start > right || node->end < left) return 0;
+        if (node->start >= left && node->end <= right) return node->cnt;
+        return count(node->left, left, right) + count(node->right, left, right);
+    }
+    
+    void destroy(SegmentTreeNode *node) {
+        if (node->left) destroy(node->left);
+        if (node->right) destroy(node->right);
+        delete node;
+    }
+    
+public:
+    int countRangeSum(vector<int>& nums, int lower, int upper) {
+        if (nums.size() == 0) return 0;
+        
+        root = new SegmentTreeNode(LONG_LONG_MIN/2, LONG_LONG_MAX/2);
+        
+        vector<LL> sum(nums.size()+1, 0);
+        for (int i = 0; i < nums.size(); ++i) {
+            sum[i+1] = sum[i] + nums[i];
+        }
+        
+        int ans = 0;
+        for (int i = sum.size()-1; i >= 0; --i) {
+            ans += count(root, sum[i]+lower, sum[i]+upper);
+            insert(root, sum[i]);
+        }
+        
+        destroy(root);
+        return ans;
+    }
+};
