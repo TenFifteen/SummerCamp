@@ -30,3 +30,23 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+二分。
+注意要使用long long才不会越界。
+*/
+class Solution {
+public:
+    int bulbSwitch(int n) {
+        if (n < 1) return 0;
+        
+        long long left = 1, right = n;
+        while (left < right) {
+            long long mid = (left + right + 1) >> 1;
+            if (mid*mid > n) right = mid-1;
+            else left = mid;
+        }
+        
+        return left;
+    }
+};
