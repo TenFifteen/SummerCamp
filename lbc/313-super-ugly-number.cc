@@ -79,3 +79,33 @@ public:
         return *ugly.rbegin();
     }
 };
+/*
+第二次做：
+这次已经知道了怎么做了。
+*/
+class Solution {
+public:
+    int nthSuperUglyNumber(int n, vector<int>& primes) {
+        vector<queue<long long>> vq(primes.size());
+        for (int i = 0; i < primes.size(); ++i) {
+            vq[i].push(primes[i]);
+        }
+        
+        long long cur = 1, cnt = 1;
+        while (cnt++ < n) {
+            int index = 0;
+            for (int i = 0; i < primes.size(); ++i) {
+                if (vq[i].front() < vq[index].front()) index = i;
+            }
+            
+            cur = vq[index].front(); 
+            vq[index].pop();
+            
+            for (int i = index; i < vq.size(); ++i) {
+                vq[i].push(cur * primes[i]);
+            }
+        }
+        
+        return cur;
+    }
+};
