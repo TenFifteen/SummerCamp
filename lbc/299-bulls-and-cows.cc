@@ -42,3 +42,28 @@ public:
         return to_string(bull) + "A" + to_string(cows) + "B";
     }
 };
+/*
+第二次做：
+比较简单。
+*/
+class Solution {
+public:
+    string getHint(string secret, string guess) {
+        int s[10] = {0}, g[10] = {0};
+        int A = 0, B = 0;
+        
+        for (int i = 0; i < secret.size(); ++i) {
+            if (secret[i] == guess[i]) A++;
+            else {
+                s[secret[i]-'0']++;
+                g[guess[i]-'0']++;
+            }
+        }
+        
+        for (int i = 0; i < 10; ++i) {
+            B += min(s[i], g[i]);
+        }
+        
+        return to_string(A) + "A" + to_string(B) + "B";
+    }
+};
