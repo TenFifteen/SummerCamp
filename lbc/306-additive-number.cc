@@ -76,3 +76,49 @@ public:
         return false;
     }
 };
+/*
+第二次做：
+这次还好吧。
+*/
+class Solution {
+    string add(const string s1, const string s2) {
+        string ans(max(s1.size(), s2.size()) + 1, '0');
+        
+        int i1 = s1.size()-1, i2 = s2.size()-1, index = ans.size()-1;
+        int carry = 0;
+        while (i1 >= 0 || i2 >= 0) {
+            if (i1 >= 0) carry += s1[i1--]-'0';
+            if (i2 >= 0) carry += s2[i2--]-'0';
+            ans[index--] = carry % 10 + '0';
+            carry /= 10;
+        }
+        if (carry) ans[index--] = carry + '0';
+        
+        return ans.substr(index+1);
+    }
+    
+    bool dfs(string num, string n1, string n2) {
+        string sum = add(n1, n2);
+        if (sum.size() > num.size()) return false;
+        
+        for (int i = 0; i < sum.size(); ++i) if (sum[i] != num[i]) return false;
+        if (sum.size() == num.size()) return true;
+        return dfs(num.substr(sum.size()), n2, sum);
+    }
+    
+public:
+    bool isAdditiveNumber(string num) {
+        if (num.size() < 3) return false;
+        
+        for (int i = 0; i < num.size(); ++i) {
+            if (i != 0 && num[0] == '0') break;
+            
+            for (int j = i+1; j < num.size(); ++j) {
+                if (j != i+1 && num[i+1] == '0') break;
+                
+                if (dfs(num.substr(j+1), num.substr(0, i+1), num.substr(i+1, j-i))) return true;
+            }
+        }
+        return false;
+    }
+};
