@@ -59,3 +59,40 @@ public:
         return true;
     }
 };
+/*
+第二次做：
+没有太大问题。
+不过DISCUSS中这种两个hash都指向一个下标的这种方式比较省空间，挺好的。
+*/
+class Solution {
+    vector<string> split(const string s) {
+        stringstream ss(s);
+        vector<string> ans;
+        string input;
+        
+        while (ss >> input) {
+            ans.push_back(input);
+        }
+        return ans;
+    }
+    
+public:
+    bool wordPattern(string pattern, string str) {
+        vector<string> words = split(str);
+        if (pattern.size() != words.size()) return false;
+        
+        unordered_map<char, string> hash1;
+        unordered_map<string, char> hash2;
+        for (int i = 0;i < pattern.size(); ++i) {
+            if (hash1.find(pattern[i]) == hash1.end()) {
+                if (hash2.find(words[i]) != hash2.end()) return false;
+                hash1[pattern[i]] = words[i];
+                hash2[words[i]] = pattern[i];
+            } else {
+                if (hash1[pattern[i]] != words[i]) return false;
+            }
+        }
+        
+        return true;
+    }
+};
