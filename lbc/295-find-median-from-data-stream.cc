@@ -90,3 +90,48 @@ public:
 // MedianFinder mf;
 // mf.addNum(1);
 // mf.findMedian();
+/*
+第二次做：
+虽然我觉得这次写的还算是可以，但是看了DISCUSS中的那种只用了两个
+pq就解决问题的思路，确实是天外有天啊。而且，通过加一个负号，瞬间
+把一个最大堆变成了最小堆。。。。
+*/
+class MedianFinder {
+    multiset<int> low, up;
+public:
+
+    // Adds a number into the data structure.
+    void addNum(int num) {
+        low.insert(num);
+        if (low.size() > up.size()) {
+            int cur = *low.rbegin();
+            
+            up.insert(cur);
+            low.erase(low.find(cur));
+            
+        } else if (*low.rbegin() > *up.begin()) {
+            int l = *low.rbegin(), u = *up.begin();
+            
+            low.insert(u);
+            low.erase(low.find(l));
+            
+            up.insert(l);
+            up.erase(up.find(u));
+        }
+    }
+
+    // Returns the median of current data stream
+    double findMedian() {
+        double ans = *up.begin();
+        if (low.size() == up.size()) {
+            ans += *low.rbegin();
+            ans /= 2;
+        }
+        return ans;
+    }
+};
+
+// Your MedianFinder object will be instantiated and called as such:
+// MedianFinder mf;
+// mf.addNum(1);
+// mf.findMedian();
