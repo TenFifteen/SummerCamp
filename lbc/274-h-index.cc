@@ -58,3 +58,30 @@ public:
         return 0;
     }
 };
+/*
+第二次做：
+本来这次还是想着先排序来着。
+结果看了提示中说可以有n的算法，而且可以使用额外空间。就使劲想了想，结果就
+想出来了跟DISCUSS中一样的思路来了。
+*/
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        if (citations.size() == 0) return 0;
+        
+        int n = citations.size();
+        vector<int> ans(n+1, 0);
+        for (auto c : citations) {
+            if (c > n) c = n;
+            ans[c]++;
+        }
+        
+        int ret = 0;
+        for (int i = n; i >= 0; --i) {
+            ret += ans[i];
+            if (ret >= i) return i;
+        }
+        
+        return 0;
+    }
+};
