@@ -54,3 +54,36 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+上次死活想不出来，这次终于是可以想出来了。
+另外，DISCUSS中的递归的方式也是挺好的。
+*/
+class Solution {
+public:
+    string removeDuplicateLetters(string s) {
+        int count[26] = {0};
+        for (auto ch : s) count[ch-'a']++;
+        
+        string ans;
+        vector<bool> flag(26, false);
+        
+        for (auto ch : s) {
+            if (flag[ch-'a']) {
+                count[ch-'a']--;
+                continue;
+            }
+            
+            while (ans.size() > 0 && ch < ans.back() && count[ans.back()-'a'] > 0) {
+                flag[ans.back()-'a'] = false;
+                ans.pop_back();
+            }
+            
+            ans.push_back(ch);
+            count[ch-'a']--;
+            flag[ch-'a'] = true;
+        }
+        
+        return ans;
+    }
+};
