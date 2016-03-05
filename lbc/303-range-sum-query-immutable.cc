@@ -50,3 +50,28 @@ public:
 // NumArray numArray(nums);
 // numArray.sumRange(0, 1);
 // numArray.sumRange(1, 2);
+/*
+第二次做：
+是我想多了，还想着用树状数组呢，真是傻逼。
+树状数组是用来动态计算区间的和的。
+*/
+class NumArray {
+    vector<long long> sum;
+public:
+    NumArray(vector<int> &nums) {
+        sum.push_back(0);
+        for (auto n : nums) {
+            sum.push_back(sum.back() + n);
+        }
+    }
+
+    int sumRange(int i, int j) {
+        return sum[j+1] - sum[i];
+    }
+};
+
+
+// Your NumArray object will be instantiated and called as such:
+// NumArray numArray(nums);
+// numArray.sumRange(0, 1);
+// numArray.sumRange(1, 2);
