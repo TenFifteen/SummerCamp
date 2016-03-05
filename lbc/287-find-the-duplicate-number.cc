@@ -66,3 +66,30 @@ public:
         }
     }
 };
+/*
+第二次做：
+这道题简直是太棒了啊。
+虽然是个数组，找重复的问题。最后竟然变成了链表的问题。
+太厉害了。
+*/
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        int front = 0, end = 0;
+        while (front == 0 || nums[front] != nums[end]) {
+            front = nums[front];
+            front = nums[front];
+            end = nums[end];
+        }
+        
+        end = 0;
+        int last = end;
+        while (end != front) {
+            last = end;
+            end = nums[end];
+            front = nums[front];
+        }
+        
+        return nums[last];
+    }
+};
