@@ -41,3 +41,34 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+做的不错。
+*/
+class Solution {
+public:
+    int maxProduct(vector<string>& words) {
+        if (words.size() < 2) return 0;
+        
+        int n = words.size();
+        vector<int> mask(n, 0);
+        
+        for (int i = 0; i < n; ++i) {
+            for (auto ch : words[i]) {
+                mask[i] |= (1 << (ch-'a'));
+            }
+        }
+        
+        int ans = 0;
+        for (int i = 0; i < n; ++i) {
+            for (int j = i+1; j < n; ++j) {
+                if (!(mask[i] & mask[j])) {
+                    int mul = words[i].size() * words[j].size();
+                    ans = max(ans, mul);
+                }
+            }
+        }
+        
+        return ans;
+    }
+};
