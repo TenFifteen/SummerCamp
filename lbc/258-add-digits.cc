@@ -25,3 +25,13 @@ public:
         return 1 + (num-1) % 9;
     }
 };
+/*
+第二次做：
+这次是看了提示之后，自己找到的规律。
+*/
+class Solution {
+public:
+    int addDigits(int num) {
+        return (num-1)%9+1;
+    }
+};

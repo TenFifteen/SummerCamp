@@ -66,3 +66,47 @@ public:
         return root;
     }
 };
+/*
+第二次做：
+感觉上知道怎么做，但是写出来的代码不是很简洁。
+还是DISCUSS中的思路比较简洁明了啊。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    pair<TreeNode *, TreeNode *> sub(TreeNode *root) {
+        TreeNode *left = root->left, *right = root->right;
+        root->left = NULL;
+        
+        if (left == NULL && right == NULL) return make_pair(root, root);
+        if (right == NULL) {
+            auto L = sub(left);
+            root->right = L.first;
+            return make_pair(root, L.second);
+        } else if (left == NULL) {
+            auto R = sub(right);
+            root->right = R.first;
+            return make_pair(root, R.second);
+        } else {
+            auto L = sub(left), R = sub(right);
+            root->right = L.first;
+            L.second->right = R.first;
+            return make_pair(root, R.second);
+        }
+    }
+
+public:
+    void flatten(TreeNode* root) {
+        if (root != NULL) {
+            sub(root);
+        }
+    }
+};

@@ -90,3 +90,53 @@ public:
         }
     }
 };
+/*
+第二次做：
+嗯，还是DISCUSS中这种思路还一些，可以省去了翻转数组的过程。而且只用一个队列就行了。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        vector<vector<int> > ans;
+        if (root == NULL) return ans;
+        
+        vector<TreeNode *> v;
+        v.push_back(root);
+        bool left_to_right = true;
+        while (v.size()) {
+            vector<TreeNode *> next;
+            vector<int> cur;
+            if (left_to_right) {
+                for (int i = 0; i < v.size(); ++i) {
+                    cur.push_back(v[i]->val);
+                    if (v[i]->left) next.push_back(v[i]->left);
+                    if (v[i]->right) next.push_back(v[i]->right);
+                }
+            } else {
+                for (int i = v.size()-1; i >= 0; --i) {
+                    cur.push_back(v[i]->val);
+                    if (v[i]->right) next.push_back(v[i]->right);
+                    if (v[i]->left) next.push_back(v[i]->left);
+                }
+                for (int i = 0; i < next.size()/2; ++i) {
+                    swap(next[i], next[next.size()-1-i]);
+                }
+            }
+            
+            left_to_right = !left_to_right;
+            v.swap(next);
+            ans.push_back(cur);
+        }
+        
+        return ans;
+    }
+};

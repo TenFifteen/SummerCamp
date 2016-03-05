@@ -43,3 +43,20 @@ public:
         return one;
     }
 };
+/*
+第二次做：
+虽然知道怎么做，但是实在是想不出来DISCUSS中那种简洁的方式是怎么写的了。
+最后还是参考的人家的代码。
+这道题太经典了，一定要记住答案了。
+*/
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int two = 0, one = 0;
+        for (auto n : nums) {
+            one = (one ^ n) & ~two;
+            two = (two ^ n) & ~one;
+        }
+        return one;
+    }
+};

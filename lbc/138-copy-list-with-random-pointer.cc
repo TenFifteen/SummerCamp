@@ -59,3 +59,51 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+思路完全没有问题，只是写的过程有点长，而且不是特别的熟练。
+*/
+/**
+ * Definition for singly-linked list with a random pointer.
+ * struct RandomListNode {
+ *     int label;
+ *     RandomListNode *next, *random;
+ *     RandomListNode(int x) : label(x), next(NULL), random(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    RandomListNode *copyRandomList(RandomListNode *head) {
+        if (head == NULL) return NULL;
+        
+        RandomListNode *root = head;
+        while (root) {
+            auto next = root->next;
+            root->next = new RandomListNode(root->label);
+            root->next->next = next;
+            root = next;
+        }
+        
+        root = head;
+        while (root) {
+            if (root->random) {
+                root->next->random = root->random->next;
+            }
+            root = root->next->next;
+        }
+        
+        root = head->next;
+        RandomListNode *tail = root;
+        head->next = root->next;
+        head = head->next;
+        while (head) {
+            tail->next = head->next;
+            tail = tail->next;
+            head->next = tail->next;
+            head = head->next;
+        }
+        tail->next = NULL;
+        
+        return root;
+    }
+};

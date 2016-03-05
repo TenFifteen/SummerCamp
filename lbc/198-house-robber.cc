@@ -46,3 +46,22 @@ public:
         return max(rob[nums.size()-1], norob[nums.size()-1]);
     }
 };
+/*
+第二次做：
+比较顺利。
+*/
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        if (nums.size() == 0) return 0;
+        
+        int n = nums.size(), rob = nums[0], norob = 0;
+        for (int i = 1; i < nums.size(); ++i) {
+            int now = max(rob, norob+nums[i]);
+            norob = max(rob, norob);
+            rob = now;
+        }
+        
+        return rob;
+    }
+};

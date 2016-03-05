@@ -37,3 +37,32 @@ public:
         return nums.size()+1;
     }
 };
+/*
+第二次做：
+这次竟然是自己想出来了，还不错。
+*/
+class Solution {
+public:
+    int firstMissingPositive(vector<int>& nums) {
+        if (nums.size() == 0) return 1;
+        
+        for (int i = 0; i < nums.size(); ++i) {
+            if (nums[i] == i+1) continue;
+            if (nums[i] > nums.size() || nums[i] <= 0) continue;
+            
+            int cur = nums[i];
+            nums[i] = 0;
+            while (cur > 0 && cur <= nums.size()) {
+                int next = nums[cur-1];
+                nums[cur-1] = cur;
+                if (cur == next) break; //prevent dead loop
+                cur = next;
+            }
+        }
+        
+        for (int i = 0; i < nums.size(); ++i) {
+            if (nums[i] != i+1) return i+1;
+        }
+        return nums.size()+1;
+    }
+};

@@ -83,3 +83,74 @@ public:
         }
     }
 };
+/*
+第二次做：
+感觉这种题目就是变态啊，各种条件。
+如果真的要是在纸上写，肯定是一团糟。
+*/
+class Solution {
+private:
+    void getPaths(vector<vector<string>> &ans, unordered_map<string, vector<string>> &fa, string now, vector<string> &path) {
+        if (now == "") {
+            ans.push_back(vector<string>(path.rbegin(), path.rend()));
+            return;
+        }
+        
+        path.push_back(now);
+        for (auto s : fa[now]) {
+            getPaths(ans, fa, s, path);
+        }
+        path.pop_back();
+    }
+
+public:
+    vector<vector<string>> findLadders(string beginWord, string endWord, unordered_set<string> &wordList) {
+        vector<vector<string> > ans;
+        int wordLen = beginWord.size();
+        
+        queue<string> q;
+        q.push(beginWord);
+        
+        unordered_map<string, vector<string>> fa;
+        fa[beginWord] = vector<string>(1, "");
+        
+        bool notFinish = true;
+        while (q.size() && notFinish) {
+            int len = q.size();
+            unordered_map<string, vector<string>> newfa;
+            unordered_set<string> visited;
+            
+            for (int i = 0; i < len; ++i) {
+                string now = q.front(); q.pop();
+                if (now == endWord) {
+                    vector<string> path;
+                    getPaths(ans, fa, endWord, path);
+                    notFinish = false;
+                    break;
+                }
+                
+                string cur = now;
+                for (int i = 0; i < wordLen; ++i) {
+                    char old = now[i];
+                    for (char ch = 'a'; ch <= 'z'; ++ch) {
+                        now[i] = ch;
+                        if (wordList.find(now) != wordList.end() && fa.find(now) == fa.end()) {
+                            newfa[now].push_back(cur);
+                            if (visited.find(now) == visited.end()) {
+                                q.push(now);
+                                visited.insert(now);
+                            }
+                        }
+                    }
+                    now[i] = old;
+                }
+            }
+            
+            for (auto f : newfa) {
+                fa[f.first] = f.second;
+            }
+        }
+        
+        return ans;
+    }
+};

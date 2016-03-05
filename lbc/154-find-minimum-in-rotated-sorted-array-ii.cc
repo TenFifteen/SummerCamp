@@ -47,3 +47,27 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+算是比较顺利吧，不过忘记了一种情况，就是2，0，1，1，1这种情况，也就是nums[mid] == nums[right]这种情况。
+*/
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        if (nums.size() == 0) return -1;
+        
+        int left = 0, right = nums.size()-1;
+        while (left < right) {
+            if (nums[left] < nums[right]) return nums[left];
+            int mid = (left+right)>>1;
+            if (nums[left] == nums[right]) {
+                right--;
+            } else if (nums[mid] <= nums[right]) {
+                right = mid;
+            } else {
+                left = mid+1;
+            }
+        }
+        return nums[left];
+    }
+};

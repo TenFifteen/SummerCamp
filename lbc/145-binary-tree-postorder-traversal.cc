@@ -74,3 +74,37 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+这次终于机制的想出来了反着遍历的方法了。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int> ans;
+        if (root == NULL) return ans;
+        
+        stack<TreeNode *> s;
+        s.push(root);
+        while (s.size()) {
+            auto cur = s.top(); s.pop();
+            ans.push_back(cur->val);
+            if (cur->left) s.push(cur->left);
+            if (cur->right) s.push(cur->right);
+        }
+        
+        for (int i = 0; i < ans.size()/2; ++i) {
+            swap(ans[i], ans[ans.size()-1-i]);
+        }
+        return ans;
+    }
+};

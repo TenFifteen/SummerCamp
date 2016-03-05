@@ -48,3 +48,45 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+比较顺利。只有一处小问题。就是ans.push_back(make_pair(l.first, s.size() == 0 ? 0 : *s.rbegin()));
+高度一开始搞错了。
+*/
+class Solution {
+private:
+    typedef pair<int, int> line;
+    struct Cmp {
+        bool operator() (const line l, const line r) const {
+            if (l.first < r.first) return true;
+            if (l.first > r.first) return false;
+            return l.second > r.second;
+        }
+    };
+
+public:
+    vector<pair<int, int>> getSkyline(vector<vector<int>>& buildings) {
+        vector<line> lines;
+        for (auto b : buildings) {
+            lines.push_back(make_pair(b[0], b[2]));
+            lines.push_back(make_pair(b[1], -b[2]));
+        }
+        sort(lines.begin(), lines.end(), Cmp());
+        
+        vector<pair<int, int>> ans;
+        multiset<int> s;
+        for (auto l : lines) {
+            if (l.second > 0) {
+                if (s.size() == 0 || *s.rbegin() < l.second) ans.push_back(l);
+                s.insert(l.second);
+            } else {
+                s.erase(s.find(-l.second));
+                if (s.size() == 0 || *s.rbegin() < -l.second) {
+                    ans.push_back(make_pair(l.first, s.size() == 0 ? 0 : *s.rbegin()));
+                }
+            }
+        }
+        
+        return  ans;
+    }
+};

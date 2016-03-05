@@ -30,3 +30,20 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+虽然是个简单题。不过还是觉得挺费脑子的，可能是题目做多了吧。
+*/
+class Solution {
+public:
+    string convertToTitle(int n) {
+        string ans = "A";
+        if (n <= 26) {
+            ans[0] += n-1;
+            return ans;
+        } else {
+            ans[0] += (n-1)%26;
+            return convertToTitle((n-1)/26) + ans;
+        }
+    }
+};

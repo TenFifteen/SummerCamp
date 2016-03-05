@@ -146,3 +146,68 @@ public:
         return false;
     }
 };
+/*
+第二次做：
+这次虽然自己想到了这个规则了。但是还是写的不是很顺利。
+最后参考了一下别人的，不过感觉以后可以就这么写了。
+*/
+class Solution {
+    string trim(string s) {
+        if (s == "") return "";
+        int start = 0;
+        while (start < s.size() && s[start] == ' ') start++;
+        int end = s.size()-1;
+        while (end > start && s[end] == ' ') end--;
+        if (start >= s.size()) return "";
+        return s.substr(start, end-start+1);
+    }
+    
+    bool isSign(char ch) {
+        return ch == '+' || ch == '-';
+    }
+    
+    bool isDigit(char ch) {
+        return ch >= '0' && ch <= '9';
+    }
+    
+    bool isExp(char ch) {
+        return ch == 'e' || ch == 'E';
+    }
+    
+    bool isDot(char ch) {
+        return ch == '.';
+    }
+    
+    
+    
+public:
+    bool isNumber(string s) {
+        s = trim(s);
+        if (s == "") return false;
+        int index = 0;
+        
+        if (isSign(s[index])) index++;
+        
+        int num = 0, dot = 0;
+        while (index < s.size() && (isDigit(s[index]) || isDot(s[index]))) {
+            if (isDot(s[index])) dot++;
+            else num ++;
+            index++;
+        }
+        if (num == 0 || dot > 1) return false;
+        
+        if (index < s.size() && isExp(s[index])) {
+            index++;
+            if (index == s.size()) return false;
+            if (isSign(s[index])) index++;
+            int num = 0;
+            while (index < s.size() && isDigit(s[index])) {
+                index++;
+                num++;
+            }
+            if (num == 0) return false;
+        }
+        
+        return index == s.size();
+    }
+};

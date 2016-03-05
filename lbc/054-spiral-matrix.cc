@@ -135,3 +135,37 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+这次写的代码还比较简洁，但是一开始没有考虑到for循环前面的那个if条件。
+不过这次代码已经接近DISCUSS中的代码了。
+*/
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        vector<int> ans;
+        if (matrix.size() == 0 || matrix[0].size() == 0) return ans;
+        
+        int i = 0, j = 0, m = matrix.size(), n = matrix[0].size();
+        while (i < m && j < n) {
+            for (int k = j; k < n; ++k) {
+                ans.push_back(matrix[i][k]);
+            }
+            i++;
+            if (j < n) for (int k = i; k < m; ++k) {
+                ans.push_back(matrix[k][n-1]);
+            }
+            n--;
+            if (i < m) for (int k = n-1; k >= j; --k) {
+                ans.push_back(matrix[m-1][k]);
+            }
+            m--;
+            if (i < m && j < n) for (int k = m-1; k >= i; --k) {
+                ans.push_back(matrix[k][j]);
+            }
+            j++;
+        }
+        
+        return ans;
+    }
+};

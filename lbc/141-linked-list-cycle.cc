@@ -35,3 +35,30 @@ public:
         return false;
     }
 };
+/*
+第二次做：
+经典老题了。没有什么问题。就是写的时候要小心点。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        if (head == NULL) return false;
+        
+        ListNode *front = head->next, *end = head;
+        while (front && front != end) {
+            front = front->next;
+            if (front) front = front->next;
+            end = end->next;
+        }
+        
+        return front != NULL;
+    }
+};

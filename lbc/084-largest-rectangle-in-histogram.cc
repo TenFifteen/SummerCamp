@@ -48,3 +48,41 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+这次又忘记了这道题的做法了。。。
+不过看了一下之前的思路，就想起来怎么做了，写的时候还是有好几处没有直接处理好。
+看来锻炼还得加强啊。
+*/
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        if (heights.size() == 0) return 0;
+        
+        stack<pair<int, int> > stk;
+        stk.push(make_pair(-1, -1));
+        
+        int ans = 0;
+        for (int i = 0; i < heights.size(); ++i) {
+            if (heights[i] > stk.top().first) {
+                stk.push(make_pair(heights[i], i));
+            } else {
+                while (stk.top().first >= heights[i]) {
+                    auto cur = stk.top();
+                    stk.pop();
+                    ans = max(ans, cur.first * (i-stk.top().second-1));
+                }
+                stk.push(make_pair(heights[i], i));
+            }
+        }
+        
+        while (stk.size() > 1) {
+            auto cur = stk.top();
+            stk.pop();
+            int now = cur.first * (heights.size()-stk.top().second-1);
+            ans = max(ans, now);
+        }
+        
+        return ans;
+    }
+};

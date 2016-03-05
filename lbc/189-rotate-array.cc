@@ -32,3 +32,29 @@ public:
         }
     }
 };
+/*
+第二次做：
+虽然挺简单的，还是出了一个错误。就是sub中的条件，写成了i < left + (right-left)/2了。
+太粗心了。一定要好好改改。
+*/
+class Solution {
+private:
+    void rotateSub(vector<int> &nums, int left, int right) {
+        for (int i = left; i < left + (right-left+1)/2; ++i) {
+            swap(nums[i], nums[right-i+left]);
+        }
+    }
+
+public:
+    void rotate(vector<int>& nums, int k) {
+        int n = nums.size();
+        if (n == 0) return;
+        
+        k %= n;
+        if (k == 0) return;
+        
+        rotateSub(nums, 0, n-1);
+        rotateSub(nums, 0, k-1);
+        rotateSub(nums, k, n-1);
+    }
+};

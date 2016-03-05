@@ -50,3 +50,29 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+跟上次还是一个思路。
+*/
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<string, multiset<string> > res;
+        for (auto s : strs) {
+            string key = s;
+            sort(key.begin(), key.end());
+            res[key].insert(s);
+        }
+        
+        vector<vector<string> > ans;
+        for (auto r : res) {
+            vector<string> cur;
+            for (auto s : r.second) {
+                cur.push_back(s);
+            }
+            ans.push_back(cur);
+        }
+        
+        return ans;
+    }
+};

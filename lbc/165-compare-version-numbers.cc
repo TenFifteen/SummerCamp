@@ -80,3 +80,36 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+虽然这次思路没有问题，代码本身也没有太大问题。
+不过却发现了一个语言上的重要的问题，就是如果一个函数需要返回值，你没有返回，
+估计是一个随机值吧。
+*/
+class Solution {
+private:
+    int getNext(string &s, int &index) {
+        int ret = 0;
+        while (index < s.size() && s[index] != '.') {
+            ret *= 10;
+            ret += s[index++] - '0';
+        }
+        
+        index++;
+        return ret;
+    }
+
+public:
+    int compareVersion(string version1, string version2) {
+        int len1 = version1.size(), len2 = version2.size();
+        int index1 = 0, index2 = 0;
+        
+        while (index1 < len1 || index2 < len2) {
+            int num1 = getNext(version1, index1);
+            int num2 = getNext(version2, index2);
+            if (num1 < num2) return -1;
+            if (num1 > num2) return 1;
+        }
+        return 0;
+    }
+};

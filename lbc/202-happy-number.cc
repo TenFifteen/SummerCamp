@@ -57,3 +57,33 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+比较顺利，就是忘了将happy放到set里了。
+DISCUSS中这种思路还是挺好的，至少是节省了空间了。
+*/
+class Solution {
+private:
+    int getHappy(int n) {
+        int ret = 0;
+        while (n) {
+            int digit = n % 10;
+            n /= 10;
+            ret += digit * digit;
+        }
+        return ret;
+    }
+
+public:
+    bool isHappy(int n) {
+        unordered_set<int> s;
+        
+        while (n != 1) {
+            int happy = getHappy(n);
+            if (s.find(happy) != s.end()) return false;
+            s.insert(happy);
+            n = happy;
+        }
+        return true;
+    }
+};

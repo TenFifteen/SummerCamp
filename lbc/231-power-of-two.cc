@@ -27,3 +27,14 @@ public:
         return false;
     }
 };
+/*
+第二次做：
+简单题，做的不错。
+*/
+class Solution {
+public:
+    bool isPowerOfTwo(int n) {
+        if (n < 1) return false;
+        return (n & (n-1)) == 0;
+    }
+};

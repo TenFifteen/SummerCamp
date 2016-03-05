@@ -77,3 +77,45 @@ public:
         else return 1 + sub(root->left, d-1) + sub(root->right, d-1);
     }
 };
+/*
+第二次做：
+这次做的还算是不错。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    int leftDepth(TreeNode *root) {
+        int ans = 0;
+        while (root) {
+            ans++;
+            root = root->left;
+        }
+        return ans;
+    }
+    
+    int rightDepth(TreeNode *root) {
+        int ans = 0;
+        while (root) {
+            ans ++;
+            root = root->right;
+        }
+        return ans;
+    }
+
+public:
+    int countNodes(TreeNode* root) {
+        if (root == NULL) return 0;
+        
+        int left = leftDepth(root), right = rightDepth(root);
+        if (left == right) return (1 << left) - 1;
+        return 1 + countNodes(root->left) + countNodes(root->right);
+    }
+};

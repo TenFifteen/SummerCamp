@@ -22,3 +22,21 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+简单题，但是我还是尝试了两次。。。
+看来今天做的是有点累了哈。
+*/
+class Solution {
+public:
+    int titleToNumber(string s) {
+        if (s.size() == 0) return 0;
+        
+        int ans = 0;
+        for (int i = 0; i < s.size(); ++i) {
+            ans *= 26;
+            ans += s[i]-'A'+1;
+        }
+        return ans;
+    }
+};

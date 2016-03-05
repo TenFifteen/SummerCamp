@@ -52,3 +52,24 @@ public:
         return nums[left];
     }
 };
+/*
+第二次做：
+比较顺利吧。
+其实呢，二分写的时候主要的注意点就是mid的计算，已经left或者right到底哪个多算一个。
+*/
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        if (nums.size() == 0) return -1;
+        
+        int left = 0, right = nums.size()-1;
+        while (left < right) {
+            int mid = (left+right)>>1;
+            if (nums[left] < nums[right]) return nums[left];
+            if (nums[mid] > nums[right]) left = mid+1;
+            else right = mid;
+        }
+        
+        return nums[left];
+    }
+};

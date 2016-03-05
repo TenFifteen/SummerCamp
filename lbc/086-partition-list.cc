@@ -71,3 +71,38 @@ public:
         return left;
     }
 };
+/*
+第二次做：
+简单题，写的还可以。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        ListNode before(0), after(0);
+        ListNode *bhead = &before, *ahead = &after;
+        
+        while (head) {
+            if (head->val < x) {
+                bhead->next = head;
+                bhead = head;
+            } else {
+                ahead->next = head;
+                ahead = head;
+            }
+            head = head->next;
+        }
+        
+        bhead->next = after.next;
+        ahead->next = NULL;
+        
+        return before.next;
+    }
+};

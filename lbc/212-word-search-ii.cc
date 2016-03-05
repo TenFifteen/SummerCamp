@@ -93,3 +93,84 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+题目算是比较复杂了，不过由于是早上的第一道题，所以做的还是挺顺利的。
+*/
+class Solution {
+private:
+    class TrieNode {
+    public:
+        bool isWord;
+        TrieNode* next[26];
+        TrieNode() {
+            isWord = false;
+            for (int i = 0; i < 26; ++i) next[i] = NULL;
+        }
+    };
+    
+    TrieNode *root;
+    
+    void insert(const string &word) {
+        TrieNode *cur = root;
+        for (auto ch : word) {
+            if (cur->next[ch-'a'] == NULL) {
+                cur->next[ch-'a'] = new TrieNode();
+            }
+            cur = cur->next[ch-'a'];
+        }
+        cur->isWord = true;
+    }
+    
+    void destroy() {
+        queue<TrieNode *> q;
+        q.push(root);
+        
+        while (q.size() > 0) {
+            auto cur = q.front(); q.pop();
+            for (int i = 0; i < 26; ++i) {
+                if (cur->next[i] != NULL) q.push(cur->next[i]);
+            }
+            delete cur;
+        }
+    }
+    
+    void search(vector<vector<char>> &board, vector<string> &ans, string now, int x, int y, TrieNode* r) {
+        if (r->isWord) {
+            ans.push_back(now);
+            r->isWord = false;
+        }
+        
+        if (x < 0 || y < 0 || x >= board.size() || y >= board[0].size() 
+        || board[x][y] == 0 || r->next[board[x][y]-'a'] == NULL) return;
+        
+        const int ix[] = {-1, 0, 1, 0};
+        const int iy[] = {0, -1, 0, 1};
+        
+        char old = board[x][y];
+        board[x][y] = 0;
+        now.push_back(old);
+        for (int i = 0; i < 4; ++i) {
+            search(board, ans, now, x+ix[i], y+iy[i], r->next[old-'a']);
+        }
+        board[x][y] = old;
+    }
+
+public:
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+        root = new TrieNode();
+        for (int i = 0; i < words.size(); ++i) {
+            insert(words[i]);
+        }
+        
+        vector<string> ans;
+        for (int i = 0; i < board.size(); ++i) {
+            for (int j = 0; j < board[0].size(); ++j) {
+                search(board, ans, "", i, j, root);
+            }
+        }
+        
+        destroy();
+        return ans;
+    }
+};

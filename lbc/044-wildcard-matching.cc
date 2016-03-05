@@ -64,3 +64,38 @@ public:
         return dp[s.size()][p.size()];
     }
 };
+/*
+第二次做：
+又是用的动归，而且，跟之前基本是一模一样的。。。
+*/
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        if (s == "") {
+            for (auto ch : p) {
+                if (ch != '*') return false;
+            }
+            return true;
+        }
+        if (p == "") return false;
+        
+        vector<vector<bool> > dp(s.size()+1, vector<bool>(p.size()+1, false));
+        dp[0][0] = true;
+        for (int i = 0; i < p.size(); ++i) {
+            if (p[i] != '*') break;
+            dp[0][i+1] = true;
+        }
+        
+        for (int i = 0; i < s.size(); ++i) {
+            for (int j = 0; j < p.size(); ++j) {
+                if (p[j] == '*') {
+                    dp[i+1][j+1] = dp[i][j+1] || dp[i+1][j] || dp[i][j];
+                } else if (p[j] == '?' || p[j] == s[i]) {
+                    dp[i+1][j+1] = dp[i][j];
+                }
+            }
+        }
+        
+        return dp[s.size()][p.size()];
+    }
+};

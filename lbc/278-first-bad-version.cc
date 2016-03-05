@@ -34,3 +34,24 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+二分，没有太大问题。
+二分最重要的一点就是决定==时候的方向问题，根据这个方向选择mid的计算。
+另外就是mid的计算有两个问题，一个是相加溢出，一个是相减溢出。所以都要考虑一下。
+*/
+// Forward declaration of isBadVersion API.
+bool isBadVersion(int version);
+
+class Solution {
+public:
+    int firstBadVersion(int n) {
+        int left = 1, right = n;
+        while (left < right) {
+            int mid = left + ((right-left)>>1);
+            if (isBadVersion(mid)) right = mid;
+            else left = mid+1;
+        }
+        return left;
+    }
+};

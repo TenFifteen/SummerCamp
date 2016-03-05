@@ -39,3 +39,30 @@ public:
         return sum;
     }
 };
+/*
+第二次做：
+虽然自己做的觉得还可以，但是看了之前的两种思路之后，感觉现在的想法也只是一个皮毛啊。
+*/
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        if (nums.size() == 0) return 0;
+        
+        for (int i = 0; i < nums.size(); ++i) {
+            if (nums[i] == i) continue;
+            
+            int cur = nums[i];
+            nums[i] = -1;
+            while (cur >= 0 && cur < nums.size()) {
+                int next = nums[cur];
+                nums[cur] = cur;
+                cur = next;
+            }
+        }
+        
+        for (int i = 0; i < nums.size(); ++i) {
+            if (nums[i] != i) return i;
+        }
+        return nums.size();
+    }
+};

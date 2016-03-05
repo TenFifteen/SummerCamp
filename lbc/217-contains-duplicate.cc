@@ -25,3 +25,20 @@ public:
         return false;
     }
 };
+/*
+第二次做：
+简单题就是容易出错。
+忘记了s.insert(n)了。。。
+而且，这次写的竟然跟之前的基本是一样的。。。
+*/
+class Solution {
+public:
+    bool containsDuplicate(vector<int>& nums) {
+        unordered_set<int> s;
+        for (auto n : nums) {
+            if (s.find(n) != s.end()) return true;
+            s.insert(n);
+        }
+        return false;
+    }
+};

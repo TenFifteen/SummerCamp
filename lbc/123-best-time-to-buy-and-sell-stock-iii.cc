@@ -52,3 +52,33 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+这次还是搞错了一个东西，排查了好久。
+不过这次有一个教训就是：“required from here”通常是min和max函数的参数太多了。
+解题思路没有问题，不过还是要看一看DISCUSS中的去掉n空间的解法。其实就是将其划分为了四个阶段，
+本质就是一个动态规划。
+*/
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        if (prices.size() < 2) return 0;
+        
+        vector<int> ans(prices.size(), 0);
+        int buy = prices[0];
+        for (int i = 1; i < prices.size(); ++i) {
+            ans[i] = max(ans[i-1], prices[i]-buy);
+            buy = min(buy, prices[i]);
+        }
+        
+        int ret = ans.back(), sell = -1;
+        for (int i = prices.size()-1; i > 0; --i) {
+            int deal = max(0, sell-prices[i]);
+            sell = max(sell, prices[i]);
+            ret = max(ret, ans[i-1] + deal);
+        }
+        ret = max(ret, sell-prices.front());
+        
+        return ret;
+    }
+};

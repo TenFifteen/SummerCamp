@@ -48,3 +48,32 @@ public:
         return false;
     }
 };
+/*
+第二次做：
+虽然做出来了，但是代码还没有之前的好呢。
+*/
+class Solution {
+public:
+    bool containsNearbyAlmostDuplicate(vector<int>& nums, int k, int t) {
+        if (nums.size() < 2) return false;
+        
+        typedef multiset<int>::iterator it;
+        multiset<int> s;
+        int n = nums.size();
+        
+        for (int i = 0; i <= (k < n-1 ? k : n-1); ++i) {
+            it low = s.lower_bound(nums[i]-t);
+            if (low != s.end() && abs(*low-nums[i]) <= t) return true;
+            s.insert(nums[i]);
+        }
+        
+        for (int i = k+1; i < n; ++i) {
+            s.erase(s.find(nums[i-k-1]));
+            it low = s.lower_bound(nums[i]-t);
+            if (low != s.end() && abs(*low-nums[i]) <= t) return true;
+            s.insert(nums[i]);
+        }
+        
+        return false;
+    }
+};

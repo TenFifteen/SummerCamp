@@ -37,3 +37,23 @@ public:
         return max(sub(root->left, level+1), sub(root->right, level+1));
     }
 };
+/*
+第二次做：
+太简单了。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if (root == NULL) return 0;
+        return max(maxDepth(root->left), maxDepth(root->right)) + 1;
+    }
+};

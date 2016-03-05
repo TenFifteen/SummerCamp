@@ -53,3 +53,41 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+这次写的就比较顺畅了。
+不过还是感觉，假如是在纸上写代码的话，肯定是不行的。
+*/
+class Solution {
+private:
+    bool isPalindrome(string s) {
+        for (int i = 0; i < s.size()/2; ++i) {
+            if (s[i] != s[s.size()-1-i]) return false;
+        }    
+        return true;
+    }
+
+public:
+    vector<vector<string>> partition(string s) {
+        vector<vector<string>> ans;
+        if (s.size() == 0) return ans;
+        
+        for (int i = s.size()-1; i >= 0; --i) {
+            string left = s.substr(i);
+            if (isPalindrome(left)) {
+                auto ret = partition(s.substr(0, i));
+                for (int j = 0; j < ret.size(); ++j) {
+                    ret[j].push_back(left);
+                    ans.push_back(ret[j]);
+                }
+                if (ret.size() == 0) {
+                    vector<string> tmp;
+                    tmp.push_back(left);
+                    ans.push_back(tmp);
+                }
+            }
+        }
+        
+        return ans;
+    }
+};

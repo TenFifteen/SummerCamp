@@ -36,3 +36,25 @@ public:
         return s == t;
     }
 };
+/*
+第二次做：
+比较经典了。
+*/
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if (s.size() != t.size()) return false;
+        
+        int hash[26] = {0};
+        for (auto ch : s) {
+            hash[ch-'a']++;
+        }
+        
+        for (auto ch : t) {
+            hash[ch-'a']--;
+            if (hash[ch-'a'] < 0) return false;
+        }
+        
+        return true;
+    }
+};

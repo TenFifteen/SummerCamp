@@ -45,3 +45,55 @@ public:
         return s.substr(ans.first, ans.second-ans.first);
     }
 };
+/*
+第二次做：
+比较顺利，只是少写了一个条件，别的懂完全没有问题。
+不过这次代码比之前怎么多了好多呢。看了一下，是total的含义变化了。。。。
+*/
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        unordered_map<char, int> buf;
+        for (auto ch : t) {
+            buf[ch]++;
+        }
+        
+        unordered_map<char, int> cur;
+        int front = 0, end = 0, total = 0;
+        while (front < s.size() && total < buf.size()) {
+            if (buf.find(s[front]) != buf.end()) {
+                cur[s[front]]++;
+                if (cur[s[front]] == buf[s[front]]) total++;
+            }
+            front++;
+        }
+        
+        if (total < buf.size() && front == s.size()) return "";
+        
+        int min_len = front-end, min_start = end;
+        while (total == buf.size()) {
+            while (total == buf.size()) {
+                if (buf.find(s[end]) != buf.end()) {
+                    if (buf[s[end]] == cur[s[end]]) total--;
+                    cur[s[end]]--;
+                }
+                end++;
+                if (total == buf.size() && front-end < min_len) {
+                    min_len = front-end;
+                    min_start = end;
+                }
+            }
+            while (front < s.size() && total < buf.size()) {
+                if (buf.find(s[front]) != buf.end()) {
+                    cur[s[front]]++;
+                    if (cur[s[front]] == buf[s[front]]) {
+                        total++;
+                    }
+                }
+                front++;
+            }
+        }
+        
+        return s.substr(min_start, min_len);
+    }
+};

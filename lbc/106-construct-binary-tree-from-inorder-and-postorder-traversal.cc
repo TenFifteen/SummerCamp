@@ -37,3 +37,37 @@ public:
         return cur;
     }
 };
+/*
+第二次做：
+跟上一题差不多。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    TreeNode *build(vector<int> &inorder,   int ileft, int iright,
+                    vector<int> &postorder, int pleft, int pright) {
+        if (ileft > iright) return NULL;
+        
+        TreeNode *root = new TreeNode(postorder[pright]);
+        int index = iright;
+        while (inorder[index] != postorder[pright]) index--;
+        
+        root->left = build(inorder, ileft, index-1, postorder, pleft, pleft+index-ileft-1);
+        root->right = build(inorder, index+1, iright, postorder, pleft+index-ileft, pright-1);
+        return root;
+    }
+    
+public:
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        if (inorder.size() == 0) return NULL;
+        return build(inorder, 0, inorder.size()-1, postorder, 0, postorder.size()-1);
+    }
+};

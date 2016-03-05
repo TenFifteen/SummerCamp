@@ -85,3 +85,61 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+竟然一次性通过了。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    int getLength(ListNode *head) {
+        int len = 0;
+        while (head) {
+            len++;
+            head = head->next;
+        }
+        return len;
+    }
+
+public:
+    ListNode* sortList(ListNode* head) {
+        int len = getLength(head);
+        if (len < 2) return head;
+        
+        ListNode *right = head, *tail = head;
+        for (int i = 0; i < (len-1)/2; ++i) {
+            right = right->next;
+        }
+        tail = right;
+        
+        right = sortList(right->next);
+        
+        tail->next = NULL;
+        ListNode *left = sortList(head);
+        
+        ListNode tmp(0), *ret = &tmp;
+        while (left && right) {
+            if (left->val < right->val) {
+                ret->next = left;
+                ret = left;
+                left = left->next;
+            } else {
+                ret->next = right;
+                ret = right;
+                right = right->next;
+            }
+        }
+        
+        if (left) ret->next = left;
+        if (right) ret->next = right;
+        
+        return tmp.next;
+    }
+};

@@ -55,3 +55,37 @@ public:
         return len;
     }
 };
+/*
+第二次做：
+这次做的还不错。
+只是二分的时候又把等号搞错方向了。
+*/
+class Solution {
+    int binarySearch(vector<int> &v, int val) {
+        int left = 0, right = v.size()-1;
+        while (left < right) {
+            int mid = (left+right) >> 1;
+            if (v[mid] >= val) right = mid;
+            else left = mid+1;
+        }
+        
+        if (v[left] >= val) return left;
+        return v.size();
+    }
+    
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        if (nums.size() == 0) return 0;
+        
+        vector<int> seq;
+        seq.push_back(nums[0]);
+        
+        for (int i = 1; i < nums.size(); ++i) {
+            int index = binarySearch(seq, nums[i]);
+            if (index == seq.size()) seq.push_back(nums[i]);
+            else seq[index] = nums[i];
+        }
+        
+        return seq.size();
+    }
+};

@@ -24,3 +24,20 @@ public:
         return ans[m-1];
     }
 };
+/*
+第二次做：
+简单动归。不过，这次的代码开始考虑边界条件了，是个好事。
+*/
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        if (m < 1 || n < 1) return 0;
+        vector<int> ans(m, 1);
+        for (int i = 1; i < n; ++i) {
+            for (int j = 1; j < m; ++j) {
+                ans[j] += ans[j-1];
+            }
+        }
+        return ans[m-1];
+    }
+};

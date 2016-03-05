@@ -67,3 +67,44 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+这次做的还不是很好。
+首先就是忘记了当k很大的时候的情形，所以出现了RTE
+另外就是空间没有压缩，如果能考虑清楚的话，面试的时候可以压缩一下。
+*/
+class Solution {
+private:
+    int maxProfitWithoutLimit(vector<int> &prices) {
+        int ret = 0;
+        for (int i = 1; i < prices.size(); ++i) {
+            int diff = prices[i] - prices[i-1];
+            if (diff > 0) ret += diff;
+        }
+        return ret;
+    }
+
+public:
+    int maxProfit(int k, vector<int>& prices) {
+        if (prices.size() < 2 || k < 1) return 0;
+        
+        int n = prices.size();
+        if (k*2 >= n) return maxProfitWithoutLimit(prices);
+        
+        vector<vector<int> > buy(n+1, vector<int>(k+1, 0)), sell(buy);
+        
+        
+        for (int i = 0; i <= k; ++i) {
+            buy[0][i] = INT_MIN;
+        }
+        
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j <= k; ++j) {
+                buy[i][j] = max(buy[i-1][j], sell[i-1][j-1]-prices[i-1]);
+                sell[i][j] = max(sell[i-1][j], buy[i-1][j]+prices[i-1]);
+            }
+        }
+        
+        return sell[n][k];
+    }
+};

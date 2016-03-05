@@ -42,3 +42,38 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+这次用的是跟第一次相对应的思路，其实差不多的，只是方向不同。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    void subPath(TreeNode *root, vector<string> &ans, string now) {
+        if (root == NULL) return;
+        now += to_string(root->val);
+        
+        if (root->left == NULL && root->right == NULL) {
+            ans.push_back(now);
+            return;
+        }
+        
+        if (root->left != NULL) subPath(root->left, ans, now+"->");
+        if (root->right != NULL) subPath(root->right, ans, now+"->");
+    }
+
+public:
+    vector<string> binaryTreePaths(TreeNode* root) {
+        vector<string> ans;
+        subPath(root, ans, "");
+        return ans;
+    }
+};

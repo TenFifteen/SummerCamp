@@ -33,3 +33,33 @@ public:
         return true;
     }
 };
+/*
+第二次做：
+虽然比较简单，但是还是挺容易出错的。
+我一开始就忘记了大小写的问题了。
+*/
+class Solution {
+private:
+    bool isAlpha(char ch) {
+        return ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch >= '0' && ch <= '9';
+    }
+    
+    bool isEqual(char ch1, char ch2) {
+        if (ch1 >= 'A' && ch1 <= 'Z') ch1 = ch1-'A'+'a';
+        if (ch2 >= 'A' && ch2 <= 'Z') ch2 = ch2-'A'+'a';
+        return ch1 == ch2;
+    }
+    
+public:
+    bool isPalindrome(string s) {
+        if (s.size() < 2) return true;
+        
+        int left = 0, right = s.size()-1;
+        while (left < right) {
+            while (left < right && !isAlpha(s[left])) left++;
+            while (left < right && !isAlpha(s[right])) right--;
+            if (!isEqual(s[left++], s[right--])) return false;
+        }
+        return true;
+    }
+};

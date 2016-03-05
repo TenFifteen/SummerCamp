@@ -47,3 +47,43 @@ public:
         }
     }
 };
+/*
+第二次做：
+这次跟上次是一个思路的。
+*/
+class Solution {
+private:
+    void dfs(vector<vector<string> > &ans, vector<string> &board, vector<bool> &col, 
+    vector<bool> &left, vector<bool> &right, int row) {
+        if (row == board.size()) {
+            ans.push_back(board);
+            return;
+        }
+        
+        for (int i = 0; i < board.size(); ++i) {
+            if (col[i] && left[row+i] && right[board.size()-1-i+row]) {
+                col[i] = false;
+                left[row+i] = false;
+                right[board.size()-1-i+row] = false;
+                
+                board[row][i] = 'Q';
+                dfs(ans, board, col, left, right, row+1);
+                board[row][i] = '.';
+                
+                col[i] = true;
+                left[row+i] = true;
+                right[board.size()-1-i+row] = true;
+            }
+        }
+    }
+
+public:
+    vector<vector<string>> solveNQueens(int n) {
+        vector<string> board(n, string(n, '.'));
+        vector<vector<string> > ans;
+        vector<bool> col(n, true), left(n*2-1, true), right(n*2-1, true);
+        
+        dfs(ans, board, col, left, right, 0);
+        return ans;
+    }
+};

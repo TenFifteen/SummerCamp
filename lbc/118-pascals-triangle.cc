@@ -49,3 +49,27 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+简单题，不过还是有一个条件写错了。。。
+*/
+class Solution {
+public:
+    vector<vector<int>> generate(int numRows) {
+        vector<vector<int>> ans;
+        if (numRows == 0) return ans;
+        
+        ans.push_back(vector<int>(1, 1));
+        for (int i = 1; i < numRows; ++i) {
+            vector<int> next;
+            next.push_back(1);
+            for (int j = 0; j < i-1; ++j) {
+                next.push_back(ans[i-1][j] + ans[i-1][j+1]);
+            }
+            next.push_back(1);
+            ans.push_back(next);
+        }
+        
+        return ans;
+    }
+};

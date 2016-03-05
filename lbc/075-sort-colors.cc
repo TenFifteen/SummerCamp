@@ -30,3 +30,30 @@ public:
         }
     }
 };
+/*
+第二次做：
+原来的思路的确是挺好的了。不过这次竟然一次通过了一个比较正宗的三元排序算法。
+*/
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+        if (nums.size() < 2) return;
+        
+        int left = 0, right = nums.size()-1, last = 0;
+        while (left <= right) {
+            while (left <= right && nums[left] != 2) {
+                if (nums[left] == 0) {
+                    swap(nums[last], nums[left]);
+                    last++;
+                }
+                left++;
+            }
+            while (left <= right && nums[right] == 2) {
+                right--;
+            }
+            if (left < right) {
+                swap(nums[left], nums[right--]);
+            }
+        }
+    }
+};

@@ -76,3 +76,89 @@ public:
         return ch <= '9' && ch >= '0';
     }
 };
+/*
+第二次做：
+我说我怎么做的这么麻烦呢， 原来是人家里面没有括号啊。。。
+
+另外就是，这一版写的还可以。忘记了两件事：1， 忘了更新index；2，忘了最后把剩下的栈里的内容再计算一遍。
+*/
+class Solution {
+private:
+    string deleteBlanks(const string s) {
+        string ans;
+        for (auto ch : s) {
+            if (ch != ' ') ans.push_back(ch);
+        }
+        return ans;
+    }
+    
+    bool isDigit(char ch) {
+        return ch >= '0' && ch <= '9';
+    }
+    
+    bool isOps(char ch) {
+        return ch == '(' || ch == '+' || ch == '-' || ch == '*' || ch == '/';
+    }
+    
+public:
+    int calculate(string s) {
+        s = deleteBlanks(s);
+        
+        stack<char> ops;
+        stack<int> nums;
+        int index = 0;
+        while (index < s.size()) {
+            if (isOps(s[index])) {
+                ops.push(s[index]);
+                index++;
+            } else if (isDigit(s[index])) {
+                int end = index+1;
+                while (end < s.size() && isDigit(s[end])) end++;
+                int num2 = stoi(s.substr(index, end-index));
+                
+                while (ops.size() > 0 && (ops.top() == '*' || ops.top() == '/')) {
+                    int num1 = nums.top(); nums.pop();
+                    if (ops.top() == '*') {
+                        num2 = num1 * num2;
+                    } else {
+                        num2 = num1 / num2;
+                    }
+                    ops.pop();
+                }
+                nums.push(num2);
+                index = end;
+            } else {
+                int ans = 0;
+                while (ops.size() > 0 && ops.top() != '(') {
+                    if (ops.top() == '+') ans += nums.top();
+                    else ans -= nums.top();
+                    ops.pop();
+                    nums.pop();
+                }
+                ans += nums.top();
+                nums.pop();
+                
+                if (ops.size() > 0 && ops.top() == '*' || ops.top() == '/') {
+                    int num1 = nums.top();
+                    nums.pop();
+                    if (ops.top() == '*') {
+                        ans = ans * num1;
+                    } else {
+                        ans = num1 / ans;
+                    }
+                }
+                nums.push(ans);
+                index++;
+            }
+        }
+        
+        int ans = 0;
+        while (ops.size() > 0) {
+            if (ops.top() == '+') ans += nums.top();
+            else ans -= nums.top();
+            nums.pop(); ops.pop();
+        }
+        ans += nums.top();
+        return ans;
+    }
+};

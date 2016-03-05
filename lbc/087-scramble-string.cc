@@ -76,3 +76,28 @@ public:
         return dp[s1.size()-1][0][0];
     }
 };
+/*
+第二次做：
+这个题目之前已经考虑了很多了，所以方法都记住了。
+但是代码写的时候竟然把下标搞错了，让我找了这么好久的错误。
+*/
+class Solution {
+public:
+    bool isScramble(string s1, string s2) {
+        if (s1 == s2) return true;
+        
+        string t1(s1), t2(s2);
+        sort(t1.begin(), t1.end());
+        sort(t2.begin(), t2.end());
+        if (t1 != t2) return false;
+        
+        for (int i = 0; i+1 < s1.size(); ++i) {
+            if (isScramble(s1.substr(0, i+1), s2.substr(0, i+1))
+             && isScramble(s1.substr(i+1), s2.substr(i+1))) return true;
+            if (isScramble(s1.substr(0, i+1), s2.substr(s1.size()-i-1))
+             && isScramble(s1.substr(i+1), s2.substr(0, s1.size()-i-1))) return true;
+        }
+        
+        return false;
+    }
+};

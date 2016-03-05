@@ -62,3 +62,33 @@ public:
         }
     }
 };
+/*
+第二次做：
+虽然这次只改了一处就做出来了，不过代码思路跟之前是不一样了。
+还有就是DISCUSS中那种思路还是挺不错的。
+*/
+class Solution {
+private:
+    void dfs(vector<vector<int> > &ans, vector<int> &nums, vector<int> &cur, int index) {
+        if (index == nums.size()) {
+            ans.push_back(cur);
+            return;
+        }
+        for (int i = index; i < nums.size(); ++i) {
+            if (i != index && nums[i] == nums[i-1]) continue;
+            cur.push_back(nums[i]);
+            dfs(ans, nums, cur, i+1);
+            cur.pop_back();
+        }
+        dfs(ans, nums, cur, nums.size());
+    }
+public:
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        
+        vector<vector<int> > ans;
+        vector<int> cur;
+        dfs(ans, nums, cur, 0);
+        return ans;
+    }
+};

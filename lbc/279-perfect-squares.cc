@@ -193,3 +193,26 @@ public:
         return dp[n-1];
     }
 };
+/*
+第二次做：
+这次竟然没有想到怎么优化空间。
+结果空间用超了。
+看了一下之前的解法才恍然大悟，这种的依赖是可以优化的。。。
+总结一下可以优化空间的问题一般是横着，或者竖着看依赖层不超过两层的都可以优化空间。
+*/
+class Solution {
+public:
+    int numSquares(int n) {
+        vector<int> squares, dp(n+1, INT_MAX);
+        for (int i = 1; n / i >= i; ++i) squares.push_back(i*i);
+        
+        for (int i = 0; i <= n; ++i) dp[i] = i;
+        for (int k = 1; k < squares.size(); ++k) {
+            for (int i = 1; i <= n; ++i) {
+                if (i >= squares[k]) dp[i] = min(dp[i], dp[i-squares[k]]+1);
+            }
+        }
+        
+        return dp[n];
+    }
+};

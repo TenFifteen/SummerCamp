@@ -43,3 +43,30 @@ public:
         return len;
     }
 };
+/*
+第二次做：
+比较简单，一次做对。不过跟之前自己的代码基本一样的啊。
+而且DISCUSS中这么简洁的代码也没有用上。
+*/
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        if (nums.size() < 3) return nums.size();
+        
+        int total = 1, dup = 1, last = nums[0];
+        for (int i = 1; i < nums.size(); ++i) {
+            if (nums[i] == nums[i-1]) {
+                if (dup == 1) {
+                    nums[total++] = nums[i];
+                }
+                dup++;
+            } else {
+                nums[total++] = nums[i];
+                dup = 1;
+                last = nums[i];
+            }
+        }
+        
+        return total;
+    }
+};

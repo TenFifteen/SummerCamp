@@ -29,3 +29,28 @@ public:
         return false;
     }
 };
+/*
+第二次做：
+没有太大问题。
+*/
+class Solution {
+public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+        if (nums.size() < 2) return false;
+        
+        unordered_set<int> s;
+        int n = nums.size();
+        for (int i = 0; i <= (k < n-1 ? k : n-1); ++i) {
+            if (s.find(nums[i]) != s.end()) return true;
+            s.insert(nums[i]);
+        }
+        
+        for (int i = k+1; i < n; ++i) {
+            s.erase(nums[i-k-1]);
+            if (s.find(nums[i]) != s.end()) return true;
+            s.insert(nums[i]);
+        }
+        
+        return false;
+    }
+};

@@ -67,3 +67,42 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+虽然没有DISCUSS中的精简，不过这次写的还是挺满足的。虽然中间还错了一些小细节，
+比如mul的计算（包括初始化和更新）。
+*/
+class Solution {
+public:
+    string getPermutation(int n, int k) {
+        if (n == 0) return "";
+        if (n == 1) return "1";
+        
+        int mul = 1;
+        for (int i = 1; i < n; ++i) mul *= i;
+        
+        string ans(n, '0');
+        vector<bool> nums(n, true);
+        for (int i = 0; i < n; ++i) {
+            int cnt = 0;
+            while (k > mul) {
+                k -= mul;
+                cnt++;
+            }
+            for (int j = 0; j < n; ++j) {
+                if (nums[j]) {
+                    if (cnt == 0) {
+                        ans[i] = j+'1';
+                        nums[j] = false;
+                        break;
+                    } else {
+                        cnt--;
+                    }
+                }
+            }
+            if (n-i-1) mul /= (n-i-1);
+            else mul = 0;
+        }
+        return ans;
+    }
+};

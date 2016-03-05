@@ -105,3 +105,55 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+这次虽然状态记录对了，但是好多细节都没有考虑到。
+首先是，正负问题；一般伴随着正负就有溢出的问题。
+另外就是没有小数部分的问题，
+然后是”-0“的问题。
+这道题的关键就是这些小问题，所以一定要想清楚各种情况，才能开始动手写代码。
+*/
+class Solution {
+public:
+    string fractionToDecimal(int numerator, int denominator) {
+        bool neg = false;
+        long long num = numerator, den = denominator;
+        if (num < 0) {
+            neg = !neg;
+            num = -num;
+        }
+        if (den < 0) {
+            neg = !neg;
+            den = -den;
+        }
+        
+        long long integer = num / den;
+        num %= den;
+        
+        string frac;
+        unordered_map<long long, int> hash;
+        while (num) {
+            num *= 10;
+            int digit = num / den;
+            num %= den;
+            
+            long long key = (num << 4) + digit;
+            
+            if (hash.find(key) != hash.end()) {
+                string ans = to_string(integer) + "." + frac.substr(0, hash[key]) + "(" + frac.substr(hash[key]) + ")";
+                if (neg) {
+                    return "-" + ans;
+                } else {
+                    return ans;
+                }
+            }
+            hash[key] = frac.size();
+            frac.push_back(digit + '0');
+        }
+        
+        if (frac.size() == 0 && integer == 0) return "0";
+        string ans = neg ? "-" + to_string(integer) : to_string(integer);
+        if (frac.size() > 0) ans += "." + frac;
+        return ans;
+    }
+};

@@ -62,3 +62,24 @@ public:
         return make_pair(0, false);
     }
 };
+/*
+第二次做：
+经典老题，问题不大。注意细节。
+*/
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        assert(nums.size() > 0);
+        
+        int ans = nums[0], cnt = 1;
+        for (int i = 1; i < nums.size(); ++i) {
+            if (nums[i] == ans) cnt++;
+            else cnt--;
+            if (cnt < 0) {
+                ans = nums[i];
+                cnt = 1;
+            }
+        }
+        return ans;
+    }
+};

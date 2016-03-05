@@ -62,3 +62,37 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+拓扑排序，没有太大问题。
+*/
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<pair<int, int>>& prerequisites) {
+        unordered_map<int, vector<int>> m;
+        vector<int> ans;
+        vector<int> pres(numCourses, 0);
+        
+        for (auto p : prerequisites) {
+            m[p.second].push_back(p.first);
+            pres[p.first]++;
+        }
+        for (int i = 0; i < numCourses; ++i) {
+            if (pres[i] == 0) {
+                ans.push_back(i);
+            }
+        }
+        
+        int index = 0;
+        while (index < ans.size()) {
+            for (auto p : m[ans[index]]) {
+                pres[p]--;
+                if (pres[p] == 0) ans.push_back(p);
+            }
+            index++;
+        }
+        
+        if (ans.size() == numCourses) return ans;
+        return vector<int>();
+    }
+};

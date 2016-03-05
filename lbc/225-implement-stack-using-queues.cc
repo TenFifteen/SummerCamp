@@ -80,3 +80,66 @@ public:
         return q.empty();
     }
 };
+/*
+第二次做：
+虽然思路上没有什么大的改变，不过这次的代码的确是不如之前的了。
+尤其是DISCUSS中的这种代码，值得借鉴。
+*/
+class Stack {
+private:
+    bool first = true;
+    queue<int> q1, q2;
+
+public:
+    // Push element x onto stack.
+    void push(int x) {
+        if (first) {
+            q1.push(x);
+        } else {
+            q2.push(x);
+        }
+    }
+
+    // Removes the element on top of the stack.
+    void pop() {
+        if (first) {
+            while (q1.size() > 1) {
+                q2.push(q1.front()); q1.pop();
+            }
+            int ret = q1.front(); q1.pop();
+            first = false;
+        } else {
+            while (q2.size() > 1) {
+                q1.push(q2.front()); q2.pop();
+            }
+            int ret = q2.front(); q2.pop();
+            first = true;
+        }
+    }
+
+    // Get the top element.
+    int top() {
+        if (first) {
+            while (q1.size() > 1) {
+                q2.push(q1.front()); q1.pop();
+            }
+            int ret = q1.front(); q1.pop();
+            q2.push(ret);
+            first = false;
+            return ret;
+        } else {
+            while (q2.size() > 1) {
+                q1.push(q2.front()); q2.pop();
+            }
+            int ret = q2.front(); q2.pop();
+            q1.push(ret);
+            first = true;
+            return ret;
+        }
+    }
+
+    // Return whether the stack is empty.
+    bool empty() {
+        return q1.size() == 0 && q2.size() == 0;
+    }
+};

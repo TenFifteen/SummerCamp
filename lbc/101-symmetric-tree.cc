@@ -37,3 +37,30 @@ public:
         }
     }
 };
+/*
+第二次做：
+太简单的题目了。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    bool sub(TreeNode *left, TreeNode *right) {
+        if (left == NULL || right == NULL) return left == right;
+        if (left->val != right->val) return false;
+        return sub(left->left, right->right) && sub(left->right, right->left);
+    }
+
+public:
+    bool isSymmetric(TreeNode* root) {
+        if (root == NULL) return true;
+        return sub(root->left, root->right);
+    }
+};

@@ -70,3 +70,47 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+这次比较顺利，只有两处手误。
+而且写的时候就想到了，如果直接插入之后进行排序，再调用之前那道题的过程，也是可以做的。只不过可能
+那样做起来还多了一个排序的复杂度。
+*/
+/**
+ * Definition for an interval.
+ * struct Interval {
+ *     int start;
+ *     int end;
+ *     Interval() : start(0), end(0) {}
+ *     Interval(int s, int e) : start(s), end(e) {}
+ * };
+ */
+class Solution {
+private:
+    void pushback(vector<Interval> &intervals, Interval newInterval) {
+        if (intervals.size() == 0 || intervals.rbegin()->end < newInterval.start) {
+            intervals.push_back(newInterval);
+        } else {
+            intervals.rbegin()->end = max(intervals.rbegin()->end, newInterval.end);
+        }
+    }
+
+public:
+    vector<Interval> insert(vector<Interval>& intervals, Interval newInterval) {
+        vector<Interval> ans;
+        bool inserted = false;
+        int index = 0;
+        
+        while (index < intervals.size()) {
+            if (inserted || intervals[index].start < newInterval.start) {
+                pushback(ans, intervals[index++]);
+            } else {
+                inserted = true;
+                pushback(ans, newInterval);
+            }
+        }
+        
+        if (!inserted) pushback(ans, newInterval);
+        return ans;
+    }
+};

@@ -73,3 +73,38 @@ public:
         }
     }
 };
+/*
+第二次做：
+由于上一道题中已经知道了，这种题目，就是可以把next当做链表来用最好了。
+所以就做出来了。
+*/
+/**
+ * Definition for binary tree with next pointer.
+ * struct TreeLinkNode {
+ *  int val;
+ *  TreeLinkNode *left, *right, *next;
+ *  TreeLinkNode(int x) : val(x), left(NULL), right(NULL), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void connect(TreeLinkNode *root) {
+        if (root == NULL) return;
+        
+        while (root) {
+            TreeLinkNode next(0), *pnext = &next;
+            while (root) {
+                if (root->left) {
+                    pnext->next = root->left;
+                    pnext = pnext->next;
+                }
+                if (root->right) {
+                    pnext->next = root->right;
+                    pnext = pnext->next;
+                }
+                root = root->next;
+            }
+            root = next.next;
+        }
+    }
+};

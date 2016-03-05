@@ -61,3 +61,49 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+这次做的不好。
+虽然一开始代码写的跟之前一样，但是竟然对于1，1，1这样的用例是错误的。
+不知道为啥，看起来跟之前是一样的啊。
+还是DISCUSS这种方式比较好。也不需要迭代。
+另外就是最后还有一个前导0的处理也很重要。还有就是处理前导0的时候，不要忘记了最后要剩一个0.
+*/
+class Solution {
+private:
+    struct Cmp {
+        bool operator() (int lh, int rh) {
+            string left = to_string(lh), right = to_string(rh);
+            int index = 0;
+            
+            return left+right < right+left;
+            
+            while (index < left.size() && index < right.size()) {
+                if (left[index] < right[index]) return true;
+                if (left[index] > right[index]) return false;
+                index++;
+            }
+            
+            if (index == left.size()) return operator()(lh, stoi(right.substr(index)));
+            if (index == right.size()) return operator()(stoi(left.substr(index)), rh);
+            return false;
+        }
+    };
+
+public:
+    string largestNumber(vector<int>& nums) {
+        if (nums.size() == 0) return "";
+        
+        sort(nums.begin(), nums.end(), Cmp());
+        
+        string ans;
+        for (int i = nums.size()-1; i >= 0; --i) {
+            ans += to_string(nums[i]);
+        }
+        
+        int index = 0;
+        while (index < ans.size() && ans[index] == '0') index++;
+        if (index == ans.size()) return "0";
+        return ans.substr(index);
+    }
+};

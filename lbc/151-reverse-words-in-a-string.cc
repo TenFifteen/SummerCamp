@@ -73,3 +73,44 @@ public:
         }
     }
 };
+/*
+第二次做：
+这次做的还可以吧。不过还是稍微除了一点点问题。
+*/
+class Solution {
+private:
+    void reverse(string &s, int left, int right) {
+        for (int i = left; i < left+(right-left+1)/2; ++i) {
+            swap(s[i], s[right-i+left]);
+        }
+    }
+
+public:
+    void reverseWords(string &s) {
+        int len = 0, index = 0;
+        
+        while (index < s.size() && s[index] == ' ') index++;
+        if (index == s.size()) {
+            s = "";
+            return;
+        }
+        
+        while (index < s.size()) {
+            while (index < s.size() && s[index] != ' ') s[len++] = s[index++];
+            while (index < s.size() && s[index] == ' ') index++;
+            if (index != s.size()) s[len++] = ' ';
+        }
+        
+        reverse(s, 0, len-1);
+        
+        int start = 0, end = 0;
+        while (start < len) {
+            while (end < len && s[end] != ' ') end++;
+            reverse(s, start, end-1);
+            start = end+1;
+            end = start;
+        }
+        
+        s = s.substr(0, len);
+    }
+};

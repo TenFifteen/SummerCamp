@@ -61,3 +61,33 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+比较简单。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    void view(TreeNode *root, vector<int> &ans, int level) {
+        if (root == NULL) return;
+        if (ans.size() == level) ans.push_back(root->val);
+        ans[level] = root->val;
+        view(root->left, ans, level+1);
+        view(root->right, ans, level+1);
+    }
+
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int> ans;
+        view(root, ans, 0);
+        return ans;
+    }
+};

@@ -53,3 +53,25 @@ public:
         return ret;
     }
 };
+/*
+第二次做；
+一开始还是没有想到O(n)的思路，不过看了提示之后，大体知道了使用并查集的思路。
+不过尝试着写了一下并查集，结果好难写啊。
+所以看了一下之前的内容，发现DISCUSS中这种思路简直是太好了啊。所以就拿过来用了。
+*/
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        unordered_map<int, int> m;
+        int ans = 0;
+        for (auto i : nums) {
+            if (m[i]) continue;
+            int newlen = m[i-1] + m[i+1] + 1;
+            m[i-m[i-1]] = newlen;
+            m[i+m[i+1]] = newlen;
+            m[i] = newlen;
+            ans = max(ans, m[i]);
+        }
+        return ans;
+    }
+};

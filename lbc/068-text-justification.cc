@@ -78,3 +78,51 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+题目没有看清楚就做题了，有一句很重要的话：“For the last line of text, it should be left justified and no extra space is inserted between words.”
+所以改了这部分，代码就对了。不过还是没有DISCUSS那么简洁，但是已经够用了。
+*/
+class Solution {
+public:
+    vector<string> fullJustify(vector<string>& words, int maxWidth) {
+        vector<string> ans;
+        int index = 0;
+        while (index < words.size()) {
+            int totalLen = 0, num = 0, front = index;
+            while (front < words.size() && (totalLen + num + words[front].size() <= maxWidth)) {
+                totalLen += words[front++].size();
+                num++;
+            }
+            
+            string line;
+            int blanks = maxWidth - totalLen;
+            line.append(words[index]);
+            num--;
+            if (front == words.size()) {
+                for (int i = index+1; i < front; ++i) {
+                    line.append(" ");
+                    line.append(words[i]);
+                    blanks--;
+                }
+                line.append(string(blanks, ' '));
+            } else {
+                for (int i = index+1; i < front; ++i) {
+                    int cur = blanks / num;
+                    if (blanks % num) cur++;
+                    blanks -= cur;
+                    num--;
+                    
+                    line.append(string(cur, ' '));
+                    line.append(words[i]);
+                }
+                if (index+1 == front) line.append(string(blanks, ' '));
+            }
+            
+            ans.push_back(line);
+            index = front;
+        }
+        
+        return ans;
+    }
+};

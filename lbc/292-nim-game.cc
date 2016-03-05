@@ -20,3 +20,13 @@ public:
         return n%4 != 0;
     }
 };
+/*
+第二次做：
+非常简单。
+*/
+class Solution {
+public:
+    bool canWinNim(int n) {
+        return n % 4;
+    }
+};

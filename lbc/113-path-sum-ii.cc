@@ -42,3 +42,43 @@ public:
         cur.pop_back();
     }
 };
+/*
+第二次做：
+问题不是很大。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    void dfs(vector<vector<int> > &ans, vector<int> &now, TreeNode *root, int sum) {
+        if (root == NULL) return;
+        if (root->left == NULL && root->right == NULL) {
+            if (root->val == sum) {
+                now.push_back(root->val);
+                ans.push_back(now);
+                now.pop_back();
+            }
+            return;
+        }
+        
+        now.push_back(root->val);
+        dfs(ans, now, root->left, sum-root->val);
+        dfs(ans, now, root->right, sum-root->val);
+        now.pop_back();
+    }
+
+public:
+    vector<vector<int>> pathSum(TreeNode* root, int sum) {
+        vector<vector<int> > ans;
+        vector<int> now;
+        dfs(ans, now, root, sum);
+        return ans;
+    }
+};

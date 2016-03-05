@@ -31,3 +31,24 @@ public:
         return false;
     }
 };
+/*
+第二次做：
+简单而分，一次通过。
+*/
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        if (matrix.size() == 0 || matrix[0].size() == 0) return false;
+        
+        int m = matrix.size(), n = matrix[0].size();
+        int left = 0, right = m*n-1;
+        while (left <= right) {
+            int mid = left + ((right-left) >> 1);
+            int x = mid/n, y = mid % n;
+            if (matrix[x][y] == target) return true;
+            else if (matrix[x][y] > target) right = mid-1;
+            else left = mid+1;
+        }
+        return false;
+    }
+};

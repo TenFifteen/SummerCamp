@@ -28,3 +28,28 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+比较简单。不过代码稍微冗余一点点。
+*/
+class Solution {
+public:
+    vector<string> summaryRanges(vector<int>& nums) {
+        vector<string> ans;
+        if (nums.size() == 0) return ans;
+        
+        int last = nums[0];
+        for (int i = 1; i < nums.size(); ++i) {
+            if (nums[i] == nums[i-1]+1) continue;
+            
+            if (nums[i-1] != last) ans.push_back(to_string(last) + "->" + to_string(nums[i-1]));
+            else ans.push_back(to_string(last));
+            last = nums[i];
+        }
+        
+        if (nums.back() == last) ans.push_back(to_string(last));
+        else (ans.push_back(to_string(last) + "->" + to_string(nums.back())));
+        
+        return ans;
+    }
+};

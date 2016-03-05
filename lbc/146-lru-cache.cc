@@ -137,3 +137,80 @@ public:
         cache[node->key] = node;
     }
 };
+/*
+第二次做：
+估计这道题是最考验链表操作能力的了。
+*/
+class LRUCache{
+private:
+    struct ListNode {
+        int key, val;
+        ListNode *next, *pre;
+        ListNode(int k, int v): key(k), val(v), next(NULL), pre(NULL) {}
+    };
+    
+    typedef unordered_map<int, ListNode *> hash;
+    
+    int _cap, total;
+    hash cache;
+    ListNode *head, *tail;
+    
+    void insert(int k, int v) {
+        auto next = head->next;
+        head->next = new ListNode(k, v);
+        head->next->pre = head;
+        head->next->next = next;
+        next->pre = head->next;
+    }
+    
+    void erase(ListNode *node) {
+        node->pre->next = node->next;
+        node->next->pre = node->pre;
+        delete node;
+    }
+    
+    void pop() {
+        auto remove = tail->pre;
+        tail->pre = remove->pre;
+        remove->pre->next = tail;
+        delete remove;
+    }
+    
+public:
+    LRUCache(int capacity) {
+        _cap = capacity;
+        head = new ListNode(-1, -1);
+        tail = new ListNode(-1, -1);
+        head->next = tail;
+        tail->pre = head;
+        total = 0;
+    }
+    
+    int get(int key) {
+        if (cache.find(key) == cache.end()) {
+            return -1;
+        } else {
+            insert(key, cache[key]->val);
+            erase(cache[key]);
+            cache[key] = head->next;
+            return cache[key]->val;
+        }
+    }
+    
+    void set(int key, int value) {
+        if (cache.find(key) == cache.end()) {
+            insert(key, value);
+            cache[key] = head->next;
+            total++;
+            if (total > _cap) {
+                cache.erase(tail->pre->key);
+                pop();
+                total--;
+            }
+        } else {
+            insert(key, value);
+            erase(cache[key]);
+            cache[key] = head->next;
+        }
+    }
+};

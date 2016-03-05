@@ -11,7 +11,7 @@
 
 再次阅读：
 本来以为这道题最好就是用这种Manchester算法解呢，结果看到DISCUSS中用的最多的竟然是KMP算法。
-当然了，KMP算法的next数组，正好可以表达这件事。也就是以字符串开头的最长的回文子串。
+正好可以表达这件事。当然了，KMP算法的next数组，也就是以字符串开头的最长的回文子串。
 然后就在这里贴一个如何求KMP算法的next数组的代码吧，感觉这东西好像很容易就忘了：
 void makeNext(const char P[],int next[])
 {
@@ -79,5 +79,44 @@ public:
             swap(pad[i], pad[pad.size()-1-i]);
         }
         return pad + s;
+    }
+};
+/*
+第二次做：
+问题不是很大。
+有两个小疏漏，一个是忘记了初始化man字符串了，另一个是index搞错了。
+这道题目的最长回文字串的解法基本就是这样了，回头考虑一下用KMP的模式数组解一下。
+*/
+class Solution {
+public:
+    string shortestPalindrome(string s) {
+        if (s.size() < 2) return s;
+        
+        string man(s.size()*2+1, '#');
+        for (int i = 0; i < s.size(); ++i) {
+            man[i*2+1] = s[i];
+        }
+        vector<int> dp(man.size(), 1);
+        
+        int id = 0, mx = 0;
+        for (int i = 0; i < dp.size(); ++i) {
+            if (mx > i) dp[i] = min(mx-i+1, dp[id*2-i]);
+            while (i-dp[i] >= 0 && dp[i]+i < dp.size() && man[i-dp[i]] == man[i+dp[i]]) dp[i]++;
+            if (dp[i]+i-1 > mx) {
+                mx = dp[i]+i-1;
+                id = i;
+            }
+        }
+        
+        int index = 0;
+        for (int i = 1; i < dp.size(); ++i) {
+            if (dp[i] == i+1) index = i;
+        }
+        
+        string prefix = s.substr(index);
+        for (int i = 0; i < prefix.size()/2; ++i) {
+            swap(prefix[i], prefix[prefix.size()-1-i]);
+        }
+        return prefix + s;
     }
 };

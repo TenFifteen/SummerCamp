@@ -45,3 +45,27 @@ public:
         return steps[nums.size()-1];
     }
 };
+/*
+第二次做：
+这次还比较顺利。一次就通过了。
+*/
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        assert(nums.size() > 0);
+        if (nums.size() == 1) return 0;
+        
+        int start = 0, len = 0, steps = 0;
+        while (len < nums.size()-1) {
+            int nextLen = 0;
+            for (int i = start; i <= len; ++i) {
+                nextLen = max(nextLen, nums[i]+i);
+            }
+            steps++;
+            start = len+1;
+            len = nextLen;
+        }
+        
+        return steps;
+    }
+};

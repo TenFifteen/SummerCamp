@@ -33,3 +33,31 @@ public:
         sub(ans, cur, n, i+1, k);
     }
 };
+/*
+第二次做：
+还可以，比较简单。
+*/
+class Solution {
+    void dfs(vector<vector<int> > &ans, vector<int> &cur, int n, int k, int now) {
+        if (cur.size() == k) {
+            ans.push_back(cur);
+            return;
+        }
+        if (n-now+1 < k-cur.size()) return;
+        
+        cur.push_back(now);
+        dfs(ans, cur, n, k, now+1);
+        cur.pop_back();
+        dfs(ans, cur, n, k, now+1);
+    }
+public:
+    vector<vector<int>> combine(int n, int k) {
+        assert(n >= k && k > 0);
+        
+        vector<vector<int> > ans;
+        vector<int> cur;
+        dfs(ans, cur, n, k, 1);
+        
+        return ans;
+    }
+};

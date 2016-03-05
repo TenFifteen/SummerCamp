@@ -49,3 +49,31 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+虽然比较简单，但是做的过程中还是出现了一些小问题。
+好处就是这次用的位操作比较多，效率应该是不错的。
+*/
+class Solution {
+public:
+    vector<int> grayCode(int n) {
+        vector<int> ans(1 << n);
+        
+        int cur = 0;
+        for (int i = 0; i < (1 << n); ++i) {
+            ans[i] = cur;
+            if (i & 0x1) {
+                int add = cur - (cur&(cur-1));
+                cur ^= (add << 1);
+            } else {
+                if (cur & 0x1) {
+                    cur &= 0xfffffffe;
+                } else {
+                    cur |= 0x1;
+                }
+            }
+        }
+        
+        return ans;
+    }
+};

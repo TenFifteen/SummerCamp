@@ -66,3 +66,54 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+这道题有没有自己想出来，看来难题的思路的确是自己很难想出来啊。不过这个题目的思路的确是挺巧妙的，
+尤其是跟上一个题目还联系起来了。
+*/
+class Solution {
+private:
+    int biggestRectangle(const vector<int> &rec) {
+        stack<pair<int, int> > stk;
+        stk.push(make_pair(-1, -1));
+        
+        int ans = 0;
+        for (int i = 0; i < rec.size(); ++i) {
+            if (rec[i] <= stk.top().first) while (stk.top().first >= rec[i]) {
+                auto cur = stk.top();
+                stk.pop();
+                int area = (i-1-stk.top().second) * cur.first;
+                ans = max(ans, area);
+            }
+            stk.push(make_pair(rec[i], i));
+        }
+        
+        while (stk.size() > 1) {
+            auto cur = stk.top();
+            stk.pop();
+            int area = (rec.size()-1-stk.top().second) * cur.first;
+            ans = max(ans, area);
+        }
+        
+        return ans;
+    }
+
+public:
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        if (matrix.size() == 0 || matrix[0].size() == 0) return 0;
+        
+        int m = matrix.size(), n = matrix[0].size(), ans = 0;
+        vector<int> rec(n, 0);
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (matrix[i][j] == '1') {
+                    rec[j]++;
+                } else {
+                    rec[j] = 0;
+                }
+            }
+            ans = max(ans, biggestRectangle(rec));
+        }
+        return ans;
+    }
+};

@@ -93,3 +93,41 @@ public:
         return ret+1;
     }
 };
+/*
+第二次做：
+这次还是没有想出来怎么做到n*n的复杂度。还是参考的原来的思路。
+感觉真是烦人啊，怎么老是忘记呢。或者说根本想不出来呢。
+*/
+class Solution {
+public:
+    int minCut(string s) {
+        if (s.size() < 2) return 0;
+        
+        int n = s.size();
+        vector<int> dp(n, 0);
+        vector<vector<bool>> buf(n, vector<bool>(n, true));
+        
+        for (int len = 2; len <= n; ++len) {
+            for (int i = 0; i < n-len+1; ++i) {
+                if (len == 2) {
+                    buf[i][i+len-1] = s[i] == s[i+1];
+                } else {
+                    buf[i][i+len-1] = s[i] == s[i+len-1] && buf[i+1][i+len-2];
+                }
+            }
+        }
+        
+        for (int i = 1; i < n; ++i) {
+            if (buf[0][i] == false) {
+                dp[i] = INT_MAX;
+                for (int j = i; j > 0; --j) {
+                    if (buf[j][i]) {
+                        dp[i] = min(dp[i], dp[j-1]+1);
+                    }
+                }
+            }
+        }
+        
+        return dp[n-1];
+    }
+};

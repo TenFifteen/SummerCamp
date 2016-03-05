@@ -37,3 +37,26 @@ public:
         }
     }
 };
+/*
+第二次做：
+嗯，这次做的比较顺利，虽然没有上面DISCUSS中的代码写的简洁好看，不过也是还不错了。
+*/
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        assert(nums.size());
+        
+        int cur = 0, maxJump = 0;
+        while (maxJump+1 < nums.size()) {
+            int newJump = maxJump;
+            for (int i = cur; i <= maxJump; ++i) {
+                newJump = max(newJump, nums[i] + i);
+            }
+            if (newJump == maxJump) return false;
+            cur = maxJump+1;
+            maxJump = newJump;
+        }
+        
+        return true;
+    }
+};

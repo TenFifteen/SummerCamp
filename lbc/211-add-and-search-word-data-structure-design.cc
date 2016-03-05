@@ -85,3 +85,66 @@ public:
 // WordDictionary wordDictionary;
 // wordDictionary.addWord("word");
 // wordDictionary.search("pattern");
+/*
+第二次做：
+这次一开始没有看到有通配符。
+结果后边写递归的时候竟然错了一些小地方。
+*/
+class WordDictionary {
+private:
+    struct TrieNode {
+        bool isWord;
+        TrieNode* next[26];
+        TrieNode() {
+            isWord = false;
+            for (int i = 0; i < 26; ++i) next[i] = NULL;
+        }
+    };
+
+    TrieNode *root;
+
+public:
+    WordDictionary() {
+        root = new TrieNode();
+    }
+
+    // Adds a word into the data structure.
+    void addWord(string word) {
+        cout << "add " << word << endl;
+        TrieNode *cur = root;
+        for (auto ch : word) {
+            if (cur->next[ch-'a'] == NULL) {
+                cur->next[ch-'a'] = new TrieNode();
+            }
+            cur = cur->next[ch-'a'];
+        }
+        cur->isWord = true;
+    }
+
+    // Returns if the word is in the data structure. A word could
+    // contain the dot character '.' to represent any one letter.
+    bool search(string word) {
+        cout << "search " << word << endl;
+        return innerSearch(word, root);
+    }
+    
+    bool innerSearch(string word, TrieNode *r) {
+        TrieNode *cur = r;
+        for (int i = 0; i < word.size(); ++i) {
+            if (word[i] == '.') {
+                for (int j = 0; j < 26; ++j) {
+                    if (cur->next[j] != NULL && innerSearch(word.substr(i+1), cur->next[j])) return true;
+                }
+                return false;
+            }
+            if (cur->next[word[i]-'a'] == NULL) return false;
+            cur = cur->next[word[i]-'a'];
+        }
+        return cur->isWord;
+    }
+};
+
+// Your WordDictionary object will be instantiated and called as such:
+// WordDictionary wordDictionary;
+// wordDictionary.addWord("word");
+// wordDictionary.search("pattern");

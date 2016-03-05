@@ -29,3 +29,28 @@ public:
         return ret;
     }
 };
+/*
+第二次做：
+简单题，不过还是犯了两个错误。
+第一个是在第二个for前面忘记了加上条件了。
+第二个是看错了题目要求是小于了，给看成了小于等于了。
+*/
+class Solution {
+public:
+    int countPrimes(int n) {
+        if (n < 3) return 0;
+        vector<bool> ans(n, true);
+        
+        for (int i = 2; i < n; ++i) {
+            if (ans[i]) for (int j = i*2; j <= n; j += i) {
+                ans[j] = false;
+            }
+        }
+        
+        int cnt = 0;
+        for (int i = 2; i < n; ++i) {
+            if (ans[i]) cnt++;
+        }
+        return cnt;
+    }
+};

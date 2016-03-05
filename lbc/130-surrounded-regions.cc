@@ -156,3 +156,59 @@ public:
         sub2(board, x, y+1);
     }
 };
+/*
+第二次做：
+跟第一次同样的问题，竟然是因为递归而RTE了。实在是憋屈啊。
+艹，为啥人家的递归就没有问题呢。。。。。。。。。。。。。。
+*/
+class Solution {
+private:
+    void dfs(vector<vector<char>> &board, int x, int y) {
+        if (board[x][y] != 'O') return;
+        //iterative
+        queue<pair<int, int>> q;
+        q.push(make_pair(x, y));
+        board[x][y] = '#';
+        const int ix[] = {-1, 0, 1, 0}, iy[] = {0, 1, 0, -1};
+        while (q.size()) {
+            auto cur = q.front(); q.pop();
+            for (int i = 0; i < 4; ++i) {
+                x = cur.first + ix[i];
+                y = cur.second + iy[i];
+                if (x >= 0 && x < board.size() && y >= 0 && y < board[0].size() && board[x][y] == 'O') {
+                    board[x][y] = '#';
+                    q.push(make_pair(x, y));
+                }
+            }
+        }
+        
+        //recursive
+        /*
+        if (x < 0 || x >= board.size() || y < 0 || y >= board[x].size() || board[x][y] != 'O') return;
+        board[x][y] = '#';
+        const int ix[] = {-1, 0, 1, 0}, iy[] = {0, 1, 0, -1};
+        for (int i = 0; i < 4; ++i) {
+            dfs(board, x+ix[i], y+iy[i]);
+        }
+        */
+    }
+public:
+    void solve(vector<vector<char>>& board) {
+        if (board.size() == 0 || board[0].size() == 0) return;
+        for (int i = 0; i < board.size(); ++i) {
+            dfs(board, i, 0);
+            dfs(board, i, board[0].size()-1);
+        }
+        for (int i = 0; i < board[0].size(); ++i) {
+            dfs(board, 0, i);
+            dfs(board, board.size()-1, i);
+        }
+        
+        for (int i = 0; i < board.size(); ++i) {
+            for (int j = 0; j < board[0].size(); ++j) {
+                if (board[i][j] == 'O') board[i][j] = 'X';
+                else if (board[i][j] == '#') board[i][j] = 'O';
+            }
+        }
+    }
+};

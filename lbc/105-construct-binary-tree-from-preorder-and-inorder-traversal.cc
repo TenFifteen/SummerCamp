@@ -39,3 +39,39 @@ public:
         return cur;
     }
 };
+/*
+第二次做：
+比较简单。
+不过如果面试遇到的话，一定要问一下面试官，是否要进行错误处理。感觉要是处理起来还是挺麻烦的。
+*/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    TreeNode *build(vector<int> &preorder, int pleft, int pright,
+                    vector<int> &inorder,  int ileft, int iright) {
+        if (pleft > pright) return NULL;
+        
+        TreeNode *root = new TreeNode(preorder[pleft]);
+        int index = ileft;
+        while (inorder[index] != preorder[pleft]) index++;
+        
+        root->left = build(preorder, pleft+1, pleft+index-ileft, inorder, ileft, index-1);
+        root->right = build(preorder, pleft+index-ileft+1, pright, inorder, index+1, iright);
+        return root;
+    }
+
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        if (preorder.size() == 0) return NULL;
+        
+        return build(preorder, 0, preorder.size()-1, inorder, 0, inorder.size()-1);
+    }
+};

@@ -47,3 +47,44 @@ public:
         return 0;
     }
 };
+/*
+第二次做：
+就是一个BFS，还算可以吧。
+*/
+class Solution {
+public:
+    int ladderLength(string beginWord, string endWord, unordered_set<string>& wordList) {
+        if (beginWord == endWord) return 1;
+        
+        queue<string> q;
+        q.push(beginWord);
+        
+        unordered_set<string> visited;
+        visited.insert(beginWord);
+        
+        int cnt = 1, wordLen = beginWord.size();
+        
+        while (q.size()) {
+            int len = q.size();
+            for (int i = 0; i < len; ++i) {
+                string now = q.front(); q.pop();
+                if (now == endWord) return cnt;
+                
+                for (int i = 0; i < wordLen; ++i) {
+                    char old = now[i];
+                    for (char ch = 'a'; ch <= 'z'; ++ch) {
+                        now[i] = ch;
+                        if (wordList.find(now) != wordList.end() && visited.find(now) == visited.end()) {
+                            q.push(now);
+                            visited.insert(now);
+                        }
+                    }
+                    now[i] = old;
+                }
+            }
+            cnt++;
+        }
+        
+        return 0;
+    }
+};

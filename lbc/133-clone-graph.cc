@@ -63,3 +63,43 @@ public:
         }
     }
 };
+/*
+第二次做：
+就是一个搜索，不过代码写起来比较费劲而已。
+*/
+/**
+ * Definition for undirected graph.
+ * struct UndirectedGraphNode {
+ *     int label;
+ *     vector<UndirectedGraphNode *> neighbors;
+ *     UndirectedGraphNode(int x) : label(x) {};
+ * };
+ */
+class Solution {
+public:
+    UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
+        if (node == NULL) return NULL;
+        
+        UndirectedGraphNode *root = new UndirectedGraphNode(node->label);
+        
+        unordered_map<int, UndirectedGraphNode *> buf;
+        buf[root->label] = root;
+        
+        queue<UndirectedGraphNode *> q;
+        q.push(node);
+        
+        while (q.size()) {
+            auto cur = q.front(); q.pop();
+            auto now = buf[cur->label];
+            for (auto n : cur->neighbors) {
+                if (buf.find(n->label) == buf.end()) {
+                    buf[n->label] = new UndirectedGraphNode(n->label);
+                    q.push(n);
+                }
+                now->neighbors.push_back(buf[n->label]);
+            }
+        }
+        
+        return root;
+    }
+};

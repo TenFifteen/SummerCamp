@@ -47,3 +47,69 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+这次虽然想到点上了，结果思路想反了，从后往前了，结果乘法处理不了。
+然后又看了下之前的写法，才觉得这种思路好牛逼呀。尤其是那个last的使用。
+*/
+class Solution {
+private:
+    void dfs(vector<string> &ans , string num, string out, int target, long long cur, long long last) {
+        if (num.size() == 0) {
+            if (target == cur) {
+                ans.push_back(out);
+            }
+            return;
+        }
+        
+        for (int i = 0; i < num.size(); ++i) {
+            string now = num.substr(0, i+1);
+            string next = num.substr(i+1);
+            long long n = stoll(now);
+            
+            if (num[0] == '0' && i > 0) break;
+            
+            if (out.size() == 0) {
+                dfs(ans, next, now, target, n, n);
+            } else {
+                dfs(ans, next, out + '+' + now, target, cur+n, n);
+                dfs(ans, next, out + '-' + now, target, cur-n, -n);
+                dfs(ans, next, out + '*' + now, target, cur-last+last*n, last*n);
+            }
+        }
+    }
+    
+public:
+    vector<string> addOperators(string num, int target) {
+        vector<string> ans;
+        dfs(ans, num, "", target, 0, 0);
+        return ans;
+    }
+    
+    vector<string> addOperatorsI(string num, int target) {
+        vector<string> ans;
+        
+        if (num.size() == 0) return ans;
+        //cout << num << " " << target << endl;
+        
+        for (int i = num.size()-1; i > 0; --i) {
+            string right = num.substr(i);
+            string left = num.substr(0, i);
+            long long cur = stoll(right);
+            
+            vector<string> ret = addOperators(left, target - cur); // +
+            for (auto r : ret) ans.push_back(r + "+" + right);
+            
+            ret = addOperators(left, target + cur); // -
+            for (auto r : ret) ans.push_back(r + "-" + right);
+            
+            if (cur != 0 && target % cur) {
+                ret = addOperators(left, target / cur); // *
+                for (auto r : ret) ans.push_back(r + "*" + right);
+            }
+        }
+        
+        if (stoll(num) == target) ans.push_back(num);
+        return ans;
+    }
+};
