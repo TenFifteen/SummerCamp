@@ -46,3 +46,67 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+还算是可以吧。
+就是个深搜。
+*/
+class Solution {
+    int string2int(const string &s) {
+        int ans = s[0];
+        ans <<= 8;
+        ans |= s[1];
+        ans <<= 8;
+        ans |= s[2];
+        return ans;
+    }
+    
+    string int2string(int i) {
+        string ret(3, 0);
+        ret[2] = i & 0xff;
+        i >>= 8;
+        ret[1] = i & 0xff;
+        i >>= 8;
+        ret[0] = i;
+        return ret;
+    }
+    
+    bool dfs(unordered_map<int, vector<int>> &tickets, vector<int> &ans, int total) {
+        if (ans.size() == total) return true;
+        
+        int cur = ans.back();
+        for (int i = 0; i < tickets[cur].size(); ++i) {
+            if (tickets[cur][i] < 0 || i != 0 && tickets[cur][i] == tickets[cur][i-1]) continue;
+            
+            ans.push_back(tickets[cur][i]);
+            tickets[cur][i] = -tickets[cur][i];
+            if (dfs(tickets, ans, total)) return true;
+            tickets[cur][i] = -tickets[cur][i];
+            ans.pop_back();
+        }
+    }
+    
+public:
+    vector<string> findItinerary(vector<pair<string, string>> tickets) {
+        vector<int> ans;
+        unordered_map<int, vector<int>> m;
+        
+        for (auto p : tickets) {
+            m[string2int(p.first)].push_back(string2int(p.second));
+        }
+        
+        for (auto &p : m) {
+            sort(p.second.begin(), p.second.end());
+        }
+        
+        ans.push_back(string2int("JFK"));
+        dfs(m, ans, tickets.size()+1);
+        
+        vector<string> ret(ans.size());
+        for (int i = 0; i < ans.size(); ++i) {
+            ret[i] = int2string(ans[i]);
+        }
+        
+        return ret;
+    }
+};
