@@ -43,3 +43,26 @@ public:
         return total == 0;
     }
 };
+/*
+第二次做：
+没有太大问题。
+*/
+class Solution {
+public:
+    bool isValidSerialization(string preorder) {
+        int need = 1, index = 0;
+        while (index < preorder.size() && need > 0) {
+            if (preorder[index] == '#') {
+                need--;
+                index += 2;
+            } else {
+                int end = index+1;
+                while (end < preorder.size() && preorder[end] != ',') end++;
+                need++;
+                index = end+1;
+            }
+        }
+        
+        return need == 0 && index >= preorder.size();
+    }
+};
