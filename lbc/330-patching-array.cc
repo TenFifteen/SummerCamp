@@ -33,3 +33,26 @@ public:
         return added;
     }
 };
+/*
+第二次做；
+终于磕磕绊绊的想出来了。
+注意一下溢出问题。
+*/
+class Solution {
+public:
+    int minPatches(vector<int>& nums, int n) {
+        if (n < 1) return 0;
+        
+        long long ans = 0, cur = 1, index = 0;
+        while (cur <= n) {
+            if (index < nums.size() && nums[index] <= cur) {
+                cur += nums[index++];
+            } else {
+                ans++;
+                cur <<= 1;
+            }
+        }
+        
+        return ans;
+    }
+};
