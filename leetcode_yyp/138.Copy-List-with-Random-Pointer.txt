@@ -1,0 +1,66 @@
+题目大意：
+	给定一个单链表，每个节点除了next还包括一个random指针，可以指向任意一个节点或者空。返回一个该链表的复制链表。
+解题思路：
+	开始没想到有环，就普通的dfs复制，后来发现有环。先复制next，然后保存当前所有节点再赋值random。后看了答案，直接在原链表基础上拷贝一份然后修改，恢复即可。
+/**
+ * Definition for singly-linked list with a random pointer.
+ * struct RandomListNode {
+ *     int label;
+ *     RandomListNode *next, *random;
+ *     RandomListNode(int x) : label(x), next(NULL), random(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    RandomListNode *copyRandomList(RandomListNode *head) {
+        if(head == NULL) return head;
+        RandomListNode* cur = head;
+        while(cur != NULL) {
+            RandomListNode* tmp = new RandomListNode(cur->label);
+            tmp->next = cur->next;
+            cur->next = tmp;
+            cur = tmp->next;
+        }
+        cur = head;
+        while(cur != NULL) {
+            cur->next->random = cur->random == NULL ? NULL :cur->random->next;
+            cur = cur->next->next;
+        }
+        cur = head;
+        RandomListNode* newhead = new RandomListNode(0);
+        RandomListNode* end = newhead, *tmp;
+        while(cur != NULL) {
+            tmp = cur->next->next;
+            end->next = cur->next;
+            end = end->next;
+            cur->next = tmp;
+            cur = tmp;
+        }
+        return newhead->next;
+    }
+};
+ /*
+class Solution {
+private:
+    unordered_map<int, RandomListNode*>dic;
+public:
+    RandomListNode *copyNext(RandomListNode *head) {
+        if(head == NULL) return head;
+        RandomListNode* tmp = new RandomListNode(head->label);
+        tmp->next = copyNext(head->next);
+        dic[head->label] = tmp;
+        return tmp;
+    }
+    RandomListNode *copyRandomList(RandomListNode *head) {
+        if(head == NULL) return head;
+        RandomListNode* newhead = copyNext(head);
+        RandomListNode* tmp = newhead;
+        while(head != NULL) {
+            tmp->random = head->random == NULL ? NULL :dic[head->random->label];
+            head = head->next;
+            tmp = tmp->next;
+        }
+        return newhead;
+    }
+};
+*/

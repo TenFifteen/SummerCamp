@@ -1,0 +1,37 @@
+题目大意：
+	给定两个单词beginWord和endWord,和一个字典。找从beginWord到endWord的最短转换，每次转换只能变单词中的一个字符。
+解题思路：
+	广搜。但是注意每次已经添加到队列中的单词不要再添加，防止数据量变大，超时。
+class Solution {
+public:
+    int ladderLength(string beginWord, string endWord, unordered_set<string>& wordList) {
+        int res = 1;
+        queue<string>q;
+        unordered_set<string>rec;
+        q.push(endWord);
+        rec.insert(endWord);
+        while(!q.empty()) {
+            res++;
+            queue<string>p;
+            while(!q.empty()) {
+                string end = q.front();
+                q.pop();
+                for(int j = 0; j < end.size(); j++) {
+                    for(int k = 0; k < 26; k++) {
+                        string t = end;
+                        t[j] = ('a' + k);
+                        if(t != end && wordList.find(t) != wordList.end() && rec.find(t) == rec.end()) {
+                            if(t == beginWord) {
+                                return res;
+                            }
+                            p.push(t);
+                            rec.insert(t);
+                        }
+                    }
+                }
+            }
+            q = p;
+        }
+        return 0;
+    }
+};

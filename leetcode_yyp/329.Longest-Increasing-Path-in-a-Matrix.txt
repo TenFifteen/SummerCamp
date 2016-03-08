@@ -1,0 +1,38 @@
+题目大意：
+	给定一个二维矩阵，找最大递增数长度，对每个单元，只有上下左右四个方向可以走。
+解题思路：
+	深搜。用数组visited记录当前单元是否被访问过且以这个单元开始的最长递增长度为多少。对每个单元，向四个方向的单元中大于当前单元的数值的单元走，直到所有单元都被访问过。
+class Solution {
+public:
+    int longestIncreasingPath(vector<vector<int> >& matrix) {
+        int m = matrix.size();
+        if(m == 0) return 0;
+        int n = matrix[0].size();
+        
+        vector<vector<int> >visited;
+        for(int i = 0; i < m; i++) {
+            vector<int>tmp(n, 0);
+            visited.push_back(tmp);
+        }
+        int res = -1;
+        for(int i = 0; i < m; i++)
+            for(int j = 0; j < n; j++)
+                if(0 == visited[i][j])
+                    res = max(res, findPath(matrix, visited, i, j));
+        return res;   
+    }
+    int findPath(vector<vector<int> >& matrix, vector<vector<int> >& visited, int x, int y) {
+        visited[x][y] = 1;
+        int m = matrix.size(), n = matrix[0].size();
+        int tmp = 0;
+        if(x - 1 >= 0 && matrix[x - 1][y] > matrix[x][y])
+            tmp = max(tmp, (0 == visited[x - 1][y] ? findPath(matrix, visited,  x - 1, y) : visited[x - 1][y]));
+        if(x + 1 < m && matrix[x + 1][y] > matrix[x][y])
+            tmp = max(tmp, (0 == visited[x + 1][y] ? findPath(matrix, visited,  x + 1, y) : visited[x + 1][y]));
+        if(y - 1 >= 0 && matrix[x][y - 1] > matrix[x][y])
+            tmp = max(tmp, (0 == visited[x][y - 1] ? findPath(matrix, visited,  x, y - 1) : visited[x][y - 1]));
+        if(y + 1 < n && matrix[x][y + 1] > matrix[x][y])
+            tmp = max(tmp, (0 == visited[x][y + 1] ? findPath(matrix, visited,  x, y + 1) : visited[x][y + 1]));
+        visited[x][y] = tmp == 0 ? 1 : tmp + 1;
+    }
+};

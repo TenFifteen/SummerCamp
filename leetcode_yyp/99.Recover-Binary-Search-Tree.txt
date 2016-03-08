@@ -1,0 +1,35 @@
+题目大意：
+	给定一棵二叉搜索树，其中两个元素错误地交换了，恢复这颗二叉搜索树。
+解题思路：
+	开始没有思路，看了答案意识到，二叉搜索树的中序遍历便是所有元素的正确排序，两个元素交换位置也就是说存在两个位置前面的元素要大于当前元素。用中序遍历的思路即可。答案中有做法是用Morris Traversal，对普通的中序遍历优化了空间复杂度。
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    TreeNode* first = NULL, *second = NULL;
+    TreeNode* prev = new TreeNode(INT_MIN);
+public:
+    void recoverTree(TreeNode* root) {
+        inorder(root);
+        int tmp = first->val;
+        first->val = second->val;
+        second->val = tmp;
+    }
+    void inorder(TreeNode* root) {
+        if(root == NULL) return;
+        inorder(root->left);
+        if(first == NULL && prev->val >= root->val)
+            first = prev;
+        if(first != NULL && prev->val >= root->val)
+            second = root;
+        prev = root;
+        inorder(root->right);
+    }
+};

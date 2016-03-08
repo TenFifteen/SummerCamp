@@ -1,0 +1,33 @@
+题目大意：
+	给定一个单链表，将奇数节点移动到前面，偶数节点放到后面。本地移动，奇数和偶数之间分别保序。
+解题思路：
+	每次分别取两个节点加入奇偶链表的后面，然后接起来即可。
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* oddEvenList(ListNode* head) {
+        if(head == NULL || head->next == NULL || head->next->next == NULL)
+            return head;
+        ListNode *odd = head, *even = head->next, *cur = head->next->next;
+        ListNode *newhead = odd, *evenhead = even, *tmp;
+        while(cur != NULL) 
+        {
+            odd->next = cur;
+            even->next = cur->next;
+            cur = cur->next == NULL ? NULL : cur->next->next;
+            
+            odd = odd->next;
+            even = even->next;
+        }
+        odd->next = evenhead;
+        return newhead;
+    }
+};
+

@@ -1,0 +1,27 @@
+题目大意：
+	给定一堆零钱和一个总钱数，给定能用最少零钱数得到总钱数的方案，若没有，返回-1.
+解题思路：
+	动归，从1到amount遍历，每个值判断能否由现有几种零钱数加某个已求得的数得到，因为是从小到大遍历，所以可以判断能否由零钱和一个已求得的数决定，取得最小值。
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        if(amount == 0)
+            return 0;
+        vector<int>res(amount, INT_MAX);
+        int x = 0;
+        for(int i = 0; i < coins.size(); i++)
+            res[coins[i] - 1] = 1;
+        for(int i = 1; i <= amount; i++)
+        {
+            for(int j = 0; j < coins.size(); j++)
+            {
+                x = i - coins[j];
+                if(x >= 0 && res[x - 1] < INT_MAX)
+                {
+                    res[i - 1] = min(1 + res[x - 1], res[i - 1]);
+                }
+            }
+        }
+        return res[amount - 1] == INT_MAX ? -1 : res[amount - 1];
+    }
+};

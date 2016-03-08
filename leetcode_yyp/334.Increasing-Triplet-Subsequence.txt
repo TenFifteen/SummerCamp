@@ -1,0 +1,22 @@
+题目大意：
+	给定一个无序数组，判断它是否存在一个长度为3的递增子序列。
+解题思路：
+	最长递增子序列的简化版，动归。
+class Solution {
+public:
+    bool increasingTriplet(vector<int>& nums) {
+        if(nums.size() == 0) return false;
+        vector<int>l(2, INT_MAX);
+        l[0] = nums[0];
+        for(int i = 1; i < nums.size(); i++) {
+            if(nums[i] > l[1])
+                return true;
+            else if(nums[i] > l[0]) {
+                l[1] = nums[i];
+            } else if(nums[i] < l[0]) {
+                l[0] = nums[i];
+            }
+        }
+        return false;
+    }
+};
