@@ -1,0 +1,47 @@
+/*
+题目大意：
+	给定一个第i个数代表第i天股票价格的数组。设计一个算法返回炒股最大收益。其中，每个人手里只能同时有一个股票，卖完一个股票后要休息一天才能买。
+解题思路：
+	动归。res[i]表示从第i天到第n天的最大收益。第i天买或者不买，不买的话最大收益为res[i + 1]，买的话最大收益为max(prices[j]-prices[i]+ res[i+2])，第i天的最大收益为二者的大值。
+	此题复杂度为o(n^2),看了网上别人的解法是o(n)。动归从前往后思考，分情况是根据第i天前最后一次操作是什么来区分的，优化后复杂度为o(n). 将自己的代码优化后时间复杂度为o(n)。空间复杂度也可以为o(1)，不再作优化。
+*/
+//优化前
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size(), a, cur = 0, sol = 0;
+        if(n < 2) return 0;
+        vector<int>res(n);
+        res[n - 1] = 0;
+        for(int i = n - 2; i>= 0; i--)
+        {
+            cur = 0;
+            for(int j = i + 1; j < n; j++)
+            {
+                a = prices[j] - prices[i] + (j + 2 < n ? res[j + 2] : 0);
+                cur = max(cur, a);
+            }
+            res[i] = max(cur, res[i + 1]);
+            sol = max(sol, cur);
+        }
+        return sol;
+    }
+};
+//优化后
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size(), rec = 0, cur = 0, sol = 0;
+        if(n < 2) return 0;
+        vector<int>res(n);
+        res[n - 1] = 0;
+        for(int i = n - 2; i>= 0; i--)
+        {
+            rec = max(rec, prices[i + 1] + (i + 3 < n ? res[i + 3] : 0));
+            cur = rec - prices[i];
+            res[i] = max(cur, res[i + 1]);
+            sol = max(sol, cur);
+        }
+        return sol;
+    }
+};

@@ -1,0 +1,32 @@
+题目大意：
+	给定一个字符串数组，形成每行长度为L的文本，每行尽可能多的单词，放不满用空格填充，空格分配尽量均匀且左边多于右边，最后一行左靠近。
+解题思路：
+	思路简单，处理时注意边界及特殊情况即可。
+class Solution {
+public:
+    vector<string> fullJustify(vector<string>& words, int maxWidth) {
+        vector<string>res;
+        if(words.size() == 0) return res;
+        int k = 0, l;
+        for(int i = 0; i < words.size(); i = k) {
+            for(k = i, l = 0; l <= maxWidth && k < words.size(); k++) {
+                int tmp = l + (l == 0 ? 0 : 1) + words[k].size();
+                if(tmp <= maxWidth) l = tmp;
+                else break;
+            }
+            string str = "";
+            int x = maxWidth - l, y = k - i - 1;
+            if(k == words.size()) {
+                for(int j = i; j < k; j++)
+                    str = str + (str.size() == 0 ? "" : " ") + words[j];
+                str += string(x, ' ');
+            } else {
+                for(int j = i; j < k; j++)
+                    str = str + (str.size() == 0 || k - i == 1 ? "" : string(x / y + (j - i <= x % y ? 1: 0) + 1, ' ')) + words[j];
+                if(k - i == 1) str += string(x, ' ');
+            }
+            res.push_back(str);
+        }
+        return res;
+    }
+};

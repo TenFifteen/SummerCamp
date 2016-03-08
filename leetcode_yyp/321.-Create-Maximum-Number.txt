@@ -1,0 +1,41 @@
+题目大意：
+	给定长度分别为m和n的0-9的数组，生成长度为k的最大数。来自同一个数组的数要保序。
+解题思路：
+	对一个数组求长度k的最大数的话用栈模拟生成，当前数字大于栈顶元素且能保证最后栈中元素长度大于等于k，则一直出栈，然后将当前元素加入到当前栈顶。对两个数组，则是在一个数组中取i个数，在另一个数组中取k-i个数，然后进行合并，更新结果。https://leetcode.com/discuss/75756/share-my-greedy-solution
+class Solution {
+public:
+    vector<int> maxNumber(vector<int>& nums1, vector<int>& nums2, int k) {
+        int m = nums1.size(), n = nums2.size();
+        vector<int>ans(k, 0);
+        for(int i = max(0, k - n); i <= k && i <= m; i++) {
+            vector<int> tmp = merge(maxArray(nums1, i), maxArray(nums2, k - i), k);
+            if(greater(tmp, 0, ans, 0))
+                ans = tmp;
+        }
+        return ans;
+    }
+    vector<int> merge(vector<int> nums1, vector<int> nums2, int k) {
+        vector<int>res(k, 0);
+        for(int i = 0, j = 0, r = 0; r < k; r++) {
+            res[r] = greater(nums1, i, nums2, j) ? nums1[i++] : nums2[j++];
+        }
+        return res;
+    }
+    bool greater(vector<int>& nums1, int i, vector<int>& nums2, int j) {
+        while(i < nums1.size() && j < nums2.size() && nums1[i] == nums2[j]) {
+            i++;
+            j++;
+        }
+        return (j == nums2.size() || (i < nums1.size() && nums1[i] > nums2[j]));
+    }
+    vector<int> maxArray(vector<int> nums, int k) {
+        vector<int> res(k, 0);
+        for(int i = 0, j = 0; i < nums.size(); i++) {
+            while(j > 0 && nums.size() - i + j > k && nums[i] > res[j - 1])
+                j--;
+            if(j < k)
+                res[j++] = nums[i]; 
+        }
+        return res;
+    }
+};

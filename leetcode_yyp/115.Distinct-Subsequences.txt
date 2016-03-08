@@ -1,0 +1,23 @@
+题目大意：
+	给定字符串S和T，求S中子串为T的数目。
+解题思路：
+	动归。注意初始化f[0][j]，即空串是任意字符串的子串。
+class Solution {
+public:
+    int numDistinct(string s, string t) {
+        int m = s.size(), n = t.size();
+        vector<vector<int> >f(n + 1, vector<int>(m + 1, 0));
+        for(int j = 0; j <= m; j++)
+            f[0][j] = 1;
+        for(int i = 1; i <= n; i++) {
+            for(int j = i; j <= m; j++) {
+                if(t[i - 1] == s[j - 1]) {
+                    f[i][j] = f[i - 1][j - 1] + f[i][j - 1];
+                } else {
+                    f[i][j] = f[i][j - 1];
+                }
+            }
+        }
+        return f[n][m];
+    }
+};

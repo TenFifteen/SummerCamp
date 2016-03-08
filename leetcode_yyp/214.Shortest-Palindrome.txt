@@ -1,0 +1,32 @@
+题目大意：
+	给定一个字符串S，通过在前面添加几个字符，似得形成一个最短的回文字串。
+解题思路：
+	将S逆序成T，然后形成新字符串N=S+"#"+T，只要求出该字符串的最长公共前缀和后缀，然后取出T中去除该后缀加到S前即可。用KMP算法。
+class Solution {
+public:
+    string shortestPalindrome(string s) {
+        if(s.size() < 2)
+            return s;
+        string t = s;
+        reverse(t.begin(), t.end());
+        string m = s + "#"+ t;
+        int x = m.size();
+        vector<int>next = getNext(m);
+        return t.substr(0, s.size() - next[x]) + s;
+    }
+    vector<int> getNext(string s) {
+        vector<int>next(s.size() + 1, 0);
+        int k = -1, j = 0;
+        next[0] = -1;
+        while(j < s.size()) {
+            if(-1 == k || s[j] == s[k]) {
+                j++;
+                k++;
+                next[j] = k;
+            } else {
+                k = next[k];
+            }
+        }
+        return next;
+    }
+};

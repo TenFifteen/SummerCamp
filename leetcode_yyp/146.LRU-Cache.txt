@@ -1,0 +1,73 @@
+题目大意：
+	为实现最近最少使用缓冲区设计数据结构。功能包括get和set。
+解题思路：
+	map+双向链表。https://leetcode.com/discuss/20139/java-hashtable-double-linked-list-with-touch-of-pseudo-nodes
+class LRUCache{
+private:
+    struct node {
+        int k, v;
+        node* pre, *post;
+    };
+    int count, cap;
+    unordered_map<int, node*>dic;
+    node* head, *tail;
+public:
+    void remove(node* now) {
+        node* n1 = now->pre;
+        node* n2 = now->post;
+        n1->post = n2;
+        n2->pre = n1;
+    }
+    void add(node* now) {
+        now->post = head->post;
+        now->pre = head;
+        head->post->pre = now;
+        head->post = now;
+    }
+    void movetoHead(node* now) {
+        remove(now);
+        add(now);
+    }
+    node* poptail() {
+        node* res = tail->pre;
+        remove(res);
+        return res;
+    }
+    LRUCache(int capacity) {
+        cap = capacity;
+        count = 0;
+        head = new node();
+        tail = new node();
+        head->pre = NULL;
+        tail->post = NULL;
+        head->post = tail;
+        tail->pre = head;
+    }
+    
+    int get(int key) {
+        if(dic.find(key) == dic.end()) {
+            return -1;
+        }
+        movetoHead(dic[key]);
+        return dic[key]->v;
+    }
+    
+    void set(int key, int value) {
+        if(dic.find(key) == dic.end()) {
+            node* newnode = new node();
+            newnode->k = key;
+            newnode->v = value;
+            dic[key] = newnode;
+            add(newnode);
+            count++;
+            if(count > cap) {
+                count--;
+                node* t = poptail();
+                dic.erase(t->k);
+            }
+        } else {
+            dic[key]->v = value;
+            movetoHead(dic[key]);
+        }
+    }
+};

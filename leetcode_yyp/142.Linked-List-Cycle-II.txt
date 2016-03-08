@@ -1,0 +1,36 @@
+题目大意：
+	给定一个链表，找到环开始的地方，若链表无环，返回null
+解题思路：
+	先找到快慢指针相遇的位置，然后慢指针从head开始走，快指针从相遇位置开始走，速度相同，则相遇的地方就是环开始的地方。到相遇时刻为止，慢指针走过的路程是开始位置到环开始的地方（l1）和环开始的地方到二者相遇的地方（l2），而快指针比慢指针多走了一个环总共为(l1+l2+l1+r-l1).2*(l1+l2)=l1+l2+l1+r-l2，所以从开始位置到相遇的地方的路程与从相遇位置到环开始的地方路程相同。
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        if(head == NULL || head->next == NULL)
+            return false;
+        ListNode *slow = head->next, *fast = head->next->next;
+        while(fast != NULL && fast->next != NULL)
+        {
+            if(slow == fast)
+            {
+                slow = head;
+                while(slow != fast)
+                {
+                    slow = slow->next;
+                    fast = fast->next;
+                }
+                return slow;
+            }
+            fast = fast->next->next;
+            slow = slow->next;
+        }
+        return NULL;
+    }
+};

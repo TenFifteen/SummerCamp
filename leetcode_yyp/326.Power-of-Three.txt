@@ -1,0 +1,10 @@
+题目大意：
+	给定一个整数n，判断它是不是3的次幂
+解题思路：
+	https://leetcode.com/discuss/78532/summary-all-solutions-new-method-included-at-15-30pm-jan-8th。
+class Solution {
+public:
+    bool isPowerOfThree(int n) {
+        return n > 0 && pow(3, ceil(log10(n) / log10(3))) == n;
+    }
+};

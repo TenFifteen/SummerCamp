@@ -1,0 +1,27 @@
+题目大意：
+	给定一个字符串s1,将其用两个非空子串的二叉树组合而成。选择树中的一个节点，交换其两个孩子，构成scamble字符串。现给定一个字符串s2，判断s2是否是s1的scamble字符串。
+解题思路：
+	三维动归（http://blog.csdn.net/linhuanmars/article/details/24506703）。下面是递归解法（https://leetcode.com/discuss/36470/share-my-4ms-c-recursive-solution）。
+class Solution {
+public:
+    bool isScramble(string s1, string s2) {
+        if(s1 == s2) return true;
+        int count[26] = {0};
+        int len = s1.size();
+        for(int i = 0; i < len; i++) {
+            count[s1[i] - 'a']++;
+            count[s2[i] - 'a']--;
+        }
+        for(int i = 0; i < 26; i++) {
+            if(count[i] != 0)
+                return false;
+        }
+        for(int i = 1; i < len; i++) {
+            if(isScramble(s1.substr(0, i), s2.substr(0, i)) && isScramble(s1.substr(i), s2.substr(i)))
+                return true;
+            if(isScramble(s1.substr(0, i), s2.substr(len - i)) && isScramble(s1.substr(i), s2.substr(0, len - i)))
+                return true;
+        }
+        return false;
+    }
+};

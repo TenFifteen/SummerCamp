@@ -1,0 +1,31 @@
+题目大意：
+	给定每天的股价，至多可以交易k次，求最大利益。
+解题思路：
+	动归。https://leetcode.com/discuss/15153/a-clean-dp-solution-which-generalizes-to-k-transactions
+class Solution {
+public:
+    int maxProfit(int k, vector<int>& prices) {
+        int len = prices.size();
+        if(len <= 1) return 0;
+        if(k > len / 2) return quick(prices);
+        int tmpMax = 0, res = 0;
+        vector<vector<int> >f(k + 1, vector<int>(len, 0));
+        for(int i = 1; i <= k; i++) {
+            tmpMax = f[i - 1][0] - prices[0];
+            for(int j = 1; j < len; j++) {
+                f[i][j] = max(f[i][j - 1], prices[j] + tmpMax);
+                tmpMax = max(tmpMax, f[i - 1][j] - prices[j]);
+                res = max(res, f[i][j]);
+            }
+        }
+        return res;
+    }
+    int quick(vector<int>& prices) {
+        int res = 0;
+        for(int i = 1; i < prices.size(); i++) {
+            if(prices[i] > prices[i - 1])
+                res += prices[i] - prices[i - 1];
+        }
+        return res;
+    }
+};

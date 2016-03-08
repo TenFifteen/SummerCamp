@@ -1,0 +1,57 @@
+题目大意：
+	给定一个单链表l0->l1->……->ln-1->ln,返回其顺序如l0->ln->l1->ln-1->……的链表。要求不改变节点值。
+解题思路：
+	找到链表中点后，将后面部分逆序，然后将前一半链表和后一半逆序的链表一个一个加入新链表中。
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        if(head == NULL || head->next == NULL || head->next->next == NULL)
+            return;
+        ListNode *slow = head, *fast = head, *tmp, *flag, *node1, *node2;
+        while(fast != NULL && fast->next != NULL)
+        {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        flag = slow;
+        
+        ListNode *newhead = new ListNode(0);
+        while(slow != NULL)
+        {
+            tmp = slow->next;
+            slow->next = newhead->next;
+            newhead->next = slow;
+            slow = tmp;
+        }
+        
+        newhead = newhead->next;
+        ListNode *nhead = new ListNode(0);
+        tmp = nhead;
+        while(head != flag && newhead != NULL)
+        {
+            node1 = head;
+            node2 = newhead;
+            head = head->next;
+            newhead = newhead->next;
+            
+            tmp->next = node1;
+            tmp->next->next = node2;
+            tmp = tmp->next->next;
+        }
+        if(head != flag || newhead != NULL)
+        {
+            tmp->next = (head == NULL ? newhead : head);
+            tmp = tmp->next;
+        }
+        tmp->next = NULL;
+        head = nhead->next;
+    }
+};
