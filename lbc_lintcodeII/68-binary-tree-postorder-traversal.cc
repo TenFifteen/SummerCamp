@@ -1,6 +1,6 @@
 /*
 题目大意：
-中序遍历二叉树。
+后续遍历二叉树。
 
 解题思路：
 见代码。
@@ -23,26 +23,27 @@
 class Solution {
     /**
      * @param root: The root of binary tree.
-     * @return: Inorder in vector which contains node values.
+     * @return: Postorder in vector which contains node values.
      */
 public:
-    vector<int> inorderTraversal(TreeNode *root) {
+    vector<int> postorderTraversal(TreeNode *root) {
         // write your code here
         vector<int> ans;
         stack<TreeNode *> s;
-        if (root) while (root) {
-            s.push(root);
-            root = root->left;
-        }
+        if (root != NULL) s.push(root);
         
         while (s.size() > 0) {
             TreeNode *cur = s.top();
             s.pop();
             ans.push_back(cur->val);
-            cur = cur->right;
-            if (cur) while (cur) {
-                s.push(cur);
-                cur = cur->left;
+            if (cur->left) s.push(cur->left);
+            if (cur->right) s.push(cur->right);
+        }
+        
+        if (ans.size() > 0) {
+            int left = 0, right = ans.size()-1;
+            while (left < right) {
+                swap(ans[left++], ans[right--]);
             }
         }
         
