@@ -119,3 +119,52 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+这次还不错，想出来并且写出来了。
+*/
+class Solution {
+public:
+    vector<int> findMinHeightTrees(int n, vector<pair<int, int>>& edges) {
+        vector<int> ans;
+        if (n == 0) return ans;
+        if (n == 1) {
+            ans.push_back(0);
+            return ans;
+        }
+        
+        vector<int> degree(n, 0);
+        unordered_map<int, vector<int>> hash;
+        for (auto p : edges) {
+            degree[p.first]++;
+            degree[p.second]++;
+            hash[p.first].push_back(p.second);
+            hash[p.second].push_back(p.first);
+        }
+        
+        queue<int> q;
+        for (int i = 0; i < n; ++i) {
+            if (degree[i] == 1) q.push(i);
+        }
+        
+        int total = n;
+        while (total > 2) {
+            int len = q.size();
+            total -= len;
+            
+            for (int i = 0; i < len; ++i) {
+                int cur = q.front(); q.pop();
+                for (auto x : hash[cur]) {
+                    degree[x]--;
+                    if (degree[x] == 1) q.push(x);
+                }
+            }
+        }
+        
+        while (q.size() > 0) {
+            ans.push_back(q.front());
+            q.pop();
+        }
+        return ans;
+    }
+};

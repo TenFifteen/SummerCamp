@@ -1,0 +1,31 @@
+题目大意：
+	判断一个给定的二叉树序列化字符串是否是一棵合法的二叉树。
+解题思路：
+	用栈模拟，当当前字符串是"#"且栈顶是"#"时，弹出栈顶的"#"及其下一个数字，更新当前字符串为"#"。若最后栈中仅剩一个"#"说明是合法二叉树，否则不合法。
+class Solution {
+public:
+    bool isValidSerialization(string preorder) {
+        stack<string>st;
+        if(preorder.length() == 0) return true;
+        int l = preorder.length();
+        stringstream stream(preorder);
+        string tmp;
+        getline(stream, tmp, ',');
+        while(true) {
+            if(tmp == "#" && !st.empty() && st.top() == "#") {
+                st.pop();
+                if(st.empty())
+                    return false;
+                st.pop();
+                tmp = "#";
+            } else {
+                st.push(tmp);
+                if(!getline(stream, tmp, ','))
+                    break;
+            }
+        }
+        if(st.size() == 1 && st.top() == "#")
+            return true;
+        return false;
+    }
+};

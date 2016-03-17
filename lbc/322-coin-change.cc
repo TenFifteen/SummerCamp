@@ -30,3 +30,8 @@ public:
         return dp[amount] == INT_MAX/2 ? -1 : dp[amount];
     }
 };
+/*
+第二次做：
+动归。
+问题不是很大。
+*/

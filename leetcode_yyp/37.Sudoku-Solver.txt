@@ -1,0 +1,52 @@
+题目大意：
+	给定一个填了一部分的数独表，要求全部填充好。
+解题思路：
+	深搜，回溯。
+class Solution {
+private:
+        
+public:
+    bool solve(vector<vector<char> >& board, vector<set<char> >& row, vector<set<char> >& column, vector<set<char> >& box) {
+        for(int i = 0; i < 9; i++) {
+            for(int j = 0; j < 9; j++) {
+                if(board[i][j] == '.') {
+                    for(int k = 0; k < 9; k++) {
+                        char ch = '1' + k;
+                        if(row[i].find(ch) != row[i].end() || column[j].find(ch) != column[j].end() || 
+                            box[(i / 3) * 3 + j / 3].find(ch) != box[(i / 3) * 3 + j / 3].end())
+                            continue;
+
+                        board[i][j] = ch;
+                        row[i].insert(ch);
+                        column[j].insert(ch);
+                        box[(i / 3) * 3 + j / 3].insert(ch);
+                        if(solve(board, row, column, box))
+                            return true;
+                        row[i].erase(ch);
+                        column[j].erase(ch);
+                        box[(i / 3) * 3 + j / 3].erase(ch);
+                        board[i][j] = '.';
+                    }
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    void solveSudoku(vector<vector<char> >& board) {
+        set<char>tmp;
+        vector<set<char> >row(9, tmp);
+        vector<set<char> >column(9, tmp);
+        vector<set<char> >box(9, tmp);
+        for(int i = 0; i < 9; i++) {
+            for(int j = 0; j < 9; j++) {
+                if(board[i][j] != '.') {
+                    row[i].insert(board[i][j]);
+                    column[j].insert(board[i][j]);
+                    box[(i / 3) * 3 + j / 3].insert(board[i][j]);
+                }
+            }
+        }
+        solve(board, row, column, box);
+    }
+};

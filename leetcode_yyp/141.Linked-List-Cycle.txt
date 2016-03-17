@@ -1,0 +1,28 @@
+题目大意：
+	给定一个链表判断是否有环。
+解题思路：
+	快慢指针，若有环，快指针和慢指针一定会相遇。
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        if(head == NULL)
+            return false;
+        ListNode *slow = head, *fast = head->next;
+        while(fast != NULL && fast->next != NULL)
+        {
+            if(slow == fast)
+                return true;
+            fast = fast->next->next;
+            slow = slow->next;
+        }
+        return false;
+    }
+};

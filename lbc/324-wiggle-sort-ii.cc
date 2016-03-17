@@ -77,3 +77,48 @@ public:
         }
     }
 };
+/*
+第二次做：
+这道题的确是挺难的了。
+两个算法的结合，首先是用到了用O(n)的复杂度找中位数的技术，
+然后是用到了三路分区算法。
+最重要的思想是进行下标替换的过程。
+*/
+class Solution {
+    int nthElement(vector<int> &nums, int left, int right, int k) {
+        int L = left, R = right;
+        int mid = nums[L];
+        while (L < R) {
+            while (L < R && nums[R] > mid) R--;
+            nums[L] = nums[R];
+            while (L < R && nums[L] <= mid) L++;
+            nums[R] = nums[L];
+        }
+        nums[L] = mid;
+        
+        if (L == k) return nums[L];
+        if (L < k) return nthElement(nums, L+1, right, k);
+        else return nthElement(nums, left, L-1, k);
+    }
+    
+public:
+    void wiggleSort(vector<int>& nums) {
+        if (nums.size() < 2) return;
+        
+        int n = nums.size(), mid = (n-1)/2;
+        mid = nthElement(nums, 0, n-1, mid);
+        
+        #define A(i) (((i*2)+1)%(n|1))
+        
+        int i = 0, j = 0, k = n-1;
+        while (j <= k) {
+            if (nums[A(j)] > mid) {
+                swap(nums[A(j++)], nums[A(i++)]);
+            } else if (nums[A(j)] < mid) {
+                swap(nums[A(j)], nums[A(k--)]);
+            } else {
+                j++;
+            }
+        }
+    }
+};

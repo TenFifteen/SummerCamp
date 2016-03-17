@@ -52,3 +52,45 @@ public:
         return ans;
     }
 };
+/*
+第二次做：
+这次已经可以自己想出解法来了。
+*/
+class Solution {
+    int dfs(vector<vector<int>> &matrix, vector<vector<int>> &dp, int x, int y) {
+        if (dp[x][y] > 0) return dp[x][y];
+        
+        const int ix[] = {-1, 0, 1, 0};
+        const int iy[] = {0, -1, 0, 1};
+        
+        dp[x][y] = 1;
+        for (int i = 0; i < 4; ++i) {
+            int nx = x + ix[i], ny = y + iy[i];
+            
+            if (nx < 0 || nx >= matrix.size() 
+                || ny < 0 || ny >= matrix[0].size() 
+                || matrix[nx][ny] >= matrix[x][y]) continue;
+                
+            dp[x][y] = max(dp[x][y], dfs(matrix, dp, nx, ny) + 1);
+        }
+        
+        return dp[x][y];
+    }
+    
+public:
+    int longestIncreasingPath(vector<vector<int>>& matrix) {
+        if (matrix.size() == 0 || matrix[0].size() == 0) return 0;
+        
+        int m = matrix.size(), n = matrix[0].size();
+        vector<vector<int>> dp(m, vector<int>(n, 0));
+        
+        int ans = 0;
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                ans = max(ans, dfs(matrix, dp, i, j));
+            }
+        }
+        
+        return ans;
+    }
+};

@@ -1,0 +1,28 @@
+题目大意：
+	给定字符串s和包括很多单词的字典dict，判断s是否能完全被分割成字典中单词。
+解题思路：
+	开始用的递归，超时。然后用的动归。
+class Solution {
+public:
+    bool wordBreak(string s, unordered_set<string>& wordDict)
+    {
+        if(s.size() == 0) return true;
+        int l = s.size();
+        vector<bool>f(l + 1, false);
+        f[0] = true;
+        for(int i = 1; i <= l; i++) {
+            if(wordDict.find(s.substr(0, i)) != wordDict.end()) {
+                f[i] = true;
+                continue;
+            }
+            for(int j = 1; j <= i; j++) {
+                string tmp = s.substr(i - j, j);
+                if(f[i - j] && wordDict.find(tmp) != wordDict.end()) {
+                    f[i] = true;
+                    break;
+                }
+            }
+        }
+        return f[l];
+    }
+};

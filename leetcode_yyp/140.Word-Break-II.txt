@@ -1,0 +1,32 @@
+题目大意：
+	给定一个字符串和一个字典，用字典中的单词分割这个字符串加入空格形成句子，返回所有可能的句子。
+解题思路：
+	延用I的做法，动归，结果超时，看了答案，思路一致，用的递归，每次从后往前遍历且后面部分是存在于字典中，相比较节省了一些时间。
+class Solution {
+private:
+    unordered_map<string, vector<string> >dic;
+public:
+    vector<string>combine(string word, vector<string>v) {
+        for(int i = 0; i < v.size(); i++) {
+            v[i] = v[i] + " " + word;
+        }
+        return v;
+    }
+    vector<string> wordBreak(string s, unordered_set<string>& wordDict) {
+        if(dic.find(s) != dic.end())
+            return dic[s];
+        vector<string>res;
+        if(wordDict.find(s) != wordDict.end())
+            res.push_back(s);
+        for(int i = 1; i < s.size(); i++) {
+            string y = s.substr(i);
+            if(wordDict.find(y) != wordDict.end()) {
+                string x = s.substr(0, i);
+                vector<string>tmp = combine(y, wordBreak(x, wordDict));
+                res.insert(res.end(), tmp.begin(), tmp.end());
+            }
+        }
+        dic[s] = res;
+        return res;
+    }
+};

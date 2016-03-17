@@ -1,0 +1,55 @@
+题目大意：
+	给定一些飞机票对，代表起点和终点，重构用户访问的城市顺序。从JFK出发。
+解题思路：
+	递归，按字典序尝试所有可能到达的城市，第一个符合条件的顺序就是正确路径。更快的解法是用解欧拉回路的算法。
+class Solution {
+public:
+    vector<string> findItinerary(vector<pair<string, string> > tickets) {
+        unordered_map<string, map<string, int> >hash;
+        vector<string>ans;
+        int len = tickets.size();
+        for(int i = 0; i < tickets.size(); i++)
+            hash[tickets[i].first][tickets[i].second]++;
+        ans.push_back("JFK");
+        findRoute(hash, "JFK", ans, len + 1);
+        return ans;
+    }
+    bool findRoute(unordered_map<string, map<string, int> >& hash, string key, vector<string>&ans, int len) {
+        if(ans.size() == len) {
+            return true;
+        }
+        for(auto i = hash[key].begin(); i != hash[key].end(); i++) {
+            if(i->second != 0) {
+                ans.push_back(i->first);
+                hash[key][i->first]--;
+                if(findRoute(hash, i->first, ans, len)) return true;
+                hash[key][i->first]++;
+                ans.pop_back(); 
+            }
+        }
+        return false;
+    }
+    /*vector<string> findItinerary(vector<pair<string, string> > tickets) {
+        unordered_map<string, map<string, int> >hash;
+        vector<string>ans;
+        int len = tickets.size();
+        for(int i = 0; i < tickets.size(); i++)
+            hash[tickets[i].first][tickets[i].second]++;
+        findRoute(hash, "JFK", ans, len + 1);
+        return  vector<string>(ans.rbegin(), ans.rend());;
+    }
+    bool findRoute(unordered_map<string, map<string, int> >& hash, string key, vector<string>&ans, int len) {
+        if(ans.size() == len) {
+            return true;
+        }
+        for(auto i = hash[key].begin(); i != hash[key].end(); i++) {
+            if(i->second != 0) {
+                hash[key][i->first]--;
+                findRoute(hash, i->first, ans, len);
+            }
+        }
+        ans.push_back(key);
+        return false;
+    }*/
+
+};

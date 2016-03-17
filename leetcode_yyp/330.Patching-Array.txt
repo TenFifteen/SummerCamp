@@ -1,0 +1,19 @@
+题目大意：
+	给定一个有序正数组和一个数n，求添加最少的数使得[1,n]中每个数都由数组中元素组成。
+解题思路：
+	一开始求所有组合数并用一个数组标记已得到的数，然后从小到大看逐步添加并更新，可是RE，因为数组太大，空间复杂度太高。参考https://leetcode.com/discuss/82822/solution-explanation
+class Solution {
+public:
+    int minPatches(vector<int>& nums, int n) {
+        long miss = 1, i = 0, added = 0;
+        while(miss <= n) {
+            if(i < nums.size() && nums[i] <= miss) {
+                miss += nums[i++];
+            } else {
+                miss += miss;
+                added++;
+            }
+        }
+        return added;
+    }
+};

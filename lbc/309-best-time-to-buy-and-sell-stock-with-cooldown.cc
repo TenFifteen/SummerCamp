@@ -32,3 +32,24 @@ public:
         return max(sell, cooldown);
     }
 };
+/*
+第二次做：
+动态规划，没有太大问题。
+*/
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        if (prices.size() < 2) return false;
+        
+        int sell1 = 0, sell2 = 0, buy = INT_MIN;
+        for (int i = 0; i < prices.size(); ++i) {
+            int newbuy = max(buy, sell1-prices[i]);
+            int newsell = max(sell2, buy+prices[i]);
+            sell1 = sell2;
+            sell2 = newsell;
+            buy = newbuy;
+        }
+        
+        return sell2;
+    }
+};

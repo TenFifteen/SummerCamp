@@ -1,0 +1,100 @@
+题目大意：
+	给定一个2D板子和一系列单词，返回能在板子中找到的单词。
+解题思路：
+	将查找的单词建成字典树，然后dfs。
+
+class Solution {
+private:
+    class TrieNode{
+        public:
+            bool isleaf;
+            TrieNode* children[26];
+            TrieNode() {
+                for(int i = 0; i < 26; i++)
+                    children[i] = NULL;
+                isleaf = false;
+            }
+    };
+    class Trie {
+        private:
+            TrieNode* root;
+        public:
+            Trie() {
+                root = new TrieNode();
+            }
+            void insert(string s) {
+                TrieNode* tmp = root;
+                for(int i = 0; i < s.size(); i++) {
+                    if(tmp->children[s[i] - 'a'] == NULL) {
+                        TrieNode* node = new TrieNode();
+                        tmp->children[s[i] - 'a'] = node;
+                    }
+                    tmp = tmp->children[s[i] - 'a'];
+                }
+                tmp->isleaf = true;
+            }
+            bool start(string prefix) {
+                TrieNode* tmp = root;
+                for(int i = 0; i < prefix.size() && tmp != NULL; i++) {
+                    tmp = tmp->children[prefix[i] - 'a'];
+                }
+                if(tmp == NULL)
+                    return false;
+                return true;
+            }
+            bool search(string s) {
+                TrieNode* tmp = root;
+                for(int i = 0; i < s.size() && tmp != NULL; i++) {
+                    tmp = tmp->children[s[i] - 'a'];
+                }
+                if(tmp == NULL)
+                    return false;
+                return tmp->isleaf;
+            }
+    };
+public:
+    vector<string> findWords(vector<vector<char> >& board, vector<string>& words) {
+        Trie *trie = new Trie();
+        for(int i = 0; i < words.size(); i++) {
+            trie->insert(words[i]);
+        }
+        
+        vector<string>res;
+        set<string>ans;
+        int m = board.size();
+        if(m == 0) return res;
+        int n = board[0].size();
+        vector<vector<bool> >visited;
+        for(int i = 0; i < m; i++) {
+            vector<bool>tmp(n, false);
+            visited.push_back(tmp);
+        }
+        
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                dfs(board, trie, ans, visited, "", i, j);
+            }
+        }
+        for(auto i = ans.begin(); i != ans.end(); i++)
+            res.push_back(*i);
+        return res;
+    }
+    void dfs(vector<vector<char> >& board, Trie* trie, set<string>& res, vector<vector<bool> >& visited, string cur, int i, int j) {
+        if(i < 0 || j < 0 || i >= board.size() || j >= board[0].size())
+            return;
+        if(visited[i][j])
+            return;
+        cur = cur + board[i][j];
+        if(!trie->start(cur))
+            return;
+        if(trie->search(cur))
+            res.insert(cur);
+            
+        visited[i][j] = true;
+        dfs(board, trie, res, visited, cur, i - 1, j);
+        dfs(board, trie, res, visited, cur, i + 1, j);
+        dfs(board, trie, res, visited, cur, i, j - 1);
+        dfs(board, trie, res, visited, cur, i, j + 1);
+        visited[i][j] = false;
+    }
+};

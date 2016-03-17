@@ -1,0 +1,26 @@
+题目大意：
+	给定一个无序数组，重新放置使得奇数位大于相邻的偶数位的数。
+解题思路：
+	用nth_element得到中位数及前半部分不小于中位数，后半部分不大于中位数，然后将前半部分和后半部分坐标分别映射到奇偶数位，用三色旗问题解法。https://leetcode.com/discuss/77133/o-n-o-1-after-median-virtual-indexing
+class Solution {
+public:
+    void wiggleSort(vector<int>& nums) {
+        int len = nums.size();
+        auto midptr = nums.begin() + len / 2;
+        nth_element(nums.begin(), midptr, nums.end());
+        int mid = *midptr;
+        
+        #define A(i) nums[(2 * i + 1) % (len | 1)]
+        
+        int i = 0, j = 0, k = len - 1;
+        while(j <= k) {
+            if(A(j) > mid) {
+                swap(A(i++), A(j++));
+            } else if(A(j) < mid) {
+                swap(A(j), A(k--));
+            } else {
+                j++;
+            }
+        }
+    }
+};

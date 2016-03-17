@@ -1,0 +1,44 @@
+题目大意：
+	给定一棵二叉树，返回最大路径和。
+解题思路：
+	分治。
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int maxPathSum(TreeNode* root) {
+        if(root == NULL) return 0;
+        pair<int, int>res = dfs(root);
+        return res.second;
+    }
+    pair<int, int>dfs(TreeNode* root) {
+        pair<int, int>res(0, 0);
+        if(root == NULL) return res;
+        pair<int, int>x1, x2;
+        int tmp1 = 0, tmp2 = 0;
+        res.second = INT_MIN;
+        if(root->left) {
+            x1 = dfs(root->left);
+            res.first = max(0, x1.first);
+            res.second = x1.second;
+            tmp1 = max(0, x1.first);
+        }
+        if(root->right) {
+            x2 = dfs(root->right);
+            res.first = max(res.first, x2.first);
+            res.second = max(res.second, x2.second);
+            tmp2 = max(0, x2.first);
+        }
+        res.first += root->val;
+        res.second = max(res.second, tmp1 + tmp2 + root->val);
+        cout << res.first << "\t" << res.second << endl;
+        return res;
+    }
+};

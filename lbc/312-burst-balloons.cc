@@ -42,3 +42,31 @@ public:
         return dp[0][n-1];
     }
 };
+/*
+第二次做：
+动态规划，问题不是很大。
+*/
+class Solution {
+public:
+    int maxCoins(vector<int>& nums) {
+        if (nums.size() == 0) return 0;
+        
+        int n = nums.size();
+        vector<int> coins(n+2, 1);
+        for (int i = 1; i <= n; ++i) coins[i] = nums[i-1];
+        
+        vector<vector<int>> dp(n, vector<int>(n, INT_MIN));
+        for (int i = 0; i < n; ++i) dp[i][i] = coins[i+1]*coins[i]*coins[i+2];
+        for (int i = 1; i < n; ++i) {
+            for (int j = 0; j+i < n; ++j) {
+                dp[j][j+i] = max(dp[j+1][j+i]+coins[j+1]*coins[j]*coins[j+i+2],
+                                 dp[j][j+i-1]+coins[j+i+1]*coins[j]*coins[j+i+2]);
+                for (int k = j+1; k < j+i; ++k) {
+                    dp[j][j+i] = max(dp[j][j+i], dp[j][k-1]+dp[k+1][j+i]+coins[k+1]*coins[j]*coins[j+i+2]);
+                }
+            }
+        }
+        
+        return dp[0][n-1];
+    }
+};
