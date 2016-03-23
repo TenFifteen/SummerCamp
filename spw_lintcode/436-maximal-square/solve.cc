@@ -16,7 +16,7 @@ class Solution {
             if (m == 0) return 0;
             int n = matrix[0].size();
 
-            vector<int> dp(m+1, 0);
+            vector<int> dp(n+1, 0);
 
             int ans = 0;
             int last_left = 0;
