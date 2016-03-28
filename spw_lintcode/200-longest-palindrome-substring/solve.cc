@@ -37,3 +37,29 @@ class Solution {
             return s.substr(start, len);
         }
 };
+
+string longestPalindrome(string s) {
+    int n = s.size();
+
+    int len = 1;
+    int start = 0;
+    for (int i = 0; i < n; ++i) {
+        if (n - i <= len/2) break;
+
+        int e = i, b = i;
+        // skip the duplicates then we need not handle the symcenter as i or i and i+1
+        while (e+1 < n && s[e+1] == s[e]) ++e;
+
+        // update the index
+        i = e;
+
+        while (b > 0 && e < n-1 && s[b-1] == s[e+1]) --b, ++e;
+
+        if (e-b+1 > len) {
+            len = e - b + 1;
+            start = b;
+        }
+    }
+
+    return s.substr(start, len);
+}
