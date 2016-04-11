@@ -93,3 +93,15 @@ public:
         }
     }
 };
+
+vector<int> dp(n+1, 0);
+dp[0] = dp[1] = fund;
+
+for (int i = 2; i <= n; ++i) {
+    for (int j = 1; j < i; ++j) { // j th day buy, i th day sell
+        for (int k = 0; k < n; ++k) { // k th stock
+            dp[i] = max(dp[i], 0.98 * prices[i-1][k] / prices[j-1][k] * dp[j-1]);
+        }
+    }
+    dp[i] = max(dp[i-1], dp[i]);
+}
