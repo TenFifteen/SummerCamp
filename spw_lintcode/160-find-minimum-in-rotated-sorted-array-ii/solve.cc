@@ -35,3 +35,32 @@ class Solution {
             return num[left];
         }
 };
+
+/**
+ * This one has some problem.
+ */
+int findMin(vector<int> &num) {
+    int left = 0, right = num.size()-1;
+
+    while (left < right) {
+        int mid = (right + left) / 2;
+
+        if (num[mid] > num[left]) {
+            left = mid + 1;
+
+        } else if (num[mid] < num[left]){
+            right = mid;
+
+        } else {
+            // left may == mid
+            // Then the operation will probably skip the smallest one
+            // this has association with the mid = (left + right) / 2
+            // has been round down
+            ++left;
+        }
+
+    }
+
+    return num[left];
+
+}
