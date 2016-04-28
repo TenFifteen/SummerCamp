@@ -45,6 +45,8 @@ int findMin(vector<int> &num) {
     while (left < right) {
         int mid = (right + left) / 2;
 
+        // this has also problem because we go the right half,
+        // however, the num[left] may be the smallest one.
         if (num[mid] > num[left]) {
             left = mid + 1;
 
