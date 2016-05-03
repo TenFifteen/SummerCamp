@@ -18,7 +18,8 @@ class Solution {
 
             vector<int> left(n+1, 0), right(n+1, 0);
 
-            int dp = 0;
+            int dp = 0; // initialized to 0 as the right edge
+            // can't be initialized to 0.
             left[0] = nums[0];
             // left[i] max subarray sum of 0 ... i-1
             for (int i = 0; i < n; ++i) {
