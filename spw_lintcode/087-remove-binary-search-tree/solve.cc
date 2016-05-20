@@ -4,11 +4,11 @@
  *          given value in the binary search tree, do nothing. You should keep
  *          the tree still a binary search tree after removal.
  * Solve: 1. use value to route left right or now root node.
- *        2. if is now date node, then handle separately by the count of children
- *           of the node.
+ *        2. If the target value equals now node's, then handle separately by the
+ *           count of children of the node.
  *        3. if the node has less than one children, return the other child directly.
- *           Otherwise, replace with the next number(must in the left subtree), and
- *           remove the next number of the left tree.
+ *           Otherwise, replace current node value with the next number(must in the right subtree),
+ *           and remove the next number of the right subtree recursively.
  */
 /**
  * Definition of TreeNode:
@@ -24,6 +24,8 @@
  */
 class Solution {
     public:
+        // find the next value, that is the left most node in the
+        // right subtree.
         TreeNode* getLeftMost(TreeNode *root) {
             while (root->left) {
                 root = root->left;
@@ -45,10 +47,10 @@ class Solution {
                 root->left = removeNode(root->left, value);
             } else {
                 if (root->left && root->right) {
-                    TreeNode *tmp = getLeftMost(root);
+                    TreeNode *tmp = getLeftMost(root->right);
                     root->val = tmp->val;
 
-                    root->left = removeNode(root->left, tmp->val);
+                    root->right = removeNode(root->right, tmp->val);
                 } else {
                     if (root->left == NULL) {
                         root = root->right;
