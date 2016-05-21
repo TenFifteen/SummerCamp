@@ -1,0 +1,33 @@
+题目：输出数据流的中位数，随时输出。
+解题：用大顶堆和小顶堆各维护一半的数，为奇数时左边多，那左边堆顶是中位数。
+	小顶堆：priority_queue<int, vector<int>, greater<int> >right;
+class Solution {
+public:
+    /**
+     * @param nums: A list of integers.
+     * @return: The median of numbers
+     */
+    vector<int> medianII(vector<int> &nums) {
+        // write your code here
+        vector<int>res;
+        priority_queue<int>left;
+        priority_queue<int, vector<int>, greater<int> >right;
+        for(int i = 0; i < nums.size(); i++) {
+            if(left.size() == 0 || left.top() >= nums[i]) {
+                left.push(nums[i]);
+                if(left.size() - right.size() > 1) {
+                    right.push(left.top());
+                    left.pop();
+                }
+            } else {
+                right.push(nums[i]);
+                if(right.size() > left.size()) {
+                    left.push(right.top());
+                    right.pop();
+                }
+            }
+            res.push_back(left.top());
+        }
+        return res;
+    }
+};

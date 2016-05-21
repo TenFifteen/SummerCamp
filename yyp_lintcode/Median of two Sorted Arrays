@@ -1,0 +1,77 @@
+题目：求两个有序数组的中位数。
+解题：中位数的位置即是，两个数组左半边都小于右半边。
+问题：大概思路记得，可是写起来还是有问题。
+class Solution {
+public:
+    /**
+     * @param A: An integer array.
+     * @param B: An integer array.
+     * @return: a double whose format is *.5 or *.0
+     */
+    double findMedianSortedArrays(vector<int> A, vector<int> B) {
+        // write your code here
+        int la = A.size(), lb = B.size();
+        if(la > lb) return findMedianSortedArrays(B, A);
+        int half = (la + lb + 1) / 2;
+        int low = 0, high = la, i, j, left, right;
+        while(low <= high) {
+            i = (low + high) / 2;
+            j = half - i;
+            if(i > 0 && j < lb && A[i - 1] > B[j]) {
+                high = i - 1;
+            } else if(j > 0 && i < la && A[i] < B[j - 1]) {
+                low = i + 1;
+            } else  {
+                if(i == 0) left = B[j - 1];
+                else if(j == 0) left = A[i - 1];
+                else left = max(A[i - 1], B[j - 1]);
+                
+                if((la + lb) % 2 == 1)
+                    return left;
+                else {
+                    if(i == la) right = B[j];
+                    else if(j == lb) right = A[i];
+                    else right = min(B[j], A[i]);
+                    return double(left + right) / 2.0;
+                }
+            }
+        }
+    }
+};
+/*
+double findMedianSortedArrays(vector<int> A, vector<int> B) {
+        // write your code here
+        int total = A.size() + B.size();
+        if (total & 1) {
+            return findK(A, 0, B, 0, total/2+1);
+        } else {
+            double a = findK(A, 0, B, 0, total/2);
+            double b = findK(A, 0, B, 0, total/2+1);
+            return (a+b)/2;
+        }
+    }
+
+    //k start from 1
+    int findK(vector<int> &A, int a, vector<int> &B, int b, int k) {
+        int lenA = A.size()-a;
+        int lenB = B.size()-b;
+        if (lenA > lenB) {
+            return findK(B, b, A, a, k);
+        }
+        if (lenA == 0) {
+            return B[b+k-1];
+        }
+        if (k == 1) {
+            return min(A[a], B[b]);
+        }
+        int am = min(k/2, lenA);
+        int bm = k - am;
+        if (A[a+am-1] == B[b+bm-1]) return A[a+am-1];
+        else if (A[a+am-1] < B[b+bm-1]) {
+            return findK(A, a+am, B, b, k-am);
+        } else {
+            return findK(A, a, B, b+bm, k-bm);
+        }
+    }
+};
+*/

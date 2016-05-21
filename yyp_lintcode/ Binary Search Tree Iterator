@@ -1,0 +1,56 @@
+题目：设计数据结构实现二叉搜索树迭代器。
+解题：用栈实现。
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ * Example of iterate a tree:
+ * BSTIterator iterator = BSTIterator(root);
+ * while (iterator.hasNext()) {
+ *    TreeNode * node = iterator.next();
+ *    do something for node
+ */
+class BSTIterator {
+private:
+    stack<TreeNode*>st;
+public:
+    //@param root: The root of binary tree.
+    
+    BSTIterator(TreeNode *root) {
+        // write your code here
+        while(root != NULL) {
+            st.push(root);
+            root = root->left;
+        }
+        
+    }
+
+    //@return: True if there has next node, or false
+    bool hasNext() {
+        // write your code here
+        return !(st.empty());
+    }
+    
+    //@return: return next node
+    TreeNode* next() {
+        // write your code here
+        TreeNode* ans = st.top();
+        st.pop();
+        if(ans->right != NULL) {
+            st.push(ans->right);
+            TreeNode *tmp = ans->right->left;
+            while(tmp != NULL) {
+                st.push(tmp);
+                tmp = tmp->left;
+            }
+        }
+        return ans;
+    }
+};

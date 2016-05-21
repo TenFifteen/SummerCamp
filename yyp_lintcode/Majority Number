@@ -1,0 +1,24 @@
+题目：超过一半的数。
+解题：当前数与存储数相同，则计数器+1， 否则成对扔掉。
+class Solution {
+public:
+    /**
+     * @param nums: A list of integers
+     * @return: The majority number
+     */
+    int majorityNumber(vector<int> nums) {
+        // write your code here
+        int l = nums.size(), cur = nums[0], counter = 1;
+        for(int i = 1; i < l; i++) {
+            if(counter == 0) {
+                counter = 1;
+                cur = nums[i];
+            } else if(cur == nums[i]) {
+                counter++;
+            } else {
+                counter--;
+            }
+        }
+        return cur;
+    }
+};

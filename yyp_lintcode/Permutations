@@ -1,0 +1,27 @@
+题目： 给定一组不重复的数字，求所有排列
+解题：对当前下标的数字，与后面所有数字交换位置即可。
+class Solution {
+public:
+    /**
+     * @param nums: A list of integers.
+     * @return: A list of permutations.
+     */
+    vector<vector<int> > permute(vector<int> nums) {
+        // write your code here
+        vector<vector<int> >res;
+        if(nums.size() == 0) return res;
+        helper(res, nums, 0);
+        return res;
+    }
+    void helper(vector<vector<int> >& res, vector<int> nums, int i) {
+        if(i == nums.size()) {
+            res.push_back(nums);
+            return;
+        }
+        for(int j = i; j < nums.size(); j++) {
+            swap(nums[i], nums[j]);
+            helper(res, nums, i + 1);
+            swap(nums[i], nums[j]);
+        }
+    }
+};

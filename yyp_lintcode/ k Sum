@@ -1,0 +1,30 @@
+题目：n个不同的数里选取k个使得和为target。
+解题：三维动归。想错成二维动归。f[i][j][k]表示成前i个数里挑出j个数使得和为k。转移方程为：f[i][j][k]= f[i-1][j][k]+f[i-1][j-1][k-A[i]].(int[][][] f = new int[n + 1][k + 1][target + 1];)
+http://www.cnblogs.com/yuzhangcmu/p/4279676.html
+class Solution {
+public:
+    /**
+     * @param A: an integer array.
+     * @param k: a positive integer (k <= length(A))
+     * @param target: a integer
+     * @return an integer
+     */
+    int kSum(vector<int> A, int k, int target) {
+        // wirte your code here
+        int l = A.size();
+        vector<vector<vector<int> > >f(k + 1, vector<vector<int> >(target + 1, vector<int>(l + 1, 0)));
+        for(int i = 0; i <= l; i++) 
+            f[0][0][i] = 1;
+        for(int i = 1; i <= k; i++) {
+            for(int j = 1; j <= target; j++) {
+                for(int m = i; m <= l; m++) {
+                    f[i][j][m] = f[i][j][m - 1];
+                    if(j >= A[m - 1]) {
+                        f[i][j][m] += f[i - 1][j - A[m - 1]][m - 1];
+                    }
+                }
+            }
+        }
+        return f[k][target][l];
+    }
+};

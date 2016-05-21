@@ -1,0 +1,83 @@
+ Search Range in Binary Search Tree 二叉树中序遍历 easy
+ Min Stack	最小栈 栈里存储与最小值的差即可
+ strStr	查子串是否存在。 strlen(const char* s),遍历操作与string一致。练习kmp
+ First Position of Target	二分查找，左边界。
+ Permutations	不重复元素排列。对当前下标与后面每一位换位置，需reset。
+ Permutations II	重复元素排列。排序后，对当前下标和后面非相等元素换位置，不需要reset
+ Subsets	求所有子集。for递归。也可用位操作。
+ Subsets II	求有重复元素的所有子集。排序，循环。对重复元素取1-n个加入已有集合中。
+ Binary Tree Serialization	二叉树序列化和反序列化。先序遍历保存成字符串。反序列化反之。
+ Search a 2D Matrix	二分查找。 easy
+ Search a 2D Matrix II	每次去掉一行或者一列
+ Search in Rotated Sorted Array	二分。判断左边和右边哪边有序，然后判断target是否在有序的一半
+ interleaving String	字符串动归。
+ Insert Interval	插入区间。先找插入位置，左边界，再找右边界。最后插入合并的新区间，并删除被合并的区间。
+ Partition Array	划分。swap（nums[low],nums[high]）.不需要交换两次。
+ Minimum Window Substring	包含target所有字符的最短子串。map和counter结合应用。维持窗口，然后最大程度收缩窗口。
+ Reverse Linked List 翻转字符串。
+ Reverse Linked List II    翻转m到n的字符串。前半部分顺序添加到新链表尾部，m到n的部分逆序添加。
+ Implement Queue by Two Stacks	两个栈实现一个队列。easy
+ Recover Rotated Sorted Array	恢复有重复元素的旋转矩阵。先找最小元素的位置。
+ N-Queens 	n皇后所有方案。递归。
+ N-Queens II    n皇后方案数。
+ Maximum Subarray	最大连续子序列和。
+ Maximum Subarray II    两段最大连续字段和。动归，先从前往后扫一遍，记录到当前位置i的最大连续字段和，再从后往前扫，两段相加求最大。
+ Maximum Subarray III	k段最大连续字段和。动归，转移方程为f[i][j] = max(f[i][j], f[i][j - 1], max(f[i - 1][m] + m-j连续和))
+ Minimum Subarray	最小连续字段和。
+ Maximum Subarray Difference	求数组中两个子集A和B的最大差, |SUM(A) - SUM(B)|.综合最大字段和、最小字段和、两段最大和。对i，res= max(leftmax[i - 1] - rightmin[i], rightmax[i] - leftmin[i - 1]);
+ Majority Number	超过一半的数。
+ Majority Number II    超过1/3的数。
+ Majority Number III 超过1/k的数。用数组保存当前的k个数，如果当前数与其中一个相等或者其中一个count==0，则count+1；否则，所有数组中的数的count--；
+ Sort Letters by Case	前面小写后面大写。两个指针分别从头往后扫。
+ Product of Array Exclude Itself	除了自身其他所有数的乘积，不用除法。从左往右扫记录left[i]，从右往左扫计算res。
+ Previous Permutation    前一个排列。找第一个nums[i] > nums[i + 1]的位置，与后面小于该数的最大数交换，然后逆序即可。
+ Next Permutation    后一个排列。同前一个排列。
+ String to Integer II    字符串转整数。注意前有+，-以及long long也可能超的情况。
+ Reverse Words in a String    翻转字符串。先去掉多余空格，然后全部逆序，再对每个单词分别逆序即可。注意第一个和最后一个位置的处理。
+ Compare Strings	判断字符串B的字符是否都在A中，开始用了动归，后发现只需要对字符个数操作即可。
+ 2Sum    返回两个数的和为target的数的下标。先排序，然后找到两个数后，到原数组中找两个数的下标。更简单的方法是用hashmap
+ 3Sum	三数之和为0.排序，定一个数，另两个数用2-sum的方法。
+ 4Sum	四数之和为target.排序。定两个数，另两个数两个指针往中间扫。
+ 3Sum Closest	思路同3sum,只是求的是最接近target。
+ Search Insert Position	查插入位置。二分。
+ Search for a Range	查一个数出现的左右边界。二分，找左右边界。
+ Search in Rotated Sorted Array II 	在旋转矩阵中查找元素。注意A[mid]与同一边比较。
+ Merge Sorted Array	合并两个有序数组。
+ Median of two Sorted Arrays***	求两个有序数组的中位数。中位数的位置即是，两个数组左半边都小于右半边。
+ Binary Tree Preorder Traversal	二叉树先序遍历。
+ Binary Tree Inorder Traversal	中序遍历。
+ Binary Tree Postorder Traversal	后序遍历。
+ Binary Tree Level Order Traversal	层次遍历。
+ Binary Tree Level Order Traversal II   自底向上层次遍历。
+ Binary Tree Zigzag Level Order Traversal	从左到右、从右到左交替遍历树。设置flag，来决定当前遍历的顺序是否需要逆序即可。
+ First Bad Version	二分。
+ Find Peak Element	找峰值。二分。比较A[mid],A[mid-1], A[mid+1]的元素。
+ Median	找中位数。用找第k大的数的方法即可。快排的思想。
+ Data Stream Median	数据流中位数，随时输出中位数。维护大顶堆和小顶堆。
+ Construct Binary Tree from Inorder and Postorder Traversal	后序和中序重建二叉树。
+ Construct Binary Tree from Preorder and Inorder Traversal	先序和中序重建二叉树。
+ Longest Increasing Subsequence	最长递增子序列。动归，用数组记录长度为i的最小数。
+ Longest Common Subsequence	最长公共子序列。动归.
+ Longest Common Prefix	最长公共前缀。遍历即可。
+ Longest Common Substring	最长公共子串。动归。
+ Single Number	其他数都出现两次，只有一个出现一次的数。所有数异或。
+ Single Number II    其他数都出现三次，只有一个出现一次的数。one，two，three分别记录每位出现1，2，3次的数。
+ Single Number III	其他数出现两次，只有两个数出现一次。两次异或。&运算优先级低，注意加括号(res & A[i]) == 0
+ ***K SUM   n个不同的数里选取k个使得和为target。三维动归。f[i][j][k]表示成前i个数里挑出j个数使得和为k。
+ k Sum II    k数之和等于target的所有方案数。递归。
+ Insert Node in a Binary Search Tree	二叉搜索树中插入节点。
+ ***Binary Search Tree Iterator	设计数据结构实现二叉树迭代器。用栈实现。
+ Lowest Common Ancestor	最低公共祖先。
+ ***Remove Node in Binary Search Tree	移出二叉搜索树中的一个节点。递归实现很简洁。
+ Backpack	给定物品体积和背包容量。最大程度装满背包。二维动归。f[i][j] ||= f[i - 1][j]|| f[i - 1][j - A[i - 1]];
+ Balanced Binary Tree	判断是否是平衡二叉树。递归。
+ Binary Tree Maximum Path SUM   树的最大路径和。左右子树递归。
+ Validate Binary Search Tree	判断是否为二叉搜索树。左子树的最大值小于当前节点且右子树的最小值大于当前节点。
+ Partition List	链表划分。建两个新表头即可。
+ Maximum Depth of Binary Tree	树的最大深度。递归。
+
+
+
+
+
+

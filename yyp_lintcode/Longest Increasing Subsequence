@@ -1,0 +1,40 @@
+题目：最长递增子序列。
+解题：动归，用数组记录长度为i的最小数。
+/*
+int lengthOfLIS(vector<int>& nums) {
+    vector<int> res;
+    for(int i=0; i<nums.size(); i++) {
+        auto it = std::lower_bound(res.begin(), res.end(), nums[i]);
+        if(it==res.end()) res.push_back(nums[i]);
+        else *it = nums[i];
+    }
+    return res.size();
+}
+*/
+class Solution {
+public:
+    /**
+     * @param nums: The integer array
+     * @return: The length of LIS (longest increasing subsequence)
+     */
+    int longestIncreasingSubsequence(vector<int> nums) {
+        // write your code here
+        int l = nums.size();
+        if(l == 0) return 0;
+        vector<int>lmin;
+        lmin.push_back(nums[0]);
+        for(int i = 1; i < l; i++) {
+            if(nums[i] >= lmin[lmin.size() - 1])
+                lmin.push_back(nums[i]);
+            else {
+                int j = 0;
+                for(; j < lmin.size(); j++) {
+                    if(nums[i] < lmin[j])
+                        break;
+                }
+                lmin[j] = min(lmin[j], nums[i]);
+            }
+        }
+        return lmin.size();
+    }
+};
