@@ -1,0 +1,79 @@
+题目：判断是否为二叉搜索树。
+解题：左子树的最大值小于当前节点且右子树的最小值大于当前节点。
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param root: The root of binary tree.
+     * @return: True if the binary tree is BST, or false
+     */
+    int leftnum(TreeNode *root) {
+        int res = INT_MAX;
+        while(root != NULL) {
+            res = root->val;
+            root = root->left;
+        }
+        return res;
+    }
+    int rightnum(TreeNode *root) {
+        int res = INT_MIN;
+        while(root != NULL) {
+            res = root->val;
+            root = root->right;
+        }
+        return res;
+    }
+    bool isValidBST(TreeNode *root) {
+        // write your code here
+        if(root == NULL) return true;
+        int l = rightnum(root->left), r = leftnum(root->right);
+        if((root->left != NULL && (root->val <= root->left->val || root->val <= l)) || (root->right != NULL && (root->val >= root->right->val || root->val >= r)))
+            return false;
+        return isValidBST(root->left) && isValidBST(root->right);
+    }
+    /*
+    TreeNode* pre = NULL;
+    bool isValidBST(TreeNode* root) {
+        if(root == NULL) return true;
+        return traverse(root);
+    }
+    bool traverse(TreeNode* root) { 
+        if(root == NULL) return true;
+        if(traverse(root->left)) {
+            if(pre != NULL && pre->val >= root->val)
+                return false;
+            pre = root;
+            return traverse(root->right);
+        }
+        return false;
+    }
+    */
+    /*
+        public boolean isValidBST(TreeNode root) {  
+        return isBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE);  
+          
+    }  
+      
+    public boolean isBST(TreeNode node, int alpha, int beta){  
+        if(node == null){  
+            return true;  
+        }  
+        if(alpha < node.val && node.val < beta){  
+            return isBST(node.left, alpha, node.val) && isBST(node.right, node.val, beta);  
+        }  
+        else  
+            return false;  
+    }  
+    */
+};

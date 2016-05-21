@@ -1,0 +1,32 @@
+题目：超过1/3的数。
+解题：两个数和两个计数器。当前数与其中一个相同或者其中一个计数器为0则计数器+1， 否则三个扔掉。
+class Solution {
+public:
+    /**
+     * @param nums: A list of integers
+     * @return: The majority number occurs more than 1/3.
+     */
+    int majorityNumber(vector<int> nums) {
+        // write your code here
+        int counter1 = 0, counter2 = 0, cur1 = 0, cur2 = 0;
+        for(int i = 0; i < nums.size(); i++) {
+            if(counter1 == 0 || nums[i] == cur1) {
+                counter1++;
+                cur1 = nums[i];
+            } else if(counter2 == 0 || nums[i] == cur2) {
+                counter2++;
+                cur2 = nums[i];
+            } else {
+                counter1--;
+                counter2--;
+            }
+        }
+        counter1 = 0;
+        counter2 = 0;
+        for(int i = 0; i < nums.size(); i++) {
+            if(nums[i] == cur1) counter1++;
+            else if(nums[i] == cur2) counter2++;
+        }
+        return counter1 > counter2 ? cur1 : cur2;
+    }
+};

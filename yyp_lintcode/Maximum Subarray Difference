@@ -1,0 +1,42 @@
+题目：求数组中两个子集A和B的最大差, |SUM(A) - SUM(B)|.
+解题：综合最大字段和、最小字段和、两段最大和。对i，res= max(leftmax[i - 1] - rightmin[i], rightmax[i] - leftmin[i - 1]);
+class Solution {
+public:
+    /**
+     * @param nums: A list of integers
+     * @return: An integer indicate the value of maximum difference between two
+     *          Subarrays
+     */
+    int maxDiffSubArrays(vector<int> nums) {
+        // write your code here
+        int l = nums.size(), res = 0;
+        if(l == 0) return 0;
+        vector<int>leftmax(l, nums[0]);
+        vector<int>leftmin(l, nums[0]);
+        vector<int>rightmax(l, nums[l - 1]);
+        vector<int>rightmin(l, nums[l - 1]);
+        int maxsofar = nums[0], minsofar = nums[0], resmax = nums[0], resmin = nums[0];
+        for(int i = 1; i < l; i++) {
+            maxsofar = max(maxsofar + nums[i], nums[i]);
+            minsofar = min(minsofar + nums[i], nums[i]);
+            resmax = max(resmax, maxsofar);
+            resmin = min(resmin, minsofar);
+            leftmax[i] = resmax;
+            leftmin[i] = resmin;
+        }
+        maxsofar = nums[l - 1], minsofar = nums[l - 1], resmax = nums[l - 1], resmin = nums[l - 1];
+        for(int i = l - 2; i >= 0; i--) {
+            maxsofar = max(maxsofar + nums[i], nums[i]);
+            minsofar = min(minsofar + nums[i], nums[i]);
+            resmax = max(resmax, maxsofar);
+            resmin = min(resmin, minsofar);
+            rightmax[i] = resmax;
+            rightmin[i] = resmin;
+        }
+        for(int i = 1; i < l; i++) {
+            int tmp = max(leftmax[i - 1] - rightmin[i], rightmax[i] - leftmin[i - 1]);
+            res = max(res, tmp);
+        }
+        return res;
+    }
+};

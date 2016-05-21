@@ -1,0 +1,91 @@
+题目：移出二叉搜索树中的一个节点。
+解题：先找到该节点，然后找该节点的前驱，找不到找后继。写的比较麻烦，下面鹏威的递归实现很简洁。
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param root: The root of the binary search tree.
+     * @param value: Remove the node with given value.
+     * @return: The root of the binary search tree after removal.
+     */
+
+    TreeNode* removeNode(TreeNode* root, int value) {
+        // write your code here
+        TreeNode * cur = root, *tmp, *pre = root;
+        while(cur != NULL && cur->val != value) {
+            pre = cur;
+            if(cur->val > value) cur = cur->left;
+            else cur = cur->right;
+        }
+        if(cur == NULL) return root;
+        if(cur->left == NULL && cur->right == NULL) {
+            if(cur == pre->left) pre->left = NULL;
+            else if(cur == pre->right) pre->right = NULL;
+            else return NULL;
+            delete cur;
+            return root;
+        }
+        tmp = cur->left;
+        if(tmp != NULL) {
+            TreeNode * p = cur;
+            while(tmp->right != NULL) {
+                p = tmp;
+                tmp = tmp->right;
+            }
+            cur->val = tmp->val;
+            if(p == cur) cur->left = tmp->left;
+            else p->right = NULL;
+            delete tmp;
+        } else {
+            if(cur == pre->right) pre->right = cur->right;
+            else if(cur == pre->left) pre->left = cur->right;
+            else root = cur->right;
+            delete cur;
+        }
+        return root;
+    }
+};
+
+//////////////////////
+        TreeNode* getLeftMost(TreeNode *root) {
+            while (root->left) {
+                root = root->left;
+            }
+            return root;
+        }
+
+        TreeNode* removeNode(TreeNode* root, int value) {
+            if (root == NULL) return NULL;
+
+            if (value > root->val) {
+                root->right = removeNode(root->right, value);
+            } else if (value < root->val) {
+                root->left = removeNode(root->left, value);
+            } else {
+                if (root->left && root->right) {
+                    TreeNode *tmp = getLeftMost(root);
+                    root->val = tmp->val;
+
+                    root->left = removeNode(root->left, tmp->val);
+                } else {
+                    if (root->left == NULL) {
+                        root = root->right;
+                    } else if (root->right == NULL) {
+                        root = root->left;
+                    }
+                }
+            }
+
+            return root;
+        }

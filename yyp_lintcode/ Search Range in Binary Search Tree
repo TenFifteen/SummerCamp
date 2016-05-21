@@ -1,0 +1,36 @@
+题目：
+	给定二叉搜索树和一个范围，输出这棵二叉树节点值在k1和k2范围的数，按升序输出。
+解题：
+	二叉树中序遍历的变形。简单。
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param root: The root of the binary search tree.
+     * @param k1 and k2: range k1 to k2.
+     * @return: Return all keys that k1<=key<=k2 in ascending order.
+     */
+    vector<int> searchRange(TreeNode* root, int k1, int k2) {
+        // write your code here
+        vector<int>res;
+        if(root == NULL) return res;
+        mid(root, k1, k2, res);
+        return res;
+    }
+    void mid(TreeNode *root, int k1, int k2, vector<int>&res) {
+        if(root->left != NULL) mid(root->left, k1, k2, res);
+        if(root->val >= k1 && root->val <= k2) res.push_back(root->val);
+        if(root->right != NULL) mid(root->right, k1, k2, res);
+    }
+};

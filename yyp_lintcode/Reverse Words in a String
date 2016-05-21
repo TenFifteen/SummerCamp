@@ -1,0 +1,32 @@
+题目：字符串翻转。
+解题：先去掉多余空格，然后全部逆序，再对每个单词分别逆序即可。注意第一个和最后一个位置的处理。
+class Solution {
+public:
+    /**
+     * @param s : A string
+     * @return : A string
+     */
+    string reverseWords(string s) {
+        // write your code here
+        if(s.size() == 0) return s;
+        int i = 0, j = 0, l;
+        while(i < s.size()) {
+            while(i < s.size() && s[i] != ' ') s[j++] = s[i++];
+            while(i < s.size() && s[i] == ' ') i++;
+            if(j > 0 && i < s.size()) s[j++] = ' ';
+        }
+        l = j;
+        for(i = 0, j = l - 1; i < j; i++, j--) {
+            swap(s[i], s[j]);
+        }
+        i = 0, j = 0;
+        while(i < l) {
+            while(j < l && s[j] != ' ') j++;
+            for(int k = j - 1; i < k; k--, i++)
+                swap(s[i], s[k]);
+            j++;
+            i = j;
+        }
+        return s.substr(0, l);
+    }
+};

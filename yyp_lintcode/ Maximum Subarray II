@@ -1,0 +1,29 @@
+题目：两段最大连续字段和。
+解题：动归，先从前往后扫一遍，记录到当前位置i的最大连续字段和，再从后往前扫，两段相加求最大。
+class Solution {
+public:
+    /**
+     * @param nums: A list of integers
+     * @return: An integer denotes the sum of max two non-overlapping subarrays
+     */
+    int maxTwoSubArrays(vector<int> nums) {
+        // write your code here
+        int l = nums.size();
+        if(l == 0) return 0;
+        int maxsofar = nums[0], res = nums[0], ans = INT_MIN;
+        vector<int>f(l + 1, nums[0]);
+        for(int i = 1; i < l; i++) {
+            maxsofar = max(maxsofar + nums[i], nums[i]);
+            res = max(res, maxsofar);
+            f[i] = res;
+        }
+        maxsofar = nums[l - 1], res = nums[l - 1];
+        for(int i = l - 2; i >= 0; i--) {
+            ans = max(ans, res + f[i]);
+            maxsofar = max(maxsofar + nums[i], nums[i]);
+            res = max(res, maxsofar);
+            
+        }
+        return ans;
+    }
+};
