@@ -1,0 +1,24 @@
+题目：将字符串切成回文子串的最小割。
+解题：动归。注意初始化，注意f值更新。
+class Solution {
+public:
+    /**
+     * @param s a string
+     * @return an integer
+     */
+    int minCut(string s) {
+        // write your code here
+        int l = s.size();
+        if(l < 2) return 0;
+        vector<int>f(l + 1, 0);
+        for(int i = 0; i <= l; i++)
+            f[i] = i - 1;
+        for(int i = 0; i < l; i++) {
+            for(int j = 0; i - j >= 0 && i + j < l && s[i - j] == s[i + j]; j++)
+                f[i + j + 1] = min(f[i + j + 1], f[i - j] + 1);
+            for(int j = 0; i - j >= 0 && i + j + 1< l && s[i - j] == s[i + j + 1]; j++)
+                f[i + j + 2] = min(f[i + j + 2], f[i - j] + 1);
+        }
+        return f[l];
+    }
+};

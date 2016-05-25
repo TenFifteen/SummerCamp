@@ -1,0 +1,87 @@
+题目：在二维字符数组中查找单词。
+解题：trie + dfs.注意利用字典树的位置以及更新visited的位置,以及利用set去重。
+class TrieNode {
+public:
+    TrieNode* child[26];
+    bool isleaf;
+    TrieNode() {
+        for(int i = 0; i < 26; i++)
+            child[i] = NULL;
+        isleaf = false;
+    }
+};
+class Trie {
+public:
+    TrieNode* root;
+    Trie() {
+        root = new TrieNode();
+    }
+    void insert(string word) {
+        TrieNode * tmp = root;
+        for(int i = 0; i < word.size(); i++) {
+            if(tmp->child[word[i] - 'a'] == NULL) {
+                TrieNode * node = new TrieNode();
+                tmp->child[word[i] - 'a'] = node;
+            }
+            tmp = tmp->child[word[i] - 'a'];
+        }
+        tmp->isleaf = true;
+    }
+    bool startWith(string word) {
+        TrieNode * tmp = root;
+        for(int i = 0; i < word.size(); i++) {
+            if(tmp->child[word[i] - 'a'] == NULL) 
+                return false;
+            tmp = tmp->child[word[i] - 'a'];
+        }
+        return true;
+    }
+    bool search(string word) {
+        TrieNode * tmp = root;
+        for(int i = 0; i < word.size(); i++) {
+            if(tmp->child[word[i] - 'a'] == NULL) 
+                return false;
+            tmp = tmp->child[word[i] - 'a'];
+        }
+        return tmp->isleaf;
+    }
+};
+
+class Solution {
+public:
+    /**
+     * @param board: A list of lists of character
+     * @param words: A list of string
+     * @return: A list of string
+     */
+    vector<string> wordSearchII(vector<vector<char> > &board, vector<string> &words) {
+        // write your code here
+        Trie* trie = new Trie();
+        unordered_set<string> res;
+        if(board.size() == 0) return vector<string>();
+        for(int i = 0; i < words.size(); i++) {
+            trie->insert(words[i]);
+        }
+        int m = board.size(), n = board[0].size();
+        vector<vector<bool> >visited(m + 1, vector<bool>(n + 1, false));
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                helper(board, i, j, trie, "", res, visited);
+            }
+        }
+        return vector<string>(res.begin(), res.end());
+    }
+    void helper(vector<vector<char> > &board, int x, int y, Trie* trie, string cur, unordered_set<string>&res, vector<vector<bool> >&visited) {
+        if(x < 0 || y < 0 || x >= board.size() || y >= board[0].size() || visited[x][y]) return;
+        cur += board[x][y];
+        if(!trie->startWith(cur)) return;
+        if(trie->search(cur))
+            res.insert(cur);
+        visited[x][y] = true;
+        helper(board, x, y + 1, trie, cur, res, visited);
+        helper(board, x, y - 1, trie, cur, res, visited);
+        helper(board, x + 1, y, trie, cur, res, visited);
+        helper(board, x - 1, y, trie, cur, res, visited);
+        visited[x][y] = false;
+    }
+};

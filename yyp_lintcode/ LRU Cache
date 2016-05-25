@@ -1,0 +1,90 @@
+题目：实现lru缓存。
+解题：哈希+双向链表
+结构初始化：
+struct Node {
+        int key;
+        int val;
+        Node *next, *pre;
+        Node(int key, int val) {
+            next = pre = NULL;
+            this->key = key;
+            this->val = val;
+        }
+    };
+
+class LRUCache{
+private:
+    struct node {
+        node*next;
+        node*prev;
+        int val;
+        int key;
+    };
+    unordered_map<int, node*>dic;
+    int maxlen, sizenow;
+    node* head, *tail;
+public:
+    // @param capacity, an integer
+    LRUCache(int capacity) {
+        // write your code here
+        maxlen = capacity;
+        sizenow = 0;
+        head = new node();
+        tail = new node();
+        head->next = tail;
+        tail->prev = head;
+        head->prev = NULL;
+        tail->next = NULL;
+    }
+    void deletekey(int key) {
+        node* tmp = dic[key];
+        tmp->prev->next = tmp->next;
+        tmp->next->prev = tmp->prev;
+    }
+    void movetohead(int key) {
+        node*tmp = dic[key];
+        tmp->next = head->next;
+        tmp->prev = head;
+        head->next->prev = tmp;
+        head->next = tmp;
+    }
+    void visit(int key) {
+        deletekey(key);
+        movetohead(key);
+    }
+    void poptail() {
+        dic.erase(tail->prev->key);
+        tail->prev->prev->next = tail;
+        tail->prev = tail->prev->prev;
+    }
+    // @return an integer
+    int get(int key) {
+        // write your code here
+        if(dic.count(key) == 0)
+            return -1;
+        visit(key);
+        return dic[key]->val;
+    }
+
+    // @param key, an integer
+    // @param value, an integer
+    // @return nothing
+    void set(int key, int value) {
+        // write your code here
+        if(dic.count(key) != 0) {
+            visit(key);
+            dic[key]->val = value;
+            return;
+        }
+        node* tmp = new node();
+        tmp->val = value;
+        tmp->key = key;
+        dic[key] = tmp;
+        movetohead(key);
+        sizenow++;
+        if(sizenow > maxlen) {
+            poptail();
+            sizenow--;
+        }
+    }
+};

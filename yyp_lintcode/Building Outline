@@ -1,0 +1,43 @@
+题目：给定一些建筑物起始点和高度，求建筑物的外部轮廓。
+解题：先将建筑物左右边拆开，然后按照横坐标排序，然后从左到右处理各边。与leetcode不同的是，这个题求的是轮廓，leetcode记录轮廓关键节点即可。
+class Solution {
+public:
+    /**
+     * @param buildings: A list of lists of integers
+     * @return: Find the outline of those buildings
+     */
+    vector<vector<int> > buildingOutline(vector<vector<int> > &buildings) {
+        // write your code here
+        vector<vector<int> >res;
+        vector<pair<int, int> >time;
+        for(auto i: buildings) {
+            time.push_back(make_pair(i[0], -i[2]));
+            time.push_back(make_pair(i[1], i[2]));
+        }
+        sort(time.begin(), time.end());
+        multiset<int>h;
+        h.insert(0);
+        stack<int>begin;
+        int pre = 0;
+        for(auto i: time) {
+            if(i.second < 0) {
+                h.insert(-i.second);
+            } else {
+                h.erase(h.find(i.second));
+            }
+            if(*h.rbegin() != pre) {
+                if(pre != 0) {
+                    vector<int>tmp;
+                    tmp.push_back(begin.top());
+                    begin.pop();
+                    tmp.push_back(i.first);
+                    tmp.push_back(pre);
+                    res.push_back(tmp);
+                }
+                pre = *h.rbegin();
+                begin.push(i.first);
+            }
+        }
+        return res;
+    }
+};

@@ -1,0 +1,58 @@
+题目：链表排序
+解题：归并排序，分成两段后注意将前一段的末尾赋值为NULL.
+/**
+ * Definition of ListNode
+ * class ListNode {
+ * public:
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int val) {
+ *         this->val = val;
+ *         this->next = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param head: The first node of linked list.
+     * @return: You should return the head of the sorted linked list,
+                    using constant space complexity.
+     */
+    ListNode *sortList(ListNode *head) {
+        // write your code here
+        if(head == NULL || head->next == NULL) return head;
+        return merge(head);
+    }
+    ListNode* merge(ListNode * head) {
+        if(head == NULL || head->next == NULL) return head;
+        ListNode *slow = head, *fast = head, *pre = head;
+        while(fast != NULL && fast->next != NULL) {
+            pre = slow;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        pre->next = NULL;
+        ListNode* h1 = merge(head);
+        ListNode* h2 = merge(slow);
+        ListNode* newhead = new ListNode(0);
+        ListNode *t1, *t = newhead;
+        int cur;
+        while(h1 != NULL && h2 != NULL) {
+            cur = min(h1->val, h2->val);
+            if(cur == h1->val) {
+                t1 = h1;
+                h1 = h1->next;
+            } else {
+                t1 = h2;
+                h2 = h2->next;
+            }
+            t->next = t1;
+            t = t->next;
+        }
+        t->next = (h1 == NULL ? h2 : h1);
+        return newhead->next;
+    }
+};
+
+
