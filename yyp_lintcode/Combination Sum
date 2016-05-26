@@ -1,0 +1,29 @@
+题目：用数组中的数组合成target，每个数可取多次。
+解题：递归。
+class Solution {
+public:
+    /**
+     * @param candidates: A list of integers
+     * @param target:An integer
+     * @return: A list of lists of integers
+     */
+    vector<vector<int> > combinationSum(vector<int> &candidates, int target) {
+        // write your code here
+        vector<vector<int> >res;
+        int l = candidates.size();
+        if(l == 0) return res;
+        sort(candidates.begin(), candidates.end());
+        helper(res, candidates, target, 0, 0, vector<int>());
+        return res;
+    }
+    void helper(vector<vector<int> >& res, vector<int>& nums, int target, int index, int sumnow, vector<int>cur) {
+        if(sumnow == target) {
+            res.push_back(cur);
+            return;
+        }
+        if(sumnow > target || index >= nums.size() || sumnow + nums[index] > target ) return;
+        helper(res, nums, target, index + 1, sumnow, cur);
+        cur.push_back(nums[index]);
+        helper(res, nums, target, index, sumnow + nums[index], cur);
+    }
+};

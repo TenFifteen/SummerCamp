@@ -1,0 +1,28 @@
+题目：给定一个数组，调整每个值使得相邻两个数的差值不超过target
+解题：动归。转移方程为f[i][j] = min(f[i][j], f[i - 1][k] + abs(A[i] - j))
+class Solution {
+public:
+    /**
+     * @param A: An integer array.
+     * @param target: An integer.
+     */
+    int MinAdjustmentCost(vector<int> A, int target) {
+        // write your code here
+        int l = A.size(), res = INT_MAX;
+        vector<vector<int> >f(l + 1, vector<int>(101, INT_MAX / 2));
+        for(int i = 0; i <= 100; i++)
+            f[0][i] = abs(A[0] - i);
+        for(int i = 1; i < l; i++) {
+            for(int j = 1; j <= 100; j++) {
+                int lower = max(0, j - target), higher = min(100, j + target);
+                for(int k = lower; k <= higher; k++) {
+                    f[i][j] = min(f[i][j], f[i - 1][k] + abs(A[i] - j));
+                }
+            }
+        }
+        for(int i = 1; i <= 100; i++) {
+            res = min(res, f[l - 1][i]);
+        }
+        return res;
+    }
+};

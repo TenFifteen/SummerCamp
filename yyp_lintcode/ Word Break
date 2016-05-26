@@ -1,0 +1,30 @@
+题目：判断字符串s能否由字典dict中的单词组成。
+解题：动归。注意对字典中最长单词长度maxlen的应用，不然会超时。
+class Solution {
+public:
+    /**
+     * @param s: A string s
+     * @param dict: A dictionary of words dict
+     */
+    bool wordBreak(string s, unordered_set<string> &dict) {
+        // write your code here
+        int l = s.size(), maxlen = 0;
+        for(auto i: dict) {
+            if(i.size() > maxlen) 
+                maxlen = i.size();
+        }
+        vector<bool>f(l + 1, false);
+        f[0] = true;
+        for(int i = 0; i < l; i++) {
+            if(!f[i]) continue;
+            for(int j = 1; i + j <= l && j <= maxlen; j++) {
+                string tmp = s.substr(i, j);
+                if(dict.find(tmp) != dict.end()) {
+                    f[i + j] = true;
+                    if(i + j == l) return true;
+                }
+            }
+        }
+        return f[l];
+    }
+};

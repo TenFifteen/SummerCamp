@@ -1,0 +1,45 @@
+题目：开始处于下标为0的位置，每次最多可跳A[i]下，问跳到数组最后一个位置需要的最少跳数。
+解题：贪心+bfs。
+/*	int jump(vector<int>& nums) {
+        int n = nums.size();
+        if(n <= 1) return 0;
+        int i = 0, curmax = 0, level = 0, nextmax = 0;
+        while(true) {
+            level++;
+            for(; i <= curmax; i++) {
+                nextmax = max(nextmax, i + nums[i]);
+                if(nextmax >= n - 1)
+                    return level;
+            }
+            curmax = nextmax;
+        }
+    }
+*/
+class Solution {
+public:
+    /**
+     * @param A: A list of lists of integers
+     * @return: An integer
+     */
+    int jump(vector<int> A) {
+        // wirte your code here
+        stack<int>st;
+        int count = 0;
+        st.push(0);
+        while(!st.empty()) {
+            count++;
+            stack<int>t;
+            while(!st.empty()) {
+                int tmp = st.top();
+                st.pop();
+                for(int i = 1; i <= A[tmp]; i++) {
+                    t.push(tmp + i);
+                    if(tmp + i == A.size() - 1)
+                        return count;
+                }
+            }
+            st = t;
+        }
+        return count;
+    }
+};

@@ -1,0 +1,56 @@
+题目：子数组和为0.
+解题：hashmap。
+class Solution {
+public:
+    /**
+     * @param nums: A list of integers
+     * @return: A list of integers includes the index of the first number 
+     *          and the index of the last number
+     */
+     /*
+ 8     vector<int> subarraySum(vector<int> nums){
+ 9         // write your code here
+10         map<int, int> has;
+11         int sum = 0;
+12         has[0] = -1;
+13         vector<int> res;
+14         for (int i = 0; i < nums.size(); ++i) {
+15             sum += nums[i];
+16             if (has.find(sum) != has.end()) {
+17                 res.push_back(has[sum] + 1);
+18                 res.push_back(i);
+19                 return res;
+20             } else {
+21                 has[sum] = i;
+22             }
+23         }
+24         return res;
+25     }
+26 };*/
+    vector<int> subarraySum(vector<int> nums){
+        // write your code here
+        vector<int>res;
+        if(nums.size() == 0) return res;
+        unordered_map<int, vector<int> >sum;
+        sum[0].push_back(0);
+        int cur = 0;
+        for(int i = 0; i < nums.size(); i++) {
+            cur += nums[i];
+            sum[cur].push_back(i);
+        }
+        if(sum[0].size() > 1) {
+           res.push_back(0);
+           res.push_back(sum[0][1]);
+           return res;
+        }
+        for(auto i: sum) {
+            if(i.second.size() >= 2) {
+                res.push_back(i.second[0] + 1);
+                res.push_back(i.second[1]);
+                return res;
+            }
+        }
+        return res;
+    }
+    
+};
