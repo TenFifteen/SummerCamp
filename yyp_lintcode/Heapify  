@@ -1,0 +1,26 @@
+题目：给定一个数组，调整成最小堆。
+解题：从最后一个父节点l/2-1调整至0即可。
+class Solution {
+public:
+    /**
+     * @param A: Given an integer array
+     * @return: void
+     */
+    void heapify(vector<int> &A) {
+        // write your code here
+        int l = A.size();
+        for(int i = l / 2 - 1; i >= 0; i--)
+            helper(A, i);
+        return;
+    }
+    void helper(vector<int> &A, int cur) {
+        int left = 2 * cur + 1, right = 2 * cur + 2;
+        if(right >= l) right = left;
+        if(left >= l || (A[cur] <= A[left] && A[cur] <= A[right])) return;
+        
+        if(A[left] < A[right]) tmp = left;
+        else tmp = right;
+        swap(A[tmp], A[cur]);
+        helper(A, tmp);
+    }
+};

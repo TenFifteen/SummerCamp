@@ -1,0 +1,24 @@
+题目：在S中不同的子序列T的数目。
+解题：动归。
+class Solution {
+public:    
+    /**
+     * @param S, T: Two string.
+     * @return: Count the number of distinct subsequences
+     */
+    int numDistinct(string &S, string &T) {
+        // write your code here
+        int l1 = S.size(), l2 = T.size();
+        vector<vector<int> >f(l1 + 1, vector<int>(l2 + 1, 0));
+        for(int i = 0; i <= l1; i++)
+            f[i][0] = 1;
+        for(int i = 1; i <= l1; i++) {
+            for(int j = 1; j <= l2; j++) {
+                if(S[i - 1] == T[j - 1])
+                    f[i][j] += f[i - 1][j - 1];
+                f[i][j] += f[i - 1][j];
+            }
+        }
+        return f[l1][l2];
+    }
+};

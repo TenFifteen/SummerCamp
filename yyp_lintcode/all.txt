@@ -10,6 +10,10 @@
  Search a 2D Matrix	二分查找。 easy
  Search a 2D Matrix II	每次去掉一行或者一列
  Search in Rotated Sorted Array	二分。判断左边和右边哪边有序，然后判断target是否在有序的一半
+ Search in Rotated Sorted Array II 	在旋转矩阵中查找元素。注意A[mid]与同一边比较。
+ Find Minimum in Rotated Sorted Array    在旋转矩阵中找最小值。
+ Find Minimum in Rotated Sorted Array II    在有重复元素的旋转矩阵中找最小值。
+ Recover Rotated Sorted Array	恢复有重复元素的旋转矩阵。先找最小元素的位置。
  interleaving String	字符串动归。
  Insert Interval	插入区间。先找插入位置，左边界，再找右边界。最后插入合并的新区间，并删除被合并的区间。
  Partition Array	划分。swap（nums[low],nums[high]）.不需要交换两次。
@@ -17,7 +21,6 @@
  Reverse Linked List 翻转字符串。
  Reverse Linked List II    翻转m到n的字符串。前半部分顺序添加到新链表尾部，m到n的部分逆序添加。
  Implement Queue by Two Stacks	两个栈实现一个队列。easy
- Recover Rotated Sorted Array	恢复有重复元素的旋转矩阵。先找最小元素的位置。
  N-Queens 	n皇后所有方案。递归。
  N-Queens II    n皇后方案数。
  Maximum Subarray	最大连续子序列和。
@@ -41,7 +44,6 @@
  3Sum Closest	思路同3sum,只是求的是最接近target。
  Search Insert Position	查插入位置。二分。
  Search for a Range	查一个数出现的左右边界。二分，找左右边界。
- Search in Rotated Sorted Array II 	在旋转矩阵中查找元素。注意A[mid]与同一边比较。
  Merge Sorted Array	合并两个有序数组。
  Median of two Sorted Arrays***	求两个有序数组的中位数。中位数的位置即是，两个数组左半边都小于右半边。
  Binary Tree Preorder Traversal	二叉树先序遍历。
@@ -70,11 +72,62 @@
  Lowest Common Ancestor	最低公共祖先。
  ***Remove Node in Binary Search Tree	移出二叉搜索树中的一个节点。递归实现很简洁。
  Backpack	给定物品体积和背包容量。最大程度装满背包。二维动归。f[i][j] ||= f[i - 1][j]|| f[i - 1][j - A[i - 1]];
+ Backpack II    给定物品体积和物品价值，背包容量。求最大能获得的价值。二维动归。f[i][j] = max(f[i][j], f[i - 1][j]， f[i - 1][j - A[i - 1]] + V[i - 1]);
  Balanced Binary Tree	判断是否是平衡二叉树。递归。
  Binary Tree Maximum Path SUM   树的最大路径和。左右子树递归。
  Validate Binary Search Tree	判断是否为二叉搜索树。左子树的最大值小于当前节点且右子树的最小值大于当前节点。
  Partition List	链表划分。建两个新表头即可。
  Maximum Depth of Binary Tree	树的最大深度。递归。
+ Sort List	链表排序。归并排序。
+ Reorder List	链表重排。先找到链表中部，然后将后一段逆序，然后两段一个一个接起来。
+ Remove Duplicates from Sorted Array    移出有序数组中的重复元素。
+ Remove Duplicates from Sorted Array II    移出有序数组中的超过两次的重复元素。
+ Linked List Cycle	判断链表是否有环。快慢指针。
+ Linked List Cycle II	判断链表环的开始位置。快慢指针。
+ Merge k Sorted Lists	归并k个有序链表。
+ Copy List with Random Pointer	拷贝链表，链表中有指向随机节点的指针。
+ Convert Sorted List to Balanced BST	将链表转换为平衡二叉树。快慢指针。
+ **Word Break	判断字符串s能否由字典dict中的单词组成。动归。注意对字典中最长单词长度maxlen的应用，不然会超时。
+ Triangle	三角形从上到下最短路径。动归。注意每行从后往前！！
+ Minimum Path Sum    m*n区域最短路径和。 动归。
+ **Palindrome Partitioning	将字符串s切成回文子串的所有方案。可循环或递归解。
+ ***Palindrome Partitioning II    将字符串切成回文子串的最小割。动归。注意初始化，注意f[i]值更新方法。
+ Climbing Stairs	爬梯子的方案数。f[n]=f[n-1]+f[n-2]
+ Remove Duplicates from Sorted List    去除有序链表中的重复元素。
+ Remove Duplicates from Sorted List II    去除有序链表中的重复元素，只剩不同的元素。
+ Unique Paths	从m*n格子左上角到右下角的路径数。选择数。
+ Unique Paths II    从m*n有障碍的格子左上角到右下角的路径数。动归。
+ Jump Game    开始处于下标为0的位置，每次最多可跳A[i]下，问能否跳到数组最后一个位置。贪心。
+ Jump Game II    开始处于下标为0的位置，每次最多可跳A[i]下，问跳到数组最后一个位置需要的最少跳数。贪心+bfs。
+ Edit Distance    最小编辑距离。动归。注意四种情况。
+ Distinct Subsequences	在S中不同的子序列T的数目。动归。f[i][j] += f[i - 1][j - 1]+f[i - 1][j];
+ ***Minimum Adjustment Cost    最小编辑距离。动归。
+ **Largest Rectangle in Histogram	条形图中的最大矩形。栈中保存一个递增的序列。
+ Longest Consecutive Sequence    最长连续序列。hash。
+ Topological Sorting	图的拓扑排序。
+ Hash Function	将字符串用哈希函数转为整数。注意时刻%。
+ Rehashing	扩大哈希size为原来两倍，重构hash。
+ Heapify	给定一个数组，调整成最小堆。从最后一个父节点l/2-1调整至0即可。
+ ***Building Outline	给定一些建筑物起始点和高度，求建筑物的外部轮廓。
+ Longest Words	扫一遍，输出字典中的最长字符串。
+ *LRU Cache	哈希+双向链表。
+ Combination Sum    用数组中的数组合成target，每个数可取多次。递归。
+ Combination Sum II    用数组中的数组合成target。递归。
+ Combinations	从1-n个数中选出k个数，所有的组合。递归。
+ Clone Graph    复制一个图。注意map的使用，在创建新节点后马上加入map，否则容易造成循环。
+ Fast Power	计算a^n % b。二分。
+ Sqrt(x)	二分。注意用乘积用long long。
+ ***Subarray Sum    子数组和为0.
+ ***Subarray Sum Closest	子数组和最接近0.
+ O(1) Check Power of 2	O(1)时间判断一个数是否是2的次幂。n > 0 && (n & (n - 1)) == 0
+ Sort Colors	将数组中散乱的三种颜色各个颜色分别放在一起。
+ ***Sort Colors II   将k个颜色分别放到一起。快排思想。用vector做桶。
+ **Interleaving Positive and Negative Numbers	将数组正数和负数穿插。
+ *Regular Expression Matching	.*正则表达式匹配。
+ *Wildcard Matching	?*正则表达式匹配。
+ Minimum Depth of Binary Tree	二叉树的最小深度。
+ *Word Search	在二维字符数组中查找单词。dfs
+ ***Word Search II    在二维字符数组中查找一组单词。字典树+dfs。注意利用字典树的位置以及更新visited的位置,以及利用set去重。
 
 
 

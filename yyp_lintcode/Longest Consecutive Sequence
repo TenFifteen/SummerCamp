@@ -1,0 +1,31 @@
+题目：最长连续序列。
+解题：hash。
+class Solution {
+public:
+    /**
+     * @param nums: A list of integers
+     * @return an integer
+     */
+    int longestConsecutive(vector<int> &num) {
+        // write you code here
+        unordered_map<int, int>buff;
+        int res = 0;
+        for(auto i: num) {
+            if(buff.count(i) != 0) 
+                continue;
+            int left = 0, right = 0;
+            if(buff.count(i - 1) != 0)
+                left = buff[i - 1];
+            if(buff.count(i + 1) != 0)
+                right = buff[i + 1];
+            if(left != 0)
+                buff[i - left] += right + 1;
+            if(right != 0)
+                buff[i + right] += left + 1;
+            buff[i] += left + right + 1;
+        }
+        for(auto i: buff) 
+            res = max(res, i.second);
+        return res;
+    }
+};

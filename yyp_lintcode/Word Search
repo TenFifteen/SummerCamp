@@ -1,0 +1,33 @@
+题目：在二维字符数组中查找单词。
+解题：dfs
+class Solution {
+public:
+    /**
+     * @param board: A list of lists of character
+     * @param word: A string
+     * @return: A boolean
+     */
+    bool exist(vector<vector<char> > &board, string word) {
+        // write your code here
+        if(board.size() == 0) return false;
+        int m = board.size(), n = board[0].size();
+        vector<vector<bool> >visited(m + 1, vector<bool>(n + 1, false));
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if(helper(board, word, 0, i, j, visited))
+                    return true;
+            }
+        }
+        return false;
+    }
+    bool helper(vector<vector<char> > &board, string &word, int index, int x, int y, vector<vector<bool> >&visited) {
+        if(index == word.size()) return true;
+        if(x < 0 || y >= board[0].size() || x >= board.size() || y < 0 || visited[x][y] || word[index] != board[x][y]) return false;
+        index++;
+        visited[x][y] = true;
+        if(helper(board, word, index, x, y - 1, visited) || helper(board, word, index, x, y + 1, visited) || helper(board, word, index, x + 1, y, visited) || helper(board, word, index, x - 1, y, visited))
+            return true;
+        visited[x][y] = false;
+        return false;
+    }
+};

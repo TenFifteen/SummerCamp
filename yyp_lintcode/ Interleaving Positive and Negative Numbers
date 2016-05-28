@@ -1,0 +1,92 @@
+题目：将数组正数和负数穿插。
+解题：首先统计正数和负数的个数，然后将多数的数放在外侧。两个指针分别在奇数位和偶数位，非法位置互换。
+class Solution {
+public:
+    /**
+     * @param A: An integer array.
+     * @return: void
+     */
+ /*
+         void rerange(vector<int> &A) {
+            int n = A.size();
+            if (n < 2) return;
+
+            int ng = 0, po = 0;
+            for (int i = 0; i < n; ++i)
+                A[i] > 0 ? po++ : ng++;
+
+#define num(i) A[(2 * i + 1) % (n | 1)]
+
+            int l = 0, r = n -1;
+            while (l <= r) {
+                if (po >= ng) {
+                    if (num(l) < 0) ++l;
+                    else swap(num(l), num(r--));
+                } else {
+                    if (num(l) > 0) ++l;
+                    else swap(num(l), num(r--));
+                }
+            }
+        }
+        */
+/*
+public int[] rerange(int[] A) {
+ 7         // write your code here
+ 8         int posNum = 0, negNum = 0;
+ 9         for (int elem : A) {
+10             if (elem < 0) {
+11                 negNum++;
+12             }
+13             else {
+14                 posNum++;
+15             }
+16         }
+17         int posInd = 1, negInd = 0;
+18         if (posNum > negNum) {
+19             negInd = 1;
+20             posInd = 0;
+21         }
+22         while (posInd<A.length && negInd<A.length) {
+23             while (posInd < A.length && A[posInd] > 0) {
+24                 posInd += 2;
+25             }
+26             while (negInd < A.length && A[negInd] < 0) {
+27                 negInd += 2;
+28             }
+29             if (posInd<A.length && negInd<A.length) {
+30                 swap(A, posInd, negInd);
+
+33             }
+34         }
+35         return A;
+36    }
+*/
+    void rerange(vector<int> &A) {
+        // write your code here
+        int l = A.size(), pos = 0, neg = 0;
+        for(auto i: A)
+            if(i > 0) pos++;
+            else neg++;
+        helper(A, neg > pos ? 1 : -1);
+        return;
+    }
+    void helper(vector<int>& A, int flag) {
+        int l = A.size();
+        int low = 0, high = (l % 2 == 1 ? l - 2 : l - 1);
+        while(low < l && high >= 0) {
+            if(flag == 1) {
+                while(low < l && high >= 0  && A[low] < 0) low += 2;
+                while(low < l && high >= 0 && A[high] > 0) high -= 2;
+            } else {
+                while(low < l && high >= 0  && A[low] > 0) low += 2;
+                while(low < l && high >= 0 && A[high] < 0) high -= 2;
+            }
+            if(low < l && high >= 0) {
+                swap(A[low], A[high]);
+                low += 2;
+                high -= 2;
+            }
+        }
+        return;
+    }
+};

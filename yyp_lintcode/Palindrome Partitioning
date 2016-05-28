@@ -1,0 +1,73 @@
+题目：将字符串s切成回文子串的所有方案。
+解题：可循环或递归解。
+class Solution {
+public:
+    /**
+     * @param s: A string
+     * @return: A list of lists of string
+     */
+    vector<vector<string> > partition(string s) {
+        // write your code here
+        vector<vector<vector<string> > >f(s.size() + 1, vector< vector<string> >());
+        if(s.size() == 0) return f[0];
+        for(int i = 0; i < s.size(); i++) {
+            for(int j = 1; i + j <= s.size(); j++) {
+                string tmp = s.substr(i, j);
+                if(ispalin(tmp)) {
+                    if(f[i].size() == 0) {
+                        vector<string>cur;
+                        cur.push_back(tmp);
+                        f[i + j].push_back(cur);
+                    } else {
+                        for(int k = 0; k < f[i].size(); k++) {
+                            vector<string>cur = f[i][k];
+                            cur.push_back(tmp);
+                            f[i + j].push_back(cur);
+                        }   
+                    }
+                }
+            }
+        }
+        return f[s.size()];
+    }
+    bool ispalin(string s) {
+        int i = 0;
+        for(i = 0; i < s.size() / 2; i++) {
+            if(s[i] != s[s.size() - 1 - i])
+                return false;
+        }
+        return true;
+    }
+};
+/*递归解法。
+class Solution {
+public:
+    vector<vector<string> > partition(string s) {
+        vector<vector<string> >res;
+        if(s.length() == 0) return res;
+        vector<string>cur;
+        helper(res, s, cur, 0);
+        return res;
+    }
+    bool ispalin(string s) {
+        for(int i = 0; i < s.length() / 2; i++)
+            if(s[i] != s[s.length() - i - 1])
+                return false;
+        return true;
+    }
+    void helper(vector<vector<string> >& res, string &s, vector<string>cur, int i) {
+        if(i == s.length()) {
+            res.push_back(cur);
+            return;
+        }
+        for(int j = 1; i + j <= s.length(); j++) {
+            string tmp = s.substr(i, j);
+            if(ispalin(tmp)) {
+                cur.push_back(tmp);
+                helper(res, s, cur, i + j);
+                cur.pop_back();
+            }
+        }
+    }
+};
+*/

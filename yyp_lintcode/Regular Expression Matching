@@ -1,0 +1,38 @@
+题目：正则表达式匹配。
+解题：递归或动归，注意边界。
+class Solution {
+public:
+    /**
+     * @param s: A string 
+     * @param p: A string includes "." and "*"
+     * @return: A boolean
+     */
+    bool isMatch(const char *s, const char *p) {
+        // write your code here
+        int l1 = strlen(s), l2 = strlen(p);
+        vector<vector<bool> >f(l1 + 1, vector<bool>(l2 + 1, false));
+        f[0][0] = true;
+        for(int i = 1; i <= l2; i++) 
+            f[0][i] = i > 1 && p[i - 1] == '*' && f[0][i - 2]; 
+        for(int i = 1; i <= l1; i++) {
+            for(int j = 1; j <= l2; j++) {
+                if(p[j - 1] == '*') {
+                    f[i][j] = (j > 2 && f[i][j - 2]) || ((s[i - 1] == p[j - 2] || p[j - 2] == '.') && f[i - 1][j]);
+                } else {
+                    f[i][j] = (p[j - 1] == s[i - 1] || p[j - 1] == '.') && f[i - 1][j - 1];
+                }
+            }
+        }
+        return f[l1][l2];
+    }
+    /*
+    bool isMatch(const char *s, const char *p) {
+        // write your code here
+        int l1 = strlen(s), l2 = strlen(p);
+        if(l2 == 0) return l1 == 0;
+        if(*(p + 1) != '*')
+            return l1 != 0 && (*s == *p || *p == '.') && isMatch(s + 1, p + 1);
+        return isMatch(s, p + 2) || (l1 != 0 && (*p == *s || *p == '.') && isMatch(s + 1, p));
+    }
+    */
+};

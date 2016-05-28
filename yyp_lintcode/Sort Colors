@@ -1,0 +1,26 @@
+题目：将数组中散乱的三种颜色各个颜色分别放在一起。
+解题：三个指针。
+class Solution{
+public:
+    /**
+     * @param nums: A list of integer which is 0, 1 or 2 
+     * @return: nothing
+     */    
+    void sortColors(vector<int> &nums) {
+        // write your code here
+        int i = 0, j = 0, k = nums.size() - 1;
+        while(j <= k) {
+            if(nums[j] == 0) {
+                swap(nums[i], nums[j]);
+                i++;
+                j++;
+            } else if(nums[j] == 2) {
+                swap(nums[j], nums[k]);
+                k--;
+            } else {
+                j++;
+            }
+        }
+        return;
+    }
+};

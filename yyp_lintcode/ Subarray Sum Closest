@@ -1,0 +1,77 @@
+题目：子数组和最接近0.
+解题：先求0-i和，然后对sum数组排序，求最小间隔即可。注意下标大小。用vector<pair>遍历更方便http://www.cnblogs.com/easonliu/p/4504495.html。还可以用lower——bound见下面超哥代码
+注意：学习应用lower_bound, upper_bound,equal_range
+class Solution {
+public:
+    /**
+     * @param nums: A list of integers
+     * @return: A list of integers includes the index of the first number 
+     *          and the index of the last number
+     */
+    vector<int> subarraySumClosest(vector<int> nums){
+        // write your code here
+        vector<int>res(2, 0);
+        map<int, int>sum;
+        sum[0] = -1;
+        int cur = 0, close = INT_MAX;
+        for(int i = 0; i < nums.size(); i++) {
+            cur += nums[i];
+            if(sum.count(cur) != 0) {
+                res[0] = sum[cur] + 1;
+                res[1] = i;
+                return res;
+            }
+            sum[cur] = i;
+        }
+        for(auto is = sum.begin(); is != sum.end(); ) {
+            auto p = *is;
+            is++;
+            if(is == sum.end()) break;
+            int tmp = min(close, abs(is->first - p.first));
+            if(tmp != close) {
+                res[0] = is->second > p.second ? p.second + 1 : is->second + 1;
+                res[1] = is->second < p.second ? p.second : is->second;
+                close = tmp;
+            }
+        }
+        return res;
+    }
+};
+/*
+vector<int> subarraySumClosest(vector<int> nums){
+        // write your code here
+        vector<int> ans(2);
+        if (nums.size() == 0) return ans;
+        map<long long, int> mm;
+        mm[0] = -1;
+        long long sum = 0;
+        int last = INT_MAX;
+        for (int i = 0; i < nums.size(); ++i) {
+            sum += nums[i];
+            if (mm.find(sum) != mm.end()) {
+                ans[0] = mm[sum] + 1;
+                ans[1] = i;
+                return ans;
+            } else {
+                auto lower = mm.lower_bound(sum);
+                if (lower != mm.end()) {
+                    if (lower->first - sum < last) {
+                        last = lower->first - sum;
+                        ans[0] = lower->second+1;
+                        ans[1] = i;
+                    }
+                }
+                if (lower != mm.begin()) {
+                    lower--;
+                    if (sum - lower->first < last) {
+                        last = sum - lower->first;
+                        ans[0] = lower->second+1;
+                        ans[1] = i;
+                    }
+                }
+            }
+            mm[sum] = i;
+        }
+        return ans;
+    }
+*/

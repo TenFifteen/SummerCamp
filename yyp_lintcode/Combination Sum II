@@ -1,0 +1,32 @@
+题目：用数组中的数组合成target。
+解题：递归。
+class Solution {
+public:
+	/**
+	 * @param num: Given the candidate numbers
+	 * @param target: Given the target number
+	 * @return: All the combinations that sum to target
+	 */
+    vector<vector<int> > combinationSum2(vector<int> &num, int target) {
+        // write your code here
+        int l = num.size();
+        vector<vector<int> >res;
+        if(l == 0) return res;
+        sort(num.begin(), num.end());
+        helper(res, num, target, 0, 0, vector<int>());
+        return res;
+    }
+    void helper(vector<vector<int> >&res, vector<int>& num, int target, int index, int sumnow, vector<int>cur) {
+        if(target == sumnow) {
+            res.push_back(cur);
+            return;
+        }
+        if(index >= num.size() || sumnow > target || sumnow + num[index] > target) return;
+        for(int i = index; i < num.size(); i++) {
+            if(i != index && num[i] == num[i - 1]) continue;
+            cur.push_back(num[i]);
+            helper(res, num, target, i + 1, sumnow + num[i], cur);
+            cur.pop_back();
+        }
+    }
+};
