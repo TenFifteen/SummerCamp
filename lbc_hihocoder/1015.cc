@@ -1,3 +1,7 @@
+/*
+KMP的经典案例。
+具体讲解可以参考：http://blog.csdn.net/v_july_v/article/details/7041827
+*/
 #include <iostream>
 #include <cstdio>
 #include <cstring>
