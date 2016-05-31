@@ -66,3 +66,38 @@ class NestedIterator {
  * NestedIterator i(nestedList);
  * while (i.hasNext()) cout << i.next();
  */
+/** copy from the discuss board
+ * class NestedIterator {
+private:
+    stack<vector<NestedInteger>::iterator> begins, ends;
+public:
+    NestedIterator(vector<NestedInteger> &nestedList) {
+        begins.push(nestedList.begin());
+        ends.push(nestedList.end());
+    }
+
+    int next() {
+        return (begins.top()++)->getInteger();
+    }
+
+    bool hasNext() {
+        while (!begins.empty()) {
+            if (begins.top() == ends.top()) {
+                begins.pop();
+                ends.pop();
+            } else {
+                auto x = begins.top();
+                if (x->isInteger()) {
+                    return true;
+                } else {
+                    begins.top()++;
+                    begins.push(x->getList().begin());
+                    ends.push(x->getList().end());
+                }
+            }
+        }
+
+        return false;
+    }
+};
+*/
