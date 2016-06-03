@@ -1,0 +1,42 @@
+题目：移除链表中倒数第n个节点。
+解题：两个指针。注意删除头节点的情况。
+/**
+ * Definition of ListNode
+ * class ListNode {
+ * public:
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int val) {
+ *         this->val = val;
+ *         this->next = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param head: The first node of linked list.
+     * @param n: An integer.
+     * @return: The head of linked list.
+     */
+    ListNode *removeNthFromEnd(ListNode *head, int n) {
+        // write your code here
+        int count = n;
+        ListNode * slow = head, *fast = head;
+        while(count > 0) {
+            fast = fast->next;
+            count--;
+        }
+        if(fast == NULL) {
+            return head->next;
+        }
+        while(fast->next != NULL) {
+            slow = slow->next;
+            fast = fast->next;
+        }
+        slow->next = slow->next->next;
+        return head;
+    }
+};
+
+

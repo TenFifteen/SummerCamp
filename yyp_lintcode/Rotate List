@@ -1,0 +1,37 @@
+题目：旋转链表。
+解题：注意k对长度取模。
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    /**
+     * @param head: the list
+     * @param k: rotate to the right k places
+     * @return: the list after rotation
+     */
+    ListNode *rotateRight(ListNode *head, int k) {
+        // write your code here
+        int l = 1;
+        if(head == NULL) return head;
+        ListNode* tmp = head, *cur;
+        while(tmp->next != NULL) {
+            tmp = tmp->next;
+            l++;
+        }
+        tmp->next = head;
+        k = l - k % l;
+        tmp = head;
+        for(int i = 1; i < k; i++) {
+            tmp = tmp->next;
+        }
+        cur = tmp->next;
+        tmp->next = NULL;
+        return cur;
+    }
+};

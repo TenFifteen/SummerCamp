@@ -1,0 +1,52 @@
+题目：翻转二叉树。
+解题：递归或者层次遍历。
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param root: a TreeNode, the root of the binary tree
+     * @return: nothing
+     */
+    void invertBinaryTree(TreeNode *root) {
+        // write your code here
+        if(root == NULL) return;
+        queue<TreeNode *>q;
+        q.push(root);
+        while(!q.empty()) {
+            queue<TreeNode *>p;
+            while(!q.empty()) {
+                TreeNode * tmp = q.front();
+                q.pop();
+                TreeNode * node = tmp->left;
+                tmp->left = tmp->right;
+                tmp->right = node;
+                if(tmp->left != NULL) q.push(tmp->left);
+                if(tmp->right != NULL) q.push(tmp->right);
+            }
+            q = p;
+        }
+        return;
+    }
+    /*void invertBinaryTree(TreeNode *root) {
+        // write your code here
+        helper(root);
+    }
+    TreeNode * helper(TreeNode* root) {
+        if(root == NULL) return root;
+        TreeNode * node = root->left;
+        root->left = helper(root->right);
+        root->right = helper(node);
+        return root;
+    }*/
+};

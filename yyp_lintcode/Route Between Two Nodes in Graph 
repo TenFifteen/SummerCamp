@@ -1,0 +1,43 @@
+题目：判断图中是否存在从s到t的路径。
+解题：广搜。注意记录节点是否访问过。
+/**
+ * Definition for Directed graph.
+ * struct DirectedGraphNode {
+ *     int label;
+ *     vector<DirectedGraphNode *> neighbors;
+ *     DirectedGraphNode(int x) : label(x) {};
+ * };
+ */
+class Solution {
+public:
+    /**
+     * @param graph: A list of Directed graph node
+     * @param s: the starting Directed graph node
+     * @param t: the terminal Directed graph node
+     * @return: a boolean value
+     */
+    bool hasRoute(vector<DirectedGraphNode*> graph,
+                  DirectedGraphNode* s, DirectedGraphNode* t) {
+        // write your code here
+        if(s == t) return true;
+        queue<DirectedGraphNode*>q;
+        unordered_set<DirectedGraphNode*>dic;
+        q.push(s);
+        dic.insert(s);
+        while(!q.empty()) {
+            DirectedGraphNode *tmp = q.front();
+            q.pop();
+            vector<DirectedGraphNode *> neigh = tmp->neighbors;
+            for(auto i : neigh) {
+                if(i == t) return true;
+                if(dic.find(i) == dic.end()) {
+                    q.push(i);
+                    dic.insert(i);
+                }
+            }
+        }
+        return false;
+    }
+};
+
+

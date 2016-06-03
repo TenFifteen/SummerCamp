@@ -1,0 +1,52 @@
+题目：给定飞机的航行时间，问天上同时最多有多少飞机。
+解题：将航行时间的左右分开考虑。注意struct内部的写法，const的应用.也可以用priority_queue
+/**
+ * Definition of Interval:
+ * classs Interval {
+ *     int start, end;
+ *     Interval(int start, int end) {
+ *         this->start = start;
+ *         this->end = end;
+ *     }
+ */
+class Solution {
+public:
+    /**
+     * @param intervals: An interval array
+     * @return: Count of airplanes are in the sky.
+     */
+    struct line{
+        int t;
+        bool isfly;
+        line(int time, bool fly) {
+            t = time;
+            isfly = fly;
+        }
+        bool operator < (const line & l) const {
+            if(t < l.t) 
+                return true;
+            if(t > l.t)
+                return false;
+            return isfly == false;
+        }
+    };
+    int countOfAirplanes(vector<Interval> &airplanes) {
+        // write your code here
+        int l = airplanes.size(), res = 0, count = 0;
+        vector<line>v;
+        for(auto i: airplanes) {
+            v.push_back(line(i.start, true));
+            v.push_back(line(i.end, false));
+        }
+        sort(v.begin(), v.end());
+        for(auto i: v) {
+            if(i.isfly == false) {
+                count--;
+            } else {
+                count++;
+            }
+            res = max(res, count);
+        }
+        return res;
+    }
+};

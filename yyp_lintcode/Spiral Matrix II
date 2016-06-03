@@ -1,0 +1,66 @@
+题目：往螺旋矩阵填数字。
+解题：四个方向填写。之前做的更简单，见下面代码。
+class Solution {
+public:
+    /**
+     * @param n an integer
+     * @return a square matrix
+     */
+    vector<vector<int> > generateMatrix(int n) {
+        // Write your code here
+        int dx[4] = {0, 1, 0, -1};
+        int dy[4] = {1, 0, -1, 0};
+        vector<vector<int> >res(n, vector<int>(n, 0));
+        int direc = 0, i = 0, j = 0, index = 1;
+        while(index <= n * n) {
+            while(i >= 0 && j >= 0 && i < n && j < n) {
+                if(res[i][j] != 0) 
+                    break;
+                res[i][j] = index++;
+                i += dx[direc];
+                j += dy[direc];
+            }
+            i -= dx[direc];
+            j -= dy[direc];
+            direc = (direc + 1) % 4;
+            i += dx[direc];
+            j += dy[direc];
+        }
+        return res;   
+    }
+};
+/*
+class Solution {
+public:
+    vector<vector<int> > generateMatrix(int n) {
+        vector<vector<int> >res(n, vector<int>(n, 0));
+        int di[4] = {0, 1, 0, -1};
+        int dj[4] = {1, 0, -1, 0};
+        int i = 0, j = 0, k = 1, x = 0;
+        while(k <= n * n) {
+            res[i][j] = k++;
+            if(res[abs(i + di[x]) % n][abs(j + dj[x]) % n] != 0) {
+                x = (x + 1) % 4;
+            }
+            i += di[x];
+            j += dj[x];
+        }
+        return res;
+    }
+/*
+    vector<vector<int> > generateMatrix(int n) {
+        vector<vector<int> >res(n, vector<int>(n, 0));
+        int i = 0, j = 0, di = 0, dj = 1, k = 1;
+        while(k <= n * n) {
+            res[i][j] = k++;
+            if(res[abs(i + di) % n][abs(j + dj) % n] != 0) {
+                int tmp = di;
+                di = dj;
+                dj = -tmp;
+            }
+            i += di;
+            j += dj;
+        }
+        return res;
+    }
+    */

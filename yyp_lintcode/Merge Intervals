@@ -1,0 +1,36 @@
+题目：合并区间。
+解题：排序，合并。注意compare方法的输入参数是const &
+/**
+ * Definition of Interval:
+ * classs Interval {
+ *     int start, end;
+ *     Interval(int start, int end) {
+ *         this->start = start;
+ *         this->end = end;
+ *     }
+ */
+class Solution {
+public:
+    /**
+     * @param intervals: interval list.
+     * @return: A new interval list.
+     */
+    static bool comp(const Interval & a, const Interval & b) {
+        return a.start < b.start;
+    }
+    vector<Interval> merge(vector<Interval> &intervals) {
+        // write your code here
+        vector<Interval>res;
+        if(intervals.size() == 0) return res;
+        sort(intervals.begin(), intervals.end(), comp);
+        for(int i = 0; i < intervals.size();) {
+            Interval cur = intervals[i++];
+            while(i < intervals.size() && cur.end >= intervals[i].start) {
+                cur.end = max(cur.end, intervals[i].end);
+                i++;
+            }
+            res.push_back(cur);
+        }
+        return res;
+    }
+};

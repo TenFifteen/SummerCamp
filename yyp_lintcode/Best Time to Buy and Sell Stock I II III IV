@@ -1,0 +1,64 @@
+ Best Time to Buy and Sell Stock	只准完成一次交易，求最大收益
+	int maxProfit(vector<int> &prices) {
+        // write your code here
+        int minsofar = INT_MAX / 2, res = 0;
+        for(auto i: prices) {
+            res = max(res, i - minsofar);
+            minsofar = min(minsofar, i);
+        }
+        return res;
+    }
+ Best Time to Buy and Sell Stock II    可以完成无限次交易，求最大收益
+	int maxProfit(vector<int> &prices) {
+        // write your code here
+        int res = 0;
+        for(int i = 1; i < prices.size(); i++) {
+            if(prices[i] > prices[i - 1])
+                res += prices[i] - prices[i - 1];
+        }
+        return res;
+    }
+ **Best Time to Buy and Sell Stock III    可以完成2次交易，求最大收益
+	int maxProfit(vector<int> &prices) {
+        // write your code here
+        int firstin = INT_MIN, firstout = 0, secondin = INT_MIN, secondout = 0;
+        for(auto i: prices) {
+            secondout = max(secondout, secondin + i);
+            secondin = max(secondin, firstout - i);
+            firstout = max(firstout, i + firstin);
+            firstin = max(firstin, -i);
+        }
+        return secondout;
+    }
+ **Best Time to Buy and Sell Stock IV    可以完成k次交易，求最大收益
+class Solution {
+public:
+    /**
+     * @param k: An integer
+     * @param prices: Given an integer array
+     * @return: Maximum profit
+     */
+    int maxProfit(int k, vector<int> &prices) {
+        // write your code here
+        int res = 0, l = prices.size();
+        if(l == 0) return 0;
+        if(k > l / 2) return many(prices);
+        vector<vector<int> >f(k + 1, vector<int>(l + 1, 0));
+        for(int i = 1; i <= k; i++) {
+            int tmp = -prices[0];
+            for(int j = 1; j < l; j++) {
+                f[i][j] = max(f[i][j - 1], tmp + prices[j]);
+                tmp = max(tmp, f[i - 1][j - 1] - prices[j]);
+            }
+        }
+        return f[k][l - 1];
+    }
+    int many(vector<int>& prices) {
+        int res = 0;
+        for(int i = 1; i < prices.size(); i++) {
+            if(prices[i] > prices[i - 1])
+                res += prices[i] - prices[i - 1];
+        }
+        return res;
+    }
+};
