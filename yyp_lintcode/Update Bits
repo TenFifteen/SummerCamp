@@ -1,0 +1,36 @@
+题目：m，n都是32位整数，更改n中i到j位使之等于m。
+解题：看网上解法，将n中i到j变为0，然后将m左移到i和j位的位置与之或即可。另注意，计算机存的是补码。
+http://www.jianshu.com/p/e8a1f04190cf
+class Solution {
+public:
+    /**
+     *@param n, m: Two integer
+     *@param i, j: Two bit positions
+     *return: An integer
+     */
+    int updateBits(int n, int m, int i, int j) {
+        // write your code here
+        int mask;
+        if(j != 31)
+            mask = ~((1 << (j + 1)) - (1 << i));
+        else
+            mask = (1 << i) - 1;
+        m <<= i;
+        return m | (n & mask);
+    }
+};
+/*
+int updateBits(int n, int m, int i, int j) {
+        int ones = ~0;
+        int mask = 0;
+        if (j < 31) {
+            int left = ones << (j + 1);
+            int right = ((1 << i) - 1);
+            mask = left | right;
+        } else {
+            mask = (1 << i) - 1;
+        }
+
+        return (n & mask) | (m << i);
+    }
+    */

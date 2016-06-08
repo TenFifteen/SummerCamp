@@ -1,0 +1,30 @@
+题目：求给定排列在全排列中的编号。
+解题：先得到当前数位后面小于当前数的数的个数，得到其全排列数与个数的乘积，加到结果即可
+class Solution {
+public:
+    /**
+     * @param A an integer array
+     * @return a long integer
+     */
+    long long permutationIndex(vector<int>& A) {
+        // Write your code here
+        long long l = A.size(), res = 1;
+        vector<long long>f(l + 1, 1);
+        for(int i = 1; i <= l; i++)
+            f[i] = i * f[i - 1];
+        f[0] = 0;
+        unordered_set<int>s;
+        for(auto i: A) 
+            s.insert(i);
+        for(int i = 0; i < A.size(); i++) {
+            int count = 0;
+            for(auto j: s) {
+                if(j < A[i])
+                    count++;
+            }
+            res += count * f[l - i - 1];
+            s.erase(A[i]);
+        }
+        return res;
+    }
+};

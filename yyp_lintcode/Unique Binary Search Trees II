@@ -1,0 +1,47 @@
+题目：一个有序数列形成不同二叉搜索树的所有方案。
+解题：递归
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @paramn n: An integer
+     * @return: A list of root
+     */
+    //map<pair<int, int>, vector<TreeNode*> >dic;
+    vector<TreeNode *> generateTrees(int n) {
+        // write your code here
+        vector<TreeNode *> res;
+        if(n == 0) return vector<TreeNode *>(1, NULL);
+        return helper(1, n);
+    }
+    vector<TreeNode *> helper(int start, int end) {
+        if(start > end) return vector<TreeNode*>(1, NULL);
+        //if(dic.count(make_pair(start, end)) != 0) return dic[make_pair(start, end)];
+        vector<TreeNode *>res;
+        for(int k = start; k <= end; k++) {
+            vector<TreeNode *>left = helper(start, k - 1);
+            vector<TreeNode *>right = helper(k + 1, end);
+            for(int i = 0; i < left.size(); i++) {
+                for(int j = 0; j < right.size(); j++) {
+                    TreeNode* node = new TreeNode(k);
+                    node->left = left[i];
+                    node->right = right[j];
+                    res.push_back(node);
+                }
+            }
+        }
+        //dic[make_pair(start, end)] = res;
+        return res;
+    }
+};

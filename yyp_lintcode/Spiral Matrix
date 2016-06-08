@@ -1,0 +1,30 @@
+题目：矩阵的螺旋遍历。
+解题：标识四个方向。
+class Solution {
+public:
+    /**
+     * @param matrix a matrix of m x n elements
+     * @return an integer array
+     */
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        // Write your code here
+        vector<int>res;
+        if(matrix.size() == 0) return res;
+        int left = 0, right = matrix[0].size() - 1 , up = 0, down = matrix.size() - 1;
+        while(left <= right && up <= down) {
+            for(int i = left; i <= right; i++)
+                res.push_back(matrix[up][i]);
+            up++;
+            for(int i = up; i <= down; i++)
+                res.push_back(matrix[i][right]);
+            right--;
+            for(int i = right; i >= left && down >= up; i--)
+                res.push_back(matrix[down][i]);
+            down--;
+            for(int i = down; i >= up && left <= right; i--)
+                res.push_back(matrix[i][left]);
+            left++;
+        }
+        return res;
+    }
+};

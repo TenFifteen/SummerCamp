@@ -1,0 +1,22 @@
+题目：最大连续子数组积。
+解题：同最大和。动归。注意maxsofar和minsofar的更新时间。
+class Solution {
+public:
+    /**
+     * @param nums: a vector of integers
+     * @return: an integer
+     */
+    int maxProduct(vector<int>& nums) {
+        // write your code here
+        if(nums.size() == 0) return 0;
+        int minsofar = nums[0], maxsofar = nums[0], res = nums[0];
+        for(int i = 1; i < nums.size(); i++) {
+            int a = min(minsofar * nums[i], min(maxsofar * nums[i], nums[i]));
+            int b = max(maxsofar * nums[i], max(minsofar * nums[i], nums[i]));
+            minsofar = a;
+            maxsofar = b;
+            res = max(res, max(minsofar, maxsofar));
+        }
+        return res;
+    }
+};

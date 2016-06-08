@@ -1,0 +1,33 @@
+题目：删除字符串中k位，使剩下的数最大。
+解题：贪心，栈模拟。思路来自leetcode中create maximum
+class Solution {
+public:
+    /**
+     *@param A: A positive integer which has N digits, A is a string.
+     *@param k: Remove k digits.
+     *@return: A string
+     */
+    string DeleteDigits(string A, int k) {
+        // wirte your code here
+        stack<char>st;
+        string res;
+        if(A.size() == 0) return res;
+        k = A.size() - k;
+        for(int i = 0;i < A.size(); i++) {
+            while(!st.empty() && A[i] < st.top() && st.size() + A.size() - i > k) {
+                st.pop();
+            }
+            if(st.size() < k)
+                st.push(A[i]);
+        }
+        while(!st.empty()) {
+            res = st.top() + res;
+            st.pop();
+        }
+        while(res[0] == '0') {
+            res = res.substr(1);
+        }
+        return res;
+    }
+};
+

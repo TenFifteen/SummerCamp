@@ -1,0 +1,24 @@
+题目：用数组中的数生成最大的数。
+解题：排序，排序算法s + t < t + s;
+class Solution {
+public:
+    /**
+     *@param num: A list of non negative integers
+     *@return: A string
+     */
+    static bool comp(const int & a, const int & b) {
+        string s = to_string(a), t = to_string(b);
+        return s + t < t + s;
+        
+    }
+    string largestNumber(vector<int> &num) {
+        // write your code here
+        sort(num.begin(), num.end(), comp);
+        string res;
+        for(auto i: num)
+            res = to_string(i) + res;
+        while(res.size() > 1 && res[0] == '0')
+            res = res.substr(1);
+        return res;
+    }
+};

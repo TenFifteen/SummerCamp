@@ -1,0 +1,24 @@
+题目：最长回文子串。
+解题：从每个位置前后遍历即可。注意数据范围。
+class Solution {
+public:
+    /**
+     * @param s input string
+     * @return the longest palindromic substring
+     */
+    string longestPalindrome(string& s) {
+        // Write your code here
+        int ans = 0, index = 0;
+        for(int i = 0; i < s.size(); i++) {
+            for(int j = 0; i - j >= 0 && i + j < s.size() && s[i - j] == s[i + j]; j++) {
+                ans = max(ans, 2 * j + 1);
+                if(ans == 2 * j + 1) index = i - j;
+            }
+            for(int j = 0; i + j + 1 < s.size() && i - j >= 0 && s[i + j + 1] == s[i - j]; j++) {
+                ans = max(ans, 2 * j + 2);
+                if(ans == 2 * j + 2) index = i - j;
+            }
+        }
+        return s.substr(index, ans);
+    }
+};

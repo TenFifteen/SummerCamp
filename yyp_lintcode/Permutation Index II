@@ -1,0 +1,27 @@
+题目：求给定排列在全排列中的编号，有重复数字。
+解题：同I，只是有重复数字，注意从后往前遍历，且去掉重复数字带来的影响。
+class Solution {
+public:
+    /**
+     * @param A an integer array
+     * @return a long integer
+     */
+    long long permutationIndexII(vector<int>& A) {
+        // Write your code here
+        unordered_map<int, int>dic;
+        long long l = A.size(), res = 1, fac = 1, mulfac = 1;
+        vector<int>f(l + 1, 1);
+        for(int i = l - 1; i >= 0; i--) {
+            int count = 0;
+            dic[A[i]]++;
+            if(dic[A[i]] > 1) 
+                mulfac *= dic[A[i]];
+            for(int j = i + 1; j < l; j++) 
+                if(A[j] < A[i])
+                    count++;
+            res += count * fac / mulfac;
+            fac *= (l - i);
+        }
+        return res;
+    }
+};

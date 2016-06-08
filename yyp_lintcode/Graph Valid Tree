@@ -1,0 +1,43 @@
+题目：判断图是否无环。
+解题：逐步去掉度为1的节点，如果有环，最后会剩下节点，否则最后都被去掉。
+	判断图是否有环的方法：http://www.cnblogs.com/TenosDoIt/p/3644225.html
+	并查集：http://www.jiuzhang.com/solutions/graph-valid-tree/
+	dfs：http://www.jianshu.com/p/c965d384fea3
+class Solution {
+public:
+    /**
+     * @param n an integer
+     * @param edges a list of undirected edges
+     * @return true if it's a valid tree, or false
+     */
+    bool validTree(int n, vector<vector<int> >& edges) {
+        // Write your code here
+        unordered_map<int, vector<int> >relation;
+        unordered_map<int, int>degree;
+        for(auto i: edges) {
+            relation[i[0]].push_back(i[1]);
+            relation[i[1]].push_back(i[0]);
+            degree[i[0]]++;
+            degree[i[1]]++;
+        }
+        queue<int>q;
+        for(int i = 0; i < n; i++) {
+            if(degree[i] == 0) return n == 1 && edges.size() == 0;
+            if(degree[i] == 1) q.push(i);
+        }
+        while(!q.empty()) {
+            int tmp = q.front();
+            q.pop();
+            degree.erase(tmp);
+            for(auto i: relation[tmp]) {
+                degree[i]--;
+                if(degree[i] == 1)
+                    q.push(i);
+            }
+        }
+        for(auto i: degree) {
+            if(i.second > 1) return false;
+        }
+        return true;
+    }
+};

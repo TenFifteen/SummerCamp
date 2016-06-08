@@ -1,0 +1,67 @@
+题目：矩阵zigzag遍历。
+解题：四个方向分别处理。看了网上的解法，找规律：
+http://www.kancloud.cn/kancloud/data-structure-and-algorithm-notes/73108
+class Solution {
+public:
+    /**
+     * @param matrix: a matrix of integers
+     * @return: a vector of integers
+     */
+    //http://www.kancloud.cn/kancloud/data-structure-and-algorithm-notes/73108
+    vector<int> printZMatrix(vector<vector<int> > &matrix) {
+        vector<int>res;
+        if(matrix.size() == 0) return res;
+        int m = matrix.size() - 1, n = matrix[0].size() - 1;
+        for(int i = 0; i <= m + n; i++) {
+            if(i % 2 == 0) {
+                for(int j = i; j >= 0; j--) {
+                    if(j <= m &&i - j <= n)
+                        res.push_back(matrix[j][i - j]);
+                }
+            } else {
+                for(int j = 0; j <= i; j++) {
+                    if(j <= m && i - j <= n)
+                        res.push_back(matrix[j][i - j]);
+                }
+            }
+        }
+        return res;
+    }
+    /*vector<int> printZMatrix(vector<vector<int> > &matrix) {
+        // write your code here
+        vector<int>res;
+        if(matrix.size() == 0) return res;
+        int i = 0, j = 0, m = matrix.size(), n = matrix[0].size();
+        res.push_back(matrix[0][0]);
+        while(i < m && j < n) {
+            j++;
+            if(j >= n) {
+                j--;
+                i++;
+            }
+            if(i < m && j < n)
+                res.push_back(matrix[i][j]);
+            
+            while(i + 1 < m && j - 1 >= 0) {
+                i += 1;
+                j -= 1;
+                res.push_back(matrix[i][j]);
+            }
+            
+            i++;
+            if(i >= m) {
+                i--;
+                j++;
+            }
+            if(i < m && j < n)
+                res.push_back(matrix[i][j]);
+            
+            while(i - 1 >= 0 && j + 1 < n) {
+                i -= 1;
+                j += 1;
+                res.push_back(matrix[i][j]);
+            }
+        }
+        return res;
+    }*/
+};

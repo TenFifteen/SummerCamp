@@ -1,0 +1,45 @@
+题目：求整数字符串的二进制表示。
+解题：整数和分数部分分开求解。注意数据范围。网上的做法如下链接，用的乘2的方式。
+http://www.jianshu.com/p/14711c908698
+class Solution {
+public:
+    /**
+     *@param n: Given a decimal number that is passed in as a string
+     *@return: A string
+     */
+    string binaryRepresentation(string n) {
+        // wirte your code here
+        string a = "", b = "", res = "", frac = "";
+        int i, flag = 1;
+        if(n[0] == '-') {
+            flag = -1;
+            n = n.substr(1);
+        }
+        for(i = 0; i < n.size() && n[i] != '.'; i++);
+        a = n.substr(0, i);
+        if(i != n.size()) b = n.substr(i + 1);
+        
+        long long x = atoi(a.c_str());
+        double y = double(atol(b.c_str())) / pow(10.0, b.size());
+        if(x == 0) res = "0";
+        while(x != 0) {
+            res = to_string(x & 0x1) + res;
+            x >>= 1;
+        }
+        if(y == 0) return flag == -1 ? "-" + res: res;
+        
+        double cur = 1;
+        while(y > 0) {
+            cur *= pow(2, -1);
+            if(y >= cur) {
+                y -= cur;
+                frac += '1';
+            } else {
+                frac += '0';
+                if(frac.size() >= 32) 
+                    return "ERROR";
+            }
+        }
+        return (flag == -1 ? "-" : "") + res + "." + frac;
+    }
+};

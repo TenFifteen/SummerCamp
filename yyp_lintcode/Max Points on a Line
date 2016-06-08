@@ -1,0 +1,48 @@
+题目：求一堆点能形成的线中包含最多点的线上的点数。
+解题：注意最大公约数的求法以及垂直的情况。
+/**
+ * Definition for a point.
+ * struct Point {
+ *     int x;
+ *     int y;
+ *     Point() : x(0), y(0) {}
+ *     Point(int a, int b) : x(a), y(b) {}
+ * };
+ */
+class Solution {
+public:
+    /**
+     * @param points an array of point
+     * @return an integer
+     */
+    int gcd(int a, int b) {
+        if(b == 0) return a;
+        return gcd(b, a % b);
+    }
+    int maxPoints(vector<Point>& points) {
+        // Write your code here
+        int res = 0, l = points.size();
+        for(int i = 0; i < l; i++) {
+            map<pair<int, int>, int>dic;
+            int curmax = 0, same = 0, vertical = 0;
+            for(int j = i + 1; j < l; j++) {
+                int dx = points[i].x - points[j].x;
+                int dy = points[i].y - points[j].y;
+                if(dx == 0 && dy == 0)
+                    same++;
+                else if(dx == 0)
+                    vertical++;
+                else {
+                    int t = gcd(dx, dy);
+                    dx /= t;
+                    dy /= t;
+                    pair<int, int>p = make_pair(dx, dy);
+                    dic[p]++;
+                    curmax = max(curmax, dic[p]);
+                }
+            }
+            res = max(res, max(curmax + same, vertical) + 1);
+        }
+        return res;
+    }
+};

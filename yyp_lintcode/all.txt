@@ -28,6 +28,7 @@
  Maximum Subarray III	k段最大连续字段和。动归，转移方程为f[i][j] = max(f[i][j], f[i][j - 1], max(f[i - 1][m] + m-j连续和))
  Minimum Subarray	最小连续字段和。
  Maximum Subarray Difference	求数组中两个子集A和B的最大差, |SUM(A) - SUM(B)|.综合最大字段和、最小字段和、两段最大和。对i，res= max(leftmax[i - 1] - rightmin[i], rightmax[i] - leftmin[i - 1]);
+ Maximum Product Subarray	最大连续子数组积。同最大和。动归。注意maxsofar和minsofar的更新时间。
  Majority Number	超过一半的数。
  Majority Number II    超过1/3的数。
  Majority Number III 超过1/k的数。用数组保存当前的k个数，如果当前数与其中一个相等或者其中一个count==0，则count+1；否则，所有数组中的数的count--；
@@ -35,6 +36,9 @@
  Product of Array Exclude Itself	除了自身其他所有数的乘积，不用除法。从左往右扫记录left[i]，从右往左扫计算res。
  Previous Permutation    前一个排列。找第一个nums[i] > nums[i + 1]的位置，与后面小于该数的最大数交换，然后逆序即可。
  Next Permutation    后一个排列。同前一个排列。
+ Next Permutation II    字典序的后一个排列。同后一个排列，只是比较换成字符串比较即可。
+ *Permutation Index	求给定排列在全排列中的编号。
+ ***Permutation Index II 	求给定排列在全排列中的编号，有重复数字。
  String to Integer II    字符串转整数。注意前有+，-以及long long也可能超的情况。
  Reverse Words in a String    翻转字符串。先去掉多余空格，然后全部逆序，再对每个单词分别逆序即可。注意第一个和最后一个位置的处理。
  Compare Strings	判断字符串B的字符是否都在A中，开始用了动归，后发现只需要对字符个数操作即可。
@@ -128,7 +132,46 @@
  Minimum Depth of Binary Tree	二叉树的最小深度。
  *Word Search	在二维字符数组中查找单词。dfs
  ***Word Search II    在二维字符数组中查找一组单词。字典树+dfs。注意利用字典树的位置以及更新visited的位置,以及利用set去重。
-
+ Two Strings Are Anagrams	判断两个单词是否是变位词。map统计字符个数即可
+ Unique Characters	判断单词中字符是否重复。map
+ Best Time to Buy and Sell Stock	只准完成一次交易，求最大收益
+ Best Time to Buy and Sell Stock II    可以完成无限次交易，求最大收益
+ **Best Time to Buy and Sell Stock III    可以完成2次交易，求最大收益
+ Best Time to Buy and Sell Stock IV    可以完成k次交易，求最大收益
+ Merge Intervals    排序，合并。注意compare方法的输入参数是const &
+ Insert Intervals    插入区间。先找插入位置，然后将与该区间有交集的区间合并入该区间。
+ Rotate Image    旋转图像。先沿对角线交换i<jswap(matrix[i][j], matrix[j][i])，然后每行逆序即可。
+ Set Matrix Zeroes	将矩阵中0所在的行和列都转为0.用第一行和第一列标记。第一行和第一列用两个变量标记。
+ Unique Binary Search Trees	一个有序数列形成不同二叉搜索树的个数。
+ Unique Binary Search Trees II  一个有序数列形成不同二叉搜索树的所有方案。
+ ***Number of Airplanes in the Sky    给定飞机的航行时间，问天上同时最多有多少飞机。
+ Rotate List    旋转链表。注意k对长度取模。
+ Add Two Numbers	将两个链表代表的数字相加。
+ Nth to Last Node in List    求链表倒数第n个节点。两指针。
+ Merge Two Sorted Lists	合并两个有序链表。
+ ***Burst Balloons    气球爆炸。动归。
+ Anagrams	求字符串数组中所有有颠倒字符字符串的字符串。字符串排序+hashmap
+ Remove Element	移出数组中等于elem的元素，返回新长度。
+ Remove Nth Node From End of List    移除链表中倒数第n个节点。两个指针。注意删除头节点的情况。
+ Insertion Sort List    对链表插入排序。注意将新链表的尾部设为NULL.
+ Invert Binary Tree    翻转二叉树。递归或者层次遍历。
+ Route Between Two Nodes in Graph    判断图中是否存在从s到t的路径。广搜。注意记录节点是否访问过。
+ Convert Sorted Array to Binary Search Tree With Minimal Height    将有序数组转成最矮的二叉搜索树。 二分。
+ Flip Bits	将二进制m变成n需要变换的位数。异或，数1的个数即可。
+ *Delete Digits	删除字符串中k位，使剩下的数最大。贪心，栈模拟
+ *Largest Number    用数组中的数生成最大的数。排序，排序算法s + t < t + s;
+ Spiral Matrix    螺旋矩阵遍历。上下左右各用一个变量标识即可。
+ *Spiral Matrix II    往螺旋矩阵填数字。四个方向填写。
+ *Matrix Zigzag Traversal	矩阵zigzag遍历。四个方向分别处理。
+ First Missing Positive	返回数组中第一个丢失的正整数。
+ Gas Station	每个加油站都有gas[i]和cost[i]，问能否转一圈。对每个点先cost[i] = gas[i] - cost[i];然后遍历，若当前count=0，更新index为下一个节点。
+ **Max Points on a Line    求一堆点能形成的线中包含最多点的线上的点数。注意最大公约数的求法以及垂直的情况。
+ ***Binary Representation	求整数字符串的二进制表示。整数和分数部分分开求解。注意数据范围
+ ***Update Bits	m，n都是32位整数，更改n中i到j位使之等于m。将n中i到j变为0，然后将m左移到i和j位的位置与之或即可。另注意，计算机存的是补码。
+ ***Wood Cut    将数组中的长度的木头割成k段相等的长度，使得每段最大。二分！！
+ Find the Missing Number    一个数组中有n个不同数，范围0-n，求丢失的数。所有数和下标异或即可。注意返回的是res ^ nums.size()。
+ ***Graph Valid Tree    判断图是否无环。逐步去掉度为1的节点，如果有环，最后会剩下节点，否则最后都被去掉。
+ Longest Palindromic Substring	最长回文子串。从每个位置前后遍历即可。注意数据范围。
 
 
 
