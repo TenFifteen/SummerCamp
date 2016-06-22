@@ -20,7 +20,7 @@ void mysort(int v[], int left, int right)
 		}
 	}
 	swap(v, left, last);
-	
+
 	mysort(v, left, last-1);
 	mysort(v, last+1, right);
 }
@@ -35,7 +35,7 @@ void mysort(int v[], int left, int right)
  *        as add another digit in the left
  * Tips: see above
  */
-void nextPermutation(int* nums, int numsSize) 
+void nextPermutation(int* nums, int numsSize)
 {
 	if (numsSize == 0 || numsSize == 1) return;
 
@@ -45,7 +45,7 @@ void nextPermutation(int* nums, int numsSize)
 		temp--;
 		pre--;
 	}
-	
+
 	if (pre >= 0) {
 		int to_swap = temp, i;
 		for (i = temp; i < numsSize; ++i) {

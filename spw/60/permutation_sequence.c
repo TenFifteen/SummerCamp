@@ -12,14 +12,14 @@ int find = 0;
  * Problem: The set [1,2,3,…,n] contains a total of n! unique permutations.
  *          Given n and k, return the kth permutation sequence.
  * Solve: we use two ways: dfs and mathematical method
- * Tips: dfs: after invoing the dfs, if we find the right answer, we should
+ * Tips: dfs: after invoking the dfs, if we find the right answer, we should
  *            return immediately
  *      math: 1. basic idea: fill each bit one by one
- *            2. we can use (k-1) / fac[i-1] + 1 to get the ith bit 
+ *            2. we can use (k-1) / fac[i-1] + 1 to get the ith bit
  *               because k range [1...fac[n]], it begins from i, and / result
  *               range from 0, then we first sub k by 1 and add 1 at last
- *            3. each time we get the vitual digit(aslo the position of 1...n)
- *               but some of them have been used, then we will use the used 
+ *            3. each time we get the virtual digit(also the position of 1...n)
+ *               but some of them have been used, then we will use the used
  *               vector to get the real one.
  *  gdb is very friendly !!!
  */
@@ -39,7 +39,7 @@ void dfs(int n, int pos, char *result, int k)
 		result[pos] = '\0';
 		if (++count == k) {
 			find = 1;
-			return; 
+			return;
 		}
 	}
 
@@ -49,15 +49,15 @@ void dfs(int n, int pos, char *result, int k)
 			used[i] = 1;
 			result[pos] = i + '0';
 			dfs(n, pos+1, result, k);
-			// important !! otherwise the i will be added until n, 
+			// important !! otherwise the i will be added until n,
 			// that is to say, we will do something wrong additionally
-			if (find) return; 
+			if (find) return;
 			used[i] = 0;
 		}
 	}
 }
 
-char *getPermutation(int n, int k) 
+char *getPermutation(int n, int k)
 {
 	count = 0;
 	find = 0;
@@ -76,7 +76,7 @@ int get_real_digit(int n, int pos)
 				return i;
 	}
 }
-char *getPermutation1(int n, int k) 
+char *getPermutation1(int n, int k)
 {
 	memset(used, 0, sizeof(used));
 	char *result = malloc(sizeof(int) * (n+2));
@@ -90,7 +90,7 @@ char *getPermutation1(int n, int k)
 		result[i] = real_digit + '0';
 		used[real_digit] = 1;
 
-		k -= fac[n-1] * (digit - 1); 
+		k -= fac[n-1] * (digit - 1);
 		n--;
 	}
 	result[tn] = '\0';
