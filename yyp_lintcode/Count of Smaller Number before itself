@@ -1,0 +1,42 @@
+题目：数数组中位置在其前面且小于当前数的数的个数。
+解题：归并排序。注意排序的是下标。开始忘了返回值，导致一直re，还检查了半天额。。。。
+class Solution {
+public:
+   /**
+     * @param A: An integer array
+     * @return: Count the number of element before this element 'ai' is 
+     *          smaller than it and return count number array
+     */
+    vector<int> countOfSmallerNumberII(vector<int> &A) {
+        // write your code here
+        int l = A.size();
+        if(l == 0) return vector<int>();
+        vector<int>res(l, 0);
+        vector<int>index(l, 0);
+        for(int i = 0; i < l; i++)
+            index[i] = i;
+        helper(res, A, index, 0, l - 1);
+        return res;
+    }
+    void helper(vector<int>& res, vector<int>& A, vector<int>& index, int low, int high) {
+        if(low >= high) return;
+        int mid = (low + high) / 2;
+        helper(res, A, index, low, mid);
+        helper(res, A, index, mid + 1, high);
+        int i = low, j = mid + 1, r = 0;
+        vector<int>tmp(high - low + 1, 0);
+        while(j <= high) {
+            while(i <= mid  && A[index[j]] > A[index[i]])
+                tmp[r++] = index[i++];
+            res[index[j]] += i - low;
+            if(j <= high)
+                tmp[r++] = index[j++];
+        }
+        while(i <= mid) {
+            tmp[r++] = index[i++];
+        }
+        for(int x = 0; x < tmp.size(); x++)
+            index[x + low] = tmp[x];
+        return;
+    }
+};

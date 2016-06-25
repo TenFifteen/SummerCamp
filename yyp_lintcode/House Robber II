@@ -1,0 +1,28 @@
+题目：同I，只是房子是形成一个环形。
+解题：所以要么是0-n-1，要么是1-n.注意只有一个房子的情况。
+class Solution {
+public:
+    /**
+     * @param nums: An array of non-negative integers.
+     * return: The maximum amount of money you can rob tonight
+     */
+    int houseRobber2(vector<int>& nums) {
+        // write your code here
+        int a = 0, b = 0, tmp, res = 0;
+        if(nums.size() == 1) return nums[0];
+        for(int i = 0; i < nums.size() - 1; i++) {
+            tmp = max(b, a + nums[i]);
+            a = b;
+            b = tmp;
+        }
+        res = b;
+        a = 0;
+        b = 0;
+        for(int i = 1; i < nums.size(); i++) {
+            tmp = max(b, a + nums[i]);
+            a = b;
+            b = tmp;
+        }
+        return max(res, b);
+    }
+};

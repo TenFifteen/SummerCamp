@@ -1,0 +1,40 @@
+题目：将链表每k个元素翻转。
+解题：递归翻转即可。
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    /**
+     * @param head a ListNode
+     * @param k an integer
+     * @return a ListNode
+     */
+    ListNode *reverseKGroup(ListNode *head, int k) {
+        // Write your code here
+        int l = 0, i = 0;
+        ListNode * cur = head, *tmp, *tail = NULL;
+        while(cur != NULL && l < k) {
+            l++;
+            cur = cur->next;
+        }
+        if(l < k) return head;
+        ListNode * newhead = new ListNode(0);
+        cur = head;
+        while(cur != NULL && i < k) {
+            tmp = cur->next;
+            cur->next = newhead->next;
+            newhead->next = cur;
+            if(tail == NULL) tail = cur;
+            cur = tmp;
+            i++;
+        }
+        tail->next = reverseKGroup(cur, k);
+        return newhead->next;
+    }
+};

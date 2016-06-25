@@ -1,0 +1,26 @@
+题目：用三种颜色粉刷房子，两个相邻的房子颜色不同，不同的房子用不同的颜色费用不同，求粉刷n个房子的最少费用。
+解题：动归。代码可优化，见II。
+class Solution {
+public:
+    /**
+     * @param costs n x 3 cost matrix
+     * @return an integer, the minimum cost to paint all houses
+     */
+    int minCost(vector<vector<int> >& costs) {
+        // Write your code here
+        int l = costs.size();
+        vector<vector<int> >f(l + 1, vector<int>(3, INT_MAX));
+        f[0][0] = f[0][1] = f[0][2] = 0;
+        for(int i = 1; i <= l; i++) {
+            for(int j = 0; j < 3; j++) {
+                int tmp = INT_MAX;
+                for(int k = 0; k < 3; k++) {
+                    if(k != j)
+                        tmp = min(f[i - 1][k], tmp);
+                }
+                f[i][j] = costs[i - 1][j] + tmp;
+            }
+        }
+        return min(f[l][0], min(f[l][1], f[l][2]));
+    }
+};

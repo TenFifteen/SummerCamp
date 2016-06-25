@@ -1,0 +1,58 @@
+题目：插入和搜索单词。
+解题：字典树简单应用。
+class TrieNode {
+public:
+    TrieNode * child[26];
+    bool isleaf;
+    TrieNode() {
+        for(int i = 0; i < 26; i++)
+            child[i] = NULL;
+        isleaf = false;
+    }
+};
+class WordDictionary {
+public:
+    TrieNode * root;
+    WordDictionary() {
+        root = new TrieNode();
+    }
+    // Adds a word into the data structure.
+    void addWord(string word) {
+        // Write your code here
+        TrieNode * cur = root;
+        for(auto i: word) {
+            if(cur->child[i - 'a'] == NULL) {
+                TrieNode * node = new TrieNode();
+                cur->child[i - 'a'] = node;
+            }
+            cur = cur->child[i - 'a'];
+        }
+        cur->isleaf = true;
+    }
+
+    // Returns if the word is in the data structure. A word could
+    // contain the dot character '.' to represent any one letter.
+    bool search(string word) {
+        // Write your code here
+        return helper(word, root, 0);
+    }
+    bool helper(string &word, TrieNode * cur, int i) {
+        if(cur == NULL) return false;
+        if(i == word.size()) return cur->isleaf;
+        if(word[i] == '.') {
+            for(int k = 0; k < 26; k++) {
+                if(helper(word, cur->child[k], i + 1))
+                    return true;
+            }
+            return false;
+        } else {
+            if(cur->child[word[i] - 'a'] == NULL) return false;
+            return helper(word, cur->child[word[i] - 'a'], i + 1);
+        }
+    }
+};
+
+// Your WordDictionary object will be instantiated and called as such:
+// WordDictionary wordDictionary;
+// wordDictionary.addWord("word");
+// wordDictionary.search("pattern");

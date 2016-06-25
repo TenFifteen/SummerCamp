@@ -1,0 +1,26 @@
+题目：递归打印1-n位数字。 
+解题：根据前i位打印i+1数位。
+class Solution {
+public:
+    /**
+     * @param n: An integer.
+     * return : An array storing 1 to the largest number with n digits.
+     */
+    vector<int> numbersByRecursion(int n) {
+        // write your code here
+        vector<int>res;
+        helper(res, n);
+        return res;
+    }
+    void helper(vector<int>&res, int cur) {
+        if(cur <= 0) return;
+        helper(res, cur - 1);
+        int l = res.size(), add = pow(10, cur - 1);
+        for(int j = 1; j < 10; j++) {
+            res.push_back(add * j);
+            for(int i = 0; i < l; i++)
+                res.push_back(res[i] + add * j);
+        }
+        return;
+    }
+};

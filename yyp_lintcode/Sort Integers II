@@ -1,0 +1,73 @@
+题目：nlogn排序。
+解题：堆排，快排，归并排序。
+class Solution {
+public:
+    /**
+     * @param A an integer array
+     * @return void
+     */
+    void sortIntegers2(vector<int>& A) {
+        // Write your code here
+        //quicksort(A, 0, A.size() - 1);
+        //mergesort(A, 0, A.size() - 1);
+        heapsort(A);
+    }
+    void heapsort(vector<int>& A) {
+        int l = A.size();
+        for(int i = l / 2; i >= 0; i--) {
+            adjust(A, i, l - 1);
+        }
+        for(int i = l - 1; i >= 0; i--) {
+            swap(A[0], A[i]);
+            adjust(A, 0, i - 1);
+        }
+    }
+    void adjust(vector<int>& A, int i, int l) {
+        int  tmp;
+        while(i <= l) {
+            tmp = 2 * i + 1 > l ? INT_MIN : (2 * i + 2 > l ? A[2 * i + 1] : max(A[2 * i + 1], A[2 * i + 2]));
+            if(tmp == INT_MIN || tmp < A[i]) break;
+            if(tmp == A[2 * i + 1]) {
+                swap(A[i], A[2 * i + 1]);
+                i = 2 * i + 1;
+            } else {
+                swap(A[i], A[2 * i + 2]);
+                i = 2 * i + 2;
+            }
+        }
+    }
+    void mergesort(vector<int>& A, int left, int right) {
+        if(left >= right) return;
+        int mid = (left + right) / 2;
+        mergesort(A, left, mid);
+        mergesort(A, mid + 1, right);
+        vector<int>vec(right - left + 1, 0);
+        int i = left, j = mid + 1, r = 0;
+        while(i <= mid || j <= right) {
+            int tmp = i > mid ? A[j] : (j > right ? A[i] : min(A[i], A[j]));
+            vec[r++] = tmp;
+            if(i > mid || (j <= right && tmp == A[j])) j++;
+            else i++;
+        }
+        for(r = 0; r < vec.size(); r++)
+            A[r + left] = vec[r];
+    }
+    void quicksort(vector<int>& A, int left, int right) {
+        if(left < right) {
+            int mid = partition(A, left, right);
+            quicksort(A, left, mid - 1);
+            quicksort(A, mid + 1, right);
+        }
+    }
+    int partition(vector<int> &A, int left, int right) {
+        int tmp = A[left];
+        while(left < right) {
+            while(left < right && A[right] > tmp) right--;
+            if(left < right) A[left++] = A[right];
+            while(left < right && A[left] < tmp) left++;
+            if(left < right) A[right--] = A[left];
+        }
+        A[left] = tmp;
+        return left;
+    }
+};

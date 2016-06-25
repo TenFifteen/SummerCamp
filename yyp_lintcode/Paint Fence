@@ -1,0 +1,21 @@
+题目：粉刷栅栏。最多只能连续两个栅栏一个颜色。
+解题：动归，当前栅栏要么跟前一个颜色相同l2 * (k - 1)，要么不同l1 * (k - 1).
+
+class Solution {
+public:
+    /**
+     * @param n non-negative integer, n posts
+     * @param k non-negative integer, k colors
+     * @return an integer, the total number of ways
+     */
+    int numWays(int n, int k) {
+        // Write your code here
+        int l1 = k, l2 = k * k, l3;
+        for(int i = 2; i < n; i++) {
+            l3 = l2 * (k - 1) + l1 * (k - 1);
+            l1 = l2;
+            l2 = l3;
+        }
+        return n > 1 ? l2 : l1;
+    }
+};

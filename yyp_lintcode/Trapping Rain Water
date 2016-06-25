@@ -1,0 +1,27 @@
+题目：立方体间隔能存的最大雨水数。
+解题：两个指针，小的移动。
+class Solution {
+public:
+    /**
+     * @param heights: a vector of integers
+     * @return: a integer
+     */
+    int trapRainWater(vector<int> &heights) {
+        // write your code here
+        int l = heights.size();
+        if(l < 2) return 0;
+        int left = 0, right = l - 1, res = 0, lpre = 0, rpre = 0;
+        while(left < right) {
+            if(heights[left] < heights[right]) {
+                res += (lpre > heights[left] ? lpre - heights[left] : 0);
+                lpre = max(lpre, heights[left]);
+                left++;
+            } else {
+                res += (rpre > heights[right] ? rpre - heights[right] : 0);
+                rpre = max(rpre, heights[right]);
+                right--;
+            }
+        }
+        return res;
+    }
+};

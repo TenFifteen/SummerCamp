@@ -1,0 +1,44 @@
+题目：将表达式转为波兰式。
+解题：用栈模拟，遇到数字总是直接放入结果。运算符取决于优先级。注意括号。
+class Solution {
+public:
+    /**
+     * @param expression: A string array
+     * @return: The Reverse Polish notation of this expression
+     */
+    vector<string> convertToRPN(vector<string> &expression) {
+        // write your code here
+        vector<string>res;
+        stack<string>ops;
+        for(auto i: expression) {
+            if(i == "(") {
+                ops.push(i);
+            } else if(i == ")") {
+                while(!ops.empty() && ops.top() != "(") {
+                    res.push_back(ops.top());
+                    ops.pop();
+                }
+                ops.pop();
+            } else if(i == "+" || i == "-") {
+                while(!ops.empty() && ops.top() != "(") {
+                    res.push_back(ops.top());
+                    ops.pop();
+                }
+                ops.push(i);
+            } else if(i == "*" || i == "/") {
+                while(!ops.empty() && (ops.top() == "*" || ops.top() == "/")) {
+                    res.push_back(ops.top());
+                    ops.pop();
+                }
+                ops.push(i);
+            } else {
+                res.push_back(i);
+            }
+        }
+        while(!ops.empty()) {
+            res.push_back(ops.top());
+            ops.pop();
+        }
+        return res;
+    }
+};

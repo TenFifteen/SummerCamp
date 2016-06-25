@@ -1,0 +1,62 @@
+题目：给定字符串，判断能被断开成合法ip的方案数。
+解题：遍历即可。还是leetcode上的代码更简洁。
+/*
+public class Solution {
+    public List<String> restoreIpAddresses(String s) {
+        List<String> res = new ArrayList<String>();
+        int len = s.length();
+        for(int i = 1; i<4 && i<len-2; i++){
+            for(int j = i+1; j<i+4 && j<len-1; j++){
+                for(int k = j+1; k<j+4 && k<len; k++){
+                    String s1 = s.substring(0,i), s2 = s.substring(i,j), s3 = s.substring(j,k), s4 = s.substring(k,len);
+                    if(isValid(s1) && isValid(s2) && isValid(s3) && isValid(s4)){
+                        res.add(s1+"."+s2+"."+s3+"."+s4);
+                    }
+                }
+            }
+        }
+        return res;
+    }
+    public boolean isValid(String s){
+        if(s.length()>3 || s.length()==0 || (s.charAt(0)=='0' && s.length()>1) || Integer.parseInt(s)>255)
+            return false;
+        return true;
+    }
+}
+*/
+class Solution {
+public:
+    /**
+     * @param s the IP string
+     * @return All possible valid IP addresses
+     */
+    vector<string> restoreIpAddresses(string& s) {
+        // Write your code here
+        vector<string>res;
+        int l = s.size();
+        string p1, p2, p3, p4;
+        int x1, x2, x3, x4;
+        for(int i = 1; i <= 3; i++) {
+            p1 = s.substr(0, i);
+            x1 = atoi(p1.c_str());
+            if(l - i > 9 || l - i < 3 || x1 > 255 || (p1[0] == '0' && i != 1)) continue;
+            for(int j = 1; j <= 3; j++) {
+                p2 = s.substr(i, j);
+                x2 = atoi(p2.c_str());
+                if(l - i - j > 6 || l - i - j < 2 || x2 > 255 || (p2[0] == '0' && j != 1)) continue;
+                for(int k = 1; k <= 3; k++) {
+                    p3 = s.substr(i + j, k);
+                    x3 = atoi(p3.c_str());
+                    if(l - i - j - k > 3 || l - i - j - k < 1 || x3 > 255 || (p3[0] == '0' && k != 1))
+                        continue;
+                    p4 = s.substr(i + j + k);
+                    x4 = atoi(p4.c_str());
+                    if((p4[0] == '0' && l - i - j - k != 1) || x4 > 255)
+                        continue;
+                    res.push_back(p1 + "." + p2 + "." + p3 + "." + p4);
+                }
+            }
+        }
+        return res;
+    }
+};

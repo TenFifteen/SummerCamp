@@ -1,0 +1,44 @@
+题目：判断链表是否是回文链表。
+解题：找到链表中间，然后将后面逆序，然后比较即可。
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    /**
+     * @param head a ListNode
+     * @return a boolean
+     */
+    bool isPalindrome(ListNode* head) {
+        // Write your code here
+        ListNode * newhead = new ListNode(0);
+        if(head == NULL || head->next == NULL) return true;
+        ListNode * slow = head, * fast = head, *pre = head;
+        while(fast != NULL && fast->next != NULL) {
+            pre = slow;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        fast = slow;
+        pre->next = NULL;
+        while(fast != NULL) {
+            slow = fast->next;
+            fast->next = newhead->next;
+            newhead->next = fast;
+            fast = slow;
+        }
+        
+        newhead = newhead->next;
+        while(newhead != NULL && head != NULL) {
+            if(newhead->val != head->val) return false;
+            newhead = newhead->next;
+            head = head->next;
+        }
+        return true;
+    }
+};

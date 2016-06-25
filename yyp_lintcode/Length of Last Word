@@ -1,0 +1,15 @@
+题目：最后一个单词的长度。
+解题：遍历即可。
+class Solution {
+public:
+    /**
+     * @param s A string
+     * @return the length of last word
+     */
+    int lengthOfLastWord(string& s) {
+        // Write your code here
+        int i;
+        for(i = s.size() - 1; i >= 0 && s[i] != ' '; i--);
+        return s.size() - 1 - i;
+    }
+};

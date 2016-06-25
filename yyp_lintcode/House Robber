@@ -1,0 +1,19 @@
+题目：小偷盗窃，不能偷两个连续的房子。
+解题：动归。注意数据范围。
+class Solution {
+public:
+    /**
+     * @param A: An array of non-negative integers.
+     * return: The maximum amount of money you can rob tonight
+     */
+    long long houseRobber(vector<int> A) {
+        // write your code here
+        long long a = 0, b = 0, tmp;
+        for(auto i : A) {
+            tmp = max(b, a + i);
+            a = b;
+            b = tmp;
+        }
+        return b;
+    }
+};
