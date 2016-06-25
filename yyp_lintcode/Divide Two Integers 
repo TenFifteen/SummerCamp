@@ -1,0 +1,31 @@
+题目：两数相除。不用乘除取余运算。
+解题：位运算。
+class Solution {
+public:
+    /**
+     * @param dividend the dividend
+     * @param divisor the divisor
+     * @return the result
+     */
+    int divide(int dividend, int divisor) {
+        // Write your code here
+        int flag = (dividend < 0) ^ (divisor < 0);
+        long long res = 0, cur = labs(divisor), dvd = labs(dividend), mul = 1;
+        while(cur <= dvd) {
+            mul <<= 1;
+            cur <<= 1;
+        }
+        while(dvd > 0 && cur > 0) {
+            mul >>= 1;
+            cur >>= 1;
+            if(dvd >= cur) {
+                res += mul;
+                dvd -= cur;
+            }
+        }
+        res = flag == 0 ? res : -res;
+        if(res > INT_MAX || res < INT_MIN)
+            return 2147483647;
+        return res;
+    }
+};

@@ -1,0 +1,59 @@
+题目：求给定编号在全排列中的排列。
+解题：从高位往低位求。每次做排列的题都要错好几次！！！
+/*
+class Solution {
+public:
+    string getPermutation(int n, int k) {
+        vector<int>num;
+        string res;
+        int fab = 1;
+        k--;
+        for(int i = 1; i <= n; i++) {
+            num.push_back(i);
+            fab *= i;
+        }
+        for(int i = n - 1; i >= 0; i--) {
+            fab /= (i + 1);
+            int tmp = k / fab;
+            res += ('0' + num[tmp]);
+            num.erase(num.begin() + tmp);
+            k = k % fab;
+        }
+        return res;
+    }
+};
+*/
+class Solution {
+public:
+    /**
+      * @param n: n
+      * @param k: the kth permutation
+      * @return: return the k-th permutation
+      */
+    string getPermutation(int n, int k) {
+        int f = 1;
+        set<int>st;
+        for(int i = 1; i <= n; i++) {
+            f *= i;
+            st.insert(i);
+        }
+        f /= n;
+        string res = "";
+        k--;
+        for(int i = n - 1; i >= 1 && k > 0; i--) {
+            int tmp = k / f, n;
+            k -= tmp * f;
+            for(auto it = st.begin(); it != st.end(); it++, tmp--) {
+                if(tmp >= 0) n = *it;
+                else break;
+            }
+            res = res + to_string(n);
+            st.erase(n);
+            f /= i;
+        }
+        for(auto i: st) {
+            res += to_string(i);
+        }
+        return res;
+    }
+};

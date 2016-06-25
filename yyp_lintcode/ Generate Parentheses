@@ -1,0 +1,26 @@
+题目：生成n个左括号和右括号构成的所有合法括号方案。
+解题：递归。
+class Solution {
+public:
+    /**
+     * @param n n pairs
+     * @return All combinations of well-formed parentheses
+     */
+    vector<string> generateParenthesis(int n) {
+        // Write your code here
+        vector<string>res;
+        helper(res, "", n, n);
+        return res;
+    }
+    void helper(vector<string>& res, string cur, int left, int right) {
+        if(left < 0 || right < 0 || left > right) return;
+        if(left == 0 && right == 0) {
+            res.push_back(cur);
+            return;
+        }
+        if(left <= right)
+            helper(res, cur + "(", left - 1, right);
+        if(left < right)
+            helper(res, cur + ")", left, right - 1);
+    }
+};

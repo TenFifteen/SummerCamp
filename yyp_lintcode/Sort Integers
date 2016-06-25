@@ -1,0 +1,54 @@
+题目：n^2复杂度排序。
+解题：冒泡，插排，选排。
+class Solution {
+public:
+    /**
+     * @param A an integer array
+     * @return void
+     */
+    void sortIntegers(vector<int>& A) {
+        // Write your code here
+        //bubble(A);
+        //selection(A);
+        insertion(A);
+    }
+    void bubble(vector<int>& A) {
+        bool flag = false;
+        int l = A.size();
+        for(int i = 0; i < l; i++) {
+            flag = false;
+            for(int j = 0; j < l - 1; j++) {
+                if(A[j] > A[j + 1]) {
+                    flag = true;
+                    swap(A[j], A[j + 1]);
+                }
+            }
+            if(!flag) break;
+        }
+        return;
+    }
+    void selection(vector<int>& A) {
+        int l = A.size();
+        for(int i = 0; i < l; i++) {
+            int tmp = A[i], index = i;
+            for(int j = i + 1; j < l; j++) {
+                tmp = min(tmp, A[j]);
+                index = tmp == A[j] ? j : index;
+            }
+            swap(A[i], A[index]);
+        }
+        return;
+    }
+    void insertion(vector<int>& A) {
+        int l = A.size();
+        for(int i = 1; i < l; i++) {
+            int j = i - 1, tmp = A[i];
+            while(j >= 0 && A[j] > tmp) {
+                A[j + 1] = A[j]; 
+                j--;
+            }
+            A[j + 1] = tmp;
+        }
+        return;
+    }
+};

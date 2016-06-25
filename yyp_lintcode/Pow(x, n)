@@ -1,0 +1,37 @@
+题目：求x的n次方。
+解题：二分，注意负数。写的有点麻烦，leetcode代码较为简单。
+class Solution {
+public:
+    /**
+     * @param x the base number
+     * @param n the power number
+     * @return the result
+     */
+     /*
+     public double pow(double x, int n) {
+        if(n == 0)
+            return 1;
+        if(n<0){
+            n = -n;
+            x = 1/x;
+        }
+        return (n%2 == 0) ? pow(x*x, n/2) : x*pow(x*x, n/2);
+    }
+}
+*/
+    double myPow(double x, int n) {
+        // Write your code here
+        if(x == 0 || n == 1) return x;
+        if(n == 0) return 1;
+        int flag = n < 0 ? -1: 1;
+        n = abs(n);
+        int m = n / 2;
+        double res = myPow(x, m);
+        if(n % 2 == 1)
+            res = res * res * x;
+        else 
+            res = res * res;
+        if(flag == -1) return 1 / res;
+        else return res;
+    }
+};

@@ -1,0 +1,24 @@
+题目：求给定01矩阵中存在的最大正方形的面积。
+解题：动归。
+class Solution {
+public:
+    /**
+     * @param matrix: a matrix of 0 and 1
+     * @return: an integer
+     */
+    int maxSquare(vector<vector<int> > &matrix) {
+        // write your code here
+        int m = matrix.size();
+        if(m == 0) return 0;
+        int n = matrix[0].size(), res = 0;
+        vector<vector<int> >f(m + 1, vector<int>(n + 1, 0));
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if(matrix[i][j] == 0) continue;
+                f[i + 1][j + 1] = min(f[i][j + 1], min(f[i + 1][j], f[i][j])) + 1;
+                res = max(res, f[i + 1][j + 1]);
+            }
+        }
+        return res * res;
+    }
+};

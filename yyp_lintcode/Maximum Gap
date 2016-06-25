@@ -1,0 +1,73 @@
+题目：求无序数组中有序后相邻元素的最大差值。
+解题：桶排序。用map或者两个vector。
+class Solution {
+public:
+    /**
+     * @param nums: a vector of integers
+     * @return: the maximum difference
+     */
+    /*
+    class Solution {
+    public:
+        int maximumGap(vector<int>& nums) {
+            if(nums.size() < 2)
+                return 0;
+            int minnum = INT_MAX, maxnum = INT_MIN;
+            for(int i = 0; i < nums.size(); i++) {
+                minnum = min(nums[i], minnum);
+                maxnum = max(maxnum, nums[i]);
+            }
+            int gap = ceil(double(maxnum - minnum) / double(nums.size() - 1));
+            if(gap == 0) return 0;
+            vector<int>minbucket(nums.size(), INT_MAX);
+            vector<int>maxbucket(nums.size(), INT_MIN);
+            for(int i = 0; i < nums.size(); i++) {
+                int tmp  = (nums[i] - minnum) / gap;
+                minbucket[tmp] = min(nums[i], minbucket[tmp]);
+                maxbucket[tmp] = max(nums[i], maxbucket[tmp]);
+            }
+            int previous = maxbucket[0], maxgap = INT_MIN;
+            for(int i = 1; i < nums.size(); i++) {
+                if(minbucket[i] == INT_MAX)
+                    continue;
+                maxgap = max(maxgap, minbucket[i] - previous);
+                previous = maxbucket[i];
+            }
+            return maxgap;
+        }
+    };
+    */
+    int maximumGap(vector<int> nums) {
+        // write your code here
+        int l = nums.size();
+        if(l < 2) return 0;
+        int minnum = INT_MAX, maxnum = INT_MIN, res = 0;
+        for(auto i: nums) {
+            minnum = min(minnum, i);
+            maxnum = max(maxnum, i);
+        }
+        int gap = ceil((maxnum - minnum) / double(l - 1));
+        if(maxnum == minnum) return 0;
+        map<int, vector<int> >bucket;
+        for(auto i: nums) {
+            int tmp = (i - minnum) / gap;
+            vector<int>v;
+            if(bucket.count(tmp) == 0) {
+                v.push_back(i);
+                v.push_back(i);
+            } else {
+                v = bucket[tmp];
+                v[0] = min(v[0], i);
+                v[1] = max(v[1], i);
+            }
+            bucket[tmp] = v;
+        }
+        int premax = minnum;
+        for(auto i: bucket) {
+            vector<int>v = i.second;
+            res = max(res, v[0] - premax);
+            premax = v[1];
+        }
+        return res;
+    }
+};

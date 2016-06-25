@@ -1,0 +1,30 @@
+题目：罗马数字转整数。
+解题：遍历即可。
+class Solution {
+public:
+    /**
+     * @param s Roman representation
+     * @return an integer
+     */
+    int romanToInt(string& s) {
+        // Write your code here
+        int res = 0;
+        unordered_map<char, int>dic;
+        dic['I'] = 1;
+        dic['V'] = 5;
+        dic['X'] = 10;
+        dic['L'] = 50;
+        dic['C'] = 100;
+        dic['D'] = 500;
+        dic['M'] = 1000;
+        char pre = ' ';
+        for(auto i: s) {
+            if(pre != ' ' && dic[pre] < dic[i]) {
+                res -= dic[pre] * 2;
+            }
+            res += dic[i];
+            pre = i;
+        }
+        return res;
+    }
+};

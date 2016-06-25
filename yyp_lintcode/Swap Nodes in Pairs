@@ -1,0 +1,32 @@
+题目：交换链表中两两相邻的节点。
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    /**
+     * @param head a ListNode
+     * @return a ListNode
+     */
+    ListNode* swapPairs(ListNode* head) {
+        // Write your code here
+        ListNode * newhead = new ListNode(0), *cur;
+        ListNode *tail = newhead, *tmp; 
+        while(head != NULL && head->next != NULL) {
+            tmp = head->next->next;
+            cur = head->next;
+            tail->next = cur;
+            cur->next = head;
+            head->next = tmp;
+            head = tmp;
+            tail = tail->next->next;
+        }
+        tail->next = head;
+        return newhead->next;
+    }
+};

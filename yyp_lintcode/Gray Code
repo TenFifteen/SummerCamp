@@ -1,0 +1,25 @@
+题目：打印n位格雷码。
+解题：n位格雷码由n-1位得到。
+class Solution {
+public:
+    /**
+     * @param n a number
+     * @return Gray code
+     */
+    vector<int> grayCode(int n) {
+        // Write your code here
+        vector<int>res;
+        res.push_back(0);
+        res.push_back(1);
+        if(n == 0) return vector<int>(1, 0);
+        if(n == 1) return res;
+        int mul = 1;
+        for(int i = 2; i <= n; i++) {
+            mul <<= 1;
+            int l = res.size();
+            for(int j = l - 1; j >= 0; j--)
+                res.push_back(mul + res[j]);
+        }
+        return res;
+    }
+};

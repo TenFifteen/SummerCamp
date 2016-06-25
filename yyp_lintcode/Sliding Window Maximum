@@ -1,0 +1,23 @@
+题目：滑动窗口内的最大值。
+题目：用双端队列实现。队列中保存能输出的值，注意队列中存的是下标，为了去掉窗口外的元素
+class Solution {
+public:
+    /**
+     * @param nums: A list of integers.
+     * @return: The maximum number inside the window at each moving.
+     */
+    vector<int> maxSlidingWindow(vector<int> &nums, int k) {
+        // write your code here
+        deque<int>q;
+        vector<int>res;
+        for(int i = 0; i < nums.size(); i++) {
+            if(i - q.front() >= k) q.pop_front();
+            while(!q.empty() && nums[i] > nums[q.back()])
+                q.pop_back();
+            q.push_back(i);
+            if(i >= k - 1)
+                res.push_back(nums[q.front()]);
+        }
+        return res;
+    }
+};

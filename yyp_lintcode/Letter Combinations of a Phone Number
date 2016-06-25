@@ -1,0 +1,31 @@
+题目：手机上数字代表的字母的组合。
+解题：遍历添加即可。
+class Solution {
+public:
+    /**
+     * @param digits A digital string
+     * @return all posible letter combinations
+     */
+    vector<string> letterCombinations(string& digits) {
+        // Write your code here
+        string dic[] = {" ", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        vector<string>res;
+        string tmp = "";
+        for(auto i: digits) {
+            vector<string>vec;
+            string cur = dic[i - '0'];
+            int l = res.size();
+            for(auto j: cur) {
+                if(l == 0) {
+                    vec.push_back(tmp + j);
+                } else {
+                    for(int k = 0; k < l; k++) {
+                        vec.push_back(res[k] + j);
+                    }
+                }
+            }
+            res = vec;
+        }
+        return res;
+    }
+};

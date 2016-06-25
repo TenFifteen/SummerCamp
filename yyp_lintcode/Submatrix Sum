@@ -1,0 +1,40 @@
+题目：矩阵中子矩阵和为0. 
+解题：固定两行，移动列，等于0即两个列的取值相同。注意行号和列号。
+class Solution {
+public:
+    /**
+     * @param matrix an integer matrix
+     * @return the coordinate of the left-up and right-down number
+     */
+    vector<vector<int> > submatrixSum(vector<vector<int> >& matrix) {
+        // Write your code here
+        vector<vector<int> >res(2, vector<int>(2, 0));
+        int m = matrix.size();
+        if(m == 0) return vector<vector<int> >();
+        int n = matrix[0].size(), cur = 0;
+        vector<vector<int> > sum(m + 1, vector<int>(n + 1, 0));
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                sum[i + 1][j + 1] = sum[i + 1][j] + sum[i][j + 1] - sum[i][j] + matrix[i][j];
+            }
+        }
+        for(int i = 0; i < m; i++) {
+            for(int j = i + 1; j <= m; j++) {
+                unordered_map<int, int>buff;
+                for(int k = 0; k <= n; k++) {
+                    int tmp = sum[j][k] - sum[i][k];
+                    if(buff.count(tmp) != 0) {
+                        res[0][0] = i;
+                        res[0][1] = buff[tmp];
+                        res[1][0] = j - 1;
+                        res[1][1] = k - 1;
+                        return res;
+                    } else {
+                        buff[tmp] = k ;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+};

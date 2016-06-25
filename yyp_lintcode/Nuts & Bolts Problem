@@ -1,0 +1,54 @@
+题目：螺钉螺母匹配问题，只能比较螺钉和螺母。
+解法：二分。注意写法，第一个partition为了让相等的在中间，left，right交换完后不移动。
+/**
+ * class Comparator {
+ *     public:
+ *      int cmp(string a, string b);
+ * };
+ * You can use compare.cmp(a, b) to compare nuts "a" and bolts "b",
+ * if "a" is bigger than "b", it will return 1, else if they are equal,
+ * it will return 0, else if "a" is smaller than "b", it will return -1.
+ * When "a" is not a nut or "b" is not a bolt, it will return 2, which is not valid.
+*/
+class Solution {
+public:
+    /**
+     * @param nuts: a vector of integers
+     * @param bolts: a vector of integers
+     * @param compare: a instance of Comparator
+     * @return: nothing
+     */
+    void sortNutsAndBolts(vector<string> &nuts, vector<string> &bolts, Comparator compare) {
+        // write your code here
+        int l = nuts.size();
+        if(l < 2) return;
+        helper(nuts, bolts, compare, 0, l - 1, 0, l - 1);
+        return;
+    }
+    void helper(vector<string> &nuts, vector<string> &bolts, Comparator compare, int nl, int nr, int bl, int br) {
+        if(nl >= nr || bl >= br) return;
+        int index1 = -1, index2 = -1;
+        string cur = nuts[nl], tmp = "";
+        int left = bl, right = br;
+        while(left < right) {
+            while(left < right && compare.cmp(cur, bolts[right]) == -1) right--;
+            while(left < right && compare.cmp(cur, bolts[left]) == 1) left++;
+            if(left < right) {
+                swap(bolts[left], bolts[right]);
+            }
+        }
+        tmp = bolts[left];
+        index2 = left;
+        left = nl;
+        right = nr;
+        while(left < right) {
+            while(left < right && compare.cmp(nuts[right], tmp) == 1) right--;
+            if(left < right) nuts[left++] = nuts[right];
+            while(left < right && compare.cmp(nuts[left], tmp) == -1) left++;
+            if(left < right) nuts[right--] = nuts[left];
+        }
+        nuts[left] = cur;
+        helper(nuts, bolts, compare, nl, left - 1, bl, index2 - 1);
+        helper(nuts, bolts, compare, left + 1, nr, index2 + 1, br);
+    }
+};

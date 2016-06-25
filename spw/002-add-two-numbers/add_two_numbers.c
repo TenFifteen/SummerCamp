@@ -68,4 +68,48 @@ struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
 	}
 
 	return head;
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode *dummy = new ListNode(0);
+        ListNode *tail = dummy;
+
+        int aside = 0;
+        while (l1 || l2) {
+            ListNode *now = NULL;
+            if (l1) {
+                aside += l1->val;
+                now = l1;
+                l1 = l1->next;
+            }
+
+            if (l2) {
+                aside += l2->val;
+                now = l2;
+                l2 = l2->next;
+            }
+
+            now->val = aside % 10;
+            aside /= 10;
+            tail->next = now;
+            tail = now;
+        }
+
+        if (aside) {
+            tail->next = new ListNode(aside);
+        } else {
+            tail->next = NULL;
+        }
+
+        return dummy->next;
+    }
+};
 }

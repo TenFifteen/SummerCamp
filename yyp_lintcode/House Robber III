@@ -1,0 +1,33 @@
+题目：房子为树状的，不能同时偷父节点和子节点。
+解题：简单的递归动归会超时，需要返回一个vector，存储偷和不偷当前节点。还可以用map记录。
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param root: The root of binary tree.
+     * @return: The maximum amount of money you can rob tonight
+     */
+    int houseRobber3(TreeNode* root) {
+        // write your code here
+        vector<int>res = helper(root);
+        return max(res[0], res[1]);
+    }
+    vector<int> helper(TreeNode * root) {
+        vector<int>res(2, 0);
+        if(root == NULL) return res;
+        vector<int> x, y;
+        x = helper(root->left);
+        y = helper(root->right);
+        res[0] = max(x[0], x[1]) + max(y[0], y[1]);
+        res[1] = root->val + x[0] + y[0];
+        return res;
+    }
+};
