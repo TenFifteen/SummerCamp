@@ -1,0 +1,25 @@
+题目：求两个数组交集，重复元素也输出。
+解题：用map
+class Solution {
+public:
+    /**
+     * @param nums1 an integer array
+     * @param nums2 an integer array
+     * @return an integer array
+     */
+     vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        // Write your code here
+        vector<int>res;
+        unordered_map<int,int>s, t;
+        for(auto i: nums1) {
+            s[i]++;
+        }
+        for(auto i: nums2) {
+            if(s.find(i) != s.end() && s[i] > 0) {
+                res.push_back(i);
+                s[i]--;
+            }
+        }
+        return res;
+    }
+};

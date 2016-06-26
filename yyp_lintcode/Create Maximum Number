@@ -1,0 +1,52 @@
+题目：用两个数组的数生成包含k个数的最大数。
+解题：注意细节！！！
+class Solution {
+public:
+    /**
+     * @param nums1 an integer array of length m with digits 0-9
+     * @param nums2 an integer array of length n with digits 0-9
+     * @param k an integer and k <= m + n
+     * @return an integer array
+     */
+    vector<int> maxNumber(vector<int>& nums1, vector<int>& nums2, int k) {
+        // Write your code here
+        int l1 = nums1.size(), l2 = nums2.size();
+        vector<int>res(k, 0), t1, t2, tmp;
+        for(int i = max(0, k - l2); i <= min(l1, k); i++) {
+            t1 = maxarray(nums1, i);
+            t2 = maxarray(nums2, k - i);
+            tmp = merge(t1, t2, k);
+            if(comp(tmp, res, 0, 0)) res = tmp;
+        }
+        return res;
+    }
+    vector<int>maxarray(vector<int>&nums, int k) {
+        vector<int>res(k, 0);
+        int l = nums.size();
+        for(int i = 0, j = 0; i < l; i++) {
+            while(j > 0 && l - i + j > k && nums[i] > res[j - 1]) {
+                j--;
+            }
+            if(j < k)
+                res[j++] = nums[i];
+        }
+        return res;
+    }
+    vector<int>merge(vector<int>& n1, vector<int>& n2, int k) {
+        vector<int>res(k, 0);
+        for(int i = 0, a = 0, b = 0; i < k; i++) {
+            if(comp(n1, n2, a, b)) {
+                res[i] = n1[a++];
+            } else {
+                res[i] = n2[b++];
+            }
+        }
+        return res;
+    }
+    bool comp(vector<int>& n1, vector<int>& n2, int i, int j) {
+        for(;i < n1.size() && j < n2.size(); i++, j++)
+            if(n1[i] != n2[j]) break;
+        if(j == n2.size() || (i < n1.size() && n1[i] > n2[j])) return true;
+        return false;
+    }
+};

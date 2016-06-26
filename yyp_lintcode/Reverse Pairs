@@ -1,0 +1,31 @@
+题目：输出数组中的逆序对个数。
+解题：归并排序。
+class Solution {
+public:
+    /**
+     * @param A an array
+     * @return total of reverse pairs
+     */
+    long long reversePairs(vector<int>& A) {
+        // Write your code here
+        if(A.size() < 2) return 0;
+        return helper(A, 0, A.size() - 1);
+    }
+    long long helper(vector<int>& A, int low, int high) {
+        if(high - low < 1) return 0;
+        int mid = (low + high) / 2, count = 0;
+        int x = helper(A, low, mid);
+        int y = helper(A, mid + 1, high);
+        int i = low, j = mid + 1, r = 0, tmp;
+        vector<int>vec(high - low + 1, 0);
+        while(i <= mid || j <= high) {
+            tmp = i > mid ? A[j] : (j > high ? A[i] : min(A[i], A[j]));
+            if(i <= mid && tmp == A[i]) { i++; count += j - mid - 1; }
+            else j++;
+            vec[r++] = tmp;
+        }
+        for(i = 0; i < vec.size(); i++)
+            A[i + low] = vec[i];
+        return count + x + y;
+    }
+};

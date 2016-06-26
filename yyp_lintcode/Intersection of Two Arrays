@@ -1,0 +1,22 @@
+题目：求两个数组的交集。
+解题：用两个set。三种方法：http://www.jiuzhang.com/solutions/intersection-of-two-arrays/
+class Solution {
+public:
+    /**
+     * @param nums1 an integer array
+     * @param nums2 an integer array
+     * @return an integer array
+     */
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        // Write your code here
+        unordered_set<int>s, t;
+        for(auto i: nums1) {
+            s.insert(i);
+        }
+        for(auto i: nums2) {
+            if(s.find(i) != s.end())
+                t.insert(i);
+        }
+        return vector<int>(t.begin(), t.end());
+    }
+};

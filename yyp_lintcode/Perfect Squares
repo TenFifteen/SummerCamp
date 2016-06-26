@@ -1,0 +1,41 @@
+题目：求给定n能由最少多少个平方数构成和。
+解题：注意用一维动归，不然超出空间限制。
+/*
+class Solution {
+public:
+    int numSquares(int n) {
+        vector<int>f(n + 1, INT_MAX);
+        f[0] = 0;
+        for(int i = 1; i <= n; i++) {
+            for(int j = 1; j * j <= i; j++) {
+                f[i] = min(f[i - j * j] + 1, f[i]);
+            }
+        }
+        return f[n];
+    }
+};
+*/
+class Solution {
+public:
+    /**
+     * @param n a positive integer
+     * @return an integer
+     */
+    int numSquares(int n) {
+        // Write your code here
+        int res = 0;
+        vector<int>square;
+        for(int i = 1; i * i <= n; i++)
+            square.push_back(i * i);
+        int l = square.size();
+        vector<int>f(n + 1, INT_MAX);
+        f[0] = 0;
+        for(int i = 1; i <= n; i++) {
+            for(int j = 1; j <= l; j++) {
+                int tmp = i >= square[j - 1] ? f[i - square[j - 1]] : INT_MAX - 1;
+                f[i] = min(f[i], tmp + 1);
+            }
+        }
+        return f[n];  
+    }
+};

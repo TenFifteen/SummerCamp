@@ -108,6 +108,7 @@
  Distinct Subsequences	在S中不同的子序列T的数目。动归。f[i][j] += f[i - 1][j - 1]+f[i - 1][j];
  ***Minimum Adjustment Cost    最小编辑距离。动归。
  **Largest Rectangle in Histogram	条形图中的最大矩形。栈中保存一个递增的序列。
+ **Maximal Rectangle	矩阵中的最大矩形。对每一行应用Largest Rectangle in Histogram的算法即可。
  Longest Consecutive Sequence    最长连续序列。hash。
  Topological Sorting	图的拓扑排序。
  Hash Function	将字符串用哈希函数转为整数。注意时刻%。
@@ -238,6 +239,36 @@
  Sort Integers II    nlogn排序。堆排，快排，归并排序。
  **Add and Search Word    插入和搜索单词。字典树简单应用。
  Binary Tree Paths    二叉树从根到叶子的路径。递归遍历即可。
+ Surrounded Regions	将x包围的地区变成x。深搜。
+ Happy Number    判断一个数是否是幸福数。
+ *Toy Factory	玩具工厂。实现纯虚函数的继承。注意const。即子类与父类函数要一致。
+ Shape Factory	形状工厂。实现纯虚函数的继承。
+ ***Mini Twitter	设计题，实现tweeter。注意调用静态方法用::域操作符，而不是.操作符！getNewsFeed函数注意用set实现。
+ ***Create Maximum Number    用两个数组的数生成包含k个数的最大数。注意细节！！！
+ ***Wiggle Sort    变换乱序数组使得nums[0] <= nums[1] >= nums[2] <= nums[3]... 找到中位数，然后三路排序！
+ ***Wiggle Sort II    变换乱序数组使得nums[0] < nums[1] > nums[2] < nums[3].... 同上
+ *Perfect Squares	求给定n能由最少多少个平方数构成和。注意用一维动归，不然超出空间限制。
+ ***Decode Ways	字母数字转码方式。递归超时。动归！但从前往后注意判断s[i - 2]!='0'的情况。从后往前不需要判断。还要注意判断不合法的情况。
+ *Swap Two Nodes in Linked List    交换链表中两个节点。先找到两个节点的前驱，然后交换。注意需要单独处理两个节点相邻的情况！注意细节！！
+ Ugly Number    判断一个数是否是丑陋数。
+ Super Ugly Number    输出第n个超级丑陋数。用下标数组！
+ Left Pad    左对齐输出字符串。
+ *Reverse Pairs    输出数组中的逆序对个数。
+ Move Zeroes    将数组中的0移到最后。
+ Flatten Nested List Iterator	将复合数组展平。递归调用
+ Intersection of Two Arrays	求两个数组的交集。用两个set。三种方法见网上
+ Intersection of Two Arrays II    求两个数组交集，重复元素也输出,用map
+ Segment Tree Build    线段树构造。
+ Segment Tree Build II    线段树构造，最大值。
+ Segment Tree Query    线段树查询。最大值
+ Segment Tree Query II    线段树查询。数的个数。
+ Segment Tree Modify	线段树更新。
+ **Interval Minimum Number    找指定区间的最小值。线段树。数组线段树总是出问题，需要将空间开的大一点。
+ **Interval Sum    指定区间和。线段树，用节点线段树，比数组操作更简单。
+ *Interval Sum II    包含修改元素的指定区间和。线段树。
+ Count of Smaller Number    查找小于某个数的个数。三种方法：暴力，二叉搜索，线段树。
+
+
 
 
 
