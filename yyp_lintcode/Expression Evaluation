@@ -1,0 +1,69 @@
+题目：表达式求值。
+解题：一个数据栈一个操作符栈。当前为数字，进数字栈；当前为"("，进操作符栈；当前为")"出栈至栈顶为"("；当前为+，-，*，/运算符，则如果当前运算符优先级低于栈顶运算符，则一直出栈至高于栈顶运算符，否则进栈。
+参考：http://www.geeksforgeeks.org/expression-evaluation/
+class Solution {
+public:
+    /**
+     * @param expression: a vector of strings;
+     * @return: an integer
+     */
+    int evaluateExpression(vector<string> &expression) {
+        // write your code here
+        if(expression.size() == 0) return 0;
+        stack<int>num;
+        stack<string>ops;
+        for(auto i: expression) {
+            if(i[i.size() - 1] >= '0' && i[i.size() - 1] <= '9') {
+                int x = atoi(i.c_str());
+                num.push(x);
+            } else if(i == "(") {
+                ops.push(i);
+            } else if(i == ")") {
+                while(!ops.empty() && ops.top() != "(") {
+                    string sig = ops.top(); ops.pop();
+                    int x1 = num.top(); num.pop();
+                    int x2 = num.top(); num.pop();
+                    num.push(cal(x2, x1, sig));
+                }
+                ops.pop();
+            } else {
+                while(!ops.empty() && precedence(i, ops.top())) {
+                    string sig = ops.top(); ops.pop();
+                    int x1 = num.top(); num.pop();
+                    int x2 = num.top(); num.pop();
+                    num.push(cal(x2, x1, sig));
+                }
+                ops.push(i);
+            }
+        }
+        while(!ops.empty()) {
+            string sig = ops.top(); ops.pop();
+            int x1 = num.top(); num.pop();
+            int x2 = num.top(); num.pop();
+            num.push(cal(x2, x1, sig));
+        }
+        return num.top();
+    }
+    int cal(int x, int y, string sig) {
+        if(sig == "+") return x + y;
+        if(sig == "-") return x - y;
+        if(sig == "*") return x * y;
+        if(sig == "/") return x / y;
+    }
+    bool precedence(string sig1, string sig2) {
+        if(sig2 == "*" || sig2 == "/") return true;
+        if(sig2 == "+" || sig2 == "-") 
+            if(sig1 == "+" || sig1 == "-")
+                return true;
+            else
+                return false;
+        return false;
+    }
+};
+
+
+
+
+
+
+

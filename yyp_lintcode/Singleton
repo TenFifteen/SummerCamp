@@ -1,0 +1,35 @@
+题目：实现单例模式
+解题：构造函数private,实例static
+class Solution {
+private:
+    Solution() {}
+    ~Solution() {}
+public:
+    /**
+     * @return: The same instance of this class every time
+     */
+    //http://www.cnblogs.com/EdwardLiu/p/4443230.html
+    /*
+    class Solution {
+    private static Solution instance = null;
+    private Solution() {}
+    private static Object mutex = new Object();
+
+
+    public static Solution getInstance() {
+        if (instance == null) {
+            synchronized(mutex) {
+                if (instance == null) {
+                    instance = new Solution();
+                }
+            }
+        }
+        return instance;
+    }
+    */
+    static Solution* getInstance() {
+        // write your code here
+        static Solution* instance = new Solution();
+        return instance;
+    }
+};

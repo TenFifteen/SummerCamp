@@ -185,6 +185,8 @@
  Count 1 in Binary	数一个32位整数中1的个数。注意负数，所以判断条件是while(num != 0)而不是while(num>0)
  Evaluate Reverse Polish Notation	表达式波兰表示法求值。用栈模拟。注意运算先后及负数的情况。
  *Convert Expression to Reverse Polish Notation	将表达式转成波兰表示法。用栈模拟即可。
+ ***Expression Evaluation	表达式求值。
+ ***Expression Tree Build    表达树建立。同表达式求值。
  Partition Array by Odd and Even	将数组前面为气数后面为偶数。partition，两个指针。
  Delete Node in the Middle of Singly Linked List   删除链表中的节点，删除后一个即可
  *Intersection of Two Linked Lists	找到两个链表相交的位置。两个指针都走两个链表长度。
@@ -267,9 +269,11 @@
  **Interval Sum    指定区间和。线段树，用节点线段树，比数组操作更简单。
  *Interval Sum II    包含修改元素的指定区间和。线段树。
  Count of Smaller Number    查找小于某个数的个数。三种方法：暴力，二叉搜索，线段树。
-
-
-
+ ***Assignment Operator Overloading (C++ Only)	赋值运算符重载。
+ ***Singleton	实现单例模式。构造函数private,实例static
+ ***Valid Number    判断给定的字符串是不是有效数。分几种情况：数字，+/-，., e, 和空格。
+ Word Ladder    给定起始和结束单词，每次变化单词的一个字符，使得起始单词最后变成结束单词的最短路径。BFS
+ ***Word Ladder II    同I，输出所有最短路径。BFS,记录父亲节点，为避免众多重复，用set保留中间结果。注意获得路径用递归函数。
 
 
 
