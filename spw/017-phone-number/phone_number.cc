@@ -37,7 +37,7 @@ void dfs(vector<string> &ans, string now, string digits, int pos, int n)
 	}
 }
 
-vector<string> letterCombinations(string digits) 
+vector<string> letterCombinations(string digits)
 {
 	vector<string> ans;
 	if (digits.size() == 0) return ans;
@@ -46,7 +46,33 @@ vector<string> letterCombinations(string digits)
 	return ans;
 }
 
+/**
+* 唯一优化点的地方，就是直接传参数的时候进行now的加和就行。不用加和了在取子串。
+*/
+class Solution {
+public:
+    void sub(vector<string> &ans, string tables[], string &digits, int pos, string now) {
+        if (pos == digits.size()) {
+            ans.push_back(now);
+            return;
+        }
 
+        string src = tables[digits[pos]-'0'];
+        for (int i = 0; i < src.size(); ++i) {
+            sub(ans, tables, digits, pos+1, now+src[i]);
+        }
+    }
+
+    vector<string> letterCombinations(string digits) {
+        static string tables[10] = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs",
+            "tuv", "wxyz"};
+
+        vector<string> ans;
+        if (digits.empty()) return ans;
+        sub(ans, tables, digits, 0, "");
+        return ans;
+    }
+};
 int main()
 {
 	string digits;

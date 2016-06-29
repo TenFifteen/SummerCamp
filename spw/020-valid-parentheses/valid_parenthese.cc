@@ -12,10 +12,10 @@ using namespace std;
  *			character from the string and a character from the stack if it is not empty.
  *			then we can make a judege or a action each time.
  *
- *			finally, we can tell the answer by the state of the stack 
+ *			finally, we can tell the answer by the state of the stack
  * Tips: a table and the order of judgement
  */
-bool isValid(string s) 
+bool isValid(string s)
 {
 	int len = s.size();
 	if (len == 0)  return true;
@@ -33,7 +33,7 @@ bool isValid(string s)
 			left.push(now);
 		} else {
 			if (left.empty() || p_table[left.top()] ^ now)  {
-				return false;	
+				return false;
 			}
 			left.pop();
 		}
@@ -60,7 +60,7 @@ bool isValid(string s)
 			}
 		}
 		*/
-	}	        
+	}
 
 	return left.empty();
 }
@@ -77,3 +77,26 @@ int main()
 
 	return 0;
 }
+class Solution {
+public:
+    bool isValid(string s) {
+        static unordered_map<char, char> table;
+        table['('] = ')';
+        table['['] = ']';
+        table['{'] = '}';
+
+        stack<char> left;
+        int n = s.size();
+        for (int i = 0; i < n; ++i) {
+            if (s[i] == '(' || s[i] == '[' || s[i] == '{') {
+                left.push(s[i]);
+            } else {
+                if (left.empty() || s[i] != table[left.top()])
+                    return false;
+                left.pop();
+            }
+        }
+
+        return left.empty();
+    }
+};

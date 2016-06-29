@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 
-int LOG(int weight) 
+int LOG(int weight)
 {
 	switch(weight) {
 		case 1:
@@ -17,11 +17,11 @@ int LOG(int weight)
 	return -1;
 }
 /**
- * wieght:1		1	2	3	4	5	6	7	8	 9	
+ * wieght:1		1	2	3	4	5	6	7	8	 9
  *				I	II	III	IV	V	VI	VII	VIII IX
- * wieght:10	1	2	3	4	5	6	7	8	 9	
+ * wieght:10	1	2	3	4	5	6	7	8	 9
  *				X	XX	XXX	XL	L	LX	LXX	LXXX XC
- * wieght:100	1	2	3	4	5	6	7	8	 9	
+ * wieght:100	1	2	3	4	5	6	7	8	 9
  *				C	CC	CCC	CD	D	DC	DCC	DCCC MD
  * wieght:1000	1	2	3
  *				M	MM	MMM
@@ -47,7 +47,7 @@ char *get_digit(int digit, int weight)
 		roman_digit[0] = one[LOG(weight)];
 		roman_digit[1] = digit == 4 ? five[LOG(weight)] : one[LOG(weight*10)];
 		roman_digit[2] = '\0';
-		return roman_digit; 
+		return roman_digit;
 	}
 
 	if (digit <= 8) {
@@ -59,7 +59,7 @@ char *get_digit(int digit, int weight)
 }
 
 /**
- * First we notice that every digit of num can correspond to a Roman string 
+ * First we notice that every digit of num can correspond to a Roman string
  * Then we notice that they only relate to the digit and its' weight
  */
 char *intToRoman(int num)
@@ -93,14 +93,49 @@ char *intToRoman(int num)
 	return roman_num;
 }
 
+/**
+ * 做了一张表，其实更简单的是做一张更大的表，一个数字对应一个罗马串， 根据权重直接return就行。
+ * 当然也可以做一张更小的表，所有的做在一排，然后滑动就行。
+ * 这里面利用一个性质，就是给定权重的情况下，一个数字是唯一对应一个罗马串的。并且，当数字为0
+ * 的时候，返回空串。
+ */
+class Solution {
+    public:
+        string getRoman(int digit, int weight)
+        {
+            static string table[4] =
+            {
+                "IIIVIIIX",
+                "XXXLXXXC",
+                "CCCDCCCM",
+                "MMM"
+            };
+
+            if (digit <= 3) return table[weight].substr(0, digit);
+            else if (digit == 4) return table[weight].substr(2, 2);
+            else if (digit <= 8) return table[weight].substr(3, digit-4);
+            else return table[weight].substr(6);
+        }
+
+        string intToRoman(int num) {
+            string ans;
+            int weight = 0;
+            while (num) {
+                ans = getRoman(num % 10, weight++) + ans;
+                num /= 10;
+            }
+
+            return ans;
+        }
+};
 int main()
 {
-	int num;
-	while (~scanf("%d", &num)) {
-		char *roman = NULL;
-		printf("the Roman form of integer %d is %s\n", num, roman=intToRoman(num));
-		free(roman);
-	}
+    int num;
+    while (~scanf("%d", &num)) {
+        char *roman = NULL;
+        printf("the Roman form of integer %d is %s\n", num, roman=intToRoman(num));
+        free(roman);
+    }
 
-	return 0;
+    return 0;
 }
