@@ -7,13 +7,13 @@ int dp[N];//dp[i] means the lenght of longset valid parentheses string that ends
 
 /**
  * Problem: find the length of the longest valid (well-formed) parentheses substring.
- * Solve: use dynamic programming to solve this question where dp[i] means the longest valid 
+ * Solve: use dynamic programming to solve this question where dp[i] means the longest valid
  *        string end with s[i]. The idea was copied from the discuss board.
- *        I use dp[i][j] at first which means the longest valid string of s[i...j], obviously, 
+ *        I use dp[i][j] at first which means the longest valid string of s[i...j], obviously,
  *        I find a wrong pointcut.
  * Tips: see the comments in the code
  */
-int longestValidParentheses(char* s) 
+int longestValidParentheses(char* s)
 {
 	if (s == NULL) return 0;
 
@@ -46,7 +46,7 @@ int longestValidParentheses(char* s)
 						dp[i] += dp[pos];
 					}
 				}
-			} 
+			}
 		}
 
 		if (max_len < dp[i]) max_len = dp[i];
@@ -59,9 +59,39 @@ int main()
 {
 	char str[N];
 	while (~scanf("%s", str)) {
-		printf("The longset valid parentheses of string %s is %d\n", 
+		printf("The longset valid parentheses of string %s is %d\n",
 				str, longestValidParentheses(str));
 	}
 
 	return 0;
 }
+
+
+/**
+ * 因为是要求连续的，所以只需要保存以每个字符为结尾的最大长度就行，然后注意合并。
+ */
+class Solution {
+public:
+    int longestValidParentheses(string s) {
+        int n = s.size();
+
+        vector<int> dp(n+1);
+        dp[0] = 0;
+
+        int ans = 0;
+        for (int i = 1; i <= n; ++i) {
+            if (s[i-1] == '(') dp[i] = 0;
+            else {
+                int pos = i-1-dp[i-1];
+                if (pos > 0 && s[pos-1] =='(') {
+                    // merge dp[pos-1]
+                    dp[i] = dp[i-1] + 2 + dp[pos-1];
+                }
+
+                ans = max(ans, dp[i]);
+            }
+        }
+
+        return ans;
+    }
+};

@@ -4,11 +4,11 @@
 /**
  * Problem: find the target in a rotated sorted array
  * Solve: find the pivot and convert the pos to the origin pos
- * Tips: how to find the samllest digit 
+ * Tips: how to find the samllest digit
  */
-int search(int* nums, int numsSize, int target) 
+int search(int* nums, int numsSize, int target)
 {
-	int left = 0, right = numsSize - 1;		    
+	int left = 0, right = numsSize - 1;
 	// find the index of the smallest value using binary search.
 	// Loop will terminate since mid < hi, and lo or hi will shrink by at least 1.
 	// Proof by contradiction that mid < hi: if mid==hi, then lo==hi and loop would have been terminated.
@@ -24,7 +24,7 @@ int search(int* nums, int numsSize, int target)
 	int r = left;
 	printf("r = %d\n", r);
 	left = 0, right = numsSize - 1;
-	// we just try to find the realmid position 
+	// we just try to find the realmid position
 	while (left <= right) {
 		int mid = (left + right) / 2;
 		int realmid = (mid + r) % numsSize;
@@ -37,8 +37,32 @@ int search(int* nums, int numsSize, int target)
 		}
 	}
 
-	return -1; 
+	return -1;
 }
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int left = 0, right = nums.size()-1;
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (nums[mid] <= nums[right]) right = mid;
+            else left = mid + 1;
+        }
+
+        int pivot = left;
+        left = 0, right = nums.size() - 1;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            int real = (mid + pivot) % nums.size();
+
+            if (nums[real] == target) return real;
+            else if (nums[real] < target) left = mid + 1;
+            else right = mid - 1;
+        }
+
+        return -1;
+    }
+};
 
 int main()
 {

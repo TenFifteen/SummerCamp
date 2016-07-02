@@ -17,7 +17,7 @@ using namespace std;
  *          if we find 5.5, we will obtain nums[left] = 7, and nums[right] = 5, and right = left - 1;
  *          if we find 6.5, we will obtain nums[left] = 7, and nums[right] = 5, and right = left - 1;
  */
-vector<int> searchRange(vector<int>& nums, int target) 
+vector<int> searchRange(vector<int>& nums, int target)
 {
 	vector<int> range(2);
 	range[0] = -1;
@@ -47,7 +47,7 @@ vector<int> searchRange(vector<int>& nums, int target)
 	}
 	right_boundary = right;
 	if (right_boundary < left_boundary) return range;
-	
+
 	range[0] = left_boundary;
 	range[1] = right_boundary;
 	return range;
@@ -69,3 +69,38 @@ int main()
 
 	return 0;
 }
+
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        vector<int> ans = {-1, -1};
+
+        int l = 0, r = nums.size() - 1;
+        while (l < r) {
+            int mid = (l + r) / 2;
+            if (nums[mid] == target) {
+                r = mid;
+            } else if (nums[mid] < target) {
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+        if (nums[r] == target) ans[0] = r;
+
+        l = 0, r = nums.size() - 1;
+        while (l < r) {
+            int mid = (l + r + 1) / 2;
+            if (nums[mid] == target) {
+                l = mid;
+            } else if (nums[mid] < target) {
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+        if (nums[l] == target) ans[1] = l;
+
+        return ans;
+    }
+};

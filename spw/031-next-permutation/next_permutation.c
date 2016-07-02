@@ -81,3 +81,25 @@ int main()
 
 	return 0;
 }
+
+
+/**
+ * remove sort, just reverse.
+ * find the first decrease number.
+ */
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums) {
+        int i = nums.size() - 2;
+
+        // find the biggest one of the increasing seq from the end
+        while (i >= 0 && nums[i] >= nums[i+1]) --i;
+
+        if (i >= 0) {
+            int j = nums.size() - 1;
+            while (j > i && nums[j] <= nums[i]) --j;
+            swap(nums[i], nums[j]);
+        }
+        reverse(nums.begin()+i+1, nums.end());
+    }
+};

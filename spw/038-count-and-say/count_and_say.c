@@ -7,10 +7,10 @@
  * Solve: use two array to simulate
  * Tips: 1. can variable count > 9, that is count become a number occupy two digits
  *          we assume it will not here, but how can we prove it?
- *       2. how many space the nth sequence will occupy? we use 2*n and n = 18 will 
+ *       2. how many space the nth sequence will occupy? we use 2*n and n = 18 will
  *          be out of range. We use 100 in the end and we got accpetd.
  */
-char* countAndSay(int n) 
+char* countAndSay(int n)
 {
 	char *seq1 = malloc(sizeof(int) * (100 * n + 2));
 	char *seq2 = malloc(sizeof(int) * (100 * n + 2));
@@ -59,3 +59,29 @@ int main()
 	}
 	return 0;
 }
+
+class Solution {
+public:
+    string countAndSay(int n) {
+        static vector<string> ans(1, "1");
+
+        int i = ans.size();
+        while (i < n) {
+            string prev = ans[i-1], now = "";
+            int len = prev.size(), j = 0;
+            while (j < len) {
+                int k = j+1;
+                while (k < len && prev[k] == prev[j]) ++k;
+
+                now = now + (char)(k-j+'0') + prev[j];
+
+                j = k;
+            }
+
+            ans.push_back(now);
+            ++i;
+        }
+
+        return ans[n-1];
+    }
+};
