@@ -1,0 +1,33 @@
+题目：移出链表中等于某个值的节点。
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    /**
+     * @param head a ListNode
+     * @param val an integer
+     * @return a ListNode
+     */
+    ListNode *removeElements(ListNode *head, int val) {
+        // Write your code here
+        if(head == NULL) return head;
+        ListNode * newhead = new ListNode(0);
+        ListNode * tail = newhead, * tmp;
+        while(head != NULL) {
+            tmp = head->next;
+            if(head->val != val) {
+                tail->next = head;
+                tail = tail->next;
+            }
+            head = tmp;
+        }
+        tail->next = NULL;
+        return newhead->next;
+    }
+};

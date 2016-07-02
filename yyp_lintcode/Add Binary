@@ -1,0 +1,28 @@
+题目：将两个二进制字符串相加。
+解题：模拟即可。
+class Solution {
+public:
+    /**
+     * @param a a number
+     * @param b a number
+     * @return the result
+     */
+    string addBinary(string& a, string& b) {
+        // Write your code here
+        string res;
+        int r = 0, i = a.size() - 1, j = b.size() - 1;
+        int x = 0, y = 0, tmp;
+        char ch;
+        while(i >= 0 || j >= 0 || r > 0) {
+            x = i < 0 ? 0 : a[i] - '0';
+            y = j < 0 ? 0 : b[j] - '0';
+            tmp = x + y + r;
+            ch = ('0' + tmp % 2);
+            r = tmp / 2;
+            res = ch + res;
+            i--;
+            j--;
+        }
+        return res;
+    }
+};

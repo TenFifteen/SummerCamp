@@ -1,0 +1,25 @@
+题目：求给定数组中子数组和不小于给定值的最小长度。
+解题：两个指针移动，注意边界。
+class Solution {
+public:
+    /**
+     * @param nums: a vector of integers
+     * @param s: an integer
+     * @return: an integer representing the minimum size of subarray
+     */
+    int minimumSize(vector<int> &nums, int s) {
+        // write your code here
+        int slow = 0, fast = 0, l = nums.size(), sumnow = 0, res = INT_MAX;
+        if(l == 0) return -1;
+        while(slow < l && fast <= l) {
+            if(sumnow >= s) {
+                res = min(res, fast - slow);
+                sumnow -= nums[slow++];
+            } else {
+                if(fast >= l) break;
+                sumnow += nums[fast++];
+            }
+        }
+        return res == INT_MAX ? -1 : res;
+    }
+};

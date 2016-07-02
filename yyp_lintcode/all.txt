@@ -39,6 +39,7 @@
  Next Permutation II    字典序的后一个排列。同后一个排列，只是比较换成字符串比较即可。
  *Permutation Index	求给定排列在全排列中的编号。
  ***Permutation Index II 	求给定排列在全排列中的编号，有重复数字。
+ **Permutation Sequence    求给定编号在全排列中的排列。
  String to Integer II    字符串转整数。注意前有+，-以及long long也可能超的情况。
  Reverse Words in a String    翻转字符串。先去掉多余空格，然后全部逆序，再对每个单词分别逆序即可。注意第一个和最后一个位置的处理。
  Compare Strings	判断字符串B的字符是否都在A中，开始用了动归，后发现只需要对字符个数操作即可。
@@ -107,6 +108,7 @@
  Distinct Subsequences	在S中不同的子序列T的数目。动归。f[i][j] += f[i - 1][j - 1]+f[i - 1][j];
  ***Minimum Adjustment Cost    最小编辑距离。动归。
  **Largest Rectangle in Histogram	条形图中的最大矩形。栈中保存一个递增的序列。
+ **Maximal Rectangle	矩阵中的最大矩形。对每一行应用Largest Rectangle in Histogram的算法即可。
  Longest Consecutive Sequence    最长连续序列。hash。
  Topological Sorting	图的拓扑排序。
  Hash Function	将字符串用哈希函数转为整数。注意时刻%。
@@ -123,6 +125,7 @@
  Sqrt(x)	二分。注意用乘积用long long。
  ***Subarray Sum    子数组和为0.
  ***Subarray Sum Closest	子数组和最接近0.
+ ***Submatrix Sum    矩阵中子矩阵和为0. 固定两行，移动列，等于0即两个列的取值相同。
  O(1) Check Power of 2	O(1)时间判断一个数是否是2的次幂。n > 0 && (n & (n - 1)) == 0
  Sort Colors	将数组中散乱的三种颜色各个颜色分别放在一起。
  ***Sort Colors II   将k个颜色分别放到一起。快排思想。用vector做桶。
@@ -172,6 +175,118 @@
  Find the Missing Number    一个数组中有n个不同数，范围0-n，求丢失的数。所有数和下标异或即可。注意返回的是res ^ nums.size()。
  ***Graph Valid Tree    判断图是否无环。逐步去掉度为1的节点，如果有环，最后会剩下节点，否则最后都被去掉。
  Longest Palindromic Substring	最长回文子串。从每个位置前后遍历即可。注意数据范围。
+ Space Replacement	替换字符数组中的空格为%20.先数空格的数目，然后从后往前放即可。
+ Palindrome Linked List    判断链表是否是回文链表。找到链表中间，然后将后面逆序，然后比较即可。
+ ***Subtree	判断一棵树是否是另一棵树的子树。递归，注意，子树是从一个点切割后两者完全相同，而不是只是其中一部分。
+ **Count of Smaller Number before itself    数数组中位置在其前面且小于当前数的数的个数。
+ **Sliding Window Maximum	滑动窗口内的最大值。用双端队列实现。注意队列中存的是下标，为了去掉窗口外的元素.
+ *Trapping Rain Water	立方体间隔能存的最大雨水数。两个指针， 小的移动。
+ Fibonacci	输出第n个fibonacci数。
+ Count 1 in Binary	数一个32位整数中1的个数。注意负数，所以判断条件是while(num != 0)而不是while(num>0)
+ Evaluate Reverse Polish Notation	表达式波兰表示法求值。用栈模拟。注意运算先后及负数的情况。
+ *Convert Expression to Reverse Polish Notation	将表达式转成波兰表示法。用栈模拟即可。
+ ***Expression Evaluation	表达式求值。
+ ***Expression Tree Build    表达树建立。同表达式求值。
+ Partition Array by Odd and Even	将数组前面为气数后面为偶数。partition，两个指针。
+ Delete Node in the Middle of Singly Linked List   删除链表中的节点，删除后一个即可
+ *Intersection of Two Linked Lists	找到两个链表相交的位置。两个指针都走两个链表长度。
+ **Longest Substring Without Repeating Characters	求字符串中无重复字符的最长子串。记录最左边界即可。注意在最左边界左边字符的处理。
+ ***The Smallest Difference	求两个数组中数的最小差。
+ Valid Sudoku	判断是否是有效数独。遍历即可。
+ **Container With Most Water	求柱子和x轴组成的容器的最大容水量。两个指针。
+ *Print Numbers by Recursion	递归打印1-n位数字。根据前i位打印i+1数位。
+ Coins in a Line    两个人玩游戏，拿一条直线上的硬币，一次可以1-2个，给定n判断第一个人能否赢。判断是否是3的倍数即可。
+ ***Coins in a Line II    同I，只是硬币有钱数，如果第一个人拿的钱比第二个人多，那么他赢。动归。超哥的解法很赞
+ House Robber	小偷盗窃，不能偷两个连续的房子。动归。注意数据范围。
+ House Robber II    同I，只是房子是形成一个环形，所以要么是0-n-1，要么是1-n.注意只有一个房子的情况。
+ ***House Robber III	房子为树状的，不能同时偷父节点和子节点。简单的递归动归会超时，需要返回一个vector，存储偷和不偷当前节点。还可以用map记录。
+ ***Paint Fence	粉刷栅栏。最多只能连续两个栅栏一个颜色。动归，当前栅栏要么跟前一个颜色相同l2 * (k - 1)，要么不同l1 * (k - 1).
+ ***Paint House	用三种颜色粉刷房子，两个相邻的房子颜色不同，不同的房子用不同的颜色费用不同，求粉刷n个房子的最少费用。动归。代码可优化，见II。
+ ***Paint House II    同I，只是颜色变成了k种，方法一样。注意优化，否则会超时。
+ Longest Increasing Continuous Subsequence    最长连续递增序列，可从左到右或从右到左。扫两遍，用一个变量记录以前一个结束的最长序列长度。
+ Continuous Subarray Sum    求连续子数组和最大的起始点。动归，注意更新终点的时候保存起点。
+ ***Nuts & Bolts Problem	螺钉螺母匹配问题，只能比较螺钉和螺母。二分。注意写法，第一个partition为了让相等的在中间，left，right交换完后不移动。
+ ***Maximum Gap    求无序数组中有序后相邻元素的最大差值。桶排序。用map或者两个vector。
+ **Minimum Size Subarray Sum    求给定数组中子数组和不小于给定值的最小长度。两个指针移动，注意边界。
+ ***Convert Expression to Reverse Polish Notation	将表达式转为波兰式。用栈模拟，遇到数字总是直接放入结果。运算符取决于优先级。注意括号。
+ Plus One    将用数字数组表示的数加1. 在最后加入一位，如果不需要进位，返回1-n子数组。
+ *Divide Two Integers	两数相除。不用乘除取余运算。
+ Add Binary	将两个二进制字符串相加。
+ Candy	给小朋友发糖，速度快的比邻居多发糖，问最少发糖数。两趟贪心。
+ Gray Code	打印n位格雷码。
+ Valid Palindrome	判断字符串中的字母和数字是否是回文串。
+ Reverse Integer    翻转数字。
+ Count and Say    数着说。模拟即可。
+ Simplify Path    简化unix文件夹路径。用栈模拟。
+ Length of Last Word    最后一个单词的长度。注意去掉后缀空格。
+ Valid Parentheses	判断三种括号的字符串是否合法。用栈模拟。
+ Roman to Integer    罗马数字转整数。
+ Integer to Roman	将整数转成罗马数字。打表。
+ ***Copy Books    k个人复制n本书，同一个人只能复制连续的书，求复制所有书需要的最短时长。二分。注意初始值，最少时长。还可以用动归。
+ ***Scramble String    判断给定的字符串s2是否是s1scramble得到。先判断是否所有字符个数相同，然后递归判断。
+ *Reverse Nodes in k-Group	将链表每k个元素翻转。递归翻转即可。
+ Letter Combinations of a Phone Number    手机上数字代表的字母的组合。
+ *Restore IP Addresses	给定字符串，判断能被断开成合法ip的方案数。可以遍历也可以深搜。
+ Generate Parentheses	生成n个左括号和右括号构成的所有合法括号方案。递归。
+ *Pow(x, n)	求x的n次方。二分，注意负数。注意代码简洁。
+ Number of Islands	求小岛的数目。深搜。
+ Maximal Square	求给定01矩阵中存在的最大正方形的面积。动归。
+ Implement Trie    实现字典树。
+ Cosine Similarity	计算两向量的cos值。
+ Swap Nodes in Pairs	交换链表中两两相邻的节点。
+ Remove Linked List Elements	移出链表中等于某个值的节点。
+ Identical Binary Tree    判断两棵树是否完全相等。递归即可。
+ **Flatten Binary Tree to Linked List    将树展平。递归或者循环，找前驱节点。
+ Sort Integers	n^2复杂度排序。冒泡，插排，选排。
+ Sort Integers II    nlogn排序。堆排，快排，归并排序。
+ **Add and Search Word    插入和搜索单词。字典树简单应用。
+ Binary Tree Paths    二叉树从根到叶子的路径。递归遍历即可。
+ Surrounded Regions	将x包围的地区变成x。深搜。
+ Happy Number    判断一个数是否是幸福数。
+ *Toy Factory	玩具工厂。实现纯虚函数的继承。注意const。即子类与父类函数要一致。
+ Shape Factory	形状工厂。实现纯虚函数的继承。
+ ***Mini Twitter	设计题，实现tweeter。注意调用静态方法用::域操作符，而不是.操作符！getNewsFeed函数注意用set实现。
+ ***Create Maximum Number    用两个数组的数生成包含k个数的最大数。注意细节！！！
+ ***Wiggle Sort    变换乱序数组使得nums[0] <= nums[1] >= nums[2] <= nums[3]... 找到中位数，然后三路排序！
+ ***Wiggle Sort II    变换乱序数组使得nums[0] < nums[1] > nums[2] < nums[3].... 同上
+ *Perfect Squares	求给定n能由最少多少个平方数构成和。注意用一维动归，不然超出空间限制。
+ ***Decode Ways	字母数字转码方式。递归超时。动归！但从前往后注意判断s[i - 2]!='0'的情况。从后往前不需要判断。还要注意判断不合法的情况。
+ *Swap Two Nodes in Linked List    交换链表中两个节点。先找到两个节点的前驱，然后交换。注意需要单独处理两个节点相邻的情况！注意细节！！
+ Ugly Number    判断一个数是否是丑陋数。
+ Super Ugly Number    输出第n个超级丑陋数。用下标数组！
+ Left Pad    左对齐输出字符串。
+ *Reverse Pairs    输出数组中的逆序对个数。
+ Move Zeroes    将数组中的0移到最后。
+ Flatten Nested List Iterator	将复合数组展平。递归调用
+ Intersection of Two Arrays	求两个数组的交集。用两个set。三种方法见网上
+ Intersection of Two Arrays II    求两个数组交集，重复元素也输出,用map
+ Segment Tree Build    线段树构造。
+ Segment Tree Build II    线段树构造，最大值。
+ Segment Tree Query    线段树查询。最大值
+ Segment Tree Query II    线段树查询。数的个数。
+ Segment Tree Modify	线段树更新。
+ **Interval Minimum Number    找指定区间的最小值。线段树。数组线段树总是出问题，需要将空间开的大一点。
+ **Interval Sum    指定区间和。线段树，用节点线段树，比数组操作更简单。
+ *Interval Sum II    包含修改元素的指定区间和。线段树。
+ Count of Smaller Number    查找小于某个数的个数。三种方法：暴力，二叉搜索，线段树。
+ ***Assignment Operator Overloading (C++ Only)	赋值运算符重载。
+ ***Singleton	实现单例模式。构造函数private,实例static
+ ***Valid Number    判断给定的字符串是不是有效数。分几种情况：数字，+/-，., e, 和空格。
+ Word Ladder    给定起始和结束单词，每次变化单词的一个字符，使得起始单词最后变成结束单词的最短路径。BFS
+ ***Word Ladder II    同I，输出所有最短路径。BFS,记录父亲节点，为避免众多重复，用set保留中间结果。注意获得路径用递归函数。
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,0 +1,26 @@
+题目：给小朋友发糖，速度快的比邻居多发糖，问最少发糖数。
+解题：两趟贪心。
+class Solution {
+public:
+    /**
+     * @param ratings Children's ratings
+     * @return the minimum candies you must give
+     */
+    int candy(vector<int>& ratings) {
+        // Write your code here
+        int l = ratings.size(), res = 0;
+        if(l < 2) return l;
+        vector<int>num(l, 1);
+        for(int i = 1; i < l; i++) {
+            if(ratings[i] > ratings[i - 1])
+                num[i] = num[i - 1] + 1;
+        }
+        res += num[l - 1];
+        for(int i = l - 2; i >= 0; i--) {
+            if(ratings[i] > ratings[i + 1])
+                num[i] = max(num[i], num[i + 1] + 1);
+            res += num[i];
+        }
+        return res;
+    }
+};

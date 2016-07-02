@@ -1,0 +1,63 @@
+题目：求两个数组中数的最小差。
+解题：对一个数组排序，另一个数组中的数在这里面二分查找即可。做完以后感觉对两个数组都排序，然后两个指针移动感觉更简单。
+/*
+public class Solution {
+    public int smallestDifference(int[] A, int[] B) {
+        int p1 = 0, p2 = 0;
+        Arrays.sort(A);
+        Arrays.sort(B);
+        int res = Integer.MAX_VALUE;
+        while (p1 < A.length && p2 < B.length) {
+            if (A[p1] <= B[p2]) {
+                res = Math.min(res, B[p2] - A[p1]);
+                p1++;  
+            }
+            else {
+                res = Math.min(res, A[p1] - B[p2]);
+                p2++;
+            }
+        }
+        return res;
+    }
+}
+//用lower_bound的解法。
+int smallestDifference(vector<int> &A, vector<int> &B) {  
+        // write your code here  
+        int ret = INT_MAX;  
+        sort(B.begin(),B.end());  
+        for(int i=0;i<A.size();i++)  
+        {  
+            int diff = lower_bound(B.begin(),B.end(),A[i])-B.begin();  
+            ret = min(ret,abs(A[i]-B[diff]));  
+            if(diff>0)  
+                ret = min(ret,abs(A[i]-B[diff-1]));  
+            if(diff+1<B.size())  
+                ret = min(ret,abs(A[i]-B[diff+1]));  
+        }  
+        return ret;  
+    }  
+*/
+class Solution {
+public:
+    /**
+     * @param A, B: Two integer arrays.
+     * @return: Their smallest difference.
+     */
+    int smallestDifference(vector<int> &A, vector<int> &B) {
+        // write your code here
+        sort(A.begin(), A.end());
+        int low = 0, high = A.size() - 1, mid = 0, res = INT_MAX;
+        for(auto i: B) {
+            low = 0;
+            high = A.size() - 1;
+            while(low <= high) {
+                mid = (low + high) / 2;
+                if(i == A[mid]) return 0;
+                res = min(res, abs(i - A[mid]));
+                if(i < A[mid]) high = mid - 1;
+                else low = mid + 1;
+            }
+        }
+        return res;
+    }
+};

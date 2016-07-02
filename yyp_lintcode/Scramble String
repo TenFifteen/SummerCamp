@@ -1,0 +1,35 @@
+题目：判断给定的字符串s2是否是s1scramble得到。
+解题：先判断是否所有字符个数相同，然后递归判断。
+class Solution {
+public:
+    /**
+     * @param s1 A string
+     * @param s2 Another string
+     * @return whether s2 is a scrambled string of s1
+     */
+    bool isScramble(string& s1, string& s2) {
+        // Write your code here
+        int l = s1.size();
+        if(l == 0 || s1 == s2) return true;
+        if(s1.size() != s2.size()) return false;
+        vector<int>dic(26, 0);
+        for(int i = 0; i < l; i++) {
+            dic[s1[i] - 'a']++;
+            dic[s2[i] - 'a']--;
+        }
+        for(int i = 0; i < 26; i++)
+            if(dic[i] != 0) return false;
+        for(int i = 1; i < l; i++) {
+            string a = s1.substr(0, i), b = s2.substr(0, i), c = s1.substr(i), d = s2.substr(i);
+            if(isScramble(a, b) && isScramble(c, d))
+                return true;
+            a = s1.substr(0, i);
+            b = s2.substr(l - i);
+            c = s1.substr(i);
+            d = s2.substr(0, l - i);
+            if(isScramble(a, b) && isScramble(c, d))
+                return true;
+        }
+        return false;
+    }
+};

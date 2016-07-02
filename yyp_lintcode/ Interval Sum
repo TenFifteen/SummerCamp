@@ -1,0 +1,58 @@
+题目：指定区间和。
+解题：线段树，用节点线段树，比数组操作更简单。
+/**
+ * Definition of Interval:
+ * classs Interval {
+ *     int start, end;
+ *     Interval(int start, int end) {
+ *         this->start = start;
+ *         this->end = end;
+ *     }
+ */
+class Solution { 
+public:
+    /**
+     *@param A, queries: Given an integer array and an query list
+     *@return: The result list
+     */
+    struct segmenttree {
+        segmenttree* left;
+        segmenttree* right;
+        long long sum;
+        int start;
+        int end;
+        segmenttree(int s, int e) {
+            left = right = NULL;
+            start = s;
+            end = e;
+        }
+    };
+    segmenttree* build(vector<int>&nums, int start, int end) {
+        segmenttree* node = new segmenttree(start, end);
+        if(start == end) {
+            node->sum = nums[start];
+            return node;
+        }
+        int mid = (start + end) / 2;
+        node->left = build(nums, start, mid);
+        node->right = build(nums, mid + 1, end);
+        node->sum = node->left->sum + node->right->sum;
+        return node;
+    }
+    long long query(segmenttree* root, int qs, int qe) {
+        if(qs > root->end || qe < root->start) return 0;
+        if(qs <= root->start && root->end <= qe)
+            return root->sum;
+        return query(root->left, qs, qe) + query(root->right, qs, qe);
+    }
+    vector<long long> intervalSum(vector<int> &A, vector<Interval> &queries) {
+        // write your code here
+        vector<long long>res;
+        segmenttree* root = build(A, 0, A.size() - 1);
+        for(auto i: queries) {
+            long long tmp = query(root, i.start, i.end);
+            res.push_back(tmp);
+        }
+        return res;
+    }
+};

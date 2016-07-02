@@ -1,0 +1,28 @@
+题目：表达式波兰表示法求值。
+题目：用栈模拟。注意运算先后及负数的情况。
+class Solution {
+public:
+    /**
+     * @param tokens The Reverse Polish Notation
+     * @return the value
+     */
+    int evalRPN(vector<string>& tokens) {
+        // Write your code here
+        stack<int>num;
+        for(auto i: tokens) {
+            if(i[i.size() - 1] >= '0' && i[i.size() - 1] <= '9') {
+                num.push(atoi(i.c_str()));
+            } else {
+                int a = num.top();
+                num.pop();
+                int b = num.top();
+                num.pop();
+                if(i == "+") num.push(a + b);
+                if(i == "-") num.push(b - a);
+                if(i == "*") num.push(a * b);
+                if(i == "/") num.push(b / a);
+            }
+        }
+        return num.top();
+    }
+};

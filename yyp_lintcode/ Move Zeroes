@@ -1,0 +1,18 @@
+题目：将数组中的0移到最后。
+class Solution {
+public:
+    /**
+     * @param nums an integer array
+     * @return nothing, do this in-place
+     */
+    void moveZeroes(vector<int>& nums) {
+        // Write your code here
+        int i = 0, j = 0;
+        for(; i < nums.size(); i++) {
+            if(nums[i] != 0) nums[j++] = nums[i];
+        }
+        for(; j < nums.size(); j++) {
+            nums[j] = 0;
+        }
+    }
+};

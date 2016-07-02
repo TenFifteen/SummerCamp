@@ -1,0 +1,75 @@
+题目：包含修改元素的指定区间和。
+解题：线段树。
+class Solution {
+public:
+    /* you may need to use some attributes here */
+    struct segmenttree {
+        segmenttree * left, * right;
+        long long sum;
+        int start, end;
+        segmenttree(int s, int e) {
+            start = s;
+            end = e;
+            left = right = NULL;
+            sum = 0;
+        }
+    };
+    segmenttree * root;
+    /**
+     * @param A: An integer vector
+     */
+    Solution(vector<int> A) {
+        // write your code here
+        root = build(A, 0, A.size() - 1);
+    }
+    segmenttree* build(vector<int>& nums, int start, int end) {
+        if(start > end) return NULL;
+        segmenttree * node = new segmenttree(start, end);
+        if(start == end) {
+            node->sum = nums[start];
+            return node;
+        }
+        int mid = (start + end) / 2;
+        node->left = build(nums, start, mid);
+        node->right = build(nums, mid + 1, end);
+        node->sum = node->left->sum + node->right->sum;
+        return node;
+    }
+    long long querytree(segmenttree* root, int qstart, int qend) {
+        if(qstart > root->end || qend < root->start) return 0;
+        if(qstart <= root->start && root->end <= qend) return root->sum;
+        long long x = querytree(root->left, qstart, qend);
+        long long y = querytree(root->right, qstart, qend);
+        return x + y;
+    }
+    void modifytree(segmenttree* root, int index, int value) {
+        if(root == NULL) return;
+        if(root->start == root->end) {
+            if(root->start == index)
+                root->sum = value;
+            return;
+        }
+        if(index <= root->left->end)
+            modifytree(root->left, index, value);
+        else
+            modifytree(root->right, index, value);
+        root->sum = root->left->sum + root->right->sum;
+    }
+    /**
+     * @param start, end: Indices
+     * @return: The sum from start to end
+     */
+    long long query(int start, int end) {
+        // write your code here
+        return querytree(root, start, end);
+    }
+    
+    /**
+     * @param index, value: modify A[index] to value.
+     */
+    void modify(int index, int value) {
+        // write your code here
+        modifytree(root, index, value);
+    }
+};
+

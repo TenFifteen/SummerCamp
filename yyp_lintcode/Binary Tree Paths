@@ -1,0 +1,37 @@
+题目：二叉树从根到叶子的路径。
+解题：递归遍历即可。
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     * @param root the root of the binary tree
+     * @return all root-to-leaf paths
+     */
+    vector<string> binaryTreePaths(TreeNode* root) {
+        // Write your code here
+        vector<string>res;
+        helper(root, res, "");
+        return res;
+    }
+    void helper(TreeNode * root, vector<string>& res, string cur) {
+        if(root == NULL) return;
+        cur += "->" + to_string(root->val);
+        if(root->left == NULL && root->right == NULL) {
+            res.push_back(cur.substr(2));
+            return;
+        }
+        helper(root->left, res, cur);
+        helper(root->right, res, cur);
+    }
+};

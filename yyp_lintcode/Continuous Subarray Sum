@@ -1,0 +1,25 @@
+题目：求连续子数组和最大的起始点。
+解题：动归，注意更新终点的时候保存起点。
+class Solution {
+public:
+    /**
+     * @param A an integer array
+     * @return  A list of integers includes the index of 
+     *          the first number and the index of the last number
+     */
+    vector<int> continuousSubarraySum(vector<int>& A) {
+        // Write your code here
+        vector<int>res(2, 0);
+        int maxsofar = INT_MIN, maxend = INT_MIN / 2, index = 0;
+        for(int i = 0; i < A.size(); i++) {
+            if(maxend + A[i] <= A[i]) index = i;
+            maxend = max(maxend + A[i], A[i]);
+            if(maxsofar <= maxend) {
+                res[1] = i; 
+                res[0] = index;
+            }
+            maxsofar = max(maxend, maxsofar);
+        }
+        return res;
+    }
+};

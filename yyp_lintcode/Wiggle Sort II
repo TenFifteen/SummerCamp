@@ -1,0 +1,49 @@
+题目：变换乱序数组使得nums[0] < nums[1] > nums[2] < nums[3]... 
+解题：找到中位数，然后三路排序！
+class Solution {
+public:
+    /**
+     * @param nums a list of integer
+     * @return void
+     */  
+    void wiggleSort(vector<int>& nums) {
+        // Write your code here
+        int l = nums.size();
+        nth_element(nums.begin(), nums.begin() + l / 2, nums.end());
+        //int mid = *(nums.begin() + l / 2);
+        int mid = median(nums, 0, l - 1, (l + 1) / 2 );
+        
+        #define A(i) nums[(2 * i + 1) % (l | 1)]
+        
+        int i = 0, j = 0, k = l - 1;
+        while(j <= k) {
+            if(A(j) > mid) {
+                swap(A(i++), A(j++));
+            } else if(A(j) < mid) {
+                swap(A(j), A(k--));
+            } else {
+                j++;
+            }
+        }
+    }
+    int median(vector<int>& nums, int low, int high, int k) {
+        int mid = partition(nums, low, high);
+        if(high - mid + 1 == k) return nums[mid];
+        if(high - mid + 1 < k) {
+            return median(nums, low, mid - 1, k - high + mid - 1);
+        } else {
+            return median(nums, mid + 1, high, k);
+        }
+    }
+    int partition(vector<int>&nums, int low, int high) {
+        int tmp = nums[low];
+        while(low < high) {
+            while(low < high && nums[high] > tmp) high--;
+            if(low < high) nums[low++] = nums[high];
+            while(low < high && nums[low] <= tmp) low++;
+            if(low < high) nums[high--] = nums[low];
+        }
+        nums[high] = tmp;
+        return high;
+    }
+};

@@ -1,0 +1,40 @@
+题目：给定起始和结束单词，每次变化单词的一个字符，使得起始单词最后变成结束单词的最短路径。
+解题：BFS.
+class Solution {
+public:
+    /**
+      * @param start, a string
+      * @param end, a string
+      * @param dict, a set of string
+      * @return an integer
+      */
+    int ladderLength(string start, string end, unordered_set<string> &dict) {
+        // write your code here
+        unordered_set<string>buff;
+        stack<string>st;
+        st.push(start);
+        buff.insert(start);
+        int res = 1;
+        if(start == end) return res;
+        while(!st.empty()) {
+            stack<string>st_tmp;
+            res++;
+            while(!st.empty()) {
+                string tmp = st.top();
+                st.pop();
+                for(int i = 0; i < tmp.size(); i++) {
+                    for(int j = 0; j < 26; j++) {
+                        string a = tmp;
+                        a[i] = 'a' + j;
+                        if(a == end) return res;
+                        if(buff.find(a) != buff.end() || dict.find(a) == dict.end()) continue;
+                        st_tmp.push(a);
+                        buff.insert(a);
+                    }
+                }
+            }
+            st = st_tmp;
+        }
+        return res;
+    }
+};
