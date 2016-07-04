@@ -51,3 +51,22 @@ int main()
 
 	return 0;
 }
+
+class Solution {
+public:
+    int firstMissingPositive(vector<int>& nums) {
+        int pos = 0, n = nums.size();
+        while (pos < n) {
+            while (nums[pos] >= 1 && nums[pos] <= n && nums[pos] != nums[nums[pos]-1]) {
+                swap(nums[pos], nums[nums[pos]-1]);
+            }
+
+            ++pos;
+        }
+
+        for (int i = 0; i < n; ++i)
+            if (nums[i] != i + 1)
+                return i+1;
+        return n+1;
+    }
+};

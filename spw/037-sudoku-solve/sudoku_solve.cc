@@ -90,17 +90,74 @@ void solveSudoku(vector<vector<char> >& board)
 
 int main()
 {
-	int n;
-	while (~scanf("%d", &n)) {
-		vector<vector<char> > board;
-		for (int i = 0; i < 9; ++i) {
-			vector<char> row;
-			for (int j = 0; j < 9; ++j) {
-				int now;
-				scanf("%c", &now);
-				row.push_back(now);
-			}
-			board.push_back(row);
-		}
-	}
+    int n;
+    while (~scanf("%d", &n)) {
+        vector<vector<char> > board;
+        for (int i = 0; i < 9; ++i) {
+            vector<char> row;
+            for (int j = 0; j < 9; ++j) {
+                int now;
+                scanf("%c", &now);
+                row.push_back(now);
+            }
+            board.push_back(row);
+        }
+    }
 }
+class Solution {
+    bool row[9][9];
+    bool col[9][9];
+    bool grid[9][9];
+    public:
+    bool finish = false;
+    void dfs(vector<vector<char>>& board, int x, int y) {
+        if (finish) return;
+
+        // if y == 9, then we will move x and set y = 0 here.
+        while (x < 9) {
+            while (y < 9 && board[x][y] != '.')
+                ++y;
+            if (y < 9) break;
+            else y = 0, x++;
+        }
+
+        if (x == 9) {
+            finish = true;
+            return;
+        }
+
+        int g = (x / 3) * 3 + y / 3;
+        for (char d = '1'; d <= '9'; ++d) {
+            int pos = d - '1';
+            if (row[x][pos] || col[y][pos] || grid[g][pos]) continue;
+
+            board[x][y] = d;
+            row[x][pos] = col[y][pos] = grid[g][pos] = true;
+
+            // just pass y+1
+            dfs(board, x, y+1);
+            if (finish) return;
+
+            row[x][pos] = col[y][pos] = grid[g][pos] = false;
+        }
+
+        // important !! if its ancestor try is wrong, then all the
+        // try are wrong. then we should restore ., all we will not
+        // find the empty place in the beginning of the method.
+        board[x][y] = '.';
+
+    }
+
+    void solveSudoku(vector<vector<char>>& board) {
+        for (int i = 0; i < 9; ++i) {
+            for (int j = 0; j < 9; ++j) {
+                char now = board[i][j];
+                if (now == '.')  continue;
+
+                int pos = now - '1', g = i / 3 * 3 + j / 3;
+                row[i][pos] = col[j][pos] = grid[g][pos] = true;
+            }
+        }
+        dfs(board, 0, 0);
+    }
+};

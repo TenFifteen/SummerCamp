@@ -5,7 +5,7 @@
 using namespace std;
 
 /**
- * Problem: Given a collection of candidate numbers (C) and a target number (T), 
+ * Problem: Given a collection of candidate numbers (C) and a target number (T),
  *          find all unique combinations in C where the candidate numbers sums to T.
  *          Each number in C may only be used once in the combination.
  * Solve: 1. duplicates: sort the candidates beforehand, and add the pos when dfs
@@ -15,7 +15,7 @@ using namespace std;
 void dfs(vector<vector<int> > &ans, vector<int> &candidates, vector<int> now, int pos, int left)
 {
 	if (left == 0) {
-		ans.push_back(now);	
+		ans.push_back(now);
 		return;
 	}
 
@@ -30,7 +30,7 @@ void dfs(vector<vector<int> > &ans, vector<int> &candidates, vector<int> now, in
 	}
 }
 
-vector<vector<int> > combinationSum(vector<int>& candidates, int target) 
+vector<vector<int> > combinationSum(vector<int>& candidates, int target)
 {
 	vector<vector<int> > ans;
 	vector<int> now;
@@ -63,3 +63,33 @@ int main()
 
 	return 0;
 }
+
+class Solution {
+public:
+    void dfs(vector<vector<int>> &ans, vector<int>& candidates, vector<int> &now, int pos, int target) {
+        if (target == 0) {
+            ans.push_back(now);
+            return;
+        }
+
+        int n = candidates.size();
+        for (int i = pos; i < n; ++i) {
+            if (candidates[i] <= target) {
+                now.push_back(candidates[i]);
+                dfs(ans, candidates, now, i+1, target-candidates[i]);
+                now.pop_back();
+            }
+            // cut the same branches in the solution space tree.
+            while (i+1 < n && candidates[i+1] == candidates[i]) ++i;
+        }
+    }
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        vector<vector<int>> ans;
+        vector<int> now;
+
+        sort(candidates.begin(), candidates.end());
+        dfs(ans, candidates, now, 0, target);
+
+        return ans;
+    }
+};
