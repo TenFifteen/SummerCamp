@@ -30,7 +30,7 @@ vector<int> twoSum(vector<int> &numbers, int target)
         if (hash.find(numberToFind) != hash.end()) {
                     //+1 because indices are NOT zero based
             result.push_back(hash[numberToFind] + 1);
-            result.push_back(i + 1);            
+            result.push_back(i + 1);
             return result;
         }
 
@@ -94,14 +94,24 @@ public:
     }
 };
 
-vector<int> dp(n+1, 0);
-dp[0] = dp[1] = fund;
+/*
+第三次做：
+没有问题。
+*/
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        vector<int> ans(2, -1);
 
-for (int i = 2; i <= n; ++i) {
-    for (int j = 1; j < i; ++j) { // j th day buy, i th day sell
-        for (int k = 0; k < n; ++k) { // k th stock
-            dp[i] = max(dp[i], 0.98 * prices[i-1][k] / prices[j-1][k] * dp[j-1]);
+        unordered_map<int, int> um;
+        for (int i = 0; i < nums.size(); ++i) {
+            if (um.find(target-nums[i]) != um.end()) {
+                ans[0] = um[target-nums[i]];
+                ans[1] = i;
+                return ans;
+            }
+            um[nums[i]] = i;
         }
+        return ans;
     }
-    dp[i] = max(dp[i-1], dp[i]);
-}
+};
