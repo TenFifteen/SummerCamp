@@ -28,7 +28,7 @@ public:
             return (findKMin(nums1,0,nums2,0,total/2) + findKMin(nums1,0,nums2,0,total/2+1))/2;
         }
     }
-    
+
     double findKMin(vector<int> &nums1, int head1, vector<int> &nums2, int head2, int k){
         int len1 = nums1.size()-head1;
         int len2 = nums2.size()-head2;
@@ -68,16 +68,16 @@ private:
     double findNthElement(vector<int> &nums1, int index1, vector<int> &nums2, int index2, int k) {
         int len1 = nums1.size()-index1;
         int len2 = nums2.size()-index2;
-        
+
         if (len1 > len2) return findNthElement(nums2, index2, nums1, index1, k);
         if (len1 == 0) return nums2[index2+k-1];
         if (k == 1) return min(nums1[index1], nums2[index2]);
-        
+
         int k1 = min(k/2, len1);
         int k2 = k - k1;
         int m1 = nums1[index1+k1-1];
         int m2 = nums2[index2+k2-1];
-        
+
         if (m1 == m2) {
             return m1;
         } else if (m1 < m2) {
@@ -86,7 +86,7 @@ private:
             return findNthElement(nums1, index1, nums2, index2+k2, k1);
         }
     }
-        
+
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
         int total = nums1.size() + nums2.size();
@@ -94,8 +94,44 @@ public:
         if (total & 0x1) {
             return findNthElement(nums1, 0, nums2, 0, total/2 + 1);
         } else {
-            return (findNthElement(nums1, 0, nums2, 0, total/2) + 
+            return (findNthElement(nums1, 0, nums2, 0, total/2) +
                 findNthElement(nums1, 0, nums2, 0, total/2 + 1)) / 2;
+        }
+    }
+};
+/*
+ *仍然是不会做啊。这道题实在是太考验人了。这次一定要记住了。
+ */
+class Solution {
+private:
+    double findKth(vector<int> &nums1, int x1, vector<int> &nums2, int x2, int k) {
+        int len1 = nums1.size() - x1;
+        int len2 = nums2.size() - x2;
+
+        if (len1 > len2) return findKth(nums2, x2, nums1, x1, k);
+
+        if (len1 == 0) return nums2[x2 + k - 1];
+
+        if (k == 1) return min(nums1[x1], nums2[x2]);
+
+        int k1 = k / 2 <= len1 ? k / 2 : len1;
+        int k2 = k - k1;
+
+        if (nums1[x1 + k1 - 1] == nums2[x2 + k2 - 1]) return nums1[x1 + k1 - 1];
+        else if (nums1[x1 + k1 - 1] < nums2[x2 + k2 - 1]) {
+            return findKth(nums1, x1 + k1, nums2, x2, k2);
+        } else {
+            return findKth(nums1, x1, nums2, x2 + k2, k1);
+        }
+    }
+
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        int total = nums1.size() + nums2.size();
+        if (total & 0x1) {
+            return findKth(nums1, 0, nums2, 0, total/2+1);
+        } else {
+            return (findKth(nums1, 0, nums2, 0, total/2) + findKth(nums1, 0, nums2, 0, total/2+1)) / 2;
         }
     }
 };
