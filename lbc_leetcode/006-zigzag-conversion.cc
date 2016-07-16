@@ -57,20 +57,44 @@ public:
     string convert(string s, int numRows) {
         assert(numRows > 0);
         if (numRows == 1) return s;
-        
+
         vector<string> tmp(numRows);
         for (int i = 0; i < s.size(); ++i) {
             int cur = i % (numRows*2-2);
             if (cur >= numRows) {
                 cur = 2*numRows-2-cur;
             }
-            
+
             tmp[cur].push_back(s[i]);
         }
-        
+
         string ans;
         for (auto str : tmp) {
             ans.append(str);
+        }
+        return ans;
+    }
+}
+/*
+ *又忘记了处理特殊情况。
+ */
+;class Solution {
+public:
+    string convert(string s, int numRows) {
+        if (numRows == 1) return s; // special case.
+        vector<string> vs(numRows);
+        int index = 0;
+        while (index < s.size()) {
+            for (int i = 0; i < numRows-1 && index < s.size(); ++i) {
+                vs[i].push_back(s[index++]);
+            }
+            for (int i = numRows-1; i > 0 && index < s.size(); --i) {
+                vs[i].push_back(s[index++]);
+            }
+        }
+        string ans;
+        for (int i = 0; i < numRows; ++i) {
+            ans += vs[i];
         }
         return ans;
     }
