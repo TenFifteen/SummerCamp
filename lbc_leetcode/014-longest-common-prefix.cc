@@ -44,7 +44,7 @@ public:
     string longestCommonPrefix(vector<string>& strs) {
         if (strs.size() == 0) return "";
         if (strs.size() == 1) return strs[0];
-        
+
         int len = 0;
         while (true) {
             if (strs[0].size() == len) return strs[0];
@@ -53,5 +53,27 @@ public:
             }
             len++;
         }
+    }
+};
+/*
+ * 比较简单。
+ */
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        if (strs.size() == 0) return "";
+        int len = 0;
+        for (int i = 0; i < strs[0].size(); ++i) {
+            bool ok = true;
+            for (int j = 1; j < strs.size(); ++j) {
+                if (strs[j][i] != strs[0][i]) {
+                    ok = false;
+                    break;
+                }
+            }
+            if (ok) len++;
+            else break;
+        }
+        return strs[0].substr(0, len);
     }
 };
