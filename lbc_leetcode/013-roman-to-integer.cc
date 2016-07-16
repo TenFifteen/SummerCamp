@@ -12,7 +12,7 @@
 再次阅读：
 这个题目也是印象比较深刻的，因为当时很难理解别人是怎么做的。
 不过现在看看以前的代码，实在是有些麻烦了。现在贴一个比较简洁的代码：
-int romanToInt(string s) 
+int romanToInt(string s)
 {
     unordered_map<char, int> T = { { 'I' , 1 },
                                    { 'V' , 5 },
@@ -23,7 +23,7 @@ int romanToInt(string s)
                                    { 'M' , 1000 } };
 
    int sum = T[s.back()];
-   for (int i = s.length() - 2; i >= 0; --i) 
+   for (int i = s.length() - 2; i >= 0; --i)
    {
        if (T[s[i]] < T[s[i + 1]])
        {
@@ -171,7 +171,7 @@ public:
         mapping['C'] = 100;
         mapping['D'] = 500;
         mapping['M'] = 1000;
-        
+
         int ans = 0;
         for (int i = 0; i < s.size(); ++i) {
             if (i+1 < s.size() && mapping[s[i]] < mapping[s[i+1]]) {
@@ -179,6 +179,29 @@ public:
             } else {
                 ans += mapping[s[i]];
             }
+        }
+        return ans;
+    }
+};
+/*
+ * 都记住了。。
+ */
+class Solution {
+public:
+    int romanToInt(string s) {
+        unordered_map<char, int> um;
+        um['I'] = 1;
+        um['V'] = 5;
+        um['X'] = 10;
+        um['L'] = 50;
+        um['C'] = 100;
+        um['D'] = 500;
+        um['M'] = 1000;
+
+        int ans = 0;
+        for (int i = 0; i < s.size(); ++i) {
+            if (i+1 != s.size() && um[s[i]] < um[s[i+1]]) ans -= um[s[i]];
+            else ans += um[s[i]];
         }
         return ans;
     }
