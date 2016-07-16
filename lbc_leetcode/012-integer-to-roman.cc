@@ -21,7 +21,7 @@
 看了DISCUSS里面，有一种解法是用空间来换时间，见下面代码（java）：
 String[] romanPieces={"","I","II","III","IV","V","VI","VII","VIII",
 "IX", "","X","XX","XXX","XL","L","LX","LXX","LXXX","XC", "","C",
-"CC","CCC","CD","D","DC","DCC","DCCC","CM", "","M","MM","MMM","MMMM"}; 
+"CC","CCC","CD","D","DC","DCC","DCCC","CM", "","M","MM","MMM","MMMM"};
 return romanPieces[num/1000+30]+
 romanPieces[(num/100)%10+20] +
 romanPieces[(num/10)%10+10]+
@@ -88,11 +88,11 @@ public:
         mapping[100] = 'C';
         mapping[500] = 'D';
         mapping[1000] = 'M';
-        
+
         int mul = 1;
         while (mul <= num) mul *= 10;
         mul /= 10;
-        
+
         string ans;
         while (num) {
             int digit = num / mul;
@@ -108,11 +108,58 @@ public:
                 ans += mapping[mul];
                 ans += mapping[mul*10];
             }
-            
+
             num %= mul;
             mul /= 10;
         }
-        
+
+        return ans;
+    }
+}
+/*
+ * 还可以
+ */
+;class Solution {
+private:
+    void reverse(string &s) {
+        int left = 0, right = s.size()-1;
+        while (left < right) {
+            swap(s[left++], s[right--]);
+        }
+    }
+
+public:
+    string intToRoman(int num) {
+        unordered_map<int, char> um;
+        um[1] = 'I';
+        um[5] = 'V';
+        um[10] = 'X';
+        um[50] = 'L';
+        um[100] = 'C';
+        um[500] = 'D';
+        um[1000] = 'M';
+
+        int base = 1;
+        string ans;
+        while (num != 0) {
+            int cur = num % 10;
+            num /= 10;
+            if (cur < 4) ans += string(cur, um[base]);
+            else if (cur == 4) {
+                ans.push_back(um[base*5]);
+                ans.push_back(um[base]);
+            } else if (cur < 9) {
+                ans += string(cur-5, um[base]);
+                ans.push_back(um[base*5]);
+            } else {
+                ans.push_back(um[base*10]);
+                ans.push_back(um[base]);
+            }
+
+            base *= 10;
+        }
+
+        reverse(ans);
         return ans;
     }
 };
