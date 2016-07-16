@@ -36,7 +36,7 @@ public:
         }
         return ret;
     }
-    
+
     int abs(int x){
         if(x < 0)return -x;
         return x;
@@ -50,9 +50,9 @@ class Solution {
 public:
     int threeSumClosest(vector<int>& nums, int target) {
         assert(nums.size() > 2);
-        
+
         sort(nums.begin(), nums.end());
-        
+
         int ans = nums[0] + nums[1] + nums[2];
         for (int i = 0; i < nums.size()-2; ++i) {
             int left = i+1, right = nums.size()-1;
@@ -69,7 +69,38 @@ public:
                 }
             }
         }
-        
+
+        return ans;
+    }
+};
+/*
+ * 还可以
+ */
+class Solution {
+public:
+    int threeSumClosest(vector<int>& nums, int target) {
+        sort(nums.begin(), nums.end());
+
+        int first = 0;
+        int ans, minDiff = INT_MAX;
+        while (first+2 < nums.size()) {
+            int left = first+1, right = nums.size()-1;
+            while (left < right) {
+                int sum = nums[first] + nums[left] + nums[right];
+                if (abs(sum-target) < minDiff) {
+                    ans = sum;
+                    minDiff = abs(sum - target);
+                }
+                if (sum < target) {
+                    left++;
+                } else {
+                    right--;
+                }
+            }
+
+            first++;
+            while (first+2 < nums.size() && nums[first] == nums[first-1]) first++;
+        }
         return ans;
     }
 };
