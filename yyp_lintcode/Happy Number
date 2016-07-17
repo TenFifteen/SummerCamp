@@ -1,0 +1,26 @@
+题目：判断一个数是否是幸福数。
+class Solution {
+public:
+    /**
+     * @param n an integer
+     * @return true if this is a happy number or false
+     */
+    bool isHappy(int n) {
+        // Write your code here
+        unordered_map<int, bool>dic;
+        int tmp, cur;
+        while(n != 1) {
+            cur = 0;
+            while(n != 0) {
+                tmp = n % 10;
+                n = n / 10;
+                cur += tmp * tmp;
+            }
+            n = cur;
+            if(dic.count(n) != 0) break;
+            dic[n] = true;
+        }
+        if(n == 1) return true;
+        return false;
+    }
+};

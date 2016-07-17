@@ -1,0 +1,60 @@
+题目：同I，输出所有最短路径。
+解题：BFS,记录父亲节点，为避免众多重复，用set保留中间结果，注意获得路径用递归函数。
+class Solution {
+public:
+    /**
+      * @param start, a string
+      * @param end, a string
+      * @param dict, a set of string
+      * @return a list of lists of string
+      */
+    unordered_map<string, vector<string> >father;
+    vector<vector<string> > findLadders(string start, string end, unordered_set<string> &dict) {
+        // write your code here
+        vector<vector<string> >res;
+        unordered_set<string>st;
+        st.insert(start);
+        unordered_set<string>q;
+        q.insert(start);
+
+        while(q.size() > 0) {
+            unordered_set<string>p;
+            unordered_set<string>st_tmp;
+            for(auto tmp: q) {
+                for(int i = 0; i < tmp.size(); i++) {
+                    for(int j = 0; j < 26; j++) {
+                        string a = tmp;
+                        a[i] = ('a' + j);
+                        if(a == end) {
+                            vector<string>v;
+                            v.push_back(end);
+                            v.push_back(tmp);
+                            getpath(res, tmp, start, v);
+                        }
+                        if(st.find(a) != st.end() || dict.find(a) == dict.end()) continue;
+                        st_tmp.insert(a);
+                        father[a].push_back(tmp);
+                        p.insert(a);
+                    }
+                }
+            }
+            if(res.size() != 0) return res;
+            st.insert(st_tmp.begin(), st_tmp.end());
+            q = p;
+        }
+        return res;
+    }
+    void getpath(vector<vector<string> >&res, string a, string start, vector<string>path) {
+        if(a == start) {
+            reverse(path.begin(), path.end());
+            res.push_back(path);
+            return;
+        }
+        vector<string>vec = father[a];
+        for(auto i: vec) {
+            vector<string>tmp = path;
+            tmp.push_back(i);
+            getpath(res, i, start, tmp);
+        }
+    }
+};

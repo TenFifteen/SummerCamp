@@ -1,0 +1,42 @@
+题目：判断给定的字符串是不是有效数。
+解题：分几种情况：数字，+/-，., e, 和空格。
+class Solution {
+public:
+    /**
+     * @param s the string that represents a number
+     * @return whether the string is a valid number
+     */
+    bool isNumber(string& s) {
+        // Write your code here
+        int i = 0, flage = -1, flags = -1, flagd = -1;
+        while(s[i] == ' ') i++;
+        if(i == s.size()) return false;
+        if(s[i] == '+' || s[i] == '-') i++;
+        for(; i < s.size(); i++) {
+            if(s[i] >= '0' && s[i] <= '9') {
+                continue;
+            } else if(s[i] == '.') {
+                if(flage == -1 && flagd == -1 && (i - 1>= 0 && s[i - 1] >= '0' && s[i - 1] <= '9') || (i + 1 < s.size() && s[i + 1] >= '0' && s[i + 1] <= '9'))
+                    flagd = 1;
+                else
+                    return false;
+            } else if(s[i] == 'e') {
+                if(flage == -1 && (i - 1 >= 0 && s[i - 1] >= '0' && s[i - 1] <= '9'|| s[i - 1] == '.') && (i + 1 < s.size() && (s[i + 1] == '+' || s[i + 1] == '-' && s[i + 1] >= '0' && s[i + 1] <= '9')))
+                    flage = 1;
+                else
+                    return false;
+            } else if(s[i] == '+' || s[i] == '-') {
+                if(flags == -1 && (flage == 1 || (i - 1 >= 0 && s[i - 1] >= '0' && s[i - 1] <= '9') && (i + 1 < s.size() && s[i + 1] >= '0' && s[i + 1] <= '9')))
+                    flags = 1;
+                else
+                    return false;
+            } else if(s[i] == ' ') {
+                break;
+            } else {
+                return false;
+            }
+        }
+        while(s[i] == ' ') i++;
+        return i == s.size();
+    }
+};

@@ -1,0 +1,39 @@
+题目：线段树构造，最大值。
+/**
+ * Definition of SegmentTreeNode:
+ * class SegmentTreeNode {
+ * public:
+ *     int start, end, max;
+ *     SegmentTreeNode *left, *right;
+ *     SegmentTreeNode(int start, int end, int max) {
+ *         this->start = start;
+ *         this->end = end;
+ *         this->max = max;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+class Solution {
+public:
+    /**
+     *@param A: a list of integer
+     *@return: The root of Segment Tree
+     */
+    SegmentTreeNode * build(vector<int>& A) {
+        // write your code here
+        return buildtree(A, 0, A.size() - 1);
+    }
+    SegmentTreeNode * buildtree(vector<int>& A, int start, int end) {
+        if(start > end) return NULL;
+        SegmentTreeNode* node = new SegmentTreeNode(start, end, 0);
+        if(start == end) {
+            node->max = A[start];
+            return node;
+        }
+        int mid = (start + end) / 2;
+        node->left = buildtree(A, start, mid);
+        node->right = buildtree(A, mid + 1, end);
+        node->max = max(node->left->max, node->right->max);
+        return node;
+    }
+};

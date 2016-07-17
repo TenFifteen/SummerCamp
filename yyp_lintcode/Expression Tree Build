@@ -1,0 +1,75 @@
+题目：表达树建立。
+解题：同表达式求值。
+/**
+ * Definition of ExpressionTreeNode:
+ * class ExpressionTreeNode {
+ * public:
+ *     string symbol;
+ *     ExpressionTreeNode *left, *right;
+ *     ExpressionTreeNode(string symbol) {
+ *         this->symbol = symbol;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+
+class Solution {
+public:
+    /**
+     * @param expression: A string array
+     * @return: The root of expression tree
+     */
+    ExpressionTreeNode* build(vector<string> &expression) {
+        // write your code here
+        stack<ExpressionTreeNode*>num;
+        stack<ExpressionTreeNode*>ops;
+        ExpressionTreeNode* n1, *n2, *sig;
+        for(auto i: expression) {
+            ExpressionTreeNode * tmp = new ExpressionTreeNode(i);
+            if(i == "(") {
+                ops.push(tmp);
+            } else if(i == ")") {
+                while(!ops.empty() && ops.top()->symbol != "(") {
+                    n1 = num.top(); num.pop();
+                    n2 = num.top(); num.pop();
+                    sig = ops.top(); ops.pop();
+                    sig->left = n2;
+                    sig->right = n1;
+                    num.push(sig);
+                }
+                ops.pop();
+            } else if(i[i.size() - 1] >= '0' && i[i.size() - 1] <= '9') {
+                num.push(tmp);
+            } else {
+                while(!ops.empty() && precedence(tmp, ops.top())) {
+                    n1 = num.top(); num.pop();
+                    n2 = num.top(); num.pop();
+                    sig = ops.top(); ops.pop();
+                    sig->left = n2;
+                    sig->right = n1;
+                    num.push(sig);
+                }
+                ops.push(tmp);
+            }
+        }
+        while(!ops.empty()) {
+            n1 = num.top(); num.pop();
+            n2 = num.top(); num.pop();
+            sig = ops.top(); ops.pop();
+            sig->left = n2;
+            sig->right = n1;
+            num.push(sig);
+        }
+        return num.empty() ? NULL : num.top();
+    }
+    bool precedence(ExpressionTreeNode* e1, ExpressionTreeNode* e2) {
+        string sig1 = e1->symbol, sig2 = e2->symbol;
+        if(sig2 == "*" || sig2 == "/") return true;
+        if(sig2 == "+" || sig2 == "-")
+            if(sig1 == "+" || sig1 == "-")
+                return true;
+            else 
+                return false;
+        return false;
+    }
+};

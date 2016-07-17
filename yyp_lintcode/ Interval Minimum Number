@@ -1,0 +1,51 @@
+题目：找指定区间的最小值。
+解题：线段树。数组线段树总是出问题，需要将空间开的大一点。
+/**
+ * Definition of Interval:
+ * classs Interval {
+ *     int start, end;
+ *     Interval(int start, int end) {
+ *         this->start = start;
+ *         this->end = end;
+ *     }
+ */
+class Solution { 
+public:
+    /**
+     *@param A, queries: Given an integer array and an query list
+     *@return: The result list
+     */
+    void build(vector<int>& tree, vector<int>& nums, int root, int start, int end) {
+        if(start > end) return;
+        if(start == end) {
+            tree[root] = nums[start];
+            return;
+        }
+        int mid = (start + end) / 2;
+        build(tree, nums, 2 * root + 1, start, mid);
+        build(tree, nums, 2 * root + 2, mid + 1, end);
+        tree[root] = min(tree[2 * root + 1], tree[2 * root + 2]);
+        return;
+    }
+    int query(vector<int>& tree, int root, int start, int end, int qs, int qe) {
+        if(qs > end || qe < start) return INT_MAX;
+        if(start >= qs && end <= qe) return tree[root];
+        int mid = (start + end) / 2;
+        int x = query(tree, 2 * root + 1, start, mid, qs, qe);
+        int y = query(tree, 2 * root + 2, mid + 1, end, qs, qe);
+        return min(x, y);
+    }
+    vector<int> intervalMinNumber(vector<int> &A, vector<Interval> &queries) {
+        // write your code here
+        vector<int>res;
+        int l = A.size();
+        if(l == 0) return res;
+        vector<int>tree(4 * l + 2, 0);
+        build(tree, A, 0, 0, l - 1);
+        for(auto i: queries) {
+            int tmp = query(tree, 0, 0, l - 1, i.start, i.end);
+            res.push_back(tmp);
+        }
+        return res;
+    }
+};

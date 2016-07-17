@@ -1,0 +1,46 @@
+题目：玩具工厂。实现纯虚函数的继承。
+解题：注意const。即子类与父类函数要一致。
+/**
+ * Your object will be instantiated and called as such:
+ * ToyFactory* tf = new ToyFactory();
+ * Toy* toy = tf->getToy(type);
+ * toy->talk();
+ */
+class Toy {
+public:
+    virtual void talk() const=0;
+};
+
+class Dog: public Toy {
+    // Write your code here
+    virtual void talk() const{
+        cout << "Wow" << endl;
+    }
+};
+
+class Cat: public Toy {
+    // Write your code here
+    virtual void talk() const{
+        cout << "Meow" << endl;
+    }
+};
+
+class ToyFactory {
+public:
+    /**
+     * @param type a string
+     * @return Get object of the type
+     */
+    Toy* getToy(string& type) {
+        // Write your code here
+        Toy * toy;
+        if(type == "Dog") {
+            toy = new Dog();
+        } else if(type == "Cat"){
+            toy = new Cat();
+        } else {
+            return NULL;
+        }
+        return toy;
+    }
+};

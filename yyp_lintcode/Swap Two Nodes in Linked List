@@ -1,0 +1,51 @@
+题目：交换链表中两个节点。
+解题：先找到两个节点的前驱，然后交换。注意需要单独处理两个节点相邻的情况！注意细节！！
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    /**
+     * @param head a ListNode
+     * @oaram v1 an integer
+     * @param v2 an integer
+     * @return a new head of singly-linked list
+     */
+    ListNode* swapNodes(ListNode* head, int v1, int v2) {
+        // Write your code here
+        if(head == NULL) return NULL;
+        ListNode* newhead = new ListNode(0);
+        newhead->next = head;
+        ListNode* p1 = NULL, *p2 = NULL, *cur = newhead, *t1, *t2, *t3, *t4;
+        while(cur->next != NULL) {
+            if(cur->next->val == v1 || cur->next->val == v2) {
+                if(p1 == NULL)
+                    p1 = cur;
+                else 
+                    p2 = cur;
+            }
+            cur = cur->next;
+        }
+        if(p1 == NULL || p2 == NULL) return head;
+        t1 = p1->next;
+        t2 = p2->next;
+        t3 = t1->next;
+        t4 = t2->next;
+        if(t1 == p2) {
+            p1->next = t2;
+            t2->next = t1;
+            t1->next = t4;
+        }else {
+            t1->next = t4;
+            t2->next = t3;
+            p1->next = t2;
+            p2->next = t1;
+        }
+        return newhead->next;
+    }
+};

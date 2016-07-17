@@ -1,0 +1,86 @@
+题目：查找小于某个数的个数。
+解题：三种方法：暴力，二叉搜索，线段树。
+class Solution {
+public:
+   /**
+     * @param A: An integer array
+     * @return: The number of element in the array that 
+     *          are smaller that the given integer
+     */
+    struct segment {
+        segment* left, * right;
+        int start, end, count;
+        segment(int s, int e) {
+            start = s;
+            end = e;
+            count = 0;
+            left = right = NULL;
+        }
+    };
+    segment* root;
+    unordered_map<int, int>dic;
+    segment* build(vector<int>& A, int start, int end) {
+        if(start > end) return NULL;
+        segment* node = new segment(start, end);
+        if(start == end) {
+            if(dic.count(start) != 0)
+                node->count += dic[start];
+            return node;
+        }
+        int mid = (start + end) / 2;
+        node->left = build(A, start, mid);
+        node->right = build(A, mid + 1, end);
+        node->count = node->left->count + node->right->count;
+        return node;
+    }
+    int query(segment* root, int index) {
+        if(root->start >= index) return 0;
+        if(root->end < index) return root->count;
+        int x = query(root->left, index);
+        int y = query(root->right, index);
+        return x + y;
+    }
+    vector<int> countOfSmallerNumber(vector<int> &A, vector<int> &queries) {
+        vector<int>res;
+        for(auto i: A)
+            dic[i]++;
+        root = build(A, 0, 10000);
+        for(auto i: queries) {
+            res.push_back(query(root, i));
+        }
+        return res;
+    }
+    /*sort and binary search
+    vector<int> countOfSmallerNumber(vector<int> &A, vector<int> &queries) {
+        vector<int>res;
+        if(A.size() == 0) return vector<int>(queries.size(), 0);
+        sort(A.begin(), A.end());
+        for(auto i: queries) {
+            int low = 0, high = A.size(), tmp = 0;
+            while(low <= high) {
+                int mid = (low + high) / 2;
+                if(A[mid] < i) { 
+                    tmp += mid - low + 1;
+                    low = mid + 1;
+                } else {
+                    high = mid - 1;
+                }
+            }
+            res.push_back(tmp);
+        }
+        return res;
+    }*/
+    /* loop
+    vector<int> countOfSmallerNumber(vector<int> &A, vector<int> &queries) {
+        // write your code here
+        vector<int>res;
+        for(int i = 0; i < queries.size(); i++) {
+            int tmp = 0;
+            for(int j = 0; j < A.size(); j++)
+                if(A[j] < queries[i]) tmp++;
+            res.push_back(tmp);
+        }
+        return res;
+    }*/
+    
+};
