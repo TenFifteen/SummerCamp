@@ -46,7 +46,7 @@ public:
             ans += 1 << (shift - 1);
             left -= right << (shift - 1);
         }
-        
+
         if(neg){
             return -ans;
         }else{
@@ -62,7 +62,7 @@ class Solution {
 public:
     int divide(int dividend, int divisor) {
         if (divisor == 0 || (divisor == -1 && dividend == INT_MIN)) return INT_MAX;
-        
+
         long long left = dividend, right = divisor;
         bool neg = false;
         if (left < 0) {
@@ -73,7 +73,7 @@ public:
             neg = !neg;
             right = -right;
         }
-        
+
         int ans = 0;
         while (left >= right) {
             int mul = 0;
@@ -82,11 +82,44 @@ public:
             ans += (1 << mul);
             left -= (right << mul);
         }
-        
+
         if (neg) {
             return -ans;
         } else {
             return ans;
         }
+    }
+};
+/*
+ * 还好吧。
+ */
+class Solution {
+private:
+    long long _divide(long long dividend, long long divisor) {
+        if (dividend < divisor) return 0;
+        int shift = 0;
+        while (dividend >= (divisor << shift)) shift++;
+        shift--;
+        return (1 << shift) + _divide(dividend - (divisor << shift), divisor);
+    }
+
+public:
+    int divide(int dividend, int divisor) { // only dividend = INT_MIN, divisor = -1
+        if (dividend == INT_MIN && divisor == -1) return INT_MAX;
+        long long left = dividend;
+        long long right = divisor;
+        bool neg = false;
+        if (left < 0) {
+            left = -left;
+            neg = !neg;
+        }
+        if (right < 0) {
+            right = -right;
+            neg = !neg;
+        }
+
+        long long ans = _divide(left, right);
+        if (neg) return -ans;
+        else return ans;
     }
 };
