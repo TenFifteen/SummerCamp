@@ -73,15 +73,15 @@ public:
     vector<vector<int>> fourSum(vector<int>& nums, int target) {
         vector<vector<int>> ans;
         if (nums.size() < 4) return ans;
-        
+
         sort(nums.begin(), nums.end());
-        
+
         for (int i = 0; i < nums.size()-3; ++i) {
             if (i != 0 && nums[i] == nums[i-1]) continue;
-            
+
             for (int j = i+1; j < nums.size()-2; ++j) {
                 if (j != i+1 && nums[j] == nums[j-1]) continue;
-                
+
                 int left = j+1, right = nums.size()-1;
                 while (left < right) {
                     int cur = nums[i] + nums[j] + nums[left] + nums[right];
@@ -92,7 +92,7 @@ public:
                         tmp[2] = nums[left];
                         tmp[3] = nums[right];
                         ans.push_back(tmp);
-                        
+
                         while (left+1 < right && nums[left+1] == nums[left]) left++;
                         left++;
                     } else if (cur < target) {
@@ -103,7 +103,54 @@ public:
                 }
             }
         }
-        
+
+        return ans;
+    }
+};
+/*
+ * 还可以，一开始忘记了每次初始化second了
+ */
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        vector<vector<int>> ans;
+        if (nums.size() < 4) return ans;
+
+        sort(nums.begin(), nums.end());
+        int first = 0, second = 1;
+        vector<int> tmp(4);
+
+        while (first + 3 < nums.size()) {
+            tmp[0] = nums[first];
+            second = first + 1;
+
+            while (second + 2 < nums.size()) {
+                tmp[1] = nums[second];
+                int left = second + 1, right = nums.size() - 1;
+
+                while (left < right) {
+                    int sum = nums[first] + nums[second] + nums[left] + nums[right];
+                    if (sum == target) {
+                        tmp[2] = nums[left];
+                        tmp[3] = nums[right];
+                        ans.push_back(tmp);
+                        left++;
+                        while (left < right && nums[left] == nums[left-1]) left++;
+                    } else if (sum < target) {
+                        left++;
+                    } else {
+                        right--;
+                    }
+                }
+
+                second++;
+                while (second + 2 < nums.size() && nums[second] == nums[second-1]) second++;
+            }
+
+            first++;
+            while (first + 3 < nums.size() && nums[first] == nums[first-1]) first++;
+        }
+
         return ans;
     }
 };
