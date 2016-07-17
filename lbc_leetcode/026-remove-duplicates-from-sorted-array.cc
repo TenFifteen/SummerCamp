@@ -17,7 +17,7 @@ class Solution {
     int removeDuplicates(int A[], int n) {
         if(n < 2) return n;
         int id = 1;
-        for(int i = 1; i < n; ++i) 
+        for(int i = 1; i < n; ++i)
             if(A[i] != A[i-1]) A[id++] = A[i];
         return id;
     }
@@ -46,14 +46,30 @@ class Solution {
 public:
     int removeDuplicates(vector<int>& nums) {
         if (nums.size() == 0) return 0;
-        
+
         int len = 1;
         for (int i = 1; i < nums.size(); ++i) {
             if (nums[i] != nums[i-1]) {
                 nums[len++] = nums[i];
             }
         }
-        
+
+        return len;
+    }
+};
+/*
+ * 尚可
+ */
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        if (nums.size() < 2) return nums.size();
+        int len = 1;
+        for (int i = 1; i < nums.size(); ++i) {
+            if (nums[i] != nums[len-1]) {
+                nums[len++] = nums[i];
+            }
+        }
         return len;
     }
 };
