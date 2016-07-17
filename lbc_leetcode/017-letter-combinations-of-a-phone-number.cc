@@ -38,7 +38,7 @@ public:
         sub(ans,"",digits);
         return ans;
     }
-    
+
     void sub(vector<string> &ans, string cur, string digits){
         if(digits == ""){
             ans.push_back(cur);
@@ -81,7 +81,7 @@ public:
         vector<string> ans;
         if (digits.size() == 0) return ans;
         ans.push_back("");
-        
+
         unordered_map<char, string> mapping;
         mapping['1'] = "";
         mapping['2'] = "abc";
@@ -95,7 +95,7 @@ public:
         mapping['*'] = "*";
         mapping['0'] = " ";
         mapping['#'] = "#";
-        
+
         for (auto ch : digits) {
             vector<string> next;
             for (auto s : ans) {
@@ -109,7 +109,44 @@ public:
             }
             ans = next;
         }
-        
+
+        return ans;
+    }
+};
+/*
+ * 还可以吧，就是有点小毛病。
+ */
+class Solution {
+public:
+    vector<string> letterCombinations(string digits) {
+        if (digits.size() == 0) return vector<string>();
+
+        unordered_map<char, string> um;
+        um['2'] = "abc";
+        um['3'] = "def";
+        um['4'] = "ghi";
+        um['5'] = "jkl";
+        um['6'] = "mno";
+        um['7'] = "pqrs";
+        um['8'] = "tuv";
+        um['9'] = "wxyz";
+        um['0'] = " ";
+        um['*'] = "*";
+        um['#'] = "#";
+
+        vector<string> ans;
+        ans.push_back("");
+        for (int i = 0; i < digits.size(); ++i) {
+            if (digits[i] == '1') continue;
+            vector<string> next;
+            for (auto d : um[digits[i]]) {
+                for (string s : ans) {
+                    s.push_back(d);
+                    next.push_back(s);
+                }
+            }
+            ans = next;
+        }
         return ans;
     }
 };
