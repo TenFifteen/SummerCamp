@@ -104,7 +104,7 @@ public:
     ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
         ListNode prehead(0);
         ListNode *head = &prehead;
-        
+
         while (l1 && l2) {
             if (l1->val < l2->val) {
                 head->next = l1;
@@ -115,14 +115,50 @@ public:
             }
             head = head->next;
         }
-        
+
         if (l1) {
             head->next = l1;
         }
         if (l2) {
             head->next = l2;
         }
-        
+
         return prehead.next;
+    }
+};
+/*
+ * 不错
+ */
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+        if (l1 == NULL) return l2;
+        if (l2 == NULL) return l1;
+
+        ListNode tmp(0);
+        ListNode *pre = &tmp;
+        while (l1 && l2) {
+            if (l1->val < l2->val) {
+                pre->next = l1;
+                l1 = l1->next;
+                pre = pre->next;
+            } else {
+                pre->next = l2;
+                l2 = l2->next;
+                pre = pre->next;
+            }
+        }
+
+        if (l1) pre->next = l1;
+        if (l2) pre->next = l2;
+        return tmp.next;
     }
 };
