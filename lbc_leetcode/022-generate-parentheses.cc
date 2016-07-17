@@ -37,7 +37,7 @@ public:
         sub(n, n, ans, cur);
         return ans;
     }
-    
+
     void sub(int left, int right, vector<string> &ans, string &cur){
         if(right == 0){
             ans.push_back(cur);
@@ -69,7 +69,7 @@ class Solution {
             ans.push_back(now);
             return;
         }
-        
+
         if (left != 0) dfs(ans, now+"(", left-1, right);
         if (left != right) dfs(ans, now+")", left, right-1);
     }
@@ -77,6 +77,33 @@ public:
     vector<string> generateParenthesis(int n) {
         vector<string> ans;
         dfs(ans, "", n, n);
+        return ans;
+    }
+};
+/*
+ * 我竟然没有想出来该怎么搞。。还是参考了一下原来的代码。。。
+ */
+class Solution {
+private:
+    void sub(int left, int right, string now, vector<string> &ans) {
+        if (right == 0) {
+            ans.push_back(now);
+            return;
+        }
+        if (left == right) {
+            sub(left-1, right, now + "(", ans);
+        } else if (left == 0) {
+            sub(left, right-1, now + ")", ans);
+        } else {
+            sub(left-1, right, now + "(", ans);
+            sub(left, right-1, now + ")", ans);
+        }
+    }
+
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> ans;
+        sub(n, n, "", ans);
         return ans;
     }
 };
