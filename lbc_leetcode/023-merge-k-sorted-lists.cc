@@ -109,11 +109,11 @@ public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
         priority_queue<ListNode *, vector<ListNode *>, Cmp> pq;
         ListNode preheadtmp(0), *prehead = &preheadtmp, *head = prehead;
-        
+
         for (auto l : lists) {
             if (l) pq.push(l);
         }
-        
+
         while (pq.size()) {
             ListNode *now = pq.top();
             pq.pop();
@@ -121,8 +121,50 @@ public:
             head = head->next;
             if (now->next) pq.push(now->next);
         }
-        
+
         head->next = nullptr;
         return prehead->next;
+    }
+};
+/*
+ * 这次用的set，结果踩了一个很大的坑。如果两个节点的val相同，就插不进去了。。。。
+ */
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    struct Cmp {
+        bool operator() (ListNode *l1, ListNode *l2) const {
+            return l1->val < l2->val;
+        }
+    };
+
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        multiset<ListNode *, Cmp> s;
+        for (int i = 0; i < lists.size(); ++i) {
+            if (lists[i] != NULL) {
+                s.insert(lists[i]);
+            }
+        }
+
+        ListNode tmp(0), *pre = &tmp;
+        while (s.size() > 0) {
+            auto cur = s.begin();
+            s.erase(cur);
+            ListNode *cur_pr = *cur;
+            pre->next = cur_pr;
+            pre = pre->next;
+            if (cur_pr->next) s.insert(cur_pr->next);
+        }
+
+        pre->next = NULL;
+        return tmp.next;
     }
 };
