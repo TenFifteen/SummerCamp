@@ -98,7 +98,7 @@ class Solution {
 public:
     int longestValidParentheses(string s) {
         if (s.size() < 2) return 0;
-        
+
         int ans = 0;
         vector<int> dp(s.size(), 0);
         for (int i = 1; i < s.size(); ++i) {
@@ -110,16 +110,37 @@ public:
                     int index = i - dp[i];
                 }
             }
-            
+
             int index = i - dp[i];
             while (index >= 0 && dp[index]) {
                 dp[i] += dp[index];
                 index -= dp[index];
             }
-            
+
             ans = max(ans, dp[i]);
         }
-        
+
+        return ans;
+    }
+};
+/*
+ * 竟然又是用的自己的方法，感觉上需要栈，竟然还是没有想出来应该怎么用
+ */
+class Solution {
+public:
+    int longestValidParentheses(string s) {
+        if (s.size() == 0) return 0;
+
+        int ans = 0;
+        vector<int> dp(s.size(), 0);
+        for (int i = 1; i < s.size(); ++i) {
+            if (s[i] == ')') {
+                if (i-1-dp[i-1] >= 0 && s[i-1-dp[i-1]] == '(') dp[i] = dp[i-1] + 2;
+                if (i-dp[i] >= 0) dp[i] += dp[i-dp[i]];
+                ans = max(ans, dp[i]);
+            }
+        }
+
         return ans;
     }
 };
