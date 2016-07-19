@@ -55,7 +55,7 @@ public:
                 }
             }
         }
-        
+
         for (int i = 0; i < 9; ++i) {
             vector<bool> flag(9, false);
             for (int j = 0; j < 9; ++j) {
@@ -65,7 +65,7 @@ public:
                 }
             }
         }
-        
+
         for (int i = 0; i < 9; ++i) {
             int x = i / 3, y = i % 3;
             vector<bool> flag(9, false);
@@ -78,7 +78,40 @@ public:
                 }
             }
         }
-        
+
+        return true;
+    }
+};
+/*
+ *还是差不多的
+ /
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char>>& board) {
+        for (int i = 0; i < 9; ++i) {
+            vector<bool> flag(9, false);
+            for (int j = 0; j < 9; ++j) {
+                if (board[i][j] == '.') continue;
+                if (flag[board[i][j] - '1'] == true) return false;
+                flag[board[i][j] - '1'] = true;
+            }
+
+            fill(flag.begin(), flag.end(), false);
+            for (int j = 0; j < 9; ++j) {
+                if (board[j][i] == '.') continue;
+                if (flag[board[j][i] - '1'] == true) return false;
+                flag[board[j][i] - '1'] = true;
+            }
+
+            fill(flag.begin(), flag.end(), false);
+            for (int j = 0; j < 9; ++j) {
+                int row = i / 3 * 3 + j / 3;
+                int col = i % 3 * 3 + j % 3;
+                if (board[row][col] == '.') continue;
+                if (flag[board[row][col] - '1'] == true) return false;
+                flag[board[row][col] - '1'] = true;
+            }
+        }
         return true;
     }
 };
