@@ -88,7 +88,7 @@ class Solution {
 public:
     int search(vector<int>& nums, int target) {
         if (nums.size() == 0) return -1;
-        
+
         int left = 0, right = nums.size()-1;
         while (left <= right) {
             int mid = (left + right) >> 1;
@@ -115,7 +115,31 @@ public:
                 }
             }
         }
-        
+
         return -1;
+    }
+};
+/*
+ * 又是这样子。不过中间的条件又不是一次性搞清楚的。实在是比较麻烦
+ */
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        if (nums.size() == 0) return -1;
+
+        int left = 0, right = nums.size()-1;
+        while (left < right) {
+            int mid = (right-left)/2 + left;
+            cout << "left " << left << " mid " << mid << " right " << right << endl;
+            if (nums[mid] == target) return mid;
+            else if (nums[mid] < target) {
+                if (nums[right] < target && nums[mid] <= nums[right] && nums[right] < nums[left]) right = mid-1;
+                else left = mid+1;
+            } else {
+                if (nums[left] > target && nums[mid] > nums[right] && nums[left] > nums[right]) left = mid+1;
+                else right = mid-1;
+            }
+        }
+        return nums[left] == target ? left : -1;
     }
 };
