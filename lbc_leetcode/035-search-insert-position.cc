@@ -54,7 +54,7 @@ public:
                 if(nums[right] >= target)return right;
                 return right+1;
             }
-            
+
             int mid = left + (right-left)/2;
             if(nums[mid] == target)return mid;
             if(nums[mid] > target){
@@ -73,7 +73,7 @@ class Solution {
 public:
     int searchInsert(vector<int>& nums, int target) {
         if (nums.size() == 0) return 0;
-        
+
         int left = 0, right = nums.size();
         while (left < right) {
             int mid = (left + right) >> 1;
@@ -83,7 +83,25 @@ public:
                 right = mid;
             }
         }
-        
+
         return right;
+    }
+};
+/*
+ * 还可以吧
+ */
+class Solution {
+public:
+    int searchInsert(vector<int>& nums, int target) {
+        if (nums.size() == 0) return 0;
+        int left = 0, right = nums.size()-1;
+        while (left < right) {
+            int mid = (right - left) / 2 + left;
+            if (nums[mid] >= target) right = mid;
+            else left = mid + 1;
+        }
+
+        if (nums[left] >= target) return left;
+        else return left+1;
     }
 };
