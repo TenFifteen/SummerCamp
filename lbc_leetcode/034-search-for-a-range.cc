@@ -31,11 +31,11 @@ vector<int> searchRange(int A[], int n, int target) {
     while (i < j)
     {
         int mid = (i + j) /2 + 1;   // Make mid biased to the right
-        if (A[mid] > target) j = mid - 1;  
+        if (A[mid] > target) j = mid - 1;
         else i = mid;               // So that this won't make the search range stuck.
     }
     ret[1] = j;
-    return ret; 
+    return ret;
 }
 尤其是在第二次搜索的时候，left从i开始，而不是从0开始，感觉这一点虽然效率上来讲可能提高了也就是一两次搜索的过程，
 但是思想非常的棒。
@@ -101,7 +101,7 @@ public:
     vector<int> searchRange(vector<int>& nums, int target) {
         vector<int> ans(2, -1);
         if (nums.size() == 0) return ans;
-        
+
         int L = INT_MAX, R = INT_MIN;
         int left = 0, right = nums.size()-1;
         while (left <= right) {
@@ -115,9 +115,9 @@ public:
                 right = mid-1;
             }
         }
-        
+
         if (L == INT_MAX) return ans;
-        
+
         left = 0, right = nums.size()-1;
         while (left <= right) {
             int mid = (left + right) >> 1;
@@ -130,9 +130,37 @@ public:
                 right = mid-1;
             }
         }
-        
+
         ans[0] = L;
         ans[1] = R;
+        return ans;
+    }
+};
+/*
+ * 直接对了。
+ */
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        vector<int> ans(2, -1);
+        if (nums.size() == 0) return ans;
+
+        int left = 0, right = nums.size()-1;
+        while (left < right) {
+            int mid = (right-left)/2 + left;
+            if (nums[mid] >= target) right = mid;
+            else left = mid + 1;
+        }
+        if (nums[left] != target) return ans;
+
+        ans[0] = left;
+        left = 0, right = nums.size()-1;
+        while (left < right) {
+            int mid = (right-left+1)/2 + left;
+            if (nums[mid] <= target) left = mid;
+            else right = mid-1;
+        }
+        ans[1] = left;
         return ans;
     }
 };
