@@ -94,7 +94,7 @@ public:
         }
         sub(board, row, col, grid, 0, 0);
     }
-    
+
     bool sub(vector<vector<char>> &board, vector<vector<int>> &row, vector<vector<int>> &col, vector<vector<int>> &grid, int x, int y){
         if(y == 9){
             if(x == 8)return true;
@@ -126,11 +126,11 @@ public:
 class Solution {
 private:
     vector<vector<bool> > row, col, grid;
-    
+
     void init(vector<vector<char> > &board) {
         row = vector<vector<bool>>(9, vector<bool>(9, false));
         col = row; grid = row;
-        
+
         for (int i = 0; i < 9; ++i) {
             for (int j = 0; j < 9; ++j) {
                 if (board[i][j] == '.') continue;
@@ -140,7 +140,7 @@ private:
             }
         }
     }
-    
+
     bool dfs(int x, int y, vector<vector<char> > &board) {
         if (x >= 9) return true;
         if (y >= 9) {
@@ -149,7 +149,7 @@ private:
         if (board[x][y] != '.') return dfs(x, y+1, board);
         for (int i = 0; i < 9; ++i) {
             if (row[x][i] || col[y][i] || grid[x/3*3+y/3][i]) continue;
-            
+
             board[x][y] = '1'+i;
             row[x][i] = true;
             col[y][i] = true;
@@ -160,12 +160,56 @@ private:
             col[y][i] = false;
             grid[x/3*3+y/3][i] = false;
         }
-        
+
         return false;
     }
 public:
     void solveSudoku(vector<vector<char>>& board) {
         init(board);
         dfs(0, 0, board);
+    }
+};
+/*
+ *还行吧
+ */
+class Solution {
+private:
+    bool dfs(vector<vector<char>> &board, int x, int y, vector<vector<bool>> &row, vector<vector<bool>> &col, vector<vector<bool>> &grid) {
+        if (x == 9) return true;
+        if (y == 9) return dfs(board, x+1, 0, row, col, grid);
+        if (board[x][y] != '.') return dfs(board, x, y+1, row, col, grid);
+        for (int i = 0; i < 9; ++i) {
+            if (row[x][i] == true || col[y][i] == true || grid[x/3*3+y/3][i] == true) continue;
+            board[x][y] = '1' + i;
+            row[x][i] = true;
+            col[y][i] = true;
+            grid[x/3*3+y/3][i] = true;
+            if (dfs(board, x, y+1, row, col, grid)) return true;
+            row[x][i] = false;
+            col[y][i] = false;
+            grid[x/3*3+y/3][i] = false;
+            board[x][y] = '.';
+        }
+        return false;
+    }
+
+    void init(vector<vector<char>> &board, vector<vector<bool>> &row, vector<vector<bool>> &col, vector<vector<bool>> &grid) {
+        for (int i = 0; i < 9; ++i) {
+            for (int j = 0; j < 9; ++j) {
+                if (board[i][j] != '.') {
+                    int index = board[i][j] - '1';
+                    row[i][index] = true;
+                    col[j][index] = true;
+                    grid[i/3*3+j/3][index] = true;
+                }
+            }
+        }
+    }
+
+public:
+    void solveSudoku(vector<vector<char>>& board) {
+        vector<vector<bool>> row(9, vector<bool>(9, false)), col(row), grid(row);
+        init(board, row, col, grid);
+        dfs(board, 0, 0, row, col, grid);
     }
 };
