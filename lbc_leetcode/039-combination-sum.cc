@@ -29,7 +29,7 @@ public:
             return;
         }
         if(sum > target)return;
-        
+
         for(int i = cur; i < candidates.size(); ++i){
             sum += candidates[i];
             choose.push_back(candidates[i]);
@@ -51,11 +51,11 @@ private:
             return;
         }
         if (index >= candidates.size() || sum > target) return;
-        
+
         cur.push_back(candidates[index]);
         dfs(ans, candidates, target, index, sum + candidates[index], cur);
         cur.pop_back();
-        
+
         while (index+1 < candidates.size() && candidates[index+1] == candidates[index]) index++;
         dfs(ans, candidates, target, index+1, sum, cur);
     }
@@ -63,11 +63,39 @@ public:
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
         vector<vector<int> > ans;
         if (candidates.size() == 0) return ans;
-        
+
         sort(candidates.begin(), candidates.end());
-        
+
         vector<int> cur;
         dfs(ans, candidates, target, 0, 0, cur);
+        return ans;
+    }
+};
+/*
+ * 还可以
+ */
+class Solution {
+private:
+    void sub(vector<int> &candidates, int index, int target, vector<int> &now, vector<vector<int>> &ans) {
+        if (target == 0) {
+            ans.push_back(now);
+            return;
+        }
+        if (target < 0 || index == candidates.size()) return;
+        for (int i = index; i < candidates.size(); ++i) {
+            if (i != 0 && candidates[i] == candidates[i-1]) continue;
+            now.push_back(candidates[i]);
+            sub(candidates, i, target-candidates[i], now, ans);
+            now.pop_back();
+        }
+    }
+
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end());
+        vector<vector<int>> ans;
+        vector<int> now;
+        sub(candidates, 0, target, now, ans);
         return ans;
     }
 };
