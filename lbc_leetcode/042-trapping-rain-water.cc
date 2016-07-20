@@ -67,13 +67,13 @@ class Solution {
 public:
     int trap(vector<int>& height) {
         if (height.size() < 3) return 0;
-        
+
         vector<int> left_max(height.size(), 0);
         left_max[0] = height[0];
         for (int i = 1; i < height.size(); ++i) {
             left_max[i] = max(left_max[i-1], height[i]);
         }
-        
+
         int ans = 0, right_max = height[height.size()-1];
         for (int i = height.size()-2; i > 0; --i) {
             int bar = min(left_max[i-1], right_max);
@@ -82,7 +82,31 @@ public:
             }
             right_max = max(right_max, height[i]);
         }
-        
+
+        return ans;
+    }
+};
+/*
+ * 还行
+ */
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        if (height.size() < 3) return 0;
+
+        vector<int> left(height.size());
+        left[0] = height[0];
+        for (int i = 1; i < height.size(); ++i) {
+            left[i] = max(left[i-1], height[i]);
+        }
+
+        int ans = 0;
+        int right = height.back();
+        for (int i = height.size()-2; i > 0; --i) {
+            int bar = min(left[i-1], right);
+            if (height[i] < bar) ans += bar - height[i];
+            right = max(right, height[i]);
+        }
         return ans;
     }
 };
