@@ -46,7 +46,7 @@ public:
             }
         }
         ans.push_back(cur);
-        
+
         return ans;
     }
 };
@@ -70,16 +70,16 @@ private:
             return lh.start < rh.start;
         }
     };
-    
+
 public:
     vector<Interval> merge(vector<Interval>& intervals) {
         if (intervals.size() == 0) return intervals;
-        
+
         sort(intervals.begin(), intervals.end(), Cmp());
-        
+
         vector<Interval> ans;
         ans.push_back(intervals[0]);
-        
+
         for (int i = 1; i < intervals.size(); ++i) {
             if (intervals[i].start <= ans.rbegin()->end) {
                 ans.rbegin()->end = max(ans.rbegin()->end, intervals[i].end);
@@ -87,7 +87,46 @@ public:
                 ans.push_back(intervals[i]);
             }
         }
-        
+
+        return ans;
+    }
+};
+/*
+ * 可以
+ */
+/**
+ * Definition for an interval.
+ * struct Interval {
+ *     int start;
+ *     int end;
+ *     Interval() : start(0), end(0) {}
+ *     Interval(int s, int e) : start(s), end(e) {}
+ * };
+ */
+class Solution {
+private:
+    struct Cmp {
+        bool operator() (const Interval &i1, const Interval &i2) const {
+            if (i1.start < i2.start) return true;
+            if (i1.start > i2.start) return false;
+            return i1.end < i2.end;
+        }
+    };
+
+public:
+    vector<Interval> merge(vector<Interval>& intervals) {
+        if (intervals.size() < 2) return intervals;
+        sort(intervals.begin(), intervals.end(), Cmp());
+
+        vector<Interval> ans;
+        ans.push_back(intervals[0]);
+        for (int i = 1; i < intervals.size(); ++i) {
+            if (intervals[i].start > ans.back().end) {
+                ans.push_back(intervals[i]);
+            } else {
+                ans.back().end = max(intervals[i].end, ans.back().end);
+            }
+        }
         return ans;
     }
 };
