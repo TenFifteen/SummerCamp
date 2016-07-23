@@ -20,7 +20,7 @@ public:
         sub(ans, cur, n, 1, k);
         return ans;
     }
-    
+
     void sub(vector<vector<int>> &ans, vector<int> &cur, int n, int i, int k){
         if(k == 0){
             ans.push_back(cur);
@@ -44,7 +44,7 @@ class Solution {
             return;
         }
         if (n-now+1 < k-cur.size()) return;
-        
+
         cur.push_back(now);
         dfs(ans, cur, n, k, now+1);
         cur.pop_back();
@@ -53,11 +53,37 @@ class Solution {
 public:
     vector<vector<int>> combine(int n, int k) {
         assert(n >= k && k > 0);
-        
+
         vector<vector<int> > ans;
         vector<int> cur;
         dfs(ans, cur, n, k, 1);
-        
+
+        return ans;
+    }
+};
+/*
+ * almost there
+ */
+class Solution {
+private:
+    void dfs(vector<vector<int>> &ans, vector<int> &now, int i, int n, int k) {
+        if (i > n) {
+            if (now.size() == k) ans.push_back(now);
+            return;
+        }
+        if (now.size() > k || n-i+1+now.size() < k) return;
+
+        now.push_back(i);
+        dfs(ans, now, i+1, n, k);
+        now.pop_back();
+        dfs(ans, now, i+1, n, k);
+    }
+
+public:
+    vector<vector<int>> combine(int n, int k) {
+        vector<vector<int>> ans;
+        vector<int> now;
+        dfs(ans, now, 1, n, k);
         return ans;
     }
 };
