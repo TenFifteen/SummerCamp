@@ -75,7 +75,7 @@ public:
     string simplifyPath(string path) {
         stack<string> names;
         assert(path.size() > 0 && path[0] == '/');
-        
+
         int last = 0;
         while (last < path.size()) {
             int next = last+1;
@@ -88,12 +88,12 @@ public:
                     names.push(cur);
                 }
             }
-            
+
             last = next;
         }
-        
+
         if (names.size() == 0) return "/";
-        
+
         vector<string> tmp;
         while (names.size() > 0) {
             tmp.push_back(names.top());
@@ -103,6 +103,41 @@ public:
         for (int i = tmp.size()-1; i >= 0; --i) {
             ans.append("/");
             ans.append(tmp[i]);
+        }
+        return ans;
+    }
+};
+/*
+ * small mistakes too much
+ */
+class Solution {
+public:
+    string simplifyPath(string path) {
+        stack<string> stk;
+        if (path == "" || path[0] != '/') return "";
+        int index = 0;
+        while (index < path.size()) {
+            int next = index+1;
+            while (next < path.size() && path[next] != '/') next++;
+            string sub = path.substr(index+1, next-index-1);
+            index = next;
+            if (sub == "" || sub == ".") continue;
+            if (sub == ".." && stk.size() > 0) stk.pop();
+            if (sub != "..") stk.push(sub);
+        }
+
+        if (stk.size() == 0) return "/";
+
+        stack<string> tmp;
+        while (stk.size() > 0) {
+            tmp.push(stk.top());
+            stk.pop();
+        }
+        string ans;
+        while (tmp.size() > 0) {
+            ans += "/";
+            ans += tmp.top();
+            tmp.pop();
         }
         return ans;
     }
