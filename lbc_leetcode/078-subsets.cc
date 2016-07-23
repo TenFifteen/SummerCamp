@@ -16,9 +16,9 @@ public:
     vector<vector<int>> subsets(vector<int>& nums) {
         sort(nums.begin(), nums.end());
         vector<vector<int>> subs;
-        vector<int> sub;  
+        vector<int> sub;
         genSubsets(nums, 0, sub, subs);
-        return subs; 
+        return subs;
     }
     void genSubsets(vector<int>& nums, int start, vector<int>& sub, vector<vector<int>>& subs) {
         subs.push_back(sub);
@@ -39,7 +39,7 @@ public:
         sub(ans, nums, 0, cur);
         return ans;
     }
-    
+
     void sub(vector<vector<int>> &ans, vector<int> &nums, int index, vector<int> &cur){
         if(index == nums.size()){
             ans.push_back(cur);
@@ -62,7 +62,7 @@ private:
             ans.push_back(now);
             return;
         }
-        
+
         now.push_back(nums[cur]);
         dfs(ans, now, nums, cur+1);
         now.pop_back();
@@ -73,11 +73,36 @@ public:
     vector<vector<int>> subsets(vector<int>& nums) {
         vector<vector<int> > ans;
         vector<int> now;
-        
+
         sort(nums.begin(), nums.end());
-        
+
         dfs(ans, now, nums, 0);
-        
+
+        return ans;
+    }
+};
+/*
+ * some easy, but now graceful
+ */
+class Solution {
+private:
+    void dfs(vector<vector<int>> &ans, vector<int> &now, int index, vector<int> &nums) {
+        if (index == nums.size()) {
+            ans.push_back(now);
+            return;
+        }
+
+        now.push_back(nums[index]);
+        dfs(ans, now, index+1, nums);
+        now.pop_back();
+        dfs(ans, now, index+1, nums);
+    }
+
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int>> ans;
+        vector<int> now;
+        dfs(ans, now, 0, nums);
         return ans;
     }
 };
