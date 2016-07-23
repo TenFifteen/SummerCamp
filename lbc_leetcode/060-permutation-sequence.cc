@@ -77,10 +77,10 @@ public:
     string getPermutation(int n, int k) {
         if (n == 0) return "";
         if (n == 1) return "1";
-        
+
         int mul = 1;
         for (int i = 1; i < n; ++i) mul *= i;
-        
+
         string ans(n, '0');
         vector<bool> nums(n, true);
         for (int i = 0; i < n; ++i) {
@@ -102,6 +102,38 @@ public:
             }
             if (n-i-1) mul /= (n-i-1);
             else mul = 0;
+        }
+        return ans;
+    }
+};
+/*
+ * ok
+ */
+class Solution {
+public:
+    string getPermutation(int n, int k) {
+        string ans;
+        vector<int> num(n);
+        num[0] = 1;
+        for (int i = 1; i < n; ++i) {
+            num[i] = num[i-1] * i;
+        }
+
+        k--;
+        vector<bool> flag(n, false);
+        for (int i = 0; i < n; ++i) {
+            int th = k / num[n-i-1];
+            k %= num[n-1-i];
+            int cur;
+            for (int j = 0; j < n; ++j) {
+                if (flag[j] == false) th--;
+                if (th < 0) {
+                    cur = j+1;
+                    flag[j] = true;
+                    break;
+                }
+            }
+            ans.push_back(cur + '0');
         }
         return ans;
     }
