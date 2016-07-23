@@ -25,7 +25,7 @@ public:
         sub(ans, cur, n, 0, col, left, right);
         return ans;
     }
-    
+
     void sub(vector<vector<string>> &ans, vector<string> &cur, int n, int row, vector<bool> &col, vector<bool> &left, vector<bool> &right){
         if(row == n){
             ans.push_back(cur);
@@ -53,23 +53,23 @@ public:
 */
 class Solution {
 private:
-    void dfs(vector<vector<string> > &ans, vector<string> &board, vector<bool> &col, 
+    void dfs(vector<vector<string> > &ans, vector<string> &board, vector<bool> &col,
     vector<bool> &left, vector<bool> &right, int row) {
         if (row == board.size()) {
             ans.push_back(board);
             return;
         }
-        
+
         for (int i = 0; i < board.size(); ++i) {
             if (col[i] && left[row+i] && right[board.size()-1-i+row]) {
                 col[i] = false;
                 left[row+i] = false;
                 right[board.size()-1-i+row] = false;
-                
+
                 board[row][i] = 'Q';
                 dfs(ans, board, col, left, right, row+1);
                 board[row][i] = '.';
-                
+
                 col[i] = true;
                 left[row+i] = true;
                 right[board.size()-1-i+row] = true;
@@ -82,8 +82,42 @@ public:
         vector<string> board(n, string(n, '.'));
         vector<vector<string> > ans;
         vector<bool> col(n, true), left(n*2-1, true), right(n*2-1, true);
-        
+
         dfs(ans, board, col, left, right, 0);
+        return ans;
+    }
+};
+/*
+ * 可以
+ */
+class Solution {
+private:
+    void solve(vector<vector<string>> &ans, vector<string> &now, int x, vector<bool> &col, vector<bool> &left, vector<bool> &right) {
+        if (x == now.size()) {
+            ans.push_back(now);
+            return;
+        }
+
+        for (int i = 0; i < now.size(); ++i) {
+            if (col[i] == true || left[x+i] == true || right[x+now.size()-1-i] == true) continue;
+            now[x][i] = 'Q';
+            col[i] = true;
+            left[x+i] = true;
+            right[x+now.size()-1-i] = true;
+            solve(ans, now, x+1, col, left, right);
+            now[x][i] = '.';
+            col[i] = false;
+            left[x+i] = false;
+            right[x+now.size()-1-i] = false;
+        }
+    }
+
+public:
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<string>> ans;
+        vector<string> now(n, string(n, '.'));
+        vector<bool> col(n, false), left(n*2-1, false), right(n*2-1, false);
+        solve(ans, now, 0, col, left, right);
         return ans;
     }
 };
