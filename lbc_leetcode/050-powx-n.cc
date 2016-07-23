@@ -59,7 +59,7 @@ private:
     double pow(double x, long long n) {
         if (n == 0) return 1.0;
         if (n < 0) return 1/pow(x, -n);
-        
+
         double ans = 1.0;
         double cur = x;
         long long mul = 1;
@@ -68,16 +68,33 @@ private:
                 n -= mul;
                 ans *= cur;
             }
-            
+
             cur *= cur;
             mul <<= 1;
         }
-        
+
         return ans;
     }
-    
+
 public:
     double myPow(double x, int n) {
         return pow(x, n);
+    }
+};
+/*
+ * 不错，而且一开始就知道这里可能会有溢出。另外就是代码终于简练了。
+ */
+class Solution {
+public:
+    double myPow(double x, int n) {
+        if (n == 0) return 1.0;
+        if (n == INT_MIN) { // deals with overflow
+            double half = myPow(x, n/2);
+            return half * half;
+        }
+        if (n < 0) return 1.0 / myPow(x, -n); // this maybe overflow
+        double half = myPow(x, n/2);
+        if (n & 0x1) return half * half * x;
+        else return half * half;
     }
 };
