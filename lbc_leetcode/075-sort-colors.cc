@@ -38,7 +38,7 @@ class Solution {
 public:
     void sortColors(vector<int>& nums) {
         if (nums.size() < 2) return;
-        
+
         int left = 0, right = nums.size()-1, last = 0;
         while (left <= right) {
             while (left <= right && nums[left] != 2) {
@@ -53,6 +53,26 @@ public:
             }
             if (left < right) {
                 swap(nums[left], nums[right--]);
+            }
+        }
+    }
+};
+/*
+ * very good
+ */
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+        if (nums.size() < 2) return;
+
+        int i = 0, j = 0, k = nums.size()-1;
+        while (i <= k) {
+            if (nums[i] == 0) {
+                swap(nums[j++], nums[i++]);
+            } else if (nums[i] == 1) {
+                i++;
+            } else {
+                swap(nums[i], nums[k--]);
             }
         }
     }
