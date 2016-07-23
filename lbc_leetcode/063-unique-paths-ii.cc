@@ -50,7 +50,7 @@ public:
         if (obstacleGrid.size() == 0 || obstacleGrid[0].size() == 0) return 0;
         int m = obstacleGrid.size(), n = obstacleGrid[0].size();
         if (obstacleGrid[0][0] == 1 || obstacleGrid[m-1][n-1] == 1) return 0;
-        
+
         vector<int> ans(n, 0);
         ans[0] = 1;
         for (int i = 0; i < m; ++i) {
@@ -63,7 +63,27 @@ public:
                 }
             }
         }
-        
+
         return ans[n-1];
+    }
+};
+/*
+ * some easy too
+ */
+class Solution {
+public:
+    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+        int m = obstacleGrid.size(), n = obstacleGrid[0].size();
+        vector<int> dp(n);
+        if (obstacleGrid[0][0] == 1) return 0;
+        dp[0] = 1;
+        for (int i = 0; i < m; ++i) {
+            if (obstacleGrid[i][0] == 1) dp[0] = 0;
+            for (int j = 1; j < n; ++j) {
+                if (obstacleGrid[i][j] == 1) dp[j] = 0;
+                else dp[j] += dp[j-1];
+            }
+        }
+        return dp[n-1];
     }
 };
