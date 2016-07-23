@@ -29,11 +29,11 @@ public:
         }
         tail->next = head; // circle the link
 
-        if(k %= len) 
+        if(k %= len)
         {
             for(auto i=0; i<len-k; i++) tail = tail->next; // the tail node is the (len-k)-th node (1st node is head)
         }
-        newH = tail->next; 
+        newH = tail->next;
         tail->next = NULL;
         return newH;
     }
@@ -101,11 +101,11 @@ private:
 public:
     ListNode* rotateRight(ListNode* head, int k) {
         if (head == NULL || head->next == NULL) return head;
-        
+
         int n = getListLen(head);
         k %= n;
         if (k == 0) return head;
-        
+
         ListNode *cur = head, *last, *front = head, *frontLast;
         for (int i = 0; i < k; ++i) {
             frontLast = front;
@@ -117,9 +117,50 @@ public:
             last = cur;
             cur = cur->next;
         }
-        
+
         frontLast->next = head;
         last->next = NULL;
         return cur;
+    }
+};
+/*
+ * ok
+ */
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    int getLength(ListNode *head) {
+        int len = 0;
+        while (head) {
+            len++;
+            head = head->next;
+        }
+        return len;
+    }
+
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if (head == NULL) return head;
+        int len = getLength(head);
+        k %= len;
+        if (k == 0) return head;
+
+        ListNode *last, *cur = head;
+        for (int i = 0; i < len-k; ++i) {
+            last = cur;
+            cur = cur->next;
+        }
+        last->next = NULL;
+        last = cur;
+        while (cur->next != NULL) cur = cur->next;
+        cur->next = head;
+        return last;
     }
 };
