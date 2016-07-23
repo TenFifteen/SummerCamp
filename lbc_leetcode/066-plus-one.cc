@@ -60,7 +60,7 @@ public:
             ans.push_back(1);
             return ans;
         }
-        
+
         int carry = 1;
         for (int i = digits.size()-1; i >= 0; --i) {
             carry += digits[i];
@@ -68,10 +68,33 @@ public:
             carry /= 10;
         }
         if (carry) ans.push_back(carry);
-        
+
         for (int i = 0; i < ans.size()/2; ++i) {
             swap(ans[i], ans[ans.size()-1-i]);
         }
         return ans;
+    }
+};
+/*
+ * some easy
+ */
+class Solution {
+public:
+    vector<int> plusOne(vector<int>& digits) {
+        int carry = 1;
+        for (int i = digits.size()-1; i >= 0; --i) {
+            carry += digits[i];
+            digits[i] = carry % 10;
+            carry /= 10;
+        }
+        if (carry) {
+            vector<int> ret(digits.size()+1);
+            ret[0] = carry;
+            for (int i = 1; i < ret.size(); ++i) {
+                ret[i] = digits[i-1];
+            }
+            return ret;
+        }
+        return digits;
     }
 };
