@@ -26,7 +26,7 @@ public:
     TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
         return sub(inorder, 0, inorder.size()-1, postorder, 0, postorder.size()-1);
     }
-    
+
     TreeNode *sub(vector<int> &in, int in_left, int in_right, vector<int> &post, int post_left, int post_right){
         if(in_left > in_right)return NULL;
         TreeNode *cur = new TreeNode(post[post_right]);
@@ -55,16 +55,49 @@ private:
     TreeNode *build(vector<int> &inorder,   int ileft, int iright,
                     vector<int> &postorder, int pleft, int pright) {
         if (ileft > iright) return NULL;
-        
+
         TreeNode *root = new TreeNode(postorder[pright]);
         int index = iright;
         while (inorder[index] != postorder[pright]) index--;
-        
+
         root->left = build(inorder, ileft, index-1, postorder, pleft, pleft+index-ileft-1);
         root->right = build(inorder, index+1, iright, postorder, pleft+index-ileft, pright-1);
         return root;
     }
-    
+
+public:
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        if (inorder.size() == 0) return NULL;
+        return build(inorder, 0, inorder.size()-1, postorder, 0, postorder.size()-1);
+    }
+};
+/*
+ * some easy
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    TreeNode *build(vector<int> &inorder, int in_left, int in_right, vector<int> &postorder, int post_left, int post_right) {
+        if (in_left > in_right) return NULL;
+
+        TreeNode *root = new TreeNode(postorder[post_right]);
+
+        int index = in_left;
+        while (inorder[index] != postorder[post_right]) index++;
+
+        root->left = build(inorder, in_left, index-1, postorder, post_left, post_left+index-in_left-1);
+        root->right = build(inorder, index+1, in_right, postorder, post_left+index-in_left, post_right-1);
+        return root;
+    }
+
 public:
     TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
         if (inorder.size() == 0) return NULL;
