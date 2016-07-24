@@ -18,7 +18,7 @@
     ListNode prehead(0);
     prehead.next=head;
     ListNode* pre=&prehead;
-    while(--m)pre=pre->next;        
+    while(--m)pre=pre->next;
     ListNode* pstart=pre->next;
     while(n--)
     {
@@ -67,7 +67,7 @@ public:
         left->next = next;
         return head;
     }
-    
+
     ListNode *reverse(ListNode *head){
         ListNode *cur = head;
         ListNode *last = NULL;
@@ -108,26 +108,70 @@ private:
 public:
     ListNode* reverseBetween(ListNode* head, int m, int n) {
         if (head == NULL || m == n) return head;
-        
+
         ListNode prehead(0), *phead = &prehead, *leftTail, *midHead, *midTail;
-        
+
         phead->next = head;
         for (int i = 0; i < m; ++i) {
             leftTail = phead;
             phead = phead->next;
         }
-        
+
         midHead = phead;
         for (int i = 0; i < n-m+1; ++i) {
             midTail = phead;
             phead = phead->next;
         }
-        
+
         midTail->next = NULL;
         reverse(midHead);
         leftTail->next = midTail;
         midHead->next = phead;
-        
+
         return prehead.next;
+    }
+};
+/*
+ * just so so
+ */
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    ListNode * reverse(ListNode *head) {
+        ListNode *ret = NULL;
+        while (head) {
+            ListNode *next = head->next;
+            head->next = ret;
+            ret = head;
+            head = next;
+        }
+        return ret;
+    }
+
+public:
+    ListNode* reverseBetween(ListNode* head, int m, int n) {
+        ListNode tmp(0), *pre = &tmp;
+        pre->next = head;
+
+        for (int i = 1; i < m; ++i) pre = pre->next;
+        ListNode *last = pre;
+        for (int i = 0; i <= n-m; ++i) pre = pre->next;
+
+        head = pre;
+        pre = pre->next;
+        head->next = NULL;
+
+        head = last->next;
+        last->next = reverse(last->next);
+        head->next = pre;
+
+        return tmp.next;
     }
 };
