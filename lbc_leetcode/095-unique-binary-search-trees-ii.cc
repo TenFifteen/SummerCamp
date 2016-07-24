@@ -26,7 +26,7 @@ public:
     vector<TreeNode*> generateTrees(int n) {
         return sub(1, n);
     }
-    
+
     vector<TreeNode *> sub(int left, int right){
         vector<TreeNode *> ret;
         if(left > right){
@@ -61,7 +61,7 @@ public:
         }
         return ret;
     }
-    
+
     TreeNode *copy(TreeNode *head){
         if(head == NULL)return NULL;
         TreeNode *ret = new TreeNode(head->val);
@@ -91,7 +91,7 @@ private:
             ans.push_back(NULL);
             return ans;
         }
-        
+
         for (int i = left; i <= right; ++i) {
             auto L = sub(left, i-1);
             auto R = sub(i+1, right);
@@ -104,7 +104,7 @@ private:
                 }
             }
         }
-        
+
         return ans;
     }
 
@@ -112,5 +112,64 @@ public:
     vector<TreeNode*> generateTrees(int n) {
         if (n == 0) return vector<TreeNode *>();
         return sub(1, n);
+    }
+};
+/*
+ * some tedious
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    TreeNode *deepcopy(TreeNode *root) {
+        if (root == NULL) return NULL;
+        TreeNode *ret = new TreeNode(root->val);
+        ret->left = deepcopy(root->left);
+        ret->right = deepcopy(root->right);
+        return ret;
+    }
+
+    void destroy(TreeNode *root) {
+        if (root == NULL) return;
+        destroy(root->left);
+        destroy(root->right);
+        delete root;
+    }
+
+    vector<TreeNode *> generate(int left, int right) {
+        vector<TreeNode *> ans;
+        if (left > right) {
+            ans.push_back(NULL);
+            return ans;
+        }
+
+        for (int i = left; i <= right; ++i) {
+            auto left_ret = generate(left, i-1);
+            auto right_ret = generate(i+1, right);
+            for (auto lr : left_ret) {
+                for (auto rr : right_ret) {
+                    TreeNode *root = new TreeNode(i);
+                    root->left = deepcopy(lr);
+                    root->right = deepcopy(rr);
+                    ans.push_back(root);
+                }
+            }
+            for (auto r : left_ret) destroy(r);
+            for (auto r : right_ret) destroy(r);
+        }
+        return ans;
+    }
+
+public:
+    vector<TreeNode*> generateTrees(int n) {
+        if (n == 0) return vector<TreeNode *>(); // corner case
+        return generate(1, n);
     }
 };
