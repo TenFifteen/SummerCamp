@@ -52,3 +52,26 @@ public:
         return min(minDepth(root->left), minDepth(root->right))+1;
     }
 };
+/*
+ * some easy
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int minDepth(TreeNode* root) {
+        if (root == NULL) return 0;
+        if (root->left == NULL && root->right == NULL) return 1;
+        int ret = INT_MAX;
+        if (root->left) ret = min(minDepth(root->left), ret);
+        if (root->right) ret = min(minDepth(root->right), ret);
+        return ret+1;
+    }
+};
