@@ -69,12 +69,12 @@ public:
         }
         return sortedArrayToBST(nums);
     }
-    
+
     TreeNode* sortedArrayToBST(vector<int>& nums) {
         if(nums.size() == 0)return NULL;
         return sub(nums, 0, nums.size()-1);
     }
-    
+
     TreeNode * sub(vector<int> &nums, int left, int right){
         if(left > right)return NULL;
         int mid = left + (right-left)/2;
@@ -115,18 +115,18 @@ private:
         }
         return len;
     }
-    
+
     TreeNode *build (ListNode *head, int len) {
         if (len <= 0) return NULL;
         if (len == 1) return new TreeNode(head->val);
         int mid = (len>>1)+1;
-        
+
         ListNode *front = head;
         for (int i = 0; i < mid-1; ++i) {
             front = front->next;
         }
-        
-        
+
+
         TreeNode *root = new TreeNode(front->val);
         root->left = build(head, mid-1);
         root->right = build(front->next, len-mid);
@@ -137,5 +137,64 @@ public:
     TreeNode* sortedListToBST(ListNode* head) {
         int len = getLength(head);
         return build(head, len);
+    }
+};
+/*
+ * some easy
+ */
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    int getLength(ListNode *head) {
+        int len = 0;
+        while (head) {
+            head = head->next;
+            len++;
+        }
+        return len;
+    }
+
+    TreeNode *build(ListNode *head) {
+        if (head == NULL) return NULL;
+        if (head->next == NULL) {
+            return new TreeNode(head->val);
+        }
+
+        ListNode tmp(0), *pre = &tmp;
+        pre->next = head;
+        ListNode *fast = pre, *slow = pre, *last;
+        while (fast) {
+            fast = fast->next;
+            if (fast) fast = fast->next;
+            last = slow;
+            slow = slow->next;
+        }
+
+        TreeNode *root = new TreeNode(slow->val);
+        last->next = NULL;
+        root->left = build(tmp.next);
+        root->right = build(slow->next);
+        return root;
+    }
+
+public:
+    TreeNode* sortedListToBST(ListNode* head) {
+        return build(head);
     }
 };
