@@ -67,14 +67,14 @@ public:
     vector<int> inorderTraversal(TreeNode* root) {
         vector<int> ans;
         if (root == NULL) return ans;
-        
+
         stack<TreeNode *> stk;
         while (root->left) {
             stk.push(root);
             root = root->left;
         }
         stk.push(root);
-        
+
         while (stk.size()) {
             TreeNode *cur = stk.top();stk.pop();
             ans.push_back(cur->val);
@@ -87,7 +87,35 @@ public:
                 stk.push(cur);
             }
         }
-        
+
+        return ans;
+    }
+};
+/*
+ * too easy
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    void inorder(vector<int> &ans, TreeNode *root) {
+        if (root == NULL) return;
+        inorder(ans, root->left);
+        ans.push_back(root->val);
+        inorder(ans, root->right);
+    }
+
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> ans;
+        inorder(ans, root);
         return ans;
     }
 };
