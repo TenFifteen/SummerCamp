@@ -15,7 +15,7 @@
 DISCUSS中有一个压缩掉空间复杂度的动归版本：
 int numDecodings(string s) {
     if (!s.size() || s.front() == '0') return 0;
-    // r2: decode ways of s[i-2] , r1: decode ways of s[i-1] 
+    // r2: decode ways of s[i-2] , r1: decode ways of s[i-1]
     int r1 = 1, r2 = 1;
 
     for (int i = 1; i < s.size(); i++) {
@@ -74,7 +74,7 @@ public:
             if (s == "0") return 0;
             return 1;
         }
-        
+
         int n = s.size();
         vector<int> dp(n, 0);
         dp[n-1] = s[n-1] == '0' ? 0 : 1;
@@ -82,14 +82,31 @@ public:
             dp[n-2] = dp[n-1];
             if (s[n-2] == '1' || s[n-2] == '2' && s[n-1] < '7') dp[n-2] += 1;
         }
-        
+
         for (int i = n-3; i >= 0; --i) {
             if (s[i] != '0') {
                 dp[i] = dp[i+1];
                 if (s[i] == '1' || s[i] == '2' && s[i+1] < '7') dp[i] += dp[i+2];
             }
         }
-        
+
         return dp[0];
+    }
+};
+/*
+ * simplify code
+ */
+class Solution {
+public:
+    int numDecodings(string s) {
+        if (s.size() == 0) return 0;
+
+        vector<int> dp(s.size()+1, 1);
+        for (int i = 0; i < s.size(); ++i) {
+            if (s[i] == '0') dp[i+1] = 0;
+            else dp[i+1] = dp[i];
+            if (i > 0 && (s[i-1] == '1' || (s[i-1] == '2' && s[i] <= '6'))) dp[i+1] += dp[i-1];
+        }
+        return dp[s.size()];
     }
 };
