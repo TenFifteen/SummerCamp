@@ -85,19 +85,43 @@ class Solution {
 public:
     bool isScramble(string s1, string s2) {
         if (s1 == s2) return true;
-        
+
         string t1(s1), t2(s2);
         sort(t1.begin(), t1.end());
         sort(t2.begin(), t2.end());
         if (t1 != t2) return false;
-        
+
         for (int i = 0; i+1 < s1.size(); ++i) {
             if (isScramble(s1.substr(0, i+1), s2.substr(0, i+1))
              && isScramble(s1.substr(i+1), s2.substr(i+1))) return true;
             if (isScramble(s1.substr(0, i+1), s2.substr(s1.size()-i-1))
              && isScramble(s1.substr(i+1), s2.substr(0, s1.size()-i-1))) return true;
         }
-        
+
+        return false;
+    }
+};
+/*
+ * old problem, did not know best answer
+ */
+class Solution {
+public:
+    bool isScramble(string s1, string s2) {
+        if (s1.size() != s2.size()) return false;
+        if (s1 == "") return true;
+        if (s1.size() == 1) return s1 == s2;
+
+        unordered_map<char, int> um;
+        for (auto ch : s1) um[ch]++;
+        for (auto ch : s2) {
+            um[ch]--;
+            if (um[ch] < 0) return false;
+        }
+
+        for (int i = 1; i < s1.size(); ++i) {
+            if (isScramble(s1.substr(0, i), s2.substr(0, i)) && isScramble(s1.substr(i), s2.substr(i))) return true;
+            if (isScramble(s1.substr(0, i), s2.substr(s2.size()-i)) && isScramble(s1.substr(i), s2.substr(0, s2.size()-i))) return true;
+        }
         return false;
     }
 };
