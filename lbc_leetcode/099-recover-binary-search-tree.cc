@@ -34,12 +34,12 @@ public:
         sub(wrong, root, NULL);
         swap(wrong.first->val, wrong.second->val);
     }
-    
+
     TreeNode * sub(pair<TreeNode *, TreeNode *> &wrong, TreeNode *root, TreeNode *pre){
         if(root == NULL)return NULL;
         if(root->left != NULL){
             pre = sub(wrong, root->left, pre);
-            
+
         }
         if(pre != NULL){
             if(pre->val > root->val){
@@ -84,7 +84,7 @@ private:
         if (root->right) pre = find(mis, pres, root->right, pre);
         return pre;
     }
-    
+
 public:
     void recoverTree(TreeNode* root) {
         vector<TreeNode *> mis, pres;
@@ -101,6 +101,45 @@ public:
             } else {
                 swap(pres[0]->val, mis[1]->val);
             }
+        }
+    }
+};
+/*
+ * it's a pity that I did not remember it.
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    TreeNode *pre;
+
+    void findNotInOrder(TreeNode *root, vector<pair<TreeNode*,TreeNode*>> &ans) {
+        if (root == NULL) return;
+        findNotInOrder(root->left, ans);
+        if (pre != NULL && root->val < pre->val) {
+            ans.push_back(make_pair(pre, root));
+        }
+        pre = root;
+        findNotInOrder(root->right, ans);
+    }
+
+public:
+    void recoverTree(TreeNode* root) {
+        vector<pair<TreeNode*,TreeNode*>> ans;
+        pre = NULL;
+        findNotInOrder(root, ans);
+        if (ans.size() == 0) return;
+        if (ans.size() == 1) {
+            swap(ans[0].first->val, ans[0].second->val);
+        } else {
+            swap(ans[0].first->val, ans[1].second->val);
         }
     }
 };
