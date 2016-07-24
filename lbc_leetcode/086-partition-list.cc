@@ -88,7 +88,7 @@ public:
     ListNode* partition(ListNode* head, int x) {
         ListNode before(0), after(0);
         ListNode *bhead = &before, *ahead = &after;
-        
+
         while (head) {
             if (head->val < x) {
                 bhead->next = head;
@@ -99,10 +99,41 @@ public:
             }
             head = head->next;
         }
-        
+
         bhead->next = after.next;
         ahead->next = NULL;
-        
+
         return before.next;
+    }
+};
+/*
+ * some easy
+ */
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        ListNode small(0), large(0), *small_pre = &small, *large_pre = &large;
+        while (head) {
+            if (head->val < x) {
+                small_pre->next = head;
+                small_pre = head;
+            } else {
+                large_pre->next = head;
+                large_pre = head;
+            }
+            head = head->next;
+        }
+
+        large_pre->next = NULL;
+        small_pre->next = large.next;
+        return small.next;
     }
 };
