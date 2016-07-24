@@ -45,7 +45,7 @@ public:
         low--;
         return sub(root, up, low);
     }
-    
+
     bool sub(TreeNode *root, long long up, long long low){
         if(root == NULL)return true;
         if(root->val > low && root->val < up){
@@ -75,10 +75,39 @@ private:
         if (root->val <= low || root->val >= high) return false;
         return isValid(root->left, low, root->val) && isValid(root->right, root->val, high);
     }
-    
+
 public:
     bool isValidBST(TreeNode* root) {
         long long low = INT_MIN, high = INT_MAX;
         return isValid(root, low-1, high+1);
+    }
+};
+/*
+ * some easy
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    bool isValid(TreeNode *root, long long left, long long right) {
+        if (root == NULL) return true;
+        if (root->val <= left || root->val >= right) return false;
+        if (isValid(root->left, left, root->val) == false) return false;
+        if (isValid(root->right, root->val, right) == false) return false;
+        return true;
+    }
+
+public:
+    bool isValidBST(TreeNode* root) {
+        long long left = INT_MIN;
+        long long right = INT_MAX;
+        return isValid(root, left-1, right+1);
     }
 };
