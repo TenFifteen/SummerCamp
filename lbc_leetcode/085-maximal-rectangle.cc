@@ -41,7 +41,7 @@ public:
         }
         return ret;
     }
-    
+
     int sub(vector<int> &hist){
         stack<int> sta;
         int index = 0;
@@ -76,7 +76,7 @@ private:
     int biggestRectangle(const vector<int> &rec) {
         stack<pair<int, int> > stk;
         stk.push(make_pair(-1, -1));
-        
+
         int ans = 0;
         for (int i = 0; i < rec.size(); ++i) {
             if (rec[i] <= stk.top().first) while (stk.top().first >= rec[i]) {
@@ -87,21 +87,21 @@ private:
             }
             stk.push(make_pair(rec[i], i));
         }
-        
+
         while (stk.size() > 1) {
             auto cur = stk.top();
             stk.pop();
             int area = (rec.size()-1-stk.top().second) * cur.first;
             ans = max(ans, area);
         }
-        
+
         return ans;
     }
 
 public:
     int maximalRectangle(vector<vector<char>>& matrix) {
         if (matrix.size() == 0 || matrix[0].size() == 0) return 0;
-        
+
         int m = matrix.size(), n = matrix[0].size(), ans = 0;
         vector<int> rec(n, 0);
         for (int i = 0; i < m; ++i) {
@@ -113,6 +113,49 @@ public:
                 }
             }
             ans = max(ans, biggestRectangle(rec));
+        }
+        return ans;
+    }
+};
+/*
+ * some hard
+ */
+class Solution {
+private:
+    int maxRectangle(vector<int> &nums) {
+        stack<int> stk;
+        int ans = 0;
+        for (int i = 0; i < nums.size(); ++i) {
+            while (stk.size() > 0 && nums[stk.top()] >= nums[i]) {
+                int cur = stk.top(); stk.pop();
+                int left = stk.size() == 0 ? -1 : stk.top();
+                int area = nums[cur] * (i - left - 1);
+                ans = max(area, ans);
+            }
+            stk.push(i);
+        }
+
+        while (stk.size() > 0) {
+            int cur = stk.top(); stk.pop();
+            int left = stk.size() == 0 ? -1 : stk.top();
+            int area = nums[cur] * (nums.size() - left - 1);
+            ans = max(ans, area);
+        }
+
+        return ans;
+    }
+
+public:
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        if (matrix.size() == 0 || matrix[0].size() == 0) return 0;
+        vector<int> nums(matrix[0].size(), 0);
+        int ans = 0;
+        for (int i = 0; i < matrix.size(); ++i) {
+            for (int j = 0; j < matrix[i].size(); ++j) {
+                if (matrix[i][j] == '1') nums[j]++;
+                else nums[j] = 0;
+            }
+            ans = max(maxRectangle(nums), ans);
         }
         return ans;
     }
