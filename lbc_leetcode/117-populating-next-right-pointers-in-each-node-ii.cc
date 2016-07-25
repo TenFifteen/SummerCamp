@@ -90,7 +90,7 @@ class Solution {
 public:
     void connect(TreeLinkNode *root) {
         if (root == NULL) return;
-        
+
         while (root) {
             TreeLinkNode next(0), *pnext = &next;
             while (root) {
@@ -105,6 +105,45 @@ public:
                 root = root->next;
             }
             root = next.next;
+        }
+    }
+};
+/*
+ * good question. did not remember it again.
+ */
+/**
+ * Definition for binary tree with next pointer.
+ * struct TreeLinkNode {
+ *  int val;
+ *  TreeLinkNode *left, *right, *next;
+ *  TreeLinkNode(int x) : val(x), left(NULL), right(NULL), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void connect(TreeLinkNode *root) {
+        while (root) {
+            TreeLinkNode *next = NULL, *head = NULL;
+            while (root) {
+                if (root->left) {
+                    if (head == NULL) {
+                        head = root->left;
+                    } else {
+                        next->next = root->left;
+                    }
+                    next = root->left;
+                }
+                if (root->right) {
+                    if (head == NULL) {
+                        head = root->right;
+                    } else {
+                        next->next = root->right;
+                    }
+                    next = root->right;
+                }
+                root = root->next;
+            }
+            root = head;
         }
     }
 };
