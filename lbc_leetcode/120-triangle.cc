@@ -20,7 +20,7 @@ int minimumTotal(vector<vector<int> > &triangle) {
         for (int i = 0; i <= layer; i++) // Check its every 'node'
         {
             // Find the lesser of its two children, and sum the current value in the triangle with it.
-            minlen[i] = min(minlen[i], minlen[i+1]) + triangle[layer][i]; 
+            minlen[i] = min(minlen[i], minlen[i+1]) + triangle[layer][i];
         }
     }
     return minlen[0];
@@ -64,7 +64,7 @@ class Solution {
 public:
     int minimumTotal(vector<vector<int>>& triangle) {
         if (triangle.size() == 0) return 0;
-        
+
         int n = triangle.size();
         vector<int> ans(triangle[triangle.size()-1]);
         for (int i = n-2; i >= 0; --i) {
@@ -72,7 +72,29 @@ public:
                 ans[j] = min(ans[j], ans[j+1]) + triangle[i][j];
             }
         }
-        
+
         return ans[0];
+    }
+};
+/*
+ * some easy
+ */
+class Solution {
+public:
+    int minimumTotal(vector<vector<int>>& triangle) {
+        if (triangle.size() == 0) return 0;
+        vector<int> dp(triangle.size());
+        dp[0] = triangle[0][0];
+        for (int i = 1; i < triangle.size(); ++i) {
+            dp[i] = dp[i-1] + triangle[i][i];
+            for (int j = i-1; j > 0; --j) {
+                dp[j] = min(dp[j], dp[j-1]) + triangle[i][j];
+            }
+            dp[0] += triangle[i][0];
+        }
+
+        int ans = INT_MAX;
+        for (auto d : dp) ans = min(d, ans);
+        return ans;
     }
 };
