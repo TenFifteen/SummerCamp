@@ -48,7 +48,7 @@ public:
         sub(ans, nums, cur, flag);
         return ans;
     }
-    
+
     void sub(vector<vector<int>> &ans, vector<int> &nums, vector<int> &cur, vector<bool> &flag){
         if(cur.size() == nums.size()){
             ans.push_back(cur);
@@ -77,7 +77,7 @@ private:
             ans.push_back(cur);
             return;
         }
-        
+
         for (int i = 0; i < nums.size(); ++i) {
             if (flag[i]) continue;
             cur.push_back(nums[i]);
@@ -87,16 +87,41 @@ private:
             flag[i] = false;
         }
     }
-    
+
 public:
     vector<vector<int>> permute(vector<int>& nums) {
         vector<vector<int> > ans;
         vector<int> cur;
         vector<bool> flag(nums.size(), false);
-        
+
         sort(nums.begin(), nums.end());
-        
+
         dfs(ans, nums, 0, cur, flag);
+        return ans;
+    }
+};
+/*
+ *不错
+ */
+class Solution {
+private:
+    void generate(vector<vector<int>> &ans, vector<int> &nums, int index) {
+        if (index == nums.size()) {
+            ans.push_back(nums);
+            return;
+        }
+
+        for (int i = index; i < nums.size(); ++i) {
+            swap(nums[index], nums[i]);
+            generate(ans, nums, index+1);
+            swap(nums[index], nums[i]);
+        }
+    }
+
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<vector<int>> ans;
+        generate(ans, nums, 0);
         return ans;
     }
 };

@@ -17,12 +17,12 @@ public:
     vector<vector<string>> groupAnagrams(vector<string>& strs) {
         unordered_map<string, multiset<string>> mp;
         for (string s : strs) {
-            string t = s; 
+            string t = s;
             sort(t.begin(), t.end());
             mp[t].insert(s);
         }
         vector<vector<string>> anagrams;
-        for (auto m : mp) { 
+        for (auto m : mp) {
             vector<string> anagram(m.second.begin(), m.second.end());
             anagrams.push_back(anagram);
         }
@@ -63,7 +63,7 @@ public:
             sort(key.begin(), key.end());
             res[key].insert(s);
         }
-        
+
         vector<vector<string> > ans;
         for (auto r : res) {
             vector<string> cur;
@@ -72,7 +72,27 @@ public:
             }
             ans.push_back(cur);
         }
-        
+
+        return ans;
+    }
+};
+/*
+ *还好
+ */
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<string, vector<string>> um;
+        for (auto s : strs) {
+            string key = s;
+            sort(key.begin(), key.end());
+            um[key].push_back(s);
+        }
+
+        vector<vector<string>> ans;
+        for (auto p : um) {
+            ans.push_back(p.second);
+        }
         return ans;
     }
 };

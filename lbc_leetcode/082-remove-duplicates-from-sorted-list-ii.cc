@@ -105,7 +105,7 @@ public:
     ListNode* deleteDuplicates(ListNode* head) {
         if (head == NULL) return head;
         ListNode prehead(0), *phead = &prehead, *last = head;
-        
+
         int dup = 0;
         head = head->next;
         while (head) {
@@ -121,12 +121,54 @@ public:
             }
             head = head->next;
         }
-        
+
         if (!dup) {
             phead->next = last;
             phead = last;
         }
         phead->next = NULL;
         return prehead.next;
+    }
+};
+/*
+ * a little tedious
+ */
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        if (head == NULL || head->next == NULL) return head;
+
+        ListNode tmp(0), *pre = &tmp;
+        ListNode *last = head;
+        head = head->next;
+        bool dup = false;
+        while (head) {
+            if (head->val != last->val) {
+                if (dup == false) {
+                    pre->next = last;
+                    pre = last;
+                }
+                last = head;
+                dup = false;
+            } else {
+                dup = true;
+            }
+            head = head->next;
+        }
+
+        if (dup == false) {
+            pre->next = last;
+            pre = last;
+        }
+        pre->next = NULL;
+        return tmp.next;
     }
 };

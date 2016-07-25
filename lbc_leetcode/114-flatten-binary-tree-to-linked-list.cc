@@ -45,7 +45,7 @@ public:
     void flatten(TreeNode* root) {
         sub(root);
     }
-    
+
     TreeNode *sub(TreeNode *root){
         if(root == NULL)return NULL;
         TreeNode *left = NULL, *right = NULL;
@@ -85,7 +85,7 @@ private:
     pair<TreeNode *, TreeNode *> sub(TreeNode *root) {
         TreeNode *left = root->left, *right = root->right;
         root->left = NULL;
-        
+
         if (left == NULL && right == NULL) return make_pair(root, root);
         if (right == NULL) {
             auto L = sub(left);
@@ -107,6 +107,38 @@ public:
     void flatten(TreeNode* root) {
         if (root != NULL) {
             sub(root);
+        }
+    }
+};
+/*
+ * it's ok
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        if (root == NULL) return;
+        stack<TreeNode *> stk;
+        while (root) {
+            if (root->left != NULL) {
+                if (root->right != NULL) stk.push(root->right);
+                root->right = root->left;
+                root->left = NULL;
+            } else if (root->right == NULL) {
+                if (stk.size() > 0) {
+                    root->right = stk.top();
+                    stk.pop();
+                }
+            }
+            root = root->right;
         }
     }
 };

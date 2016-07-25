@@ -51,7 +51,7 @@ public:
         sub(ans, cur, nums, 0);
         return ans;
     }
-    
+
     void sub(vector<vector<int>> &ans, vector<int> &cur, vector<int> &nums, int index){
         ans.push_back(cur);
         for(int i = index; i < nums.size(); ++i){
@@ -85,10 +85,35 @@ private:
 public:
     vector<vector<int>> subsetsWithDup(vector<int>& nums) {
         sort(nums.begin(), nums.end());
-        
+
         vector<vector<int> > ans;
         vector<int> cur;
         dfs(ans, nums, cur, 0);
+        return ans;
+    }
+};
+/*
+ * not a good question
+ */
+class Solution {
+private:
+    void dfs(vector<vector<int>> &ans, vector<int> &now, int index, vector<int> &nums) {
+        ans.push_back(now);
+
+        for (int i = index; i < nums.size(); ++i) {
+            if (i != index && nums[i] == nums[i-1]) continue;
+            now.push_back(nums[i]);
+            dfs(ans, now, i+1, nums);
+            now.pop_back();
+        }
+    }
+
+public:
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        vector<vector<int>> ans;
+        vector<int> now;
+        sort(nums.begin(), nums.end());
+        dfs(ans, now, 0, nums);
         return ans;
     }
 };

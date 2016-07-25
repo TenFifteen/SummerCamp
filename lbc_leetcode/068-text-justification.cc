@@ -48,7 +48,7 @@ public:
                 len -= words[right].size()+1;
             }
             len -= right-left-1;
-            
+
             string line = words[left];
             if(right-left == 1){
                 string padding(maxWidth-len, ' ');
@@ -72,7 +72,7 @@ public:
                 }
             }
             ans.push_back(line);
-            
+
             left = right;
         }
         return ans;
@@ -94,7 +94,7 @@ public:
                 totalLen += words[front++].size();
                 num++;
             }
-            
+
             string line;
             int blanks = maxWidth - totalLen;
             line.append(words[index]);
@@ -112,17 +112,63 @@ public:
                     if (blanks % num) cur++;
                     blanks -= cur;
                     num--;
-                    
+
                     line.append(string(cur, ' '));
                     line.append(words[i]);
                 }
                 if (index+1 == front) line.append(string(blanks, ' '));
             }
-            
+
             ans.push_back(line);
             index = front;
         }
-        
+
         return ans;
+    }
+};
+/*
+ * this question is so boring that last line is different from others
+ */
+class Solution {
+public:
+    vector<string> fullJustify(vector<string>& words, int maxWidth) {
+        vector<string> ans;
+        int cur = 0;
+        while (cur < words.size()) {
+            int len = words[cur].size();
+            int next = cur + 1;
+            while (next < words.size() && len+1+words[next].size() <= maxWidth) {
+                len += 1 + words[next].size();
+                next++;
+            }
+
+            if (next == words.size()) {
+                // hacking last line
+                string now = words[cur];
+                for (int i = cur+1; i < next; ++i) {
+                    now += " ";
+                    now += words[i];
+                }
+                now += string(maxWidth-now.size(), ' ');
+                ans.push_back(now);
+                return ans;
+            }
+
+            int num = next - cur;
+            int space = maxWidth - len;
+            string now = words[cur];
+            for (int i = cur+1; i < next; ++i) {
+                int curSpace = 1;
+                curSpace += space / (next-i);
+                if (space % (next-i)) curSpace++;
+                space -= curSpace-1;
+                now += string(curSpace, ' ');
+                now += words[i];
+            }
+            if (next-1 == cur) now += string(maxWidth-len, ' '); // special case for only one word this line.
+            ans.push_back(now);
+            cur = next;
+        }
+        return ans; // actually ,we never get here.
     }
 };

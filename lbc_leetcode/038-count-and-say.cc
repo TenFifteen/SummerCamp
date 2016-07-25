@@ -45,7 +45,7 @@ public:
     string countAndSay(int n) {
         string ans;
         if (n < 1) return ans;
-        
+
         ans = "1";
         for (int i = 1;i < n; ++i) {
             string next;
@@ -58,7 +58,35 @@ public:
             }
             ans = next;
         }
-        
+
+        return ans;
+    }
+};
+/*
+ * 还行
+ */
+class Solution {
+private:
+    string count(string &s) {
+        string ans;
+        int index = 0;
+        while (index < s.size()) {
+            int next = index;
+            while (next+1 < s.size() && s[next+1] == s[next]) next++;
+            ans += to_string(next-index+1);
+            ans.push_back(s[index]);
+            index = next+1;
+        }
+        return ans;
+    }
+
+public:
+    string countAndSay(int n) {
+        if (n < 1) return "";
+        string ans = "1";
+        for (int i = 1; i < n; ++i) {
+            ans = count(ans);
+        }
         return ans;
     }
 };

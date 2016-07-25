@@ -32,7 +32,7 @@ public:
         }
         return step;
     }
-    
+
     int jump2(vector<int>& nums) {
         vector<int> steps(nums.size(), INT_MAX);
         steps[0] = 0;
@@ -54,7 +54,7 @@ public:
     int jump(vector<int>& nums) {
         assert(nums.size() > 0);
         if (nums.size() == 1) return 0;
-        
+
         int start = 0, len = 0, steps = 0;
         while (len < nums.size()-1) {
             int nextLen = 0;
@@ -65,7 +65,27 @@ public:
             start = len+1;
             len = nextLen;
         }
-        
+
+        return steps;
+    }
+};
+/*
+ * 不错
+ */
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        if (nums.size() < 2) return 0;
+        int left = 0, right = 0, steps = 0;
+        while (right < nums.size()-1) {
+            int maxDist = right;
+            for (int i = left; i <= right; ++i) {
+                maxDist = max(maxDist, nums[i] + i);
+            }
+            steps++;
+            left = right+1;
+            right = maxDist;
+        }
         return steps;
     }
 };

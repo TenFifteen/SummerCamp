@@ -50,7 +50,7 @@ public:
         }
         return ans;
     }
-    
+
     string subMul(string num, int x){
         int index = num.size()-1;
         int yu = 0;
@@ -101,7 +101,7 @@ class Solution {
         string ans(max(num1.size(), num2.size())+1, '0');
         int i1 = num1.size()-1, i2 = num2.size()-1, ia = ans.size()-1;
         int carry = 0;
-        
+
         while (i1 >= 0 || i2 >= 0) {
             if (i1 >= 0) carry += num1[i1--] - '0';
             if (i2 >= 0) carry += num2[i2--] - '0';
@@ -109,14 +109,14 @@ class Solution {
             carry /= 10;
         }
         if (carry) ans[ia--] = '0' + carry;
-        
+
         return ans.substr(ia+1, ans.size());
     }
-    
+
     string mulDigit(string num, int digit) {
         if (digit == 0) return "0";
         if (digit == 1) return num;
-        
+
         string ans(num.size()+1, '0');
         int in = num.size()-1, ia = ans.size()-1, carry = 0;
         while (in >= 0) {
@@ -132,11 +132,39 @@ public:
         assert(num1.size() && num2.size());
         if (num1 == "0" || num2 == "0") return "0";
         string ans = "0";
-        
+
         for (int i = num1.size()-1; i >= 0; --i) {
             ans = addString(ans, mulDigit(num2, num1[i]-'0')+string(num1.size()-i-1, '0'));
         }
-        
+
         return ans;
+    }
+};
+/*
+ *可以
+ */
+class Solution {
+public:
+    string multiply(string num1, string num2) {
+        if (num1 == "0" || num2 == "0") return "0";
+
+        string ans(num1.size()+num2.size(), '0');
+        for (int i = num1.size()-1; i >= 0; --i) {
+            int carry = 0;
+            for (int j = num2.size()-1; j >= 0; --j) {
+                carry += (num1[i]-'0') * (num2[j]-'0');
+                int index = i+j+1;
+                carry += ans[index] - '0';
+                ans[index] = '0' + carry % 10;
+                carry /= 10;
+            }
+            if (carry != 0) {
+                ans[i] = carry + '0';
+            }
+        }
+
+        int index = 0;
+        while (ans[index] == '0') index++;
+        return ans.substr(index);
     }
 };

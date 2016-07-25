@@ -17,13 +17,13 @@ vector<Interval> insert(vector<Interval>& intervals, Interval newInterval) {
     auto it = intervals.begin();
     for(; it!=intervals.end(); ++it){
         if(newInterval.end < (*it).start) //all intervals after will not overlap with the newInterval
-            break; 
+            break;
         else if(newInterval.start > (*it).end) // *it will not overlap with the newInterval
-            ret.push_back(*it); 
+            ret.push_back(*it);
         else{ //update newInterval bacause *it overlap with the newInterval
             newInterval.start = min(newInterval.start, (*it).start);
             newInterval.end = max(newInterval.end, (*it).end);
-        }   
+        }
     }
     // don't forget the rest of the intervals and the newInterval
     ret.push_back(newInterval);
@@ -66,7 +66,7 @@ public:
             }
         }
         ans.push_back(cur);
-        
+
         return ans;
     }
 };
@@ -100,7 +100,7 @@ public:
         vector<Interval> ans;
         bool inserted = false;
         int index = 0;
-        
+
         while (index < intervals.size()) {
             if (inserted || intervals[index].start < newInterval.start) {
                 pushback(ans, intervals[index++]);
@@ -109,8 +109,47 @@ public:
                 pushback(ans, newInterval);
             }
         }
-        
+
         if (!inserted) pushback(ans, newInterval);
+        return ans;
+    }
+};
+/*
+ * 可以
+ */
+/**
+ * Definition for an interval.
+ * struct Interval {
+ *     int start;
+ *     int end;
+ *     Interval() : start(0), end(0) {}
+ *     Interval(int s, int e) : start(s), end(e) {}
+ * };
+ */
+class Solution {
+private:
+    void insertOne(vector<Interval> &ans, Interval &i) {
+        if (ans.size() == 0 || ans.back().end < i.start) ans.push_back(i);
+        else ans.back().end = max(ans.back().end, i.end);
+    }
+
+public:
+    vector<Interval> insert(vector<Interval>& intervals, Interval newInterval) {
+        vector<Interval> ans;
+        bool inserted = false;
+        for (int i = 0; i < intervals.size(); ++i) {
+            if (inserted) {
+                insertOne(ans, intervals[i]);
+            } else {
+                if (newInterval.start < intervals[i].start) {
+                    insertOne(ans, newInterval);
+                    inserted = true;
+                }
+                insertOne(ans, intervals[i]);
+            }
+        }
+
+        if (inserted == false) insertOne(ans, newInterval);
         return ans;
     }
 };

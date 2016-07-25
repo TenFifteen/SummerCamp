@@ -45,7 +45,7 @@ class Solution {
 public:
     bool canJump(vector<int>& nums) {
         assert(nums.size());
-        
+
         int cur = 0, maxJump = 0;
         while (maxJump+1 < nums.size()) {
             int newJump = maxJump;
@@ -56,7 +56,22 @@ public:
             cur = maxJump+1;
             maxJump = newJump;
         }
-        
+
+        return true;
+    }
+};
+/*
+ * 这次更简洁了
+ */
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        if (nums.size() == 0) return true;
+        int maxDist = 0;
+        for (int i = 0; i < nums.size(); ++i) {
+            if (i > maxDist) return false;
+            maxDist = max(maxDist, i + nums[i]);
+        }
         return true;
     }
 };

@@ -48,9 +48,9 @@ class Solution {
 public:
     int strStr(string haystack, string needle) {
         if (haystack.size() < needle.size()) return -1;
-        
+
         if (haystack == "" && needle == "") return 0;//don't know why
-        
+
         for (int i = 0; i < haystack.size()+1-needle.size(); ++i) {
             bool found = true;
             for (int j = 0; j < needle.size(); ++j) {
@@ -63,7 +63,27 @@ public:
                 return i;
             }
         }
-        
+
+        return -1;
+    }
+};
+/*
+ * 还是用的老办法，不过KMP最好还是再看看
+ */
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        if (haystack.size() < needle.size()) return -1;
+        for (int i = 0; i <= haystack.size()-needle.size(); ++i) {
+            bool found = true;
+            for (int j = 0; j < needle.size(); ++j) {
+                if (needle[j] != haystack[i+j]) {
+                    found = false;
+                    break;
+                }
+            }
+            if (found) return i;
+        }
         return -1;
     }
 };

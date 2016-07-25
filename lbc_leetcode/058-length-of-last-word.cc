@@ -53,3 +53,22 @@ public:
         return ans;
     }
 };
+/*
+ * 还行
+ */
+class Solution {
+public:
+    int lengthOfLastWord(string s) {
+        int index = 0;
+        int ans = 0;
+        while (index < s.size()) {
+            while (index < s.size() && s[index] == ' ') index++;
+            if (index == s.size()) break;
+            int front = index+1;
+            while (front < s.size() && s[front] != ' ') front++;
+            ans = front-index;
+            index = front;
+        }
+        return ans;
+    }
+};

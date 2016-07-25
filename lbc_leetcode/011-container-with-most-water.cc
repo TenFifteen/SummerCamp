@@ -50,7 +50,7 @@ class Solution {
 public:
     int maxArea(vector<int>& height) {
         if (height.size() < 2) return false;
-        
+
         int ret = 0, left = 0, right = height.size()-1;
         while (left < right) {
             int cur = min(height[left], height[right]) * (right-left);
@@ -61,7 +61,25 @@ public:
                 right--;
             }
         }
-        
+
         return ret;
+    }
+};
+/*
+ * 还不错
+ */
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        if (height.size() < 2) return 0;
+
+        int ans = 0;
+        int left = 0, right = height.size() - 1;
+        while (left < right) {
+            ans = max(min(height[left], height[right]) * (right - left), ans);
+            if (height[left] < height[right]) left++;
+            else right--;
+        }
+        return ans;
     }
 };

@@ -58,7 +58,7 @@ class Solution {
 public:
     vector<int> grayCode(int n) {
         vector<int> ans(1 << n);
-        
+
         int cur = 0;
         for (int i = 0; i < (1 << n); ++i) {
             ans[i] = cur;
@@ -73,7 +73,29 @@ public:
                 }
             }
         }
-        
+
+        return ans;
+    }
+};
+/*
+ * not a good question
+ */
+class Solution {
+public:
+    vector<int> grayCode(int n) {
+        int len = 1 << n;
+        vector<int> ans(len, 0);
+        bool flip = true;
+        for (int i = 1; i < len; ++i) {
+            if (flip) {
+                ans[i] = ans[i-1] ^ 0x1;
+            } else {
+                int lastOne = ans[i-1] - (ans[i-1] & (ans[i-1]-1));
+                cout << lastOne << endl;
+                ans[i] = ans[i-1] ^ (lastOne << 1);
+            }
+            flip = !flip;
+        }
         return ans;
     }
 };

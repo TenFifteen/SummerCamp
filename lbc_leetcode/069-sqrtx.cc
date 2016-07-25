@@ -68,13 +68,29 @@ public:
     int mySqrt(int x) {
         assert(x >= 0);
         if (x < 2) return x;
-        
+
         int left = 1, right = x;
         while (left < right) {
             int mid = left + ((right-left+1) >> 1);//when x is INT_MAX, it overflows
             int mul = x / mid;
             if (mul == mid) return mid;
             else if (mul > mid) left = mid;
+            else right = mid-1;
+        }
+        return left;
+    }
+};
+/*
+ * ok
+ */
+class Solution {
+public:
+    int mySqrt(int x) {
+        if (x < 2) return x;
+        int left = 1, right = x;
+        while (left < right) {
+            int mid = (right-left+1) / 2 + left;
+            if (mid <= x / mid) left = mid;
             else right = mid-1;
         }
         return left;

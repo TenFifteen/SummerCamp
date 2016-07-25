@@ -19,15 +19,15 @@ bool isMatch(const char *s, const char *p) {
     const char* ss=s;
     while (*s){
         //advancing both pointers when (both characters match) or ('?' found in pattern)
-        //note that *p will not advance beyond its length 
-        if ((*p=='?')||(*p==*s)){s++;p++;continue;} 
+        //note that *p will not advance beyond its length
+        if ((*p=='?')||(*p==*s)){s++;p++;continue;}
 
-        // * found in pattern, track index of *, only advancing pattern pointer 
-        if (*p=='*'){star=p++; ss=s;continue;} 
+        // * found in pattern, track index of *, only advancing pattern pointer
+        if (*p=='*'){star=p++; ss=s;continue;}
 
         //current characters didn't match, last pattern pointer was *, current pattern pointer is not *
         //only advancing pattern pointer
-        if (star){ p = star+1; s=++ss;continue;} 
+        if (star){ p = star+1; s=++ss;continue;}
 
        //current pattern pointer is not star, last patter pointer was not *
        //characters do not match
@@ -37,7 +37,7 @@ bool isMatch(const char *s, const char *p) {
    //check for remaining characters in pattern
     while (*p=='*'){p++;}
 
-    return !*p;  
+    return !*p;
 }
 */
 class Solution {
@@ -78,14 +78,14 @@ public:
             return true;
         }
         if (p == "") return false;
-        
+
         vector<vector<bool> > dp(s.size()+1, vector<bool>(p.size()+1, false));
         dp[0][0] = true;
         for (int i = 0; i < p.size(); ++i) {
             if (p[i] != '*') break;
             dp[0][i+1] = true;
         }
-        
+
         for (int i = 0; i < s.size(); ++i) {
             for (int j = 0; j < p.size(); ++j) {
                 if (p[j] == '*') {
@@ -95,7 +95,48 @@ public:
                 }
             }
         }
-        
+
         return dp[s.size()][p.size()];
     }
 };
+/*
+ *终于写出来star这种方式了。不过写的还不是足够简洁，而且也不是一次性对的，改了好几次
+ */
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        if (p == "") return s == "";
+
+        int star = -1, last;
+        int i = 0, j = 0;
+        while (i < s.size() && j < p.size()) {
+            if (p[j] == '?' || p[j] == s[i]) {
+                i++;
+                j++;
+            } else if (p[j] == '*') {
+                star = j++;
+                last = i+1;
+            } else if (star < 0) {
+                return false;
+            } else {
+                i = last++;
+                j = star + 1;
+            }
+
+            if (j == p.size() && i != s.size() && star >= 0) {
+                i = last++;
+                j = star + 1;
+                if (j == p.size()) return true;
+            }
+        }
+
+        if (i == s.size() && j == p.size()) return true;
+        if (i == s.size()) {
+            while (j < p.size() && p[j] == '*') j++;
+            return j == p.size();
+        } else {
+            return false;
+        }
+    }
+};
+

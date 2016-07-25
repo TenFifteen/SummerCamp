@@ -61,7 +61,7 @@ public:
         //return reverse(ret);
         return ret;
     }
-    
+
     ListNode* reverse(ListNode *head){
         if(head == NULL){
             return NULL;
@@ -104,7 +104,7 @@ public:
                 carry += l2->val;
                 l2 = l2->next;
             }
-            
+
             head->next = new ListNode(carry % 10);
             head = head->next;
             carry /= 10;
@@ -113,5 +113,44 @@ public:
             head->next = new ListNode(carry);
         }
         return preHead.next;
+    }
+};
+/*
+第三次做：
+没有问题。
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode tmp(0), *ret = &tmp;
+        int carry = 0;
+        while (l1 || l2) {
+            if (l1) {
+                carry += l1->val;
+                l1 = l1->next;
+            }
+            if (l2) {
+                carry += l2->val;
+                l2 = l2->next;
+            }
+            ret->next = new ListNode(carry % 10);
+            ret = ret->next;
+
+            carry /= 10;
+        }
+
+        if (carry != 0) {
+            ret->next = new ListNode(carry);
+        }
+
+        return tmp.next;
     }
 };

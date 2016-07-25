@@ -21,7 +21,7 @@ public:
         sub(ans, "", 0, s);
         return ans;
     }
-    
+
     void sub(vector<string> &ans, string cur, int stage, string s){
         if(stage == 4){
             if(s == ""){
@@ -56,13 +56,13 @@ private:
             if (s[0] != '0' && stoi(s) <= 255 || s == "0") ans.push_back(now+"."+s);
             return;
         }
-        
+
         int len = s.size()+1-n < 4 ? s.size()+1-n : 3;
         if (s[0] == '0') len = 1;
         for (int i = 1; i <= len; ++i) {
             string cur = s.substr(0, i);
             if (stoi(cur) > 255) break;
-            
+
             if (n == 4) dfs(ans, now+cur, s.substr(i), n-1);
             else dfs(ans, now+"."+cur, s.substr(i), n-1);
         }
@@ -73,5 +73,44 @@ public:
         vector<string> ans;
         dfs(ans, "", s, 4);
         return ans;
+    }
+};
+/*
+ * some tedious
+ */
+class Solution {
+private:
+    vector<string> restore(string s, int n) {
+        if (n == 1) {
+            vector<string> ans;
+            if (s.size() == 0 || s.size() > 3 || stoi(s) > 255 || (s.size() > 1 && s[0] == '0')) return ans;
+            ans.push_back(s);
+            return ans;
+        }
+
+        if (s.size() < n) return vector<string>();
+
+        vector<string> ans;
+        string sub = s.substr(0, 1);
+        vector<string> ret = restore(s.substr(1), n-1);
+        for (auto s : ret) {
+            ans.push_back(sub + "." + s);
+        }
+        if (s[0] != '0') {
+            for (int i = 2; i < s.size(); ++i) {
+                string sub = s.substr(0, i);
+                if (stoi(sub) > 255) break;
+                ret = restore(s.substr(i), n-1);
+                for (auto s : ret) {
+                    ans.push_back(sub + "." + s);
+                }
+            }
+        }
+        return ans;
+    }
+
+public:
+    vector<string> restoreIpAddresses(string s) {
+        return restore(s, 4);
     }
 };

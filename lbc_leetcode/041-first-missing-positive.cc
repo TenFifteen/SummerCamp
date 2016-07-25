@@ -45,11 +45,11 @@ class Solution {
 public:
     int firstMissingPositive(vector<int>& nums) {
         if (nums.size() == 0) return 1;
-        
+
         for (int i = 0; i < nums.size(); ++i) {
             if (nums[i] == i+1) continue;
             if (nums[i] > nums.size() || nums[i] <= 0) continue;
-            
+
             int cur = nums[i];
             nums[i] = 0;
             while (cur > 0 && cur <= nums.size()) {
@@ -59,9 +59,31 @@ public:
                 cur = next;
             }
         }
-        
+
         for (int i = 0; i < nums.size(); ++i) {
             if (nums[i] != i+1) return i+1;
+        }
+        return nums.size()+1;
+    }
+};
+/*
+ *又是用的自己的方法做出来的。
+ */
+class Solution {
+public:
+    int firstMissingPositive(vector<int>& nums) {
+        if (nums.size() == 0) return 1;
+        for (int i = 0; i < nums.size(); ++i) {
+            if (nums[i] == i+1) continue;
+            int index = i;
+            while (nums[index] > 0 && nums[index] <= nums.size() && nums[nums[index]-1] != nums[index]) {
+                swap(nums[index], nums[nums[index]-1]);
+            }
+            if (nums[index] != index+1) nums[index] = -1;
+        }
+
+        for (int i = 0; i < nums.size(); ++i) {
+            if (nums[i] < 0) return i+1;
         }
         return nums.size()+1;
     }

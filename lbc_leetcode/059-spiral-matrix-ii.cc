@@ -144,4 +144,29 @@ public:
         }
         return ans;
     }
+};class Solution {
+public:
+    vector<vector<int>> generateMatrix(int n) {
+        vector<vector<int>> ans(n, vector<int>(n));
+        int left = 0, top = 0, right = n-1, bot = n-1, now = 1;
+        while (left <= right && top <= bot) {
+            for (int i = left; i <= right; ++i) {
+                ans[top][i] = now++;
+            }
+            top++;
+            if (left <= right) for (int i = top; i <= bot; ++i) {
+                ans[i][right] = now++;
+            }
+            right--;
+            if (top <= bot) for (int i = right; i >= left; --i) {
+                ans[bot][i] = now++;
+            }
+            bot--;
+            if (left <= right) for (int i = bot; i >= top; --i) {
+                ans[i][left] = now++;
+            }
+            left++;
+        }
+        return ans;
+    }
 };

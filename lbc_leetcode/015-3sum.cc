@@ -65,12 +65,12 @@ public:
     vector<vector<int>> threeSum(vector<int>& nums) {
         vector<vector<int>> ans;
         if (nums.size() < 3) return ans;
-        
+
         sort(nums.begin(), nums.end());
-        
+
         for (int i = 0; i < nums.size()-2; ++i) {
             if (i != 0 && nums[i] == nums[i-1]) continue;
-            
+
             int left = i+1, right = nums.size()-1;
             while (left < right) {
                 if (nums[left] + nums[right] == -nums[i]) {
@@ -79,7 +79,7 @@ public:
                     tmp[1] = nums[left];
                     tmp[2] = nums[right];
                     ans.push_back(tmp);
-                    
+
                     while (left < right && nums[left+1] == nums[left]) left++;
                     left++;
                 } else if (nums[left] + nums[right] < -nums[i]) {
@@ -88,6 +88,42 @@ public:
                     right--;
                 }
             }
+        }
+        return ans;
+    }
+};
+/*
+ * 还可以
+ */
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> ans;
+        if (nums.size() < 3) return ans;
+
+        sort(nums.begin(), nums.end());
+        int first = 0;
+        while (first+2 < nums.size()) {
+            int left = first+1, right = nums.size()-1;
+            while (left < right) {
+                int sum = nums[left]+nums[right]+nums[first];
+                if (sum == 0) {
+                    vector<int> tmp(3);
+                    tmp[0] = nums[first];
+                    tmp[1] = nums[left];
+                    tmp[2] = nums[right];
+                    ans.push_back(tmp);
+                    left++;
+                    while (left < right && nums[left] == nums[left-1]) left++;
+                } else if (sum < 0) {
+                    left++;
+                } else {
+                    right--;
+                }
+            }
+
+            first++;
+            while (first+2 < nums.size() && nums[first] == nums[first-1]) first++;
         }
         return ans;
     }

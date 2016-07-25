@@ -35,7 +35,7 @@ public:
         }
         return ans;
     }
-    
+
     void sub(vector<vector<int>> &ans, vector<TreeNode *> cur){
         vector<int> ret;
         vector<TreeNode *> next;
@@ -66,7 +66,7 @@ public:
     vector<vector<int>> levelOrderBottom(TreeNode* root) {
         vector<vector<int> > ans;
         if (root == NULL) return ans;
-        
+
         queue<TreeNode *> q;
         q.push(root);
         while (q.size() > 0) {
@@ -78,12 +78,51 @@ public:
                 if (t->left) q.push(t->left);
                 if (t->right) q.push(t->right);
             }
-            
+
             ans.push_back(cur);
         }
-        
+
         for (int i = 0; i < ans.size()/2; ++i) {
             swap(ans[i], ans[ans.size()-1-i]);
+        }
+        return ans;
+    }
+};
+/*
+ * some easy
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> levelOrderBottom(TreeNode* root) {
+        vector<vector<int>> ans;
+        if (root == NULL) return ans;
+
+        queue<TreeNode *> q;
+        q.push(root);
+        while (q.size() > 0) {
+            vector<int> line;
+            int len = q.size();
+            for (int i = 0; i < len; ++i) {
+                TreeNode *cur = q.front(); q.pop();
+                line.push_back(cur->val);
+                if (cur->left) q.push(cur->left);
+                if (cur->right) q.push(cur->right);
+            }
+            ans.push_back(line);
+        }
+
+        int left = 0, right = ans.size()-1;
+        while (left < right) {
+            swap(ans[left++], ans[right--]);
         }
         return ans;
     }

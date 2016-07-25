@@ -45,7 +45,7 @@ public:
         sub(ans, nums, cur, flag);
         return ans;
     }
-    
+
     void sub(vector<vector<int>> &ans, vector<int> &nums, vector<int> &cur, vector<bool> &flag){
         if(cur.size() == nums.size()){
             ans.push_back(cur);
@@ -74,18 +74,18 @@ private:
             ans.push_back(cur);
             return;
         }
-        
+
         bool valid = false;
         int last;
         for (int i = 0; i < nums.size(); ++i) {
             if (flag[i] || (valid && nums[i] == last)) continue;
-            
+
             cur.push_back(nums[i]);
             flag[i] = true;
             dfs(ans, nums, cur, flag);
             cur.pop_back();
             flag[i] = false;
-            
+
             valid = true;
             last = nums[i];
         }
@@ -97,8 +97,35 @@ public:
         vector<bool> flag(nums.size(), false);
         vector<int> cur;
         sort(nums.begin(), nums.end());
-        
+
         dfs(ans, nums, cur, flag);
+        return ans;
+    }
+};
+/*
+ * 这次还是没有自己完美的写出来。最后还是参考了一些上面的记录。
+ * 他竟然是用的非引用的nums，也是够厉害的。引用在这里是很有问题的。
+ */
+class Solution {
+private:
+    void generate(vector<vector<int>> &ans, vector<int> nums, int index) {
+        if (index == nums.size()) {
+            ans.push_back(nums);
+            return;
+        }
+
+        for (int i = index; i < nums.size(); ++i) {
+            if (i != index && nums[i] == nums[index]) continue;
+            swap(nums[index], nums[i]);
+            generate(ans, nums, index+1);
+        }
+    }
+
+public:
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        vector<vector<int>> ans;
+        generate(ans, nums, 0);
         return ans;
     }
 };

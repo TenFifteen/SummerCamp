@@ -77,7 +77,7 @@ public:
         int index = 0;
         while (index < str.size() && str[index] == ' ') index++;
         if (index == str.size()) return 0;
-        
+
         bool sign = false;
         if (str[index] == '+') {
             index++;
@@ -85,20 +85,57 @@ public:
             index++;
             sign = true;
         }
-        
+
         int ans = 0;
         while (index < str.size() && isDigit(str[index])) {
             int new_ans = ans * 10;
             new_ans += str[index++] - '0';
-            
+
             if (new_ans / 10 != ans) {
                 if (sign) return INT_MIN;
                 else return INT_MAX;
             }
             ans = new_ans;
         }
-        
+
         if (sign) return -ans;
         else return ans;
+    }
+};
+/*
+ *基本差不多，不过这次图方便，用了long。
+ 不过其实应该用long long的，java写多了就混淆了。
+ */
+class Solution {
+public:
+    int myAtoi(string str) {
+        int index = 0;
+        while (index < str.size() && str[index] == ' ') index++;
+        if (index == str.size()) return 0;
+
+        bool neg = false;
+        if (str[index] == '-' || str[index] == '+') {
+            if (str[index] == '-') neg = true;
+            index++;
+        }
+
+        if (index == str.size() || str[index] < '0' || str[index] > '9') return 0;
+        long ans = 0;
+        while (index < str.size() && str[index] >= '0' && str[index] <= '9') {
+            ans *= 10;
+            ans += str[index++] - '0';
+            if (neg == true && ans-1 > INT_MAX) {
+                return INT_MIN;
+            }
+            if (neg == false && ans > INT_MAX) {
+                return INT_MAX;
+            }
+        }
+
+        if (neg) {
+            return -ans;
+        } else {
+            return ans;
+        }
     }
 };

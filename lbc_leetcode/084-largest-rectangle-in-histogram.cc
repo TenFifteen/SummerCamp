@@ -58,10 +58,10 @@ class Solution {
 public:
     int largestRectangleArea(vector<int>& heights) {
         if (heights.size() == 0) return 0;
-        
+
         stack<pair<int, int> > stk;
         stk.push(make_pair(-1, -1));
-        
+
         int ans = 0;
         for (int i = 0; i < heights.size(); ++i) {
             if (heights[i] > stk.top().first) {
@@ -75,14 +75,47 @@ public:
                 stk.push(make_pair(heights[i], i));
             }
         }
-        
+
         while (stk.size() > 1) {
             auto cur = stk.top();
             stk.pop();
             int now = cur.first * (heights.size()-stk.top().second-1);
             ans = max(ans, now);
         }
-        
+
+        return ans;
+    }
+};
+/*
+ * a really hard question
+ */
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        stack<int> stk;
+        int ans = 0;
+        for (int i = 0; i < heights.size(); ++i) {
+            if (stk.size() == 0 || heights[stk.top()] < heights[i]) stk.push(i);
+            else {
+                while (stk.size() > 0 && heights[stk.top()] >= heights[i]) {
+                    int cur = stk.top();
+                    stk.pop();
+                    int left = stk.size() == 0 ? -1 : stk.top();
+                    int area = heights[cur] * (i - left - 1);
+                    ans = max(ans, area);
+                }
+                stk.push(i);
+            }
+        }
+
+        while (stk.size() > 0) {
+            int cur = stk.top();
+            stk.pop();
+            int left = stk.size() == 0 ? -1 : stk.top();
+            int area = heights[cur] * (heights.size() - left - 1);
+            ans = max(ans, area);
+        }
+
         return ans;
     }
 };

@@ -57,7 +57,7 @@ public:
         for (auto ch : t) {
             buf[ch]++;
         }
-        
+
         unordered_map<char, int> cur;
         int front = 0, end = 0, total = 0;
         while (front < s.size() && total < buf.size()) {
@@ -67,9 +67,9 @@ public:
             }
             front++;
         }
-        
+
         if (total < buf.size() && front == s.size()) return "";
-        
+
         int min_len = front-end, min_start = end;
         while (total == buf.size()) {
             while (total == buf.size()) {
@@ -93,7 +93,44 @@ public:
                 front++;
             }
         }
-        
+
         return s.substr(min_start, min_len);
+    }
+};
+/*
+ * it's ok
+ */
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        unordered_map<char, int> um;
+        for (auto ch : t) um[ch]++;
+
+        int start = -1, len = INT_MAX;
+        unordered_map<char, int> now;
+        int total = 0;
+        int left = 0, right = 0;
+        while (right < s.size()) {
+            while (right < s.size() && total < t.size()) {
+                now[s[right]]++;
+                if (now[s[right]] <= um[s[right]]) total++;
+                right++;
+            }
+
+            if (total < t.size()) break;
+
+            while (total == t.size()) {
+                if (right - left < len) {
+                    len = right - left;
+                    start = left;
+                }
+                now[s[left]]--;
+                if (now[s[left]] < um[s[left]]) total--;
+                left++;
+            }
+        }
+
+        if (len == INT_MAX) return "";
+        return s.substr(start, len);
     }
 };

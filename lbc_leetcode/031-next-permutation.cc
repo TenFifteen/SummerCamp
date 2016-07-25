@@ -20,7 +20,7 @@ public void nextPermutation(int[] num) {
     int n=num.length;
     if(n<2)
         return;
-    int index=n-1;        
+    int index=n-1;
     while(index>0){
         if(num[index-1]<num[index])
             break;
@@ -51,7 +51,7 @@ public void swap(int[] num, int i, int j){
     num[j]=temp;
 }
 
-public void reverseSort(int[] num, int start, int end){   
+public void reverseSort(int[] num, int start, int end){
     if(start>end)
         return;
     for(int i=start;i<=(end+start)/2;i++)
@@ -93,7 +93,7 @@ private:
         }
         return true;
     }
-    
+
     void reverse(vector<int> &nums, int left, int right) {
         while (left < right) {
             swap(nums[left++], nums[right--]);
@@ -101,19 +101,47 @@ private:
     }
 public:
     void nextPermutation(vector<int>& nums) {
-        if (nums.size() < 2) return; 
+        if (nums.size() < 2) return;
         if (isSorted(nums)) {
             reverse(nums, 0, nums.size()-1);
             return;
         }
-        
+
         int last = nums.size()-2;
         while (nums[last] >= nums[last+1]) last--;
-        
+
         int next = last+1;
         while (next < nums.size() && nums[next] > nums[last]) next++;
         swap(nums[last], nums[next-1]);
-        
+
         reverse(nums, last+1, nums.size()-1);
+    }
+};
+/*
+ * 还可以
+ */
+class Solution {
+private:
+    void reverse(vector<int> &nums, int left, int right) {
+        while (left < right) {
+            swap(nums[left++], nums[right--]);
+        }
+    }
+
+public:
+    void nextPermutation(vector<int>& nums) {
+        if (nums.size() < 2) return;
+        int index = nums.size()-2;
+        while (index >= 0 && nums[index] >= nums[index+1]) index--;
+        if (index < 0) {
+            reverse(nums, 0, nums.size()-1);
+            return;
+        }
+
+        int firstLarge = index+1;
+        while (firstLarge < nums.size() && nums[firstLarge] > nums[index]) firstLarge++;
+        swap(nums[index], nums[firstLarge-1]);
+
+        reverse(nums, index+1, nums.size()-1);
     }
 };

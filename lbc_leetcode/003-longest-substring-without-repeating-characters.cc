@@ -68,20 +68,41 @@ class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
         if (s.size() == 0) return 0;
-        
+
         unordered_map<char, int> hash;
         hash[s[0]] = 1;
         int last = 0, ans = 1;
-        
+
         for (int i = 1; i < s.size(); ++i) {
             hash[s[i]]++;
             while (hash[s[i]] > 1) {
                 hash[s[last++]]--;
             }
-            
+
             ans = max(ans, i-last+1);
         }
-        
+
+        return ans;
+    }
+};
+/*
+ * 第三次做：
+ * 没啥问题。
+*/
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        unordered_map<char, int> um;
+        int front = 0, end = 0, ans = 0;
+        while (front < s.size()) {
+            while (front < s.size() && um[s[front]] == 0) {
+                um[s[front++]]++;
+            }
+            ans = max(ans, front - end);
+            while (um[s[front]] > 0) {
+                um[s[end++]]--;
+            }
+        }
         return ans;
     }
 };

@@ -45,24 +45,46 @@ public:
     string addBinary(string a, string b) {
         if (a == "") return b;
         if (b == "") return a;
-        
+
         int ia = a.size()-1, ib = b.size()-1;
         int carry = 0;
         string ans;
-        
+
         while (ia >= 0 || ib >= 0) {
             if (ia >= 0) carry += a[ia--]-'0';
             if (ib >= 0) carry += b[ib--]-'0';
             ans.push_back((carry & 0x1) + '0');
             carry >>= 1;
         }
-        
+
         if (carry) ans.push_back('1');
-        
+
         for (int i = 0; i < ans.size()/2; ++i) {
             swap(ans[i], ans[ans.size()-1-i]);
         }
-        
+
         return ans;
+    }
+};
+/*
+ * some easy
+ */
+class Solution {
+public:
+    string addBinary(string a, string b) {
+        string ans(max(a.size(), b.size())+1, '0');
+        int ia = a.size()-1, ib = b.size()-1, i = ans.size()-1, carry = 0;
+        while (ia >= 0 || ib >= 0) {
+            if (ia >= 0) carry += a[ia--] - '0';
+            if (ib >= 0) carry += b[ib--] - '0';
+            ans[i--] = carry % 2 + '0';
+            carry /= 2;
+        }
+        if (carry) {
+            ans[i] = carry + '0';
+            return ans;
+        } else {
+            return ans.substr(1);
+        }
     }
 };

@@ -82,11 +82,41 @@ private:
 public:
     bool isPalindrome(int x) {
         if (x < 0) return false;
-        
+
         int len = getLen(x);
         for (int i = 0; i < len/2; ++i) {
             if (getDigit(x, i+1) != getDigit(x, len-i)) return false;
         }
         return true;
+    }
+};
+/*
+ *这次写的还可以。
+ */
+class Solution {
+private:
+    int getLen(int x) {
+        int len = 0;
+        while (x) {
+            x /= 10;
+            len++;
+        }
+        return len;
+    }
+
+public:
+    bool isPalindrome(int x) {
+        if (x < 0) return false;
+        int len = getLen(x);
+        if (len < 2) return true;
+
+        int right = 0;
+        for (int i = 0; i < len/2; ++i) {
+            right *= 10;
+            right += x % 10;
+            x /= 10;
+        }
+        if (len & 0x1) x /= 10;
+        return x == right;
     }
 };

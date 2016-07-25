@@ -22,14 +22,14 @@ public:
         sub(ans, candidates, choose, target, 0, 0);
         return ans;
     }
-    
+
     void sub(vector<vector<int>> &ans, vector<int> &candidates, vector<int> &choose, int target, int sum, int cur){
         if(sum == target){
             ans.push_back(choose);
             return;
         }
         if(sum > target)return;
-        
+
         for(int i = cur; i < candidates.size(); ++i){
             if(i != cur && candidates[i] == candidates[i-1])continue;
             sum += candidates[i];
@@ -52,11 +52,11 @@ private:
             return;
         }
         if (sum > target || index >= candidates.size()) return;
-        
+
         cur.push_back(candidates[index]);
         dfs(ans, candidates, target, sum+candidates[index], index+1, cur);
         cur.pop_back();
-        
+
         while (index+1 < candidates.size() && candidates[index] == candidates[index+1]) index++;
         dfs(ans, candidates, target, sum, index+1, cur);
     }
@@ -64,11 +64,39 @@ public:
     vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
         vector<vector<int> > ans;
         if (candidates.size() == 0) return ans;
-        
+
         sort(candidates.begin(), candidates.end());
-        
+
         vector<int> cur;
         dfs(ans, candidates, target, 0, 0, cur);
+        return ans;
+    }
+};
+/*
+ * 还行
+ */
+class Solution {
+private:
+    void sub(vector<int> &candidates, int index, int target, vector<int> &now, vector<vector<int>> &ans) {
+        if (target == 0) {
+            ans.push_back(now);
+            return;
+        }
+        if (target < 0 || index == candidates.size()) return;
+        for (int i = index; i < candidates.size(); ++i) {
+            if (i != 0 && candidates[i] == candidates[i-1]) continue;
+            now.push_back(candidates[i]);
+            sub(candidates, i, target-candidates[i], now, ans);
+            now.pop_back();
+        }
+    }
+
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end());
+        vector<vector<int>> ans;
+        vector<int> now;
+        sub(candidates, 0, target, now, ans);
         return ans;
     }
 };

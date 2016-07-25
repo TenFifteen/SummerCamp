@@ -27,7 +27,7 @@ public:
         auto ret = sub(root);
         return ret.second;
     }
-    
+
     pair<int, bool> sub(TreeNode *root){
         if(root == NULL){
             return make_pair(0, true);
@@ -54,7 +54,35 @@ class Solution {
 private:
     pair<int, bool> sub(TreeNode *root) {
         if (root == NULL) return make_pair(0, true);
-        
+
+        auto left = sub(root->left);
+        auto right = sub(root->right);
+        if (left.second == false || right.second == false) return make_pair(0, false);
+        if (abs(left.first - right.first) > 1) return make_pair(0, false);
+        return make_pair(max(left.first, right.first)+1, true);
+    }
+
+public:
+    bool isBalanced(TreeNode* root) {
+        return sub(root).second;
+    }
+};
+/*
+ * some easy
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    pair<int, bool> sub(TreeNode *root) {
+        if (root == NULL) return make_pair(0, true);
         auto left = sub(root->left);
         auto right = sub(root->right);
         if (left.second == false || right.second == false) return make_pair(0, false);

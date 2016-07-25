@@ -67,23 +67,50 @@ public:
         if (x == INT_MIN) {
             return 0;
         }
-        
+
         bool neg = false;
         if (x & 0x80000000) {
             neg = true;
             x = -x;
         }
-        
+
         int ans = 0;
         while (x) {
             int new_ans = ans * 10;
             new_ans += x % 10;
             x /= 10;
-            
+
             if (new_ans/10 != ans) return 0;
             ans = new_ans;
         }
         if (neg) return -ans;
         else return ans;
+    }
+};
+/*
+ *我知道有可以不考虑负数的情况，但是对于负数取模从来没有过信心，所以还是算了吧。
+ */
+class Solution {
+public:
+    int reverse(int x) {
+        long xx = x;
+        bool neg = false;
+        if (xx < 0) {
+            neg = true;
+            xx = -xx;
+        }
+
+        long ans = 0;
+        while (xx > 0) {
+            ans *= 10;
+            ans += xx % 10;
+            xx /= 10;
+        }
+        if ((neg == true && ans-1 > INT_MAX) || (neg == false && ans > INT_MAX)) {
+            return 0;
+        } else {
+            if (neg) return -ans;
+            else return ans;
+        }
     }
 };

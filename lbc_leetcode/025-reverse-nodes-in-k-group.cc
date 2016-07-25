@@ -21,7 +21,7 @@ public:
         ListNode *preheader = new ListNode(-1);
         preheader->next = head;
         ListNode *cur = preheader, *nex, *pre = preheader;
-        while(cur = cur->next) 
+        while(cur = cur->next)
             num++;
         while(num>=k) {
             cur = pre->next;
@@ -89,7 +89,7 @@ public:
         }
         return ret;
     }
-    
+
     ListNode *reverse(ListNode *head){
         ListNode *last = head;
         head = head->next;
@@ -131,11 +131,11 @@ public:
     ListNode* reverseKGroup(ListNode* head, int k) {
         assert(k > 0);
         if (k == 1) return head;
-        
+
         ListNode prehead(0);
         prehead.next = head;
         ListNode *tail = &prehead;
-        
+
         while (head) {
             ListNode *group = head, *last = head;
             for (int i = 0; i < k; ++i) {
@@ -145,15 +145,63 @@ public:
                 last = head;
                 head = head->next;
             }
-            
+
             last->next = NULL;
             reverse(group);
             tail->next = last;
             group->next = head;
-            
+
             tail = group;
         }
-        
+
         return prehead.next;
+    }
+};
+/*
+ * 一般吧
+ */
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    ListNode *reverse(ListNode *head) {
+        ListNode *ret = NULL;
+        while (head) {
+            ListNode *next = head->next;
+            head->next = ret;
+            ret = head;
+            head = next;
+        }
+        return ret;
+    }
+
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if (k < 2) return head;
+
+        ListNode tmp(0), *pre = &tmp;
+        while (head) {
+            ListNode *tail = head;
+            for (int i = 0; i < k - 1; ++i) {
+                if (tail == NULL) break;
+                tail = tail->next;
+            }
+            if (tail == NULL) {
+                pre->next = head;
+                return tmp.next;
+            }
+            ListNode *next = tail->next;
+            tail->next = NULL;
+            pre->next = reverse(head);
+            pre = head;
+            head = next;
+        }
+        return tmp.next;
     }
 };

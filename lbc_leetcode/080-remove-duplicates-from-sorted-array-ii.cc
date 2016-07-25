@@ -52,7 +52,7 @@ class Solution {
 public:
     int removeDuplicates(vector<int>& nums) {
         if (nums.size() < 3) return nums.size();
-        
+
         int total = 1, dup = 1, last = nums[0];
         for (int i = 1; i < nums.size(); ++i) {
             if (nums[i] == nums[i-1]) {
@@ -66,7 +66,27 @@ public:
                 last = nums[i];
             }
         }
-        
+
         return total;
+    }
+};
+/*
+ * some easy
+ */
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        if (nums.size() < 3) return nums.size();
+
+        int len = 1, last = nums[0], cnt = 1;
+        for (int i = 1; i < nums.size(); ++i) {
+            if (nums[i] == last) cnt++;
+            else {
+                cnt = 1;
+                last = nums[i];
+            }
+            if (cnt <= 2) nums[len++] = nums[i];
+        }
+        return len;
     }
 };

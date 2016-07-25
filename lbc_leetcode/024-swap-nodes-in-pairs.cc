@@ -72,11 +72,11 @@ class Solution {
 public:
     ListNode* swapPairs(ListNode* head) {
         ListNode prehead(0), *ret = &prehead;
-        
+
         while (head) {
             if (head->next) {
                 ListNode *next = head->next->next;
-                
+
                 ret->next = head->next;
                 ret->next->next = head;
                 ret = ret->next->next;
@@ -87,7 +87,35 @@ public:
             }
         }
         ret->next = NULL;
-        
+
         return prehead.next;
+    }
+};
+/*
+ * 还可以
+ */
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        if (head == NULL || head->next == NULL) return head;
+
+        ListNode tmp(0), *pre = &tmp;
+        while (head && head->next) {
+            ListNode *next = head->next->next;
+            pre->next = head->next;
+            head->next->next = head;
+            pre = head;
+            head = next;
+        }
+        pre->next = head;
+        return tmp.next;
     }
 };

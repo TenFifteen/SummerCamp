@@ -25,7 +25,7 @@ public boolean isNumber(String s) {
 
 }
 另外，下面这个写法也是挺简单的，值得借鉴一下：
-bool isNumber(const char *s) 
+bool isNumber(const char *s)
 {
     int i = 0;
 
@@ -37,7 +37,7 @@ bool isNumber(const char *s)
 
     int n_nm, n_pt;
     for(n_nm=0, n_pt=0; (s[i]<='9' && s[i]>='0') || s[i]=='.'; i++)
-        s[i] == '.' ? n_pt++:n_nm++;       
+        s[i] == '.' ? n_pt++:n_nm++;
     if(n_pt>1 || n_nm<1) // no more than one point, at least one digit
         return false;
 
@@ -161,33 +161,33 @@ class Solution {
         if (start >= s.size()) return "";
         return s.substr(start, end-start+1);
     }
-    
+
     bool isSign(char ch) {
         return ch == '+' || ch == '-';
     }
-    
+
     bool isDigit(char ch) {
         return ch >= '0' && ch <= '9';
     }
-    
+
     bool isExp(char ch) {
         return ch == 'e' || ch == 'E';
     }
-    
+
     bool isDot(char ch) {
         return ch == '.';
     }
-    
-    
-    
+
+
+
 public:
     bool isNumber(string s) {
         s = trim(s);
         if (s == "") return false;
         int index = 0;
-        
+
         if (isSign(s[index])) index++;
-        
+
         int num = 0, dot = 0;
         while (index < s.size() && (isDigit(s[index]) || isDot(s[index]))) {
             if (isDot(s[index])) dot++;
@@ -195,7 +195,7 @@ public:
             index++;
         }
         if (num == 0 || dot > 1) return false;
-        
+
         if (index < s.size() && isExp(s[index])) {
             index++;
             if (index == s.size()) return false;
@@ -207,7 +207,52 @@ public:
             }
             if (num == 0) return false;
         }
-        
+
+        return index == s.size();
+    }
+};
+/*
+ * thank god, a surprise, I remenber it...
+ */
+class Solution {
+private:
+    string trim(string s) {
+        if (s == "") return s;
+        int left = 0, right = s.size()-1;
+        while (left < s.size() && s[left] == ' ') left++;
+        while (right >= left && s[right] == ' ') right--;
+        if (right < left) return "";
+        return s.substr(left, right-left+1);
+    }
+
+public:
+    bool isNumber(string s) {
+        s = trim(s);
+
+        int index = 0;
+        while (index < s.size() && s[index] == ' ') index++;
+        if (index == s.size()) return false;
+
+        if (s[index] == '+' || s[index] == '-') index++;
+        if (index == s.size()) return false;
+
+        int dot = 0, num = 0;
+        while (index < s.size() && ((s[index] <= '9' && s[index] >= '0') || s[index] == '.')) {
+            if (s[index] == '.') dot++;
+            else num++;
+            index++;
+        }
+        if (dot > 1 || num == 0) return false;
+        if (index == s.size()) return true;
+
+        if (s[index] == 'e' || s[index] == 'E') {
+            index++;
+            if (index == s.size()) return false;
+            if (s[index] == '+' || s[index] == '-') index++;
+            if (index == s.size()) return false;
+            while (index < s.size() && s[index] >= '0' && s[index] <= '9') index++;
+        }
+
         return index == s.size();
     }
 };

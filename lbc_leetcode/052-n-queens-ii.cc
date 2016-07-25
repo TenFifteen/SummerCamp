@@ -21,7 +21,7 @@ public:
         sub(ans, n, 0, col, left, right);
         return ans;
     }
-    
+
     void sub(int &ans, int n, int row, vector<bool> &col, vector<bool> &left, vector<bool> &right){
         if(row == n){
             ans++;
@@ -51,16 +51,16 @@ private:
         if (row == n) {
             return 1;
         }
-        
+
         int ans = 0;
         for (int i = 0; i < n; ++i) {
             if (col[i] && left[row+i] && right[n-1-i+row]) {
                 col[i] = false;
                 left[row+i] = false;
                 right[n-1-i+row] = false;
-                
+
                 ans += dfs(col, left, right, row+1, n);
-                
+
                 col[i] = true;
                 left[row+i] = true;
                 right[n-1-i+row] = true;
@@ -68,11 +68,39 @@ private:
         }
         return ans;
     }
-    
+
 public:
     int totalNQueens(int n) {
         vector<bool> col(n, true), left(n*2-1, true), right(n*2-1, true);
-        
+
         return dfs(col, left, right, 0, n);
+    }
+};
+/*
+ * 很好
+ */
+class Solution {
+private:
+    int solve(int x, vector<bool> &col, vector<bool> &left, vector<bool> &right) {
+        if (x == col.size()) return 1;
+
+        int ans = 0;
+        for (int i = 0; i < col.size(); ++i) {
+            if (col[i] || left[i+x] || right[col.size()-1+x-i]) continue;
+            col[i] = true;
+            left[i+x] = true;
+            right[col.size()-1+x-i] = true;
+            ans += solve(x+1, col, left, right);
+            col[i] = false;
+            left[i+x] = false;
+            right[col.size()-1-i+x] = false;
+        }
+        return ans;
+    }
+
+public:
+    int totalNQueens(int n) {
+        vector<bool> col(n, false), left(n*2-1, false), right(n*2-1, false);
+        return solve(0, col, left, right);
     }
 };

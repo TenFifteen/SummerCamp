@@ -37,7 +37,7 @@ vector<int> findSubstring(string S, vector<string> &L) {
             // a valid word, accumulate results
             if (dict.count(str)) {
                 tdict[str]++;
-                if (tdict[str] <= dict[str]) 
+                if (tdict[str] <= dict[str])
                     count++;
                 else {
                     // a more word, advance the window left side possiablly
@@ -110,18 +110,18 @@ public:
     vector<int> findSubstring(string s, vector<string>& words) {//words has dups
         vector<int> ans;
         if (words.size() == 0 || words[0].size() == 0 || s.size() < words.size() * words[0].size()) return ans;
-        
+
         int wordLen = words[0].size(), totalLen = words.size() * wordLen;
         unordered_map<string, int> wordSet;
-        
+
         for (auto w : words) {
             wordSet[w]++;
         }
-        
+
         for (int start = 0;start < wordLen; ++start) {
             int left = start, right = left + totalLen;
             if (right > s.size()) continue;
-            
+
             int total = 0;
             unordered_map<string, int> now;
             for (int i = left; i < right; i += wordLen) {
@@ -131,7 +131,7 @@ public:
                     if (now[cur] == wordSet[cur]) total++;
                 }
             }
-            
+
             while (right <= s.size()) {
                 if (total == wordSet.size()) {
                     ans.push_back(left);
@@ -149,7 +149,41 @@ public:
                 right += wordLen;
             }
         }
-        
+
+        return ans;
+    }
+};
+/*
+ *还好
+ */
+class Solution {
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+        vector<int> ans;
+        if (words.size() == 0) return ans;
+
+        int wordLen = words[0].size();
+        unordered_map<string, int> wordsSet;
+        for (auto w : words) {
+            wordsSet[w]++;
+        }
+
+        for (int i = 0; i + wordLen*words.size() <= s.size(); ++i) {
+            unordered_map<string, int> tmp;
+            bool ok = true;
+            for (int j = 0; j < words.size(); ++j) {
+                string sub = s.substr(i + j * wordLen, wordLen);
+                tmp[sub]++;
+                if (tmp[sub] > wordsSet[sub]) {
+                    ok = false;
+                    break;
+                }
+            }
+            if (ok) {
+                ans.push_back(i);
+            }
+        }
+
         return ans;
     }
 };
