@@ -45,7 +45,7 @@ public:
         auto ret = sub(root);
         return ret.second;
     }
-    
+
     pair<int, int> sub(TreeNode *root){
         pair<int, int> ret;
         if(root->left == NULL && root->right == NULL){
@@ -90,7 +90,7 @@ class Solution {
 private:
     pair<int, int> maxPath(TreeNode *root) { // first child's max, second is maxpath including root
         if (root->left == NULL && root->right == NULL) return make_pair(root->val, root->val);
-        
+
         auto ret = make_pair(root->val, root->val);
         int now = root->val;
         if (root->left) {
@@ -105,15 +105,68 @@ private:
             ret.first = max(R.first, ret.first);
             ret.second = max(ret.second, root->val+R.second);
         }
-        
+
         ret.first = max(ret.first, now);
         return ret;
     }
-    
+
 public:
     int maxPathSum(TreeNode* root) {
         if (root == NULL) return 0;
-        
+
         return maxPath(root).first;
+    }
+}
+/*
+ * same problem.
+ */
+;/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    int ans;
+
+    int sub(TreeNode *root) {
+        if (root->left == NULL && root->right == NULL) {
+            ans = max(ans, root->val);
+            return root->val;
+        }
+        if (root->left == NULL) {
+            int ret = sub(root->right);
+            int cur = ret > 0 ? ret + root->val : root->val;
+            ans = max(ans, cur);
+            return cur;
+        }
+        if (root->right == NULL) {
+            int ret = sub(root->left);
+            int cur = ret > 0 ? ret + root->val : root->val;
+            ans = max(ans, cur);
+            return cur;
+        }
+
+        int left = sub(root->left);
+        int right = sub(root->right);
+        int cur = root->val;
+        if (left > 0) cur += left;
+        if (right > 0) cur += right;
+        ans = max(ans, cur);
+
+        cur = max(left, right);
+        return max(cur + root->val , root->val);
+    }
+
+public:
+    int maxPathSum(TreeNode* root) {
+        if (root == NULL) return 0;
+        ans = INT_MIN;
+        sub(root);
+        return ans;
     }
 };
