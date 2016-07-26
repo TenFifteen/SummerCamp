@@ -43,22 +43,50 @@ private:
     bool isAlpha(char ch) {
         return ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch >= '0' && ch <= '9';
     }
-    
+
     bool isEqual(char ch1, char ch2) {
         if (ch1 >= 'A' && ch1 <= 'Z') ch1 = ch1-'A'+'a';
         if (ch2 >= 'A' && ch2 <= 'Z') ch2 = ch2-'A'+'a';
         return ch1 == ch2;
     }
-    
+
 public:
     bool isPalindrome(string s) {
         if (s.size() < 2) return true;
-        
+
         int left = 0, right = s.size()-1;
         while (left < right) {
             while (left < right && !isAlpha(s[left])) left++;
             while (left < right && !isAlpha(s[right])) right--;
             if (!isEqual(s[left++], s[right--])) return false;
+        }
+        return true;
+    }
+};
+/*
+ * almost the same with second
+ */
+class Solution {
+private:
+    bool isSame(char a, char b) {
+        if (a >= 'a' && a <= 'z') a = a - 'a' + 'A';
+        if (b >= 'a' && b <= 'z') b = b - 'a' + 'A';
+        return a == b;
+    }
+
+    bool isAlpha(char ch) {
+        return ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z' || ch >= '0' && ch <= '9';
+    }
+
+public:
+    bool isPalindrome(string s) {
+        if (s.size() == 0) return true;
+
+        int left = 0, right = s.size()-1;
+        while (left < right) {
+            while (left < right && !isAlpha(s[left])) left++;
+            while (left < right && !isAlpha(s[right])) right--;
+            if (!isSame(s[left++], s[right--])) return false;
         }
         return true;
     }
