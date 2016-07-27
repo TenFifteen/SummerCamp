@@ -75,3 +75,24 @@ public:
         return ans;
     }
 };
+/*
+ * really good question
+ */
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        int ans = 0;
+        unordered_map<int, int> um;
+        for (auto n : nums) {
+            if (um.find(n) != um.end()) continue;
+            int left = um.find(n-1) == um.end() ? 0 : um[n-1];
+            int right = um.find(n+1) == um.end() ? 0 : um[n+1];
+            int now = left + right + 1;
+            ans = max(now, ans);
+            um[n-left] = now;
+            um[n+right] = now;
+            um[n] = now; // mark it as visited.
+        }
+        return ans;
+    }
+};
