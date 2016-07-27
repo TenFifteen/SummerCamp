@@ -25,7 +25,7 @@ public:
             ans.push_back(tmp);
             return ans;
         }
-        
+
         fa[start].push_back("");
         visited.insert(start);
         vector<string> cur;
@@ -66,7 +66,7 @@ public:
         }
         return ans;
     }
-    
+
     void sub(vector<vector<string>> &ans, string cur, map<string, vector<string>> &fa, vector<string> &path){
         if(fa[cur].size() == 1 && fa[cur][0] == ""){
             vector<string> tmp = path;
@@ -95,7 +95,7 @@ private:
             ans.push_back(vector<string>(path.rbegin(), path.rend()));
             return;
         }
-        
+
         path.push_back(now);
         for (auto s : fa[now]) {
             getPaths(ans, fa, s, path);
@@ -107,19 +107,19 @@ public:
     vector<vector<string>> findLadders(string beginWord, string endWord, unordered_set<string> &wordList) {
         vector<vector<string> > ans;
         int wordLen = beginWord.size();
-        
+
         queue<string> q;
         q.push(beginWord);
-        
+
         unordered_map<string, vector<string>> fa;
         fa[beginWord] = vector<string>(1, "");
-        
+
         bool notFinish = true;
         while (q.size() && notFinish) {
             int len = q.size();
             unordered_map<string, vector<string>> newfa;
             unordered_set<string> visited;
-            
+
             for (int i = 0; i < len; ++i) {
                 string now = q.front(); q.pop();
                 if (now == endWord) {
@@ -128,7 +128,7 @@ public:
                     notFinish = false;
                     break;
                 }
-                
+
                 string cur = now;
                 for (int i = 0; i < wordLen; ++i) {
                     char old = now[i];
@@ -145,12 +145,71 @@ public:
                     now[i] = old;
                 }
             }
-            
+
             for (auto f : newfa) {
                 fa[f.first] = f.second;
             }
         }
-        
+
+        return ans;
+    }
+};
+/*
+ * some hard, but this time ok
+ */
+class Solution {
+private:
+    void findFathers(unordered_map<string, vector<string>> &fa, string word, vector<string> &now, vector<vector<string>> &ans) {
+        if (fa.find(word) == fa.end()) {
+            ans.push_back(vector<string>(now.rbegin(), now.rend()));
+            return;
+        }
+
+        for (auto f : fa[word]) {
+            now.push_back(f);
+            findFathers(fa, f, now, ans);
+            now.pop_back();
+        }
+    }
+
+public:
+    vector<vector<string>> findLadders(string beginWord, string endWord, unordered_set<string> &wordList) {
+        unordered_set<string> visited;
+        unordered_map<string, vector<string>> fa;
+        vector<vector<string>> ans;
+        queue<string> q;
+        q.push(beginWord);
+        visited.insert(beginWord);
+        while (q.size() > 0) {
+            int len = q.size();
+            unordered_map<string, vector<string>> next;
+            for (int i = 0; i < len; ++i) {
+                string now = q.front(); q.pop();
+                if (now == endWord) {
+                    vector<string> path;
+                    path.push_back(now);
+                    findFathers(fa, now, path, ans);
+                    return ans;
+                }
+
+                string cur = now;
+                for (int j = 0; j < cur.size(); ++j) {
+                    char old = cur[j];
+                    for (char ch = 'a'; ch <= 'z'; ++ch) {
+                        cur[j] = ch;
+                        if (visited.find(cur) != visited.end() || wordList.find(cur) == wordList.end()) continue;
+                        if (next.find(cur) == next.end()) q.push(cur);
+                        next[cur].push_back(now);
+                    }
+                    cur[j] = old;
+                }
+            }
+
+            for (auto p : next) {
+                fa.insert(p);
+                visited.insert(p.first);
+            }
+        }
         return ans;
     }
 };
