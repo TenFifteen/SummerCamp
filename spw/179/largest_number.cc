@@ -50,3 +50,38 @@ int main()
 
 	return 0;
 }
+
+class Solution {
+    static bool cmp(const int &a, const int &b) {
+        long long p1 = 1, p2 = 1;
+        int ta = a, tb = b;
+
+        if (ta == 0) p1 = 10;
+        while (ta) {
+            ta /= 10;
+            p1 *= 10;
+        }
+
+        if (tb == 0) p2 = 10;
+        while (tb) {
+            tb /= 10;
+            p2 *= 10;
+        }
+
+        return b * p1 + a < a * p2 + b;
+    }
+public:
+    string largestNumber(vector<int>& nums) {
+        sort(nums.begin(), nums.end(), cmp);
+
+        string ans;
+        for (int n : nums) {
+            ans += to_string(n);
+        }
+
+        // if head is 0, then the after are all zero
+        if (ans[0] == '0') ans = "0";
+
+        return ans;
+    }
+};
