@@ -85,7 +85,7 @@ public:
             }
         }
     }
-    
+
     ListNode *reverse(ListNode *head){
         if(head == NULL)return head;
         ListNode *last = head;
@@ -123,7 +123,7 @@ private:
         }
         return len;
     }
-    
+
     ListNode * reverse(ListNode *head) {
         if (head == NULL) return NULL;
         ListNode *ret = NULL;
@@ -140,22 +140,84 @@ public:
     void reorderList(ListNode* head) {
         int len = getLength(head);
         if (len < 3) return;
-        
+
         ListNode *right = head;
         for (int i = 0; i < (len-1)/2; ++i) {
             right = right->next;
         }
-        
+
         ListNode *tail = right;
         right = reverse(right->next);
         tail->next = NULL;
-        
+
         while (right) {
             auto next = head->next;
             head->next = right;
             right = right->next;
             head->next->next = next;
             head = next;
+        }
+    }
+};
+/*
+ * some good and easy question.
+ */
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    ListNode *reverse(ListNode *head) {
+        ListNode *ret = NULL;
+        while (head) {
+            ListNode *next = head->next;
+            head->next = ret;
+            ret = head;
+            head = next;
+        }
+        return ret;
+    }
+
+    int count(ListNode *head) {
+        int len = 0;
+        while (head) {
+            head = head->next;
+            len++;
+        }
+        return len;
+    }
+
+public:
+    void reorderList(ListNode* head) {
+        int len = count(head);
+        if (len < 3) return;
+
+        ListNode *left = head;
+        ListNode *right = head, *tail;
+        for (int i = 0; i < len/2; ++i) {
+            tail = right;
+            right = right->next;
+        }
+        tail->next = NULL;
+        right = reverse(right);
+
+        ListNode tmp(0), *pre = &tmp;
+        while (left || right) {
+            if (left) {
+                pre->next = left;
+                pre = left;
+                left = left->next;
+            }
+            if (right) {
+                pre->next = right;
+                pre = right;
+                right = right->next;
+            }
         }
     }
 };
