@@ -51,14 +51,39 @@ class Solution {
 public:
     bool hasCycle(ListNode *head) {
         if (head == NULL) return false;
-        
+
         ListNode *front = head->next, *end = head;
         while (front && front != end) {
             front = front->next;
             if (front) front = front->next;
             end = end->next;
         }
-        
+
         return front != NULL;
+    }
+};
+/*
+ * some old and easy
+ */
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        if (head == NULL) return false;
+        ListNode *front = head->next;
+        while (front != NULL && front != head) {
+            front = front->next;
+            if (front == NULL) return false;
+            front = front->next;
+            head = head->next;
+        }
+        return front == head;
     }
 };
