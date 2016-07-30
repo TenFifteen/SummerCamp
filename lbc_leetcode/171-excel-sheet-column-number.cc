@@ -31,11 +31,25 @@ class Solution {
 public:
     int titleToNumber(string s) {
         if (s.size() == 0) return 0;
-        
+
         int ans = 0;
         for (int i = 0; i < s.size(); ++i) {
             ans *= 26;
             ans += s[i]-'A'+1;
+        }
+        return ans;
+    }
+};
+/*
+ * too easy
+ */
+class Solution {
+public:
+    int titleToNumber(string s) {
+        int ans = 0;
+        for (auto ch : s) {
+            ans *= 26;
+            ans += ch - 'A' + 1;
         }
         return ans;
     }
