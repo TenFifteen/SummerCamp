@@ -92,7 +92,7 @@ public:
     vector<int> postorderTraversal(TreeNode* root) {
         vector<int> ans;
         if (root == NULL) return ans;
-        
+
         stack<TreeNode *> s;
         s.push(root);
         while (s.size()) {
@@ -101,9 +101,43 @@ public:
             if (cur->left) s.push(cur->left);
             if (cur->right) s.push(cur->right);
         }
-        
+
         for (int i = 0; i < ans.size()/2; ++i) {
             swap(ans[i], ans[ans.size()-1-i]);
+        }
+        return ans;
+    }
+};
+/*
+ * fun question
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        vector<int> ans;
+        if (root == NULL) return ans;
+
+        stack<TreeNode *> s;
+        s.push(root);
+        while (s.size() > 0) {
+            TreeNode *cur = s.top(); s.pop();
+            ans.push_back(cur->val);
+            if (cur->left) s.push(cur->left);
+            if (cur->right) s.push(cur->right);
+        }
+
+        int left = 0, right = ans.size()-1;
+        while (left < right) {
+            swap(ans[left++], ans[right--]);
         }
         return ans;
     }
