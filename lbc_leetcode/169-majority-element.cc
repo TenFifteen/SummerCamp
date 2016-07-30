@@ -34,7 +34,7 @@ public:
         auto ret = sub(nums, 0, nums.size()-1);
         return ret.first;
     }
-    
+
     pair<int, bool> sub(vector<int> &nums, int left, int right){
         if(left > right){
             return make_pair(0, false);
@@ -70,7 +70,7 @@ class Solution {
 public:
     int majorityElement(vector<int>& nums) {
         assert(nums.size() > 0);
-        
+
         int ans = nums[0], cnt = 1;
         for (int i = 1; i < nums.size(); ++i) {
             if (nums[i] == ans) cnt++;
@@ -81,5 +81,23 @@ public:
             }
         }
         return ans;
+    }
+};
+/*
+ * so so
+ */
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int m, cnt = 0;
+        for (int i = 0; i < nums.size(); ++i) {
+            if (cnt == 0) {
+                cnt = 1;
+                m = nums[i];
+            }
+            else if (nums[i] == m) cnt++;
+            else cnt--;
+        }
+        return m;
     }
 };
