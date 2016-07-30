@@ -58,7 +58,7 @@ class Solution {
 public:
     int maximumGap(vector<int>& nums) {
         if (nums.size() < 2) return 0;
-        
+
         int minVal = INT_MAX, maxVal = -1;
         for (auto n : nums) {
             minVal = min(minVal, n);
@@ -67,16 +67,16 @@ public:
         int n = nums.size(), len = maxVal-minVal+1;
         int bucketSize = len/n;
         if (len % n) bucketSize++;
-        
+
         typedef pair<int, int> bucket;
         vector<bucket> b(n, make_pair(INT_MAX, -1));
-        
+
         for (auto num : nums) {
             int buckNum = (num-minVal)/bucketSize;
             b[buckNum].first = min(b[buckNum].first, num);
             b[buckNum].second = max(b[buckNum].second, num);
         }
-        
+
         bool lastValid = false;
         bucket last;
         int ans = 0;
@@ -89,6 +89,47 @@ public:
                 ans = max(ans, buck.first - last.second);
                 last = buck;
             }
+        }
+        return ans;
+    }
+};
+/*
+ * ok
+ */
+class Solution {
+private:
+    struct Interval {
+        int left, right;
+        Interval(): left(INT_MAX), right(INT_MIN) {}
+    };
+
+public:
+    int maximumGap(vector<int>& nums) {
+        if (nums.size() < 2) return 0;
+
+        int left = INT_MAX, right = 0;
+        for (auto n : nums) {
+            left = min(left, n);
+            right = max(right, n);
+        }
+
+        int len = right - left + 1;
+        int block_size = len / nums.size();
+        if (len % nums.size()) block_size++;
+
+        vector<Interval> intervals(nums.size());
+        for (int i = 0; i < nums.size(); ++i) {
+            int block_id = (nums[i] - left) / block_size;
+            intervals[block_id].left = min(intervals[block_id].left, nums[i]);
+            intervals[block_id].right = max(intervals[block_id].right, nums[i]);
+        }
+
+        int ans = 0;
+        Interval last;
+        for (int i = 0; i < intervals.size(); ++i) {
+            if (intervals[i].left == INT_MAX) continue;
+            if (last.left != INT_MAX) ans = max(ans, intervals[i].left - last.right);
+            last = intervals[i];
         }
         return ans;
     }
