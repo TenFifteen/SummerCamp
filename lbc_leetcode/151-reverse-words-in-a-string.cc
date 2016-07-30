@@ -54,7 +54,7 @@ public:
         }else{
             s = tmp;
         }
-        
+
         sub(s, 0, s.size()-1);
         int left = 0;
         while(left < s.size() && s[left] == ' ')left++;
@@ -66,7 +66,7 @@ public:
             while(left < s.size() && s[left] == ' ')left++;
         }
     }
-    
+
     void sub(string &s, int left, int right){
         for(int i = left; i < left+(right-left+1)/2; ++i){
             swap(s[i], s[right-i+left]);
@@ -88,21 +88,21 @@ private:
 public:
     void reverseWords(string &s) {
         int len = 0, index = 0;
-        
+
         while (index < s.size() && s[index] == ' ') index++;
         if (index == s.size()) {
             s = "";
             return;
         }
-        
+
         while (index < s.size()) {
             while (index < s.size() && s[index] != ' ') s[len++] = s[index++];
             while (index < s.size() && s[index] == ' ') index++;
             if (index != s.size()) s[len++] = ' ';
         }
-        
+
         reverse(s, 0, len-1);
-        
+
         int start = 0, end = 0;
         while (start < len) {
             while (end < len && s[end] != ' ') end++;
@@ -110,7 +110,50 @@ public:
             start = end+1;
             end = start;
         }
-        
+
         s = s.substr(0, len);
+    }
+};
+/*
+ * it's ok
+ */
+class Solution {
+private:
+    void reverse(string &s, int left, int right) {
+        while (left < right) {
+            swap(s[left++], s[right--]);
+        }
+    }
+
+public:
+    void reverseWords(string &s) {
+        string ans;
+        int index = 0;
+
+        while (index < s.size()) {
+            while (index < s.size() && s[index] == ' ') index++;
+            if (index == s.size()) break;
+            int next = index+1;
+            while (next < s.size() && s[next] != ' ') next++;
+
+            if (ans.size() == 0) {
+                ans = s.substr(index, next-index);
+            } else {
+                ans += " " + s.substr(index, next-index);
+            }
+            index = next;
+        }
+
+        s = ans;
+        if (s.size() == 0) return;
+
+        reverse(s, 0, s.size()-1);
+        index = 0;
+        while (index < s.size()) {
+            int next = index+1;
+            while (next < s.size() && s[next] != ' ') next++;
+            reverse(s, index, next-1);
+            index = next+1;
+        }
     }
 };
