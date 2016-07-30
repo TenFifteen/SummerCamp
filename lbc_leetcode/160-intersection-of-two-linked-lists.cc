@@ -14,7 +14,7 @@
 然后呢，这个方法应该是比较成熟的方法了，但是在DISCUSS中有一种不需要计算长度的算法，
 实在是巧妙极了。其实如果两个链表长度相同，只需要走一遍就行了。如果不同，每个链表也最多走两遍。
 比之前那种无论如何都是走两遍的方式稍微好了一点，主要是提供了另一种思路。
-ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) 
+ListNode *getIntersectionNode(ListNode *headA, ListNode *headB)
 {
     ListNode *p1 = headA;
     ListNode *p2 = headB;
@@ -26,15 +26,15 @@ ListNode *getIntersectionNode(ListNode *headA, ListNode *headB)
         p2 = p2->next;
 
         //
-        // Any time they collide or reach end together without colliding 
+        // Any time they collide or reach end together without colliding
         // then return any one of the pointers.
         //
         if (p1 == p2) return p1;
 
         //
-        // If one of them reaches the end earlier then reuse it 
+        // If one of them reaches the end earlier then reuse it
         // by moving it to the beginning of other list.
-        // Once both of them go through reassigning, 
+        // Once both of them go through reassigning,
         // they will be equidistant from the collision point.
         //
         if (p1 == NULL) p1 = headB;
@@ -110,13 +110,48 @@ public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
         int lenA = getLength(headA);
         int lenB = getLength(headB);
-        
+
         if (lenA > lenB) {
             for (int i = 0; i < lenA-lenB; ++i) headA = headA->next;
         } else{
             for (int i = 0; i < lenB-lenA; ++i) headB = headB->next;
         }
-        
+
+        while (headA != headB) {
+            headA = headA->next;
+            headB = headB->next;
+        }
+        return headA;
+    }
+};
+/*
+ * old, easy
+ */
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    int count(ListNode *head) {
+        int len = 0;
+        while (head) {
+            len++;
+            head = head->next;
+        }
+        return len;
+    }
+
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        int lenA = count(headA), lenB = count(headB);
+
+        for (int i = 0; i < lenA-lenB; ++i) headA = headA->next;
+        for (int i = 0; i < lenB-lenA; ++i) headB = headB->next;
         while (headA != headB) {
             headA = headA->next;
             headB = headB->next;
