@@ -55,17 +55,45 @@ public:
     vector<int> preorderTraversal(TreeNode* root) {
         vector<int> ans;
         if (root == NULL) return ans;
-        
+
         stack<TreeNode *> q;
         q.push(root);
-        
+
         while (q.size()) {
             auto cur = q.top(); q.pop();
             ans.push_back(cur->val);
             if (cur->right) q.push(cur->right);
             if (cur->left) q.push(cur->left);
         }
-        
+
+        return ans;
+    }
+};
+/*
+ * very easy
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> ans;
+        stack<TreeNode *> s;
+        if (root != NULL) s.push(root);
+
+        while (s.size() > 0) {
+            TreeNode *cur = s.top(); s.pop();
+            ans.push_back(cur->val);
+            if (cur->right) s.push(cur->right);
+            if (cur->left) s.push(cur->left);
+        }
         return ans;
     }
 };
