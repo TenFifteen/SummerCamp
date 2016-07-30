@@ -48,7 +48,7 @@ class Solution {
 public:
     int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
         if (gas.size() < 1) return 0;
-        
+
         int start = 0;
         while (start < gas.size()) {
             int cur = start, left = gas[start]-cost[start], steps = 0;
@@ -61,8 +61,36 @@ public:
             if (steps == gas.size()) return start;
             start += steps+1;
         }
-        
+
         if (start < gas.size()) return start;
         return -1;
+    }
+};
+/*
+ * must be cautious
+ */
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        if (gas.size() == 1) return gas[0] >= cost[0] ? 0 : -1; // special case
+
+        int index = 0;
+        while (true) {
+            bool isOk = true;
+            int now = 0, next;
+            for (int i = 0; i < gas.size(); ++i) {
+                int realIndex = (index + i) % gas.size();
+                now += gas[realIndex] - cost[realIndex];
+                if (now < 0) {
+                    isOk = false;
+                    next = (realIndex + 1) % gas.size();
+                    break;
+                }
+            }
+
+            if (isOk) return index;
+            if (next <= index) return -1;
+            index = next;
+        }
     }
 };
