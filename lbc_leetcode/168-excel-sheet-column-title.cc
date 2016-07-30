@@ -47,3 +47,22 @@ public:
         }
     }
 };
+/*
+ * ok for this time
+ */
+class Solution {
+public:
+    string convertToTitle(int n) {
+        string ans;
+
+        while (n) {
+            n--;
+            ans.push_back('A' + n % 26);
+            n /= 26;
+        }
+
+        int left = 0, right = ans.size()-1;
+        while (left < right) swap(ans[left++], ans[right--]);
+        return ans;
+    }
+};
