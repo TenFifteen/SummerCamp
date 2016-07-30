@@ -27,7 +27,7 @@ public:
             ans.push_back(tmp);
             return ans;
         }
-        
+
         for(int i = s.size()-1; i >= 0; --i){
             bool isPa = true;
             for(int j = s.size()-1; j > s.size()-1-(s.size()-i)/2; --j){
@@ -63,7 +63,7 @@ private:
     bool isPalindrome(string s) {
         for (int i = 0; i < s.size()/2; ++i) {
             if (s[i] != s[s.size()-1-i]) return false;
-        }    
+        }
         return true;
     }
 
@@ -71,7 +71,7 @@ public:
     vector<vector<string>> partition(string s) {
         vector<vector<string>> ans;
         if (s.size() == 0) return ans;
-        
+
         for (int i = s.size()-1; i >= 0; --i) {
             string left = s.substr(i);
             if (isPalindrome(left)) {
@@ -87,7 +87,45 @@ public:
                 }
             }
         }
-        
+
+        return ans;
+    }
+};
+/*
+ * not so familiar.
+ */
+class Solution {
+public:
+    vector<vector<string>> partition(string s) {
+        vector<vector<string>> ans;
+        if (s == "") return ans;
+
+        for (int i = s.size()-1; i >= 0; --i) {
+            int left = i, right = s.size()-1;
+            bool isPalindrome = true;
+            while (left < right) {
+                if (s[left++] != s[right--]) {
+                    isPalindrome = false;
+                    break;
+                }
+            }
+
+            if (isPalindrome) {
+                string str = s.substr(i);
+                auto ret = partition(s.substr(0, i));
+                if (ret.size() == 0) {
+                    vector<string> now;
+                    now.push_back(s);
+                    ans.push_back(now);
+                } else {
+                    for (int j = 0; j < ret.size(); ++j) {
+                        ret[j].push_back(str);
+                        ans.push_back(ret[j]);
+                    }
+                }
+            }
+        }
+
         return ans;
     }
 };
