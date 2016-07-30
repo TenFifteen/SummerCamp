@@ -40,7 +40,7 @@ private:
     int Max(int a, int b, int c) {
         return max(a, max(b, c));
     }
-    
+
     int Min(int a, int b, int c) {
         return min(a, min(b, c));
     }
@@ -48,17 +48,35 @@ private:
 public:
     int maxProduct(vector<int>& nums) {
         if (nums.size() == 0) return 0;
-        
+
         int n = nums.size(), ans = nums[0];
         vector<int> dmax(n), dmin(n);
         dmax[0] = dmin[0] = nums[0];
-        
+
         for (int i = 1; i < n; ++i) {
             dmax[i] = Max(nums[i], nums[i]*dmax[i-1], nums[i]*dmin[i-1]);
             dmin[i] = Min(nums[i], nums[i]*dmax[i-1], nums[i]*dmin[i-1]);
             ans = max(ans, dmax[i]);
         }
-        
+
         return ans;
+    }
+};
+/*
+ * ok
+ */
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        if (nums.size() == 0) return 0;
+
+        int ret = nums[0], max_p = nums[0], min_p = nums[0];
+        for (int i = 1; i < nums.size(); ++i) {
+            int new_max = max(max_p*nums[i], max(min_p*nums[i], nums[i]));
+            min_p = min(max_p*nums[i], min(min_p*nums[i], nums[i]));
+            max_p = new_max;
+            ret = max(max_p, ret);
+        }
+        return ret;
     }
 };
