@@ -73,7 +73,7 @@ public:
             }
         }
         if(isPa)return 0;
-        
+
         int ret = INT_MAX;
         for(int i = s.size()-2; i >= 0; --i){
             isPa = true;
@@ -102,11 +102,11 @@ class Solution {
 public:
     int minCut(string s) {
         if (s.size() < 2) return 0;
-        
+
         int n = s.size();
         vector<int> dp(n, 0);
         vector<vector<bool>> buf(n, vector<bool>(n, true));
-        
+
         for (int len = 2; len <= n; ++len) {
             for (int i = 0; i < n-len+1; ++i) {
                 if (len == 2) {
@@ -116,7 +116,7 @@ public:
                 }
             }
         }
-        
+
         for (int i = 1; i < n; ++i) {
             if (buf[0][i] == false) {
                 dp[i] = INT_MAX;
@@ -127,7 +127,35 @@ public:
                 }
             }
         }
-        
+
         return dp[n-1];
+    }
+};
+/*
+ * not bad.
+ * but disscuss's second answer is better, no need for n*n space
+ */
+class Solution {
+public:
+    int minCut(string s) {
+        if (s.size() < 2) return 0;
+
+        vector<vector<bool>> buf(s.size(), vector<bool>(s.size(), false));
+        for (int i = 0; i < s.size(); ++i) buf[i][i] = true;
+        for (int k = 1; k < s.size(); ++k) {
+            for (int i = 0; i+k < s.size(); ++i) {
+                if (s[i] == s[i+k] && (k == 1 || buf[i+1][i+k-1])) buf[i][i+k] = true;
+            }
+        }
+
+        vector<int> dp(s.size(), INT_MAX);
+        dp[0] = 0;
+        for (int i = 1; i < s.size(); ++i) {
+            if (buf[0][i]) dp[i] = 0;
+            else for (int j = 1; j <= i; ++j) {
+                if (buf[j][i]) dp[i] = min(dp[i], dp[j-1]+1);
+            }
+        }
+        return dp[s.size()-1];
     }
 };
