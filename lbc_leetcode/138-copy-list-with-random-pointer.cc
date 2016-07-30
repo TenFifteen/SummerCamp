@@ -75,7 +75,7 @@ class Solution {
 public:
     RandomListNode *copyRandomList(RandomListNode *head) {
         if (head == NULL) return NULL;
-        
+
         RandomListNode *root = head;
         while (root) {
             auto next = root->next;
@@ -83,7 +83,7 @@ public:
             root->next->next = next;
             root = next;
         }
-        
+
         root = head;
         while (root) {
             if (root->random) {
@@ -91,7 +91,7 @@ public:
             }
             root = root->next->next;
         }
-        
+
         root = head->next;
         RandomListNode *tail = root;
         head->next = root->next;
@@ -103,7 +103,51 @@ public:
             head = head->next;
         }
         tail->next = NULL;
-        
+
         return root;
+    }
+};
+/*
+ * old question, but good question
+ */
+/**
+ * Definition for singly-linked list with a random pointer.
+ * struct RandomListNode {
+ *     int label;
+ *     RandomListNode *next, *random;
+ *     RandomListNode(int x) : label(x), next(NULL), random(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    RandomListNode *copyRandomList(RandomListNode *head) {
+        if (head == NULL) return NULL;
+
+        RandomListNode *cur = head;
+        while (cur) {
+            RandomListNode *next = cur->next;
+            cur->next = new RandomListNode(cur->label);
+            cur->next->next = next;
+            cur = next;
+        }
+
+        cur = head;
+        while (cur) {
+            if (cur->random) cur->next->random = cur->random->next;
+            cur = cur->next->next;
+        }
+
+        RandomListNode *ret = head->next;
+        cur = ret;
+        head->next = ret->next;
+        head = head->next;
+        while (head) {
+            cur->next = head->next;
+            cur = cur->next;
+            head->next = head->next->next;
+            head = head->next;
+        }
+        cur->next = NULL;
+        return ret;
     }
 };
