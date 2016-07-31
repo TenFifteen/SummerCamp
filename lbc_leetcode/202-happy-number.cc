@@ -46,7 +46,7 @@ public:
         }
         return true;
     }
-    
+
     int getBitSquare(int n){
         int ret = 0;
         while(n){
@@ -77,12 +77,34 @@ private:
 public:
     bool isHappy(int n) {
         unordered_set<int> s;
-        
+
         while (n != 1) {
             int happy = getHappy(n);
             if (s.find(happy) != s.end()) return false;
             s.insert(happy);
             n = happy;
+        }
+        return true;
+    }
+};
+/*
+ * my god, fast and slow pointer is so good an answer.
+ */
+class Solution {
+public:
+    bool isHappy(int n) {
+        unordered_set<int> us;
+        us.insert(n);
+        while (n != 1) {
+            int next = 0;
+            while (n) {
+                int d = n % 10;
+                n /= 10;
+                next += d * d;
+            }
+            if (us.find(next) != us.end()) return false;
+            us.insert(next);
+            n = next;
         }
         return true;
     }
