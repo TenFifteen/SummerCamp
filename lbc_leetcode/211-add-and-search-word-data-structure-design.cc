@@ -21,7 +21,7 @@ private:
             isWord = false;
         }
     };
-    
+
     bool find(string word, Node *cur) {
         if(word == ""){
             return cur->isWord;
@@ -39,7 +39,7 @@ private:
         }
         return cur->isWord;
     }
-    
+
     Node *root;
 public:
 
@@ -75,7 +75,7 @@ public:
         }
         return cur->isWord;
     }
-    
+
     WordDictionary(){
         root = new Node();
     }
@@ -127,7 +127,7 @@ public:
         cout << "search " << word << endl;
         return innerSearch(word, root);
     }
-    
+
     bool innerSearch(string word, TrieNode *r) {
         TrieNode *cur = r;
         for (int i = 0; i < word.size(); ++i) {
@@ -141,6 +141,61 @@ public:
             cur = cur->next[word[i]-'a'];
         }
         return cur->isWord;
+    }
+};
+
+// Your WordDictionary object will be instantiated and called as such:
+// WordDictionary wordDictionary;
+// wordDictionary.addWord("word");
+// wordDictionary.search("pattern");
+/*
+ * ok
+ */
+class WordDictionary {
+private:
+    struct Node {
+        bool isWord;
+        unordered_map<char, Node *> next;
+        Node() : isWord(false) {}
+    };
+
+    Node *root;
+
+    bool search(string word, Node *node) {
+        for (int i = 0; i < word.size(); ++i) {
+            if (word[i] == '.') {
+                for (auto p : node->next) {
+                    if (search(word.substr(i+1), p.second)) return true;
+                }
+                return false; // corner case.
+            } else if (node->next.find(word[i]) == node->next.end()) {
+                return false;
+            }
+            node = node->next[word[i]];
+        }
+        return node->isWord;
+    }
+
+public:
+
+    WordDictionary() {
+        root = new Node();
+    }
+
+    // Adds a word into the data structure.
+    void addWord(string word) {
+        Node *node = root;
+        for (auto ch : word) {
+            if (node->next.find(ch) == node->next.end()) node->next[ch] = new Node();
+            node = node->next[ch];
+        }
+        node->isWord = true;
+    }
+
+    // Returns if the word is in the data structure. A word could
+    // contain the dot character '.' to represent any one letter.
+    bool search(string word) {
+        return search(word, root);
     }
 };
 
