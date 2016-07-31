@@ -91,3 +91,37 @@ public:
         return ans;
     }
 };
+/*
+ * some good answer in discuss.
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int> ans;
+        if (root == NULL) return ans;
+
+        queue<TreeNode *> q;
+        q.push(root);
+        while (q.size() > 0) {
+            int len = q.size();
+            for (int i = 0; i < len; ++i) {
+                TreeNode *cur = q.front(); q.pop();
+                if (i == len-1) {
+                    ans.push_back(cur->val);
+                }
+                if (cur->left) q.push(cur->left);
+                if (cur->right) q.push(cur->right);
+            }
+        }
+        return ans;
+    }
+};
