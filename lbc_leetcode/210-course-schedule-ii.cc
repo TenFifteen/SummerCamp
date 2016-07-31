@@ -72,7 +72,7 @@ public:
         unordered_map<int, vector<int>> m;
         vector<int> ans;
         vector<int> pres(numCourses, 0);
-        
+
         for (auto p : prerequisites) {
             m[p.second].push_back(p.first);
             pres[p.first]++;
@@ -82,7 +82,7 @@ public:
                 ans.push_back(i);
             }
         }
-        
+
         int index = 0;
         while (index < ans.size()) {
             for (auto p : m[ans[index]]) {
@@ -91,7 +91,39 @@ public:
             }
             index++;
         }
-        
+
+        if (ans.size() == numCourses) return ans;
+        return vector<int>();
+    }
+};
+/*
+ * ok
+ */
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<pair<int, int>>& prerequisites) {
+        vector<int> ans;
+        vector<vector<int>> edges(numCourses);
+        vector<int> degree(numCourses);
+        for (auto p : prerequisites) {
+            edges[p.second].push_back(p.first);
+            degree[p.first]++;
+        }
+
+        queue<int> q;
+        for (int i = 0; i < numCourses; ++i) {
+            if (degree[i] == 0) q.push(i);
+        }
+
+        while (q.size() > 0) {
+            int cur = q.front(); q.pop();
+            ans.push_back(cur);
+            for (auto e : edges[cur]) {
+                degree[e]--;
+                if (degree[e] == 0) q.push(e);
+            }
+        }
+
         if (ans.size() == numCourses) return ans;
         return vector<int>();
     }
