@@ -4,7 +4,7 @@
 
 解题思路：
 对于某一位数字来说，在该位出现1的次数，比如百位：
-如果百位等于0：n/1000 * 100 
+如果百位等于0：n/1000 * 100
 如果百位等于1：n/1000 * 100 + n%100+1
 如果百位大于1：(n/1000+1) * 100
 
@@ -31,5 +31,29 @@ public:
             }
         }
         return ret;
+    }
+};
+/*
+ * good
+ */
+class Solution {
+public:
+    int countDigitOne(int n) {
+        if (n < 1) return 0;
+
+        int ans = 0;
+        int left = n, right = 0, mul = 1;
+        while (left) {
+            int d = left % 10;
+            left /= 10;
+
+            ans += left * mul;
+            if (d == 1) ans += right + 1;
+            else if (d > 1) ans += mul;
+
+            right += d * mul;
+            mul *= 10;
+        }
+        return ans;
     }
 };
