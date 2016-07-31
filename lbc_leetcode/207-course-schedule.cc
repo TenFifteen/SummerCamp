@@ -101,7 +101,7 @@ public:
         vector<int> pres(numCourses, 0);
         queue<int> q;
         unordered_map<int, vector<int> > m;
-        
+
         for (auto p : prerequisites) {
             m[p.second].push_back(p.first);
             pres[p.first]++;
@@ -109,7 +109,7 @@ public:
         for (int i = 0; i < numCourses; ++i) {
             if (pres[i] == 0) q.push(i);
         }
-        
+
         int total = 0;
         while (q.size() > 0) {
             total++;
@@ -119,7 +119,39 @@ public:
                 if (pres[i] == 0) q.push(i);
             }
         }
-        
+
+        return total == numCourses;
+    }
+};
+/*
+ * ok
+ */
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<pair<int, int>>& prerequisites) {
+        vector<vector<int>> edges(numCourses);
+        vector<int> degree(numCourses);
+        for (auto p : prerequisites) {
+            edges[p.second].push_back(p.first);
+            degree[p.first]++;
+        }
+
+        queue<int> q;
+        for (int i = 0; i < numCourses; ++i) {
+            if (degree[i] == 0) q.push(i);
+        }
+        int total = q.size();
+        while (q.size() > 0) {
+            int cur = q.front(); q.pop();
+            for (auto e : edges[cur]) {
+                degree[e]--;
+                if (degree[e] == 0) {
+                    q.push(e);
+                    total++;
+                }
+            }
+        }
+
         return total == numCourses;
     }
 };
