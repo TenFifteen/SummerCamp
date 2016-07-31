@@ -34,7 +34,7 @@ public:
         }
         return ret;
     }
-    
+
     int bitLen(int x){
         int ret = 0;
         while(x){
@@ -52,12 +52,34 @@ class Solution {
 public:
     int rangeBitwiseAnd(int m, int n) {
         if (m == n) return m;
-        
+
         int mask = INT_MIN;
         while ((mask & m) == (mask & n)) {
             mask >>= 1;
         }
-        
+
         return m & (mask << 1);
+    }
+};
+/*
+ * good question. but answer is just so so.
+ */
+class Solution {
+private:
+    int getBitLength(int x) {
+        int len = 0;
+        while (x) {
+            len++;
+            x >>= 1;
+        }
+        return len;
+    }
+
+public:
+    int rangeBitwiseAnd(int m, int n) {
+        int len1 = getBitLength(m), len2 = getBitLength(n);
+        if (len1 != len2 || len1 == 0) return 0; // corner case, 0, 0
+        int mask = 1 << (len1 - 1);
+        return mask + rangeBitwiseAnd(m-mask, n-mask);
     }
 };
