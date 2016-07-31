@@ -143,3 +143,62 @@ public:
         return q1.size() == 0 && q2.size() == 0;
     }
 };
+/*
+ * bad question.
+ */
+class Stack {
+private:
+    queue<int> s1, s2;
+
+public:
+    // Push element x onto stack.
+    void push(int x) {
+        if (s2.size() == 0) s1.push(x);
+        else s2.push(x);
+    }
+
+    // Removes the element on top of the stack.
+    void pop() {
+        if (s1.size() > 0) {
+            while (s1.size() > 1) {
+                s2.push(s1.front());
+                s1.pop();
+            }
+            s1.pop();
+        } else {
+            while (s2.size() > 1) {
+                s1.push(s2.front());
+                s2.pop();
+            }
+            s2.pop();
+        }
+    }
+
+    // Get the top element.
+    int top() {
+        if (s1.size() > 0) {
+            while (s1.size() > 1) {
+                s2.push(s1.front());
+                s1.pop();
+            }
+            int val = s1.front();
+            s2.push(s1.front());
+            s1.pop();
+            return val;
+        } else {
+            while (s2.size() > 1) {
+                s1.push(s2.front());
+                s2.pop();
+            }
+            int val = s2.front();
+            s1.push(val);
+            s2.pop();
+            return val;
+        }
+    }
+
+    // Return whether the stack is empty.
+    bool empty() {
+        return s1.size() == 0 && s2.size() == 0;
+    }
+};
