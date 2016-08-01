@@ -63,7 +63,7 @@ public:
                 dp[0][i] = line[0][i];
             }
         }
-        
+
         for(int i = 1; i < matrix.size(); ++i){
             for(int j = 1; j < matrix[i].size(); ++j){
                 if(matrix[i][j] == '1'){
@@ -98,7 +98,7 @@ public:
         if (m == 0) return 0;
         int n = matrix[0].size();
         if (n == 0) return 0;
-        
+
         int ans = 0;
         vector<int> square(n+1, 0), col(n+1, 0);
         for (int i = 1; i <= m; ++i) {
@@ -111,13 +111,42 @@ public:
                     col[j] = 0;
                 }
             }
-            
+
             for (int j = n; j >= 1; --j) {
                 square[j] = min(square[j-1]+1, min(col[j], row[j]));
                 ans = max(ans, square[j]);
             }
         }
-        
+
         return ans*ans;
+    }
+};
+/*
+ * ok
+ */
+class Solution {
+public:
+    int maximalSquare(vector<vector<char>>& matrix) {
+        if (matrix.size() == 0 || matrix[0].size() == 0) return 0;
+
+        int ans = 0;
+        vector<int> dp(matrix[0].size(), 0), col(dp);
+        for (int i = 0; i < matrix.size(); ++i) {
+            vector<int> row(col.size());
+            row[0] = matrix[i][0] - '0';
+            for (int j = 1; j < row.size(); ++j) {
+                if (matrix[i][j] == '1') row[j] = row[j-1] + 1;
+            }
+
+            for (int j = row.size()-1; j > 0; --j) {
+                if (matrix[i][j] == '1') col[j]++;
+                else col[j] = 0;
+                dp[j] = min(dp[j-1]+1, min(col[j], row[j]));
+                ans = max(ans, dp[j]);
+            }
+            dp[0] = row[0];
+            ans = max(ans, dp[0]);
+        }
+        return ans * ans;
     }
 };
