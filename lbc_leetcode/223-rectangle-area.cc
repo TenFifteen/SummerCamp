@@ -38,13 +38,29 @@ class Solution {
 public:
     int computeArea(int A, int B, int C, int D, int E, int F, int G, int H) {
         int areaA = (C-A) * (D-B), areaB = (G-E) * (H-F);
-        
+
         int botX = max(A, E), botY = max(B, F);
         int topX = min(C, G), topY = min(D, H);
-        
+
         int cross = 0;
         if (topX > botX && topY > botY) cross = (topX-botX) * (topY - botY);
-        
+
         return areaA - cross + areaB;
+    }
+};
+/*
+ * bad question. bad naming, make me wrong for many times.
+ */
+class Solution {
+public:
+    int computeArea(int A, int B, int C, int D, int E, int F, int G, int H) {
+        int fold = 0;
+        if (A >= G || C <= E || B >= H || D <= F) {
+            fold = 0;
+        } else {
+            fold = (min(H, D) - max(B, F)) * (min(C, G) - max(A, E));
+        }
+        cout << fold << endl;
+        return (C-A)*(D-B) + (G-E)*(H-F) - fold;
     }
 };
