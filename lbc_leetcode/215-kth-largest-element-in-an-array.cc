@@ -31,7 +31,7 @@ public:
                 nums[right] = nums[left];
             }
             nums[left] = mid;
-            
+
             if(nums.size()-left-1 == k-1)return nums[left];
             else if(nums.size()-left-1 > k-1)L = left+1;
             else R = left-1;
@@ -48,7 +48,7 @@ class Solution {
 private:
     int quickFind(vector<int> &nums, int left, int right, int k) {
         if (left == right && k == 1) return nums[left];
-        
+
         int mid = nums[left];
         int L = left, R = right;
         while (L < R) {
@@ -58,7 +58,7 @@ private:
             nums[R] = nums[L];
         }
         nums[L] = mid;
-        
+
         if (L-left == k-1) return nums[L];
         else if (L-left < k-1) return quickFind(nums, L+1, right, k-L+left-1);
         else return quickFind(nums, left, L-1, k);
@@ -67,5 +67,33 @@ private:
 public:
     int findKthLargest(vector<int>& nums, int k) {
         return quickFind(nums, 0, nums.size()-1, k);
+    }
+};
+/*
+ * ok
+ */
+class Solution {
+private:
+    int quickFind(vector<int> &nums, int k, int left, int right) {
+        cout << left << " " << right << endl;
+        if (left > right) return -1;
+        if (left == right) return nums[left];
+        int mid = nums[left];
+        int L = left, R = right;
+        while (L < R) {
+            while (L < R && nums[R] < mid) R--;
+            nums[L] = nums[R];
+            while (L < R && nums[L] >= mid) L++;
+            nums[R] = nums[L];
+        }
+        nums[L] = mid;
+        if (L == k-1) return mid;
+        if (L > k-1) return quickFind(nums, k, left, L-1);
+        else return quickFind(nums, k, L+1, right);
+    }
+
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        return quickFind(nums, k, 0, nums.size()-1);
     }
 };
