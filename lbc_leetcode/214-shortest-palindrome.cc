@@ -21,7 +21,7 @@ void makeNext(const char P[],int next[])
     for (q = 1,k = 0; q < m; ++q)//for循环，从第二个字符开始，依次计算每一个字符对应的next值
     {
         while(k > 0 && P[q] != P[k])//递归的求出P[0]···P[q]的最大的相同的前后缀长度k
-            k = next[k-1];          //不理解没关系看下面的分析，这个while循环是整段代码的精髓所在，确实不好理解  
+            k = next[k-1];          //不理解没关系看下面的分析，这个while循环是整段代码的精髓所在，确实不好理解
         if (P[q] == P[k])//如果相等，那么最大相同前后缀长度加1
         {
             k++;
@@ -91,13 +91,13 @@ class Solution {
 public:
     string shortestPalindrome(string s) {
         if (s.size() < 2) return s;
-        
+
         string man(s.size()*2+1, '#');
         for (int i = 0; i < s.size(); ++i) {
             man[i*2+1] = s[i];
         }
         vector<int> dp(man.size(), 1);
-        
+
         int id = 0, mx = 0;
         for (int i = 0; i < dp.size(); ++i) {
             if (mx > i) dp[i] = min(mx-i+1, dp[id*2-i]);
@@ -107,16 +107,39 @@ public:
                 id = i;
             }
         }
-        
+
         int index = 0;
         for (int i = 1; i < dp.size(); ++i) {
             if (dp[i] == i+1) index = i;
         }
-        
+
         string prefix = s.substr(index);
         for (int i = 0; i < prefix.size()/2; ++i) {
             swap(prefix[i], prefix[prefix.size()-1-i]);
         }
         return prefix + s;
+    }
+};
+/*
+ * KMP is still out of my control.
+ */
+class Solution {
+public:
+    string shortestPalindrome(string s) {
+        if (s.size() < 2) return s;
+        string str(s.size()*2+1, '#');
+        for (int i = 0; i < s.size(); ++i) str[i*2+1] = s[i];
+        vector<int> dp(str.size(), 1);
+        int id = 0, mx = 0, ans = 1;
+        for (int i = 1; i < str.size(); ++i) {
+            if (mx > i) dp[i] = min(dp[id*2-i], mx-i+1);
+            while (i-dp[i] >= 0 && i+dp[i] < str.size() && str[i-dp[i]] == str[i+dp[i]]) dp[i]++;
+            if (i+dp[i]-1 > mx) {
+                mx = i+dp[i]-1;
+                id = i;
+            }
+            if (dp[i] > i) ans = i;
+        }
+        return string(s.rbegin(), s.rbegin()+s.size()-ans) + s;
     }
 };
