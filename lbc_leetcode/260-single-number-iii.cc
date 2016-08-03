@@ -22,12 +22,12 @@ public:
         for (auto n : nums) {
             axorb ^= n;
         }
-        
+
         int one = axorb & (axorb-1);
         if (one != 0) {
             one ^= axorb;
         }
-        
+
         vector<int> ans(2, 0);
         for (auto n : nums) {
             if (n & one) {
@@ -36,7 +36,7 @@ public:
                 ans[1] ^= n;
             }
         }
-        
+
         return ans;
     }
 };
@@ -49,18 +49,41 @@ public:
     vector<int> singleNumber(vector<int>& nums) {
         int x = 0;
         for (auto n : nums) x ^= n;
-        
+
         x -= (x & (x-1));
-        
+
         int a = 0, b = 0;
         for (auto n : nums) {
             if (n & x) a ^= n;
             else b ^= n;
         }
-        
+
         vector<int> ans(2);
         ans[0] = a;
         ans[1] = b;
+        return ans;
+    }
+};
+/*
+ * good
+ */
+class Solution {
+public:
+    vector<int> singleNumber(vector<int>& nums) {
+        int mid = 0;
+        for (int i = 0; i < nums.size(); ++i) {
+            mid ^= nums[i];
+        }
+
+        int last_bit = mid - (mid & (mid-1));
+        vector<int> ans(2, 0);
+        for (int i = 0; i < nums.size(); ++i) {
+            if (nums[i] & last_bit) {
+                ans[0] ^= nums[i];
+            } else {
+                ans[1] ^= nums[i];
+            }
+        }
         return ans;
     }
 };
