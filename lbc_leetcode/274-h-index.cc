@@ -15,7 +15,7 @@
 本来以为这道题目差不多这样就是最好了呢，结果竟然找到了一个O(n)的算法，
 虽然用了额外的O(n)的空间复杂度，但是还是很值得借鉴的：
 public class Solution {
-    // 9.3 70 years diaoZhaTian China jiaYou 
+    // 9.3 70 years diaoZhaTian China jiaYou
     public int hIndex(int[] citations) {
         int length = citations.length;
         if (length == 0) {
@@ -47,14 +47,14 @@ class Solution {
 public:
     int hIndex(vector<int>& citations) {
         sort(citations.begin(), citations.end());
-        
+
         int n = citations.size();
         for (int i = n; i > 0; --i) {
             if (citations[n-i] >= i) {
                 return i;
             }
         }
-        
+
         return 0;
     }
 };
@@ -68,20 +68,40 @@ class Solution {
 public:
     int hIndex(vector<int>& citations) {
         if (citations.size() == 0) return 0;
-        
+
         int n = citations.size();
         vector<int> ans(n+1, 0);
         for (auto c : citations) {
             if (c > n) c = n;
             ans[c]++;
         }
-        
+
         int ret = 0;
         for (int i = n; i >= 0; --i) {
             ret += ans[i];
             if (ret >= i) return i;
         }
-        
+
+        return 0;
+    }
+};
+/*
+ * did it by reading tips.
+ */
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        int n = citations.size();
+        vector<int> ans(n+1, 0);
+        for (auto c : citations) {
+            if (c >= n) ans[n]++;
+            else ans[c]++;
+        }
+        int now = 0;
+        for (int i = n; i >= 0; --i) {
+            now += ans[i];
+            if (now >= i) return i;
+        }
         return 0;
     }
 };
