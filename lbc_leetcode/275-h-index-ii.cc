@@ -36,7 +36,7 @@ public:
                 return i;
             }
         }
-        
+
         return 0;
     }
 };
@@ -50,7 +50,7 @@ class Solution {
 public:
     int hIndex(vector<int>& citations) {
         if (citations.size() == 0) return 0;
-        
+
         int n = citations.size(), left = 0, right = n-1;
         while (left < right) {
             int mid = (left+right+1) >> 1;
@@ -59,5 +59,21 @@ public:
         }
         if (citations[left] >= n - left) return n-left;
         return n-left-1;
+    }
+};
+/*
+ * did it by reading tips
+ */
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        if (citations.size() == 0) return 0;
+        int left = 0, right = citations.size(), n = right;
+        while (left < right) {
+            int mid = (left + right + 1) / 2;
+            if (citations[n-mid] >= mid) left = mid;
+            else right = mid-1;
+        }
+        return left;
     }
 };
