@@ -65,12 +65,12 @@ public:
     vector<string> split(string str, char delim) {
         stringstream ss(str);
         vector<string> ans;
-        
+
         string cur;
         while (ss >> cur) {
             ans.push_back(cur);
         }
-        
+
         return ans;
     }
 
@@ -81,12 +81,12 @@ public:
         if (root == NULL) {
             return ans;
         }
-        
+
         q.push(root);
         while (q.size() > 0) {
             TreeNode *root = q.front();
             q.pop();
-            
+
             if (root == NULL) {
                 ans.append("n ");
             } else {
@@ -95,7 +95,7 @@ public:
                 q.push(root->right);
             }
         }
-        
+
         return ans;
     }
 
@@ -103,15 +103,15 @@ public:
     TreeNode* deserialize(string data) {
         if (data.size() == 0) return NULL;
         vector<string> words = split(data, ' ');
-        
+
         TreeNode *root = new TreeNode(stoi(words[0]));
         queue<TreeNode *> q;
         q.push(root);
-        
+
         for (int i = 1; i < words.size(); i += 2) {
             TreeNode *cur = q.front();
             q.pop();
-            
+
             if (words[i][0] != 'n') {
                 cur->left = new TreeNode(stoi(words[i]));
                 q.push(cur->left);
@@ -121,7 +121,7 @@ public:
                 q.push(cur->right);
             }
         }
-        
+
         return root;
     }
 };
@@ -150,13 +150,13 @@ class Codec {
             index += 2;
             return NULL;
         }
-        
+
         int end = index+1;
         while (end < data.size() && data[end] != ' ') end++;
-        
+
         int value = stoi(data.substr(index, end-index));
         TreeNode *root = new TreeNode(value);
-        
+
         index = end+1;
         root->left = des(data, index);
         root->right = des(data, index);
@@ -180,3 +180,72 @@ public:
 // Your Codec object will be instantiated and called as such:
 // Codec codec;
 // codec.deserialize(codec.serialize(root));
+/*
+ * ok, but discuss's better.
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        string ans;
+        if (root == NULL) return ans;
+        queue<TreeNode *> q;
+        q.push(root);
+        while (q.size() > 0) {
+            TreeNode *cur = q.front(); q.pop();
+            if (cur == NULL) ans += " #";
+            else {
+                ans += " " + to_string(cur->val);
+                q.push(cur->left);
+                q.push(cur->right);
+            }
+        }
+        return ans.substr(1);
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        if (data.size() == 0) return NULL;
+
+        stringstream ss(data);
+        int rootVal;
+        ss >> rootVal;
+
+        TreeNode *root = new TreeNode(rootVal);
+        queue<TreeNode *> q;
+        q.push(root);
+
+        while (q.size() > 0) {
+            TreeNode *cur = q.front(); q.pop();
+
+            string left, right;
+            ss >> left >> right;
+            if (left[0] != '#') {
+                cur->left = new TreeNode(stoi(left));
+                q.push(cur->left);
+            }
+            if (right[0] != '#') {
+                cur->right = new TreeNode(stoi(right));
+                q.push(cur->right);
+            }
+        }
+
+        return root;
+    }
+};
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec;
+// codec.deserialize(codec.serialize(root));
+
+
