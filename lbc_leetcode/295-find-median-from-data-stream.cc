@@ -105,16 +105,16 @@ public:
         low.insert(num);
         if (low.size() > up.size()) {
             int cur = *low.rbegin();
-            
+
             up.insert(cur);
             low.erase(low.find(cur));
-            
+
         } else if (*low.rbegin() > *up.begin()) {
             int l = *low.rbegin(), u = *up.begin();
-            
+
             low.insert(u);
             low.erase(low.find(l));
-            
+
             up.insert(l);
             up.erase(up.find(u));
         }
@@ -135,3 +135,40 @@ public:
 // MedianFinder mf;
 // mf.addNum(1);
 // mf.findMedian();
+/*
+ * ok
+ */
+class MedianFinder {
+private:
+    multiset<int> small, large;
+public:
+
+    // Adds a number into the data structure.
+    void addNum(int num) {
+        small.insert(num);
+        large.insert(*small.rbegin());
+        small.erase(small.find(*small.rbegin()));
+        if (small.size() + 1 < large.size()) {
+            small.insert(*large.begin());
+            large.erase(large.find(*large.begin()));
+        }
+    }
+
+    // Returns the median of current data stream
+    double findMedian() {
+        double ret = *large.begin();
+        if (small.size() != large.size()) {
+           ret += *large.begin();
+        } else {
+            ret += *small.rbegin();
+        }
+        return ret / 2;
+    }
+};
+
+// Your MedianFinder object will be instantiated and called as such:
+// MedianFinder mf;
+// mf.addNum(1);
+// mf.findMedian();
+
+
