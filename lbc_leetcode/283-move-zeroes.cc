@@ -37,7 +37,24 @@ public:
         for (auto n : nums) {
             if (n != 0) nums[len++] = n;
         }
-        
+
         for (int i = len; i < nums.size(); ++i) nums[i] = 0;
     }
 };
+/*
+ * ok
+ */
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums) {
+        if (nums.size() < 2) return;
+        int len = 0;
+        for (int i = 0; i < nums.size(); ++i) {
+            if (nums[i] != 0) nums[len++] = nums[i];
+        }
+        for (int i = len; i < nums.size(); ++i) {
+            nums[i] = 0;
+        }
+    }
+};
+
