@@ -33,11 +33,11 @@ public:
         string ans;
         vector<int> count(26, 0);
         vector<bool> inStack(26, false);
-        
+
         for (auto ch : s) {
             count[ch-'a']++;
         }
-        
+
         for (int i = 0; i < s.size(); ++i) {
             if (!inStack[s[i]-'a']) {
                 while (ans.size() > 0 && ans.back() > s[i] && count[ans.back()-'a'] > 0) {
@@ -47,10 +47,10 @@ public:
                 ans.push_back(s[i]);
                 inStack[s[i]-'a'] = true;
             }
-            
+
             count[s[i]-'a']--;
         }
-        
+
         return ans;
     }
 };
@@ -64,26 +64,56 @@ public:
     string removeDuplicateLetters(string s) {
         int count[26] = {0};
         for (auto ch : s) count[ch-'a']++;
-        
+
         string ans;
         vector<bool> flag(26, false);
-        
+
         for (auto ch : s) {
             if (flag[ch-'a']) {
                 count[ch-'a']--;
                 continue;
             }
-            
+
             while (ans.size() > 0 && ch < ans.back() && count[ans.back()-'a'] > 0) {
                 flag[ans.back()-'a'] = false;
                 ans.pop_back();
             }
-            
+
             ans.push_back(ch);
             count[ch-'a']--;
             flag[ch-'a'] = true;
         }
-        
+
         return ans;
     }
 };
+/*
+ * good question, and it's error-prone.
+ */
+class Solution {
+public:
+    string removeDuplicateLetters(string s) {
+        unordered_map<char, int> um;
+        for (auto ch : s) {
+            um[ch]++;
+        }
+
+        unordered_map<char, bool> visited;
+        string ans;
+        for (auto ch : s) {
+            um[ch]--;
+            if (visited[ch]) continue;
+            while (ans.size() > 0 && um[ans.back()] > 0 && ch < ans.back()) {
+                visited[ans.back()] = false;
+                ans.pop_back();
+            }
+
+            ans.push_back(ch);
+            visited[ch] = true;
+        }
+
+        return ans;
+    }
+};
+
+
