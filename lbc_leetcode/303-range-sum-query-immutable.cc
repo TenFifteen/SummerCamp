@@ -22,7 +22,7 @@ public:
         return psum[j+1] - psum[i];
     }
 private:
-    vector<int> psum;    
+    vector<int> psum;
 };
 */
 class NumArray {
@@ -75,3 +75,30 @@ public:
 // NumArray numArray(nums);
 // numArray.sumRange(0, 1);
 // numArray.sumRange(1, 2);
+/*
+ * ok
+ */
+class NumArray {
+private:
+    vector<long long> sum;
+
+public:
+    NumArray(vector<int> &nums) {
+        sum = vector<long long>(nums.size()+1);
+        for (int i = 0; i < nums.size(); ++i) {
+            sum[i+1] = sum[i] + nums[i];
+        }
+    }
+
+    int sumRange(int i, int j) {
+        return sum[j+1] - sum[i];
+    }
+};
+
+
+// Your NumArray object will be instantiated and called as such:
+// NumArray numArray(nums);
+// numArray.sumRange(0, 1);
+// numArray.sumRange(1, 2);
+
+
