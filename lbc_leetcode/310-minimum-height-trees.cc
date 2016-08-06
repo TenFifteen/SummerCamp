@@ -20,11 +20,11 @@ private:
     int getHeight(int n, int root, vector<vector<int>> &edges, int maxH) {
         queue<int> q;
         vector<bool> visited(n, false);
-        
+
         q.push(root);
         visited[root] = true;
         int height = 0;
-        
+
         while (q.size() > 0) {
             height++;
             if (height > maxH) return maxH + 1;
@@ -32,7 +32,7 @@ private:
             for (int i = 0; i < cur; ++i) {
                 int now = q.front();
                 q.pop();
-                
+
                 for (auto neighbor : edges[now]) {
                     if (!visited[neighbor]) {
                         visited[neighbor] = true;
@@ -53,7 +53,7 @@ public:
             }
             return ans;
         }
-        
+
         vector<int> degree(n, 0);
         vector<vector<int> > matrix(n);
         for (auto e : edges) {
@@ -62,7 +62,7 @@ public:
             matrix[e.first].push_back(e.second);
             matrix[e.second].push_back(e.first);
         }
-        
+
         int total = 0;
         queue<int> ones;
         for (int i = 0; i < n; ++i) {
@@ -72,13 +72,13 @@ public:
                 total++;
             }
         }
-        
+
         while (n - total > 2) {
             int now = ones.size();
             for (int i = 0; i < now; ++i) {
                 int z = ones.front();
                 ones.pop();
-                
+
                 for (auto e : matrix[z]) {
                     degree[e]--;
                     if (degree[e] == 1) {
@@ -89,7 +89,7 @@ public:
                 }
             }
         }
-        
+
         for (int i = 0; i < n; ++i) {
             if (degree[i] > 0) {
                 ans.push_back(i);
@@ -103,7 +103,7 @@ public:
             e[p.first].push_back(p.second);
             e[p.second].push_back(p.first);
         }
-        
+
         int h = n;
         vector<int> ans;
         for (int i = 0; i < n; ++i) {
@@ -115,7 +115,7 @@ public:
                 ans.push_back(i);
             }
         }
-        
+
         return ans;
     }
 };
@@ -132,7 +132,7 @@ public:
             ans.push_back(0);
             return ans;
         }
-        
+
         vector<int> degree(n, 0);
         unordered_map<int, vector<int>> hash;
         for (auto p : edges) {
@@ -141,17 +141,17 @@ public:
             hash[p.first].push_back(p.second);
             hash[p.second].push_back(p.first);
         }
-        
+
         queue<int> q;
         for (int i = 0; i < n; ++i) {
             if (degree[i] == 1) q.push(i);
         }
-        
+
         int total = n;
         while (total > 2) {
             int len = q.size();
             total -= len;
-            
+
             for (int i = 0; i < len; ++i) {
                 int cur = q.front(); q.pop();
                 for (auto x : hash[cur]) {
@@ -160,7 +160,7 @@ public:
                 }
             }
         }
-        
+
         while (q.size() > 0) {
             ans.push_back(q.front());
             q.pop();
@@ -168,3 +168,50 @@ public:
         return ans;
     }
 };
+/*
+ * ok
+ */
+class Solution {
+public:
+    vector<int> findMinHeightTrees(int n, vector<pair<int, int>>& edges) {
+        if (n == 1) { // very special case.
+            return vector<int>(1);
+        }
+
+        vector<int> degree(n);
+        vector<vector<int>> edgeList(n);
+        for (auto e : edges) {
+            degree[e.first]++;
+            degree[e.second]++;
+            edgeList[e.first].push_back(e.second);
+            edgeList[e.second].push_back(e.first);
+        }
+
+        queue<int> q;
+        for (int i = 0; i < n; ++i) {
+            if (degree[i] == 1) q.push(i);
+        }
+
+        int total = n;
+        while (total > 2) {
+            int len = q.size();
+            for (int i = 0; i < len; ++i) {
+                int now = q.front(); q.pop();
+                for (auto e : edgeList[now]) {
+                    degree[e]--;
+                    if (degree[e] == 1) q.push(e);
+                }
+            }
+            total -= len;
+        }
+
+        vector<int> ans;
+        while (q.size() > 0) {
+            ans.push_back(q.front());
+            q.pop();
+        }
+        return ans;
+    }
+};
+
+
