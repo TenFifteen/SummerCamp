@@ -31,3 +31,14 @@ public:
         return 1162261467 % n == 0;
     }
 };
+/*
+ * most trick question.
+ * but answer is so beautiful.
+ */
+class Solution {
+public:
+    bool isPowerOfThree(int n) {
+        if (n < 1) return false;
+        return 1162261467 % n == 0;
+    }
+};
