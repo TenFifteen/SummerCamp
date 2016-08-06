@@ -29,11 +29,11 @@ class Solution {
 public:
     int lengthOfLIS(vector<int>& nums) {
         if (nums.size() < 2) return nums.size();
-        
+
         vector<int> dp(nums.size());
         int len = 1;
         dp[0] = nums[0];
-        
+
         for (int i = 1; i < nums.size(); ++i) {
             if (nums[i] > dp[len-1]) {
                 dp[len++] = nums[i];
@@ -51,7 +51,7 @@ public:
                 dp[index] = nums[i];
             }
         }
-        
+
         return len;
     }
 };
@@ -68,24 +68,50 @@ class Solution {
             if (v[mid] >= val) right = mid;
             else left = mid+1;
         }
-        
+
         if (v[left] >= val) return left;
         return v.size();
     }
-    
+
 public:
     int lengthOfLIS(vector<int>& nums) {
         if (nums.size() == 0) return 0;
-        
+
         vector<int> seq;
         seq.push_back(nums[0]);
-        
+
         for (int i = 1; i < nums.size(); ++i) {
             int index = binarySearch(seq, nums[i]);
             if (index == seq.size()) seq.push_back(nums[i]);
             else seq[index] = nums[i];
         }
-        
+
         return seq.size();
     }
 };
+/*
+ * good
+ */
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        if (nums.size() < 2) return nums.size();
+
+        vector<int> dp;
+        dp.push_back(nums[0]);
+        for (int i = 1; i < nums.size(); ++i) {
+            int left = 0, right = dp.size()-1;
+            while (left < right) {
+                int mid  = (left + right) / 2;
+                if (dp[mid] < nums[i]) left = mid + 1;
+                else right = mid;
+            }
+            if (dp[left] < nums[i]) dp.push_back(nums[i]);
+            else if (dp[left] > nums[i]) dp[left] = nums[i];
+        }
+
+        return dp.size();
+    }
+};
+
+
