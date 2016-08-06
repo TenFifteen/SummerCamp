@@ -33,7 +33,7 @@ private:
         }
         return ans;
     }
-    
+
     int upper(vector<long long> &sum, int left, int right, long long val) {
         int ans = right+1;
         while (left <= right) {
@@ -47,23 +47,23 @@ private:
         }
         return ans;
     }
-    
+
     int mergeSort(vector<long long> &sum, int left, int right, int LOW, int UP) {
         if (left >= right) return 0;
-        
+
         int L = left, R = right;
-        
+
         int mid = (left + right) >> 1;
         int ans = 0;
         ans += mergeSort(sum, left, mid, LOW, UP);
         ans += mergeSort(sum, mid+1, right, LOW, UP);
-        
+
         for (int i = left; i <= mid; ++i) {
             int low = lower(sum, mid+1, right, sum[i]+LOW);
             int up = upper(sum, mid+1, right, sum[i]+UP);
             ans += up - low;
         }
-        
+
         vector<long long> tmp(sum.begin()+L, sum.begin()+R+1);
         int i = L, j = 0, k = mid+1-L;
         while (j + L <= mid && k+L <= right) {
@@ -73,36 +73,36 @@ private:
                 sum[i++] = tmp[j++];
             }
         }
-        
+
         while (j + L <= mid) {
             sum[i++] = tmp[j++];
         }
-        
+
         return ans;
     }
 public:
     int countRangeSum(vector<int> &nums, int lower, int upper) {
         if (nums.size() < 1) return 0;
-        
+
         vector<long long> sum(nums.size()+1, 0);
         for (int i = 1; i < sum.size(); ++i) {
             sum[i] = sum[i-1] + nums[i-1];
         }
-        
+
         int ans =  mergeSort(sum, 0, sum.size()-1, lower, upper);
-        
+
         return ans;
     }
-    
+
     int countRangeSum2(vector<int> &nums, int lower, int upper) {
         if (nums.size() < 1) return 0;
-        
+
         vector<long long> sum(nums.size());
         sum[0] = nums[0];
         for (int i = 1; i < nums.size(); ++i) {
             sum[i] = nums[i] + sum[i-1];
         }
-        
+
         int cnt = 0;
         for (int i = 0; i < sum.size(); ++i) {
             for (int j = i; j < sum.size(); ++j) {
@@ -113,7 +113,7 @@ public:
                 }
             }
         }
-        
+
         return cnt;
     }
 };
@@ -126,7 +126,7 @@ public:
 */
 class Solution {
     typedef long long LL;
-    
+
     class SegmentTreeNode {
     public:
         LL start, end, cnt;
@@ -138,9 +138,9 @@ class Solution {
             left = right = NULL;
         }
     };
-    
+
     SegmentTreeNode *root;
-    
+
     void insert(SegmentTreeNode *node, LL val) {
         if (node->start != node->end) {
             LL mid = (node->start+node->end) >> 1;
@@ -155,38 +155,98 @@ class Solution {
         node->cnt++;
         //cout << "insert " << val << " " << node->start << " " << node->end << " " << node->cnt << endl;
     }
-    
+
     LL count(SegmentTreeNode *node, LL left, LL right) {
         //cout << "count " << left << " " << right << endl;
         if (node == NULL || node->start > right || node->end < left) return 0;
         if (node->start >= left && node->end <= right) return node->cnt;
         return count(node->left, left, right) + count(node->right, left, right);
     }
-    
+
     void destroy(SegmentTreeNode *node) {
         if (node->left) destroy(node->left);
         if (node->right) destroy(node->right);
         delete node;
     }
-    
+
 public:
     int countRangeSum(vector<int>& nums, int lower, int upper) {
         if (nums.size() == 0) return 0;
-        
+
         root = new SegmentTreeNode(LONG_LONG_MIN/2, LONG_LONG_MAX/2);
-        
+
         vector<LL> sum(nums.size()+1, 0);
         for (int i = 0; i < nums.size(); ++i) {
             sum[i+1] = sum[i] + nums[i];
         }
-        
+
         int ans = 0;
         for (int i = sum.size()-1; i >= 0; --i) {
             ans += count(root, sum[i]+lower, sum[i]+upper);
             insert(root, sum[i]);
         }
-        
+
         destroy(root);
         return ans;
     }
 };
+/*
+ * ok
+ */
+class Solution {
+private:
+struct Node {
+    long long cnt;
+    long long start, end;
+    Node *left, *right;
+    Node(long long s, long long e) : start(s), end(e), left(NULL), right(NULL), cnt(0) {}
+};
+
+void insert(Node *node, long long val) {
+    if (node->start > val || node->end < val) return;
+    node->cnt++;
+    if (node->start == node->end) return;
+
+    long long mid = node->start + (node->end - node->start) / 2;
+    if (val <= mid) {
+        if (node->left == NULL) node->left = new Node(node->start, mid);
+        insert(node->left, val);
+    } else {
+        if (node->right == NULL) node->right = new Node(mid+1, node->end);
+        insert(node->right, val);
+    }
+}
+
+int find(Node *node, long long start, long long end) {
+    if (node == NULL || node->start > end || node->end < start) return 0;
+    if (node->start >= start && node->end <= end) return node->cnt;
+    return find(node->left, start, end) + find(node->right, start, end);
+}
+
+public:
+    int countRangeSum(vector<int>& nums, int lower, int upper) {
+        long long sum = 0, large = INT_MIN, small = INT_MAX;
+        for (int i = 0; i < nums.size(); ++i) {
+            sum += nums[i];
+            large = max(large, sum);
+            small = min(small, sum);
+        }
+
+        Node *root = new Node(min(small, 0LL), max(large, 0LL));
+        //cout << "root->start " << root->start << " root->end " << root->end << endl;
+        insert(root, 0);
+        int ans = 0;
+        sum = 0;
+        for (int i = 0; i < nums.size(); ++i) {
+            sum += nums[i];
+            int now = find(root, sum-upper, sum-lower);
+            //cout << "sum = " << sum << " cnt = " << now << " left " << sum-upper << " right " << sum-lower << endl;
+            ans += now; //find(root, sum-upper, sum-lower);
+            insert(root, sum);
+        }
+
+        return ans;
+    }
+};
+
+
