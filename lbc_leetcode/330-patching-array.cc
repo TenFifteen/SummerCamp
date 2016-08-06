@@ -29,7 +29,7 @@ public:
                 added++;
             }
         }
-        
+
         return added;
     }
 };
@@ -42,7 +42,7 @@ class Solution {
 public:
     int minPatches(vector<int>& nums, int n) {
         if (n < 1) return 0;
-        
+
         long long ans = 0, cur = 1, index = 0;
         while (cur <= n) {
             if (index < nums.size() && nums[index] <= cur) {
@@ -52,7 +52,25 @@ public:
                 cur <<= 1;
             }
         }
-        
+
         return ans;
+    }
+};
+/*
+ * very good question. but not very easy to understand.
+ */
+class Solution {
+public:
+    int minPatches(vector<int>& nums, int n) {
+        long long miss = 1, index = 0, added = 0;
+        while (miss <= n) {
+            if (index < nums.size() && nums[index] <= miss) {
+                miss += nums[index++];
+            } else {
+                miss <<= 1;
+                added++;
+            }
+        }
+        return added;
     }
 };
