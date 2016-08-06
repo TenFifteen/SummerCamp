@@ -16,9 +16,9 @@ public:
     int coinChange(vector<int>& coins, int amount) {
         vector<int> dp(amount+1, INT_MAX/2);
         dp[0] = 0;
-        
+
         sort(coins.begin(), coins.end());
-        
+
         for (int i = 1; i <= amount; i++) {
             for (int j = 0; j < coins.size(); ++j) {
                 if (coins[j] <= i) {
@@ -26,7 +26,7 @@ public:
                 }
             }
         }
-        
+
         return dp[amount] == INT_MAX/2 ? -1 : dp[amount];
     }
 };
@@ -35,3 +35,26 @@ public:
 动归。
 问题不是很大。
 */
+/*
+ * it seems that I forget to post my second answer.
+ * this time is ok
+ */
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        if (amount < 1) return 0;
+
+        vector<int> dp(amount+1, amount+1);
+        dp[0] = 0;
+        for (int i = 0; i < coins.size(); ++i) {
+            for (int j = 1; j <= amount; ++j) {
+                if (j >= coins[i]) dp[j] = min(dp[j], dp[j-coins[i]]+1);
+            }
+        }
+
+        if (dp[amount] > amount) return -1;
+        else return dp[amount];
+    }
+};
+
+
