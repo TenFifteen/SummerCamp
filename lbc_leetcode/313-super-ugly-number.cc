@@ -37,7 +37,7 @@ public:
         for (int i = 0;i < vq.size(); ++i) {
             vq[i].push(primes[i]);
         }
-        
+
         int cnt = 1;
         int ans = 1;
         while (cnt++ < n) {
@@ -47,18 +47,18 @@ public:
                     next = i;
                 }
             }
-            
+
             ans = vq[next].front();
             vq[next].pop();
-            
+
             for (int i = next; i < vq.size(); ++i) {
                 vq[i].push(ans * primes[i]);
             }
         }
-        
+
         return ans;
     }
-    
+
     int nthSuperUglyNumber2(int n, vector<int>& primes) {
         set<int> ugly;
         ugly.insert(1);
@@ -72,10 +72,10 @@ public:
                 next = min(next, tmp);
                 if (next == cur) break;
             }
-            
+
             ugly.insert(next);
         }
-        
+
         return *ugly.rbegin();
     }
 };
@@ -90,22 +90,53 @@ public:
         for (int i = 0; i < primes.size(); ++i) {
             vq[i].push(primes[i]);
         }
-        
+
         long long cur = 1, cnt = 1;
         while (cnt++ < n) {
             int index = 0;
             for (int i = 0; i < primes.size(); ++i) {
                 if (vq[i].front() < vq[index].front()) index = i;
             }
-            
-            cur = vq[index].front(); 
+
+            cur = vq[index].front();
             vq[index].pop();
-            
+
             for (int i = index; i < vq.size(); ++i) {
                 vq[i].push(cur * primes[i]);
             }
         }
-        
+
         return cur;
     }
 };
+/*
+ * ok
+ */
+class Solution {
+public:
+    int nthSuperUglyNumber(int n, vector<int>& primes) {
+        if (n == 1) return 1;
+
+        vector<queue<int>> vq(primes.size());
+        for (int i = 0; i < primes.size(); ++i) {
+            vq[i].push(primes[i]);
+        }
+
+        int ans;
+        for (int i = 1; i < n; ++i) {
+            int index = 0;
+            for (int j = 1; j < vq.size(); ++j) {
+                if (vq[j].front() < vq[index].front()) index = j;
+            }
+
+            ans = vq[index].front(); vq[index].pop();
+            for (int j = index; j < vq.size(); ++j) {
+                vq[j].push(ans * primes[j]);
+            }
+        }
+
+        return ans;
+    }
+};
+
+
