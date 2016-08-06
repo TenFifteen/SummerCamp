@@ -20,13 +20,13 @@ public:
         if (n == 0) return 0;
         if (n == 1) return nums[0];
         vector<vector<int> > dp(n, vector<int>(n, 0));
-        
+
         dp[0][0] = nums[0] * nums[1];
         dp[n-1][n-1] = nums[n-1] * nums[n-2];
         for (int i = 1; i < n-1; ++i) {
             dp[i][i] = nums[i-1] * nums[i] * nums[i+1];
         }
-        
+
         for (int k = 1; k < n; ++k) {
             for (int i = 0; i < n-k; ++i) {
                 for (int j = i; j <= i+k; ++j) {
@@ -38,7 +38,7 @@ public:
                 }
             }
         }
-        
+
         return dp[0][n-1];
     }
 };
@@ -50,11 +50,11 @@ class Solution {
 public:
     int maxCoins(vector<int>& nums) {
         if (nums.size() == 0) return 0;
-        
+
         int n = nums.size();
         vector<int> coins(n+2, 1);
         for (int i = 1; i <= n; ++i) coins[i] = nums[i-1];
-        
+
         vector<vector<int>> dp(n, vector<int>(n, INT_MIN));
         for (int i = 0; i < n; ++i) dp[i][i] = coins[i+1]*coins[i]*coins[i+2];
         for (int i = 1; i < n; ++i) {
@@ -66,7 +66,33 @@ public:
                 }
             }
         }
-        
+
         return dp[0][n-1];
     }
 };
+/*
+ * ok
+ */
+class Solution {
+public:
+    int maxCoins(vector<int>& nums) {
+        if (nums.size() == 0) return 0;
+
+        vector<vector<int>> dp(nums.size(), vector<int>(nums.size(), 0));
+        for (int k = 0; k < nums.size(); ++k) {
+            for (int i = 0; i+k < nums.size(); ++i) {
+                int left = i == 0 ? 1 : nums[i-1];
+                int right = i+k+1 == nums.size() ? 1 : nums[i+k+1];
+                for (int j = i; j <= i+k; ++j) {
+                    int lh = j == i ? 0 : dp[i][j-1];
+                    int rh = j == i+k ? 0 : dp[j+1][i+k];
+                    dp[i][i+k] = max(nums[j] * left * right + lh + rh, dp[i][i+k]);
+                }
+            }
+        }
+
+        return dp[0][nums.size()-1];
+    }
+};
+
+
