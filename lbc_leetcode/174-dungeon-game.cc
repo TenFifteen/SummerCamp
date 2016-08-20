@@ -56,7 +56,7 @@ public:
         if(ret <= 0)ret = 1;
         return ret;
     }
-    
+
     bool sub(vector<vector<int>> &dungeon){
         vector<vector<long long>> dp(dungeon.size(), vector<long long>(dungeon[0].size()));
         dp[0][0] = dungeon[0][0];
@@ -91,18 +91,18 @@ public:
         assert(m > 0);
         int n = dungeon[0].size();
         assert(n > 0);
-        
+
         int left = 1, right = INT_MAX;
         while (left < right) {
             int mid = left + ((right-left)>>1);
-            
+
             vector<int> dp(n);
             dp[0] = dungeon[0][0] + mid;
             for (int i = 1; i < n; ++i) {
                 if (dp[i-1] <= 0) dp[i] = 0;
                 else dp[i] = dp[i-1] + dungeon[0][i];
             }
-            
+
             for (int i = 1; i < m; ++i) {
                 if (dp[0] > 0) dp[0] += dungeon[i][0];
                 for (int j = 1; j < n; ++j) {
@@ -112,7 +112,7 @@ public:
                     dp[j] = health;
                 }
             }
-            
+
             if (dp[n-1] > 0) {
                 right = mid;
             } else {
@@ -120,5 +120,31 @@ public:
             }
         }
         return left;
+    }
+};
+/*
+ * new method. cheers
+ */
+class Solution {
+public:
+    int calculateMinimumHP(vector<vector<int>>& dungeon) {
+        int m = dungeon.size(), n = dungeon[0].size();
+
+        vector<vector<int>> dp(m, vector<int>(n));
+        dp[m-1][n-1] = 1 - dungeon[m-1][n-1] < 1 ? 1 : 1 - dungeon[m-1][n-1];
+        for (int i = n-2; i >= 0; --i) {
+            dp[m-1][i] = dp[m-1][i+1] - dungeon[m-1][i];
+            if (dp[m-1][i] < 1) dp[m-1][i] = 1;
+        }
+
+        for (int i = m-2; i >= 0; --i) {
+            dp[i][n-1] = dp[i+1][n-1] - dungeon[i][n-1] < 1 ? 1 : dp[i+1][n-1] - dungeon[i][n-1];
+            for (int j = n-2; j >= 0; --j) {
+                dp[i][j] = min(dp[i+1][j], dp[i][j+1]) - dungeon[i][j];
+                if (dp[i][j] < 1) dp[i][j] = 1;
+            }
+        }
+
+        return dp[0][0];
     }
 };

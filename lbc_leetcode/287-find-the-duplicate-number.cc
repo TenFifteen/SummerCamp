@@ -30,13 +30,13 @@ public:
             fast = nums[fast];
             fast = nums[fast];
         }
-        
+
         slow = 0;
         while (slow != fast) {
             slow = nums[slow];
             fast = nums[fast];
         }
-        
+
         return slow;
     }
 
@@ -81,7 +81,7 @@ public:
             front = nums[front];
             end = nums[end];
         }
-        
+
         end = 0;
         int last = end;
         while (end != front) {
@@ -89,7 +89,30 @@ public:
             end = nums[end];
             front = nums[front];
         }
-        
+
         return nums[last];
     }
 };
+/*
+ * at the first moment, I did think about linked list. but did not figure it out.
+ * look at the disscuss answer again.
+ */
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        int fast = 0, slow = 0;
+        do {
+            fast = nums[fast];
+            fast = nums[fast];
+	        slow = nums[slow];
+        } while (slow != fast);
+
+        slow = 0;
+        while (slow != fast) {
+	        fast = nums[fast];
+	        slow = nums[slow];
+        }
+        return slow;
+    }
+};
+

@@ -40,17 +40,37 @@ public:
     int countPrimes(int n) {
         if (n < 3) return 0;
         vector<bool> ans(n, true);
-        
+
         for (int i = 2; i < n; ++i) {
             if (ans[i]) for (int j = i*2; j <= n; j += i) {
                 ans[j] = false;
             }
         }
-        
+
         int cnt = 0;
         for (int i = 2; i < n; ++i) {
             if (ans[i]) cnt++;
         }
         return cnt;
+    }
+};
+/*
+ * it's ok
+ */
+class Solution {
+public:
+    int countPrimes(int n) {
+        if (n < 2) return 0;
+
+        vector<bool> prime(n, true);
+        int ans = 0;
+        for (int i = 2; i < n; ++i) {
+            if (prime[i] == false) continue;
+            ans++;
+            for (int j = i+i; j < n; j += i) {
+                prime[j] = false;
+            }
+        }
+        return ans;
     }
 };

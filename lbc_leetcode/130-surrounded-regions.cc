@@ -84,7 +84,7 @@ public:
             }
         }
     }
-    
+
     void sub3(vector<vector<char>> &board, vector<vector<bool>> &flag, int x, int y){
         queue<pair<int,int>> q;
         q.push(make_pair(x,y));
@@ -131,7 +131,7 @@ public:
             }
         }
     }
-    
+
     bool sub(vector<vector<char>> &board, vector<vector<bool>> &flag, int x, int y){
         if(board[x][y] == 'X' || flag[x][y] == true)return true;
         if(x == 0 || x == board.size()-1)return false;
@@ -144,7 +144,7 @@ public:
         if(ret && sub(board, flag, x, y+1) == false)ret = false;
         return ret;
     }
-    
+
     void sub2(vector<vector<char>> &board, int x, int y){
         if(x < 0 || x > board.size()-1)return;
         if(y < 0 || y > board[0].size()-1)return;
@@ -181,7 +181,7 @@ private:
                 }
             }
         }
-        
+
         //recursive
         /*
         if (x < 0 || x >= board.size() || y < 0 || y >= board[x].size() || board[x][y] != 'O') return;
@@ -203,11 +203,57 @@ public:
             dfs(board, 0, i);
             dfs(board, board.size()-1, i);
         }
-        
+
         for (int i = 0; i < board.size(); ++i) {
             for (int j = 0; j < board[0].size(); ++j) {
                 if (board[i][j] == 'O') board[i][j] = 'X';
                 else if (board[i][j] == '#') board[i][j] = 'O';
+            }
+        }
+    }
+};
+/*
+ * old problem.
+ */
+class Solution {
+private:
+    void sub(vector<vector<char>> &board, int x, int y) {
+        // recursion will overflow.
+        const int ix[] = {-1, 1, 0, 0};
+        const int iy[] = {0, 0, -1, 1};
+        queue<pair<int,int>> q;
+        q.push(make_pair(x, y));
+        board[x][y] = 'T';
+        while (q.size() > 0) {
+            auto cur = q.front(); q.pop();
+            for (int i = 0; i < 4; ++i) {
+                int xx = cur.first + ix[i];
+                int yy = cur.second + iy[i];
+                if (xx < 0 || yy < 0 || xx >= board.size() || yy >= board[0].size()) continue;
+                if (board[xx][yy] != 'O') continue;
+                board[xx][yy] = 'T';
+                q.push(make_pair(xx, yy));
+            }
+        }
+    }
+
+public:
+    void solve(vector<vector<char>>& board) {
+        if (board.size() < 3 || board[0].size() < 3) return;
+
+        for (int i = 0; i < board.size(); ++i) {
+            if (board[i][0] == 'O') sub(board, i, 0);
+            if (board[i][board[i].size()-1] == 'O') sub(board, i, board[i].size()-1);
+        }
+        for (int i = 1; i < board[0].size()-1; ++i) {
+            if (board[0][i] == 'O') sub(board, 0, i);
+            if (board[board.size()-1][i] == 'O') sub(board, board.size()-1, i);
+        }
+
+        for (int i = 0; i < board.size(); ++i) {
+            for (int j = 0; j < board[i].size(); ++j) {
+                if (board[i][j] == 'O') board[i][j] = 'X';
+                if (board[i][j] == 'T') board[i][j] = 'O';
             }
         }
     }

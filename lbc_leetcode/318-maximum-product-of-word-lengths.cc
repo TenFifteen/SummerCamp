@@ -27,7 +27,7 @@ public:
                 bit[i] |= (1 << (words[i][j]-'a'));
             }
         }
-        
+
         int ans = 0;
         for (int i = 0; i < n; ++i) {
             for (int j = i+1; j < n; ++j) {
@@ -37,7 +37,7 @@ public:
                 }
             }
         }
-        
+
         return ans;
     }
 };
@@ -49,16 +49,16 @@ class Solution {
 public:
     int maxProduct(vector<string>& words) {
         if (words.size() < 2) return 0;
-        
+
         int n = words.size();
         vector<int> mask(n, 0);
-        
+
         for (int i = 0; i < n; ++i) {
             for (auto ch : words[i]) {
                 mask[i] |= (1 << (ch-'a'));
             }
         }
-        
+
         int ans = 0;
         for (int i = 0; i < n; ++i) {
             for (int j = i+1; j < n; ++j) {
@@ -68,7 +68,33 @@ public:
                 }
             }
         }
-        
+
         return ans;
     }
 };
+/*
+ * ok
+ */
+class Solution {
+public:
+    int maxProduct(vector<string>& words) {
+        vector<int> arr(words.size());
+        for (int i = 0; i < words.size(); ++i) {
+            for (auto ch : words[i]) {
+                arr[i] |= 1 << (ch-'a');
+            }
+        }
+
+        int ans = 0;
+        for (int i = 0; i < words.size(); ++i) {
+            for (int j = i+1; j < words.size(); ++j) {
+                if (arr[i] & arr[j]) continue;
+                int mul = words[i].size() * words[j].size();
+                ans = max(ans, mul);
+            }
+        }
+        return ans;
+    }
+};
+
+

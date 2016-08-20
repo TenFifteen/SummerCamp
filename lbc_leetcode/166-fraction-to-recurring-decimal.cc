@@ -90,7 +90,7 @@ public:
         }
         ans.push_back('.');
         num %= den;
-        map<pair<int,int>, int> hist; 
+        map<pair<int,int>, int> hist;
         while(num != 0){
             num *= 10;
             auto cur = make_pair(num/den, num%den);
@@ -126,19 +126,19 @@ public:
             neg = !neg;
             den = -den;
         }
-        
+
         long long integer = num / den;
         num %= den;
-        
+
         string frac;
         unordered_map<long long, int> hash;
         while (num) {
             num *= 10;
             int digit = num / den;
             num %= den;
-            
+
             long long key = (num << 4) + digit;
-            
+
             if (hash.find(key) != hash.end()) {
                 string ans = to_string(integer) + "." + frac.substr(0, hash[key]) + "(" + frac.substr(hash[key]) + ")";
                 if (neg) {
@@ -150,10 +150,58 @@ public:
             hash[key] = frac.size();
             frac.push_back(digit + '0');
         }
-        
+
         if (frac.size() == 0 && integer == 0) return "0";
         string ans = neg ? "-" + to_string(integer) : to_string(integer);
         if (frac.size() > 0) ans += "." + frac;
         return ans;
+    }
+};
+/*
+ * ok, good question, a lot of corner cases
+ */
+class Solution {
+private:
+    string sub(long long n, long long m) {
+        bool neg = false;
+        if (n < 0) {
+            n = -n;
+            neg = !neg;
+        }
+        if (m < 0) {
+            m = -m;
+            neg = !neg;
+        }
+
+        long long left = n / m;
+        n %= m;
+        if (n == 0) {
+            if (left == 0) return "0"; // corner case "-0"
+            if (neg) return "-" + to_string(left);
+            else return to_string(left);
+        }
+
+        string right;
+        unordered_map<long long, int> um;
+        while (n) {
+            if (um.find(n) != um.end()) {
+                right = right.substr(0, um[n]) + "(" + right.substr(um[n]) + ")";
+                break;
+            }
+
+            long long cur = n * 10;
+            int d = cur / m;
+            right.push_back(d + '0');
+            um[n] = right.size()-1;
+            n = cur % m;
+        }
+
+        if (neg) return "-" + to_string(left) + "." + right;
+        else return to_string(left) + "." + right;
+    }
+
+public:
+    string fractionToDecimal(int numerator, int denominator) {
+        return sub(numerator, denominator);
     }
 };

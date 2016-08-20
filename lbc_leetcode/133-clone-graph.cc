@@ -45,7 +45,7 @@ public:
         sub(node, buf, visited, cur);
         return cur;
     }
-    
+
     void sub(UndirectedGraphNode *root, map<int, UndirectedGraphNode *> &buf, map<int, bool> &visited, UndirectedGraphNode *cur){
         visited[root->label] = true;
         for(int i = 0; i < root->neighbors.size(); ++i){
@@ -79,15 +79,15 @@ class Solution {
 public:
     UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
         if (node == NULL) return NULL;
-        
+
         UndirectedGraphNode *root = new UndirectedGraphNode(node->label);
-        
+
         unordered_map<int, UndirectedGraphNode *> buf;
         buf[root->label] = root;
-        
+
         queue<UndirectedGraphNode *> q;
         q.push(node);
-        
+
         while (q.size()) {
             auto cur = q.front(); q.pop();
             auto now = buf[cur->label];
@@ -99,7 +99,48 @@ public:
                 now->neighbors.push_back(buf[n->label]);
             }
         }
-        
+
         return root;
+    }
+};
+/*
+ * it's ok
+ */
+/**
+ * Definition for undirected graph.
+ * struct UndirectedGraphNode {
+ *     int label;
+ *     vector<UndirectedGraphNode *> neighbors;
+ *     UndirectedGraphNode(int x) : label(x) {};
+ * };
+ */
+class Solution {
+public:
+    UndirectedGraphNode *cloneGraph(UndirectedGraphNode *node) {
+        if (node == NULL) return node;
+
+        unordered_map<int, UndirectedGraphNode *> um;
+        queue<UndirectedGraphNode *> q;
+        unordered_set<int> visited;
+
+        UndirectedGraphNode *ret = new UndirectedGraphNode(node->label);
+
+        q.push(node);
+        um[ret->label] = ret;
+        visited.insert(ret->label);
+
+        while (q.size() > 0) {
+            UndirectedGraphNode *cur = q.front(); q.pop();
+            for (auto n : cur->neighbors) {
+                if (visited.find(n->label) == visited.end()) {
+                    q.push(n);
+                    visited.insert(n->label);
+                }
+                if (um.find(n->label) == um.end()) um[n->label] = new UndirectedGraphNode(n->label);
+                um[cur->label]->neighbors.push_back(um[n->label]);
+            }
+        }
+
+        return ret;
     }
 };

@@ -12,27 +12,27 @@
 虽然看到之前的代码，感觉已经很不错了。
 但是看到DISCUSS，看到了好多更好的解：
 1，动归的简洁解法：
-class Solution 
+class Solution
 {
 public:
-    int numSquares(int n) 
+    int numSquares(int n)
     {
         if (n <= 0)
         {
             return 0;
         }
 
-        // cntPerfectSquares[i] = the least number of perfect square numbers 
+        // cntPerfectSquares[i] = the least number of perfect square numbers
         // which sum to i. Note that cntPerfectSquares[0] is 0.
         vector<int> cntPerfectSquares(n + 1, INT_MAX);
         cntPerfectSquares[0] = 0;
         for (int i = 1; i <= n; i++)
         {
-            // For each i, it must be the sum of some number (i - j*j) and 
+            // For each i, it must be the sum of some number (i - j*j) and
             // a perfect square number (j*j).
             for (int j = 1; j*j <= i; j++)
             {
-                cntPerfectSquares[i] = 
+                cntPerfectSquares[i] =
                     min(cntPerfectSquares[i], cntPerfectSquares[i - j*j] + 1);
             }
         }
@@ -41,23 +41,23 @@ public:
     }
 };
 2，动归的静态优化：
-class Solution 
+class Solution
 {
 public:
-    int numSquares(int n) 
+    int numSquares(int n)
     {
         if (n <= 0)
         {
             return 0;
         }
 
-        // cntPerfectSquares[i] = the least number of perfect square numbers 
-        // which sum to i. Since cntPerfectSquares is a static vector, if 
-        // cntPerfectSquares.size() > n, we have already calculated the result 
+        // cntPerfectSquares[i] = the least number of perfect square numbers
+        // which sum to i. Since cntPerfectSquares is a static vector, if
+        // cntPerfectSquares.size() > n, we have already calculated the result
         // during previous function calls and we can just return the result now.
         static vector<int> cntPerfectSquares({0});
 
-        // While cntPerfectSquares.size() <= n, we need to incrementally 
+        // While cntPerfectSquares.size() <= n, we need to incrementally
         // calculate the next result until we get the result for n.
         while (cntPerfectSquares.size() <= n)
         {
@@ -77,24 +77,24 @@ public:
 3，是一种数学方法，就不贴代码了，毕竟我也不会
 4，BFS的思路，就是把每个数当做一个节点，然后如果两个数之间的差是一个完全平方数，则连一条边；然后从0进行搜索就行了，
 直到搜索到n.
-class Solution 
+class Solution
 {
 public:
-    int numSquares(int n) 
+    int numSquares(int n)
     {
         if (n <= 0)
         {
             return 0;
         }
 
-        // perfectSquares contain all perfect square numbers which 
+        // perfectSquares contain all perfect square numbers which
         // are smaller than or equal to n.
         vector<int> perfectSquares;
-        // cntPerfectSquares[i - 1] = the least number of perfect 
+        // cntPerfectSquares[i - 1] = the least number of perfect
         // square numbers which sum to i.
         vector<int> cntPerfectSquares(n);
 
-        // Get all the perfect square numbers which are smaller than 
+        // Get all the perfect square numbers which are smaller than
         // or equal to n.
         for (int i = 1; i*i <= n; i++)
         {
@@ -109,13 +109,13 @@ public:
         }
 
         // Consider a graph which consists of number 0, 1,...,n as
-        // its nodes. Node j is connected to node i via an edge if  
-        // and only if either j = i + (a perfect square number) or 
-        // i = j + (a perfect square number). Starting from node 0, 
-        // do the breadth-first search. If we reach node n at step 
-        // m, then the least number of perfect square numbers which 
-        // sum to n is m. Here since we have already obtained the 
-        // perfect square numbers, we have actually finished the 
+        // its nodes. Node j is connected to node i via an edge if
+        // and only if either j = i + (a perfect square number) or
+        // i = j + (a perfect square number). Starting from node 0,
+        // do the breadth-first search. If we reach node n at step
+        // m, then the least number of perfect square numbers which
+        // sum to n is m. Here since we have already obtained the
+        // perfect square numbers, we have actually finished the
         // search at step 1.
         queue<int> searchQ;
         for (auto& i : perfectSquares)
@@ -132,7 +132,7 @@ public:
             for (int i = 0; i < searchQSize; i++)
             {
                 int tmp = searchQ.front();
-                // Check the neighbors of node tmp which are the sum 
+                // Check the neighbors of node tmp which are the sum
                 // of tmp and a perfect square number.
                 for (auto& j : perfectSquares)
                 {
@@ -143,8 +143,8 @@ public:
                     }
                     else if ((tmp + j < n) && (cntPerfectSquares[tmp + j - 1] == 0))
                     {
-                        // If cntPerfectSquares[tmp + j - 1] > 0, this is not 
-                        // the first time that we visit this node and we should 
+                        // If cntPerfectSquares[tmp + j - 1] > 0, this is not
+                        // the first time that we visit this node and we should
                         // skip the node (tmp + j).
                         cntPerfectSquares[tmp + j - 1] = currCntPerfectSquares;
                         searchQ.push(tmp + j);
@@ -172,10 +172,10 @@ public:
         for (int i = 1; i*i <= n; i++) {
             squares.push_back(i*i);
         }
-        
+
         int k = squares.size();
         if (squares[k-1] == n) return 1;
-        
+
         vector<int> dp(n);
         for (int i = 0; i < n; ++i) {
             dp[i] = i+1;
@@ -189,7 +189,7 @@ public:
                 }
             }
         }
-        
+
         return dp[n-1];
     }
 };
@@ -205,14 +205,34 @@ public:
     int numSquares(int n) {
         vector<int> squares, dp(n+1, INT_MAX);
         for (int i = 1; n / i >= i; ++i) squares.push_back(i*i);
-        
+
         for (int i = 0; i <= n; ++i) dp[i] = i;
         for (int k = 1; k < squares.size(); ++k) {
             for (int i = 1; i <= n; ++i) {
                 if (i >= squares[k]) dp[i] = min(dp[i], dp[i-squares[k]]+1);
             }
         }
-        
+
         return dp[n];
     }
 };
+/*
+ * ok. but there are some good answers in discuss.
+ */
+class Solution {
+public:
+    int numSquares(int n) {
+        if (n < 1) return 0;
+        vector<int> squares;
+        for (int i = 1; n / i >= i; ++i) squares.push_back(i*i);
+        vector<int> dp(n+1);
+        for (int i = 1; i <= n; ++i) dp[i] = i;
+        for (int j = 1; j < squares.size(); ++j) {
+            for (int i = 1; i <= n; ++i) {
+                if (i >= squares[j]) dp[i] = min(dp[i-squares[j]]+1, dp[i]);
+            }
+        }
+        return dp[n];
+    }
+};
+

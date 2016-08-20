@@ -55,21 +55,21 @@ class Solution {
 public:
     int ladderLength(string beginWord, string endWord, unordered_set<string>& wordList) {
         if (beginWord == endWord) return 1;
-        
+
         queue<string> q;
         q.push(beginWord);
-        
+
         unordered_set<string> visited;
         visited.insert(beginWord);
-        
+
         int cnt = 1, wordLen = beginWord.size();
-        
+
         while (q.size()) {
             int len = q.size();
             for (int i = 0; i < len; ++i) {
                 string now = q.front(); q.pop();
                 if (now == endWord) return cnt;
-                
+
                 for (int i = 0; i < wordLen; ++i) {
                     char old = now[i];
                     for (char ch = 'a'; ch <= 'z'; ++ch) {
@@ -84,7 +84,43 @@ public:
             }
             cnt++;
         }
-        
+
+        return 0;
+    }
+};
+/*
+ * just soso
+ */
+class Solution {
+public:
+    int ladderLength(string beginWord, string endWord, unordered_set<string>& wordList) {
+        if (wordList.size() == 0) return 0;
+
+        queue<string> q;
+        unordered_set<string> visited;
+        visited.insert(beginWord);
+        q.push(beginWord);
+        int level = 1;
+        while (q.size() > 0) {
+            int len = q.size();
+            for (int i = 0; i < len; ++i) {
+                string cur = q.front(); q.pop();
+                if (cur == endWord) return level;
+                for (int j = 0; j < cur.size(); ++j) {
+                    char old = cur[j];
+                    for (char ch = 'a'; ch <= 'z'; ++ch) {
+                        cur[j] = ch;
+                        if (wordList.find(cur) != wordList.end() && visited.find(cur) == visited.end()) {
+                            visited.insert(cur);
+                            q.push(cur);
+                        }
+                    }
+                    cur[j] = old;
+                }
+            }
+            level++;
+        }
+
         return 0;
     }
 };

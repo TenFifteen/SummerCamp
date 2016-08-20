@@ -58,7 +58,7 @@ public:
         }
         return sub(root, d);
     }
-    
+
     int sub(TreeNode *root, int d){
         if(root == NULL)return 0;
         if(d == 1)return 1;
@@ -67,13 +67,13 @@ public:
             tmp = tmp->right;
         }
         if(tmp->right != NULL)return (1 << d) - 1;
-        
+
         tmp = root;
         for(int i = 0; i < d-2; ++i){
             tmp = tmp->left;
         }
         if(tmp->left == NULL)return (1 << (d-1))-1;
-        
+
         else return 1 + sub(root->left, d-1) + sub(root->right, d-1);
     }
 };
@@ -100,7 +100,7 @@ private:
         }
         return ans;
     }
-    
+
     int rightDepth(TreeNode *root) {
         int ans = 0;
         while (root) {
@@ -113,9 +113,47 @@ private:
 public:
     int countNodes(TreeNode* root) {
         if (root == NULL) return 0;
-        
+
         int left = leftDepth(root), right = rightDepth(root);
         if (left == right) return (1 << left) - 1;
         return 1 + countNodes(root->left) + countNodes(root->right);
+    }
+};
+/*
+ * good
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int countNodes(TreeNode* root) {
+        if (root == NULL) return 0;
+
+        int left = 0;
+        TreeNode *tmp = root;
+        while (tmp) {
+            left++;
+            tmp = tmp->left;
+        }
+
+        int right = 0;
+        tmp = root;
+        while (tmp) {
+            right++;
+            tmp = tmp->right;
+        }
+
+        if (left == right) {
+            return (1 << left) - 1;
+        } else {
+            return countNodes(root->left) + countNodes(root->right) + 1;
+        }
     }
 };

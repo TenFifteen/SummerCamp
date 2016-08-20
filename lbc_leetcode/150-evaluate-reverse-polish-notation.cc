@@ -79,7 +79,42 @@ public:
                 s.push(stoi(t));
             }
         }
-        
+
+        return s.top();
+    }
+};
+/*
+ * a bit easy
+ */
+class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        stack<int> s;
+        for (int i = 0; i < tokens.size(); ++i) {
+            if (tokens[i].size() == 1 && (tokens[i][0] < '0' || tokens[i][0] > '9')) {
+                int right = s.top(); s.pop();
+                int left = s.top(); s.pop();
+                switch (tokens[i][0]) {
+                    case '+':
+                        left += right;
+                        break;
+                    case '-':
+                        left -= right;
+                        break;
+                    case '*':
+                        left *= right;
+                        break;
+                    case '/':
+                        left /= right;
+                        break;
+                    default:
+                        break;
+                }
+                s.push(left);
+            } else {
+                s.push(stoi(tokens[i]));
+            }
+        }
         return s.top();
     }
 };

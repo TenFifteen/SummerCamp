@@ -18,7 +18,7 @@ public:
         int num = 0;
         int rst = 0;
         int sign = 1;
-        for (char c : s) { 
+        for (char c : s) {
             if (isdigit(c)) {
                 num = num * 10 + c - '0';
             }
@@ -63,7 +63,7 @@ public:
             }else if(s[index] == ')'){
                 ops.pop();
                 index++;
-                
+
                 while(!ops.empty() && ops.top() != '('){
                     int right = nums.top();
                     nums.pop();
@@ -101,7 +101,7 @@ public:
         }
         return nums.top();
     }
-    
+
     bool isDigit(char ch){
         return ch >= '0' && ch <= '9';
     }
@@ -122,7 +122,7 @@ private:
         }
         return ans;
     }
-    
+
     bool isDigit(char ch) {
         return ch >= '0' && ch <= '9';
     }
@@ -130,7 +130,7 @@ private:
 public:
     int calculate(string s) {
         string exp = deleteBlanks(s);
-        
+
         stack<char> ops;
         stack<int> nums;
         int index = 0;
@@ -169,7 +169,76 @@ public:
                 index = end;
             }
         }
-        
+
         return nums.top();
+    }
+};
+/*
+ * good question, and very tedious
+ */
+class Solution {
+private:
+    string removeSpaces(const string s) {
+        string ans(s);
+        int len = 0;
+        for (int i = 0; i < ans.size(); ++i) {
+            if (ans[i] != ' ') ans[len++] = ans[i];
+        }
+        return ans.substr(0, len);
+    }
+
+public:
+    int calculate(string s) {
+        s = removeSpaces(s);
+
+        stack<char> ops;
+        stack<int> nums;
+        int index = 0;
+        while (index < s.size()) {
+            if (s[index] == '(') {
+                ops.push(s[index]);
+            } else if (s[index] == '+' || s[index] == '-') {
+                ops.push(s[index]);
+            } else if (s[index] == ')') {
+                if (ops.top() == '(') ops.pop();
+                else {
+                    int now = 0;
+                    while (ops.top() != '(') {
+                        if (ops.top() == '-') {
+                            now -= nums.top();
+                        } else {
+                            now += nums.top();
+                        }
+                        nums.pop();
+                        ops.pop();
+                    }
+                    ops.pop();
+                    now += nums.top(); nums.pop();
+                    nums.push(now);
+                }
+            } else {
+                int next = index+1;
+                while (next < s.size() && s[next] >= '0' && s[next] <= '9') {
+                    next++;
+                }
+                int num = stoi(s.substr(index, next-index));
+                nums.push(num);
+                index = next-1;
+            }
+            index++;
+        }
+
+        int ans = 0;
+        while (ops.size() > 0) {
+            if (ops.top() == '-') {
+                ans -= nums.top();
+            } else {
+                ans += nums.top();
+            }
+            ops.pop();
+            nums.pop();
+        }
+        ans += nums.top();
+        return ans;
     }
 };

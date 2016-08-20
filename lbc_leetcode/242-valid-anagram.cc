@@ -18,7 +18,7 @@ public:
         if (s.length() != t.length()) return false;
         int n = s.length();
         int counts[26] = {0};
-        for (int i = 0; i < n; i++) { 
+        for (int i = 0; i < n; i++) {
             counts[s[i] - 'a']++;
             counts[t[i] - 'a']--;
         }
@@ -44,17 +44,33 @@ class Solution {
 public:
     bool isAnagram(string s, string t) {
         if (s.size() != t.size()) return false;
-        
+
         int hash[26] = {0};
         for (auto ch : s) {
             hash[ch-'a']++;
         }
-        
+
         for (auto ch : t) {
             hash[ch-'a']--;
             if (hash[ch-'a'] < 0) return false;
         }
-        
+
+        return true;
+    }
+};
+/*
+ * easy
+ */
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        if (s.size() != t.size()) return false;
+        unordered_map<char, int> um;
+        for (auto ch : s) um[ch]++;
+        for (auto ch : t) {
+            um[ch]--;
+            if (um[ch] < 0) return false;
+        }
         return true;
     }
 };

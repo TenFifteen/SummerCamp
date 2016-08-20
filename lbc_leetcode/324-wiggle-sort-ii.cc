@@ -63,10 +63,10 @@ class Solution {
 public:
     void wiggleSort(vector<int>& nums) {
         if (nums.size() < 2) return;
-        
+
         vector<int> tmp(nums);
         sort(tmp.begin(), tmp.end());
-        
+
         int j = 0, k = (nums.size()+1)/2;
         for (int i = nums.size()-1; i >= 0; --i) {
             if (i & 0x1) {
@@ -95,21 +95,21 @@ class Solution {
             nums[R] = nums[L];
         }
         nums[L] = mid;
-        
+
         if (L == k) return nums[L];
         if (L < k) return nthElement(nums, L+1, right, k);
         else return nthElement(nums, left, L-1, k);
     }
-    
+
 public:
     void wiggleSort(vector<int>& nums) {
         if (nums.size() < 2) return;
-        
+
         int n = nums.size(), mid = (n-1)/2;
         mid = nthElement(nums, 0, n-1, mid);
-        
+
         #define A(i) (((i*2)+1)%(n|1))
-        
+
         int i = 0, j = 0, k = n-1;
         while (j <= k) {
             if (nums[A(j)] > mid) {
@@ -122,3 +122,46 @@ public:
         }
     }
 };
+/*
+ * it is a very tricky question. And I forget the details.
+ */
+class Solution {
+private:
+    int findMiddle(vector<int> &nums) {
+        int left = 0, right = nums.size()-1;
+        while (left < right) {
+            int L = left , R = right;
+            int mid = nums[left];
+            while (L < R) {
+                while (L < R && nums[R] > mid) R--;
+                nums[L] = nums[R];
+                while (L < R && nums[L] <= mid) L++;
+                nums[R] = nums[L];
+            }
+            nums[L] = mid;
+
+            if (L == nums.size()/2) return mid;
+            if (L > nums.size()/2) right = L - 1;
+            else left = L + 1;
+        }
+        return nums[left];
+    }
+
+public:
+    void wiggleSort(vector<int>& nums) {
+        if (nums.size() < 2) return ;
+
+        int mid = findMiddle(nums);
+        int n = nums.size();
+        #define A(x) nums[((x)*2+1)%(n|0x1)]
+
+        int i = 0, j = 0, k = nums.size()-1;
+        while (i <= k) {
+            if (A(i) < mid) swap(A(i), A(k--));
+            else if (A(i) == mid) i++;
+            else swap(A(i++), A(j++));
+        }
+    }
+};
+
+

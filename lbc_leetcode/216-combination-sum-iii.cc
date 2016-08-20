@@ -19,7 +19,7 @@ public:
         sub(k, n, 1, ans, now);
         return ans;
     }
-    
+
     void sub(int k, int n, int cur, vector<vector<int>> &ans, vector<int> &now){
         if(n == 0){
             if(k == 0)ans.push_back(now);
@@ -46,7 +46,7 @@ private:
             return;
         }
         if (sum > n || index > 9 || now.size() > k) return;
-        
+
         for (int i = index; i <= 9; ++i) {
             now.push_back(i);
             dfs(ans, now, i+1, k, sum+i, n);
@@ -59,6 +59,33 @@ public:
         vector<vector<int>> ans;
         vector<int> now;
         dfs(ans, now, 1, k, 0, n);
+        return ans;
+    }
+};
+/*
+ * ok
+ */
+class Solution {
+private:
+    void dfs(vector<vector<int>> &ans, vector<int> &now, int k, int cur, int n) {
+        if (n < 0) return;
+        if (n == 0) {
+            if (k == 0) ans.push_back(now);
+            return;
+        }
+        if (k <= 0) return;
+        for (int i = cur; i <= 9; ++i) {
+            now.push_back(i);
+            dfs(ans, now, k-1, i+1, n - i);
+            now.pop_back();
+        }
+    }
+
+public:
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<vector<int>> ans;
+        vector<int> now;
+        dfs(ans, now, k, 1, n);
         return ans;
     }
 };

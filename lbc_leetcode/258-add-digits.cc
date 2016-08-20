@@ -35,3 +35,13 @@ public:
         return (num-1)%9+1;
     }
 };
+/*
+ * still hard. but we can list all the answers to find the law.
+ */
+class Solution {
+public:
+    int addDigits(int num) {
+        if (num == 0) return 0;
+        return 1 + (num-1) % 9;
+    }
+};

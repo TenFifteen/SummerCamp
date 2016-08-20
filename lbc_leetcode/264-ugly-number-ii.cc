@@ -15,7 +15,7 @@
 class Solution {
 public:
     int nthUglyNumber(int n) {
-        if(n <= 0) return false; // get rid of corner cases 
+        if(n <= 0) return false; // get rid of corner cases
         if(n == 1) return true; // base case
         int t2 = 0, t3 = 0, t5 = 0; //pointers for 2, 3, 5
         vector<int> k(n);
@@ -23,7 +23,7 @@ public:
         for(int i  = 1; i < n ; i ++)
         {
             k[i] = min(k[t2]*2,min(k[t3]*3,k[t5]*5));
-            if(k[i] == k[t2]*2) t2++; 
+            if(k[i] == k[t2]*2) t2++;
             if(k[i] == k[t3]*3) t3++;
             if(k[i] == k[t5]*5) t5++;
         }
@@ -35,19 +35,19 @@ class Solution {
 public:
     int nthUglyNumber(int n) {
         if (n == 1) return 1;
-        
+
         set<int> s;
         s.insert(1);
-        
+
         for (int i = 1; i < n; ++i) {
             int next = *s.rbegin() + 1;
             int tmp = *s.lower_bound((next+1)/2) * 2;
             tmp = min(tmp, *s.lower_bound((next+2)/3) * 3);
             tmp = min(tmp, *s.lower_bound((next+4)/5) * 5);
-            
+
             s.insert(tmp);
         }
-        
+
         return *s.rbegin();
     }
 };
@@ -61,24 +61,55 @@ class Solution {
 public:
     int nthUglyNumber(int n) {
         vector<int> mul = {2, 3, 5};
-        
+
         vector<queue<long long>> vq(3);
         vq[0].push(2);
         vq[1].push(3);
         vq[2].push(5);
-        
+
         long long cur = 1, cnt = 1;
         while (cnt++ < n) {
             int index = 0;
             for (int i = 1; i < 3; ++i) {
                 if (vq[i].front() < vq[index].front()) index = i;
             }
-            
+
             cur = vq[index].front(); vq[index].pop();
             for (int i = index; i < 3; ++i) {
                 vq[i].push(cur * mul[i]);
             }
         }
         return cur;
+    }
+};
+/*
+ * ok
+ */
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        if (n < 1) return 0;
+        if (n == 1) return 1;
+        vector<queue<long long>> vq(3); // int will overflow....
+        vq[0].push(2);
+        vq[1].push(3);
+        vq[2].push(5);
+
+        const int primes[] = {2, 3, 5};
+
+        long long ans;
+        for (int i = 2; i <= n; ++i) {
+            int index = 0;
+            for (int j = 1; j < 3; ++j) {
+                if (vq[j].front() < vq[index].front()) index = j;
+            }
+            ans = vq[index].front(); vq[index].pop();
+            //cout << "ans = " << ans << endl;
+
+            for (int j = index; j < 3; ++j) {
+                vq[j].push(ans * primes[j]);
+            }
+        }
+        return ans;
     }
 };

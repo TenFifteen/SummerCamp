@@ -48,7 +48,7 @@ public:
                 buf[i][j] = wordDict.count(s.substr(i, j-i+1)) > 0;
             }
         }
-        
+
         vector<bool> dp(s.size(), false);
         dp[0] = buf[0][0];
         for(int i = 1; i < s.size(); ++i){
@@ -67,7 +67,7 @@ public:
         sub(ans, dp, buf, s, s.size()-1, cur);
         return ans;
     }
-    
+
     void sub(vector<string> &ans, vector<bool> &dp, vector<vector<bool>> &buf, string &s, int index, vector<string> &cur){
         if(index < 0){
             string tmp = cur[cur.size()-1];
@@ -77,13 +77,13 @@ public:
             ans.push_back(tmp);
             return;
         }
-        
+
         if(dp[index] && buf[0][index]){
             cur.push_back(s.substr(0, index+1));
             sub(ans, dp, buf, s, -1, cur);
             cur.pop_back();
         }
-        
+
         for(int i = 0; i < index; ++i){
             if(dp[i] && buf[i+1][index]){
                 cur.push_back(s.substr(i+1, index-i));
@@ -113,11 +113,52 @@ public:
         vector<bool> dp(s.size()+1, true);
         return wordBreak2(s, wordDict, dp);
     }
-    
+
     vector<string> wordBreak2(string s, unordered_set<string>& wordDict, vector<bool> &dp) {
         vector<string> ans;
         if (s.size() == 0) return ans;
-        
+
+        int len = s.size()-1;
+        len = min(maxlen, len);
+        for (int i = minlen-1; i < len; ++i) {
+            string sub = s.substr(0, i+1);
+            if (wordDict.find(sub) != wordDict.end() && dp[s.size()-i-1]) {
+                auto ret = wordBreak2(s.substr(i+1), wordDict, dp);
+                for (auto r : ret) {
+                    ans.push_back(sub + " " + r);
+                }
+                if (ret.size() == 0) dp[s.size()-i-1] = false;
+            }
+        }
+        if (wordDict.find(s) != wordDict.end()) ans.push_back(s);
+        return ans;
+    }
+};
+/*
+ * this is really a bad question.
+ * although my mothed is right, my answer is TLE.
+ * use the code before.
+ */
+class Solution {
+private:
+    int minlen, maxlen;
+
+public:
+    vector<string> wordBreak(string s, unordered_set<string>& wordDict) {
+        minlen = INT_MAX, maxlen = INT_MIN;
+        for (auto w : wordDict) {
+            int n = w.size();
+            minlen = min(n, minlen);
+            maxlen = max(n, maxlen);
+        }
+        vector<bool> dp(s.size()+1, true);
+        return wordBreak2(s, wordDict, dp);
+    }
+
+    vector<string> wordBreak2(string s, unordered_set<string>& wordDict, vector<bool> &dp) {
+        vector<string> ans;
+        if (s.size() == 0) return ans;
+
         int len = s.size()-1;
         len = min(maxlen, len);
         for (int i = minlen-1; i < len; ++i) {

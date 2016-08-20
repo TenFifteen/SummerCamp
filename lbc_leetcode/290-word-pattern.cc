@@ -30,18 +30,18 @@ private:
         stringstream ss(str);
         vector<string> ans;
         string cur;
-        
+
         while (ss >> cur) {
             ans.push_back(cur);
         }
-        
+
         return ans;
     }
 public:
     bool wordPattern(string pattern, string str) {
         vector<string> words = split(str, ' ');
         if (words.size() != pattern.size()) return false;
-        
+
         unordered_map<string, char> stc;
         unordered_map<char, string> cts;
         for (int i = 0; i < words.size(); ++i) {
@@ -55,7 +55,7 @@ public:
                 return false;
             }
         }
-        
+
         return true;
     }
 };
@@ -69,18 +69,18 @@ class Solution {
         stringstream ss(s);
         vector<string> ans;
         string input;
-        
+
         while (ss >> input) {
             ans.push_back(input);
         }
         return ans;
     }
-    
+
 public:
     bool wordPattern(string pattern, string str) {
         vector<string> words = split(str);
         if (pattern.size() != words.size()) return false;
-        
+
         unordered_map<char, string> hash1;
         unordered_map<string, char> hash2;
         for (int i = 0;i < pattern.size(); ++i) {
@@ -92,7 +92,35 @@ public:
                 if (hash1[pattern[i]] != words[i]) return false;
             }
         }
-        
+
         return true;
     }
 };
+/*
+ * ok, must remember it is bidirection mapping
+ */
+class Solution {
+public:
+    bool wordPattern(string pattern, string str) {
+        vector<string> v;
+        stringstream ss(str);
+        string word;
+        while (ss >> word) {
+            v.push_back(word);
+        }
+
+        if (v.size() != pattern.size()) return false;
+        unordered_map<char, string> c2s;
+        unordered_map<string, char> s2c;
+        for (int i = 0; i < pattern.size(); ++i) {
+            if (c2s.find(pattern[i]) == c2s.end() && s2c.find(v[i]) == s2c.end()) {
+                c2s[pattern[i]] = v[i];
+                s2c[v[i]] = pattern[i];
+            } else {
+                if (c2s[pattern[i]] != v[i] || s2c[v[i]] != pattern[i]) return false;
+            }
+        }
+        return true;
+    }
+};
+

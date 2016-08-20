@@ -71,7 +71,7 @@ public:
         }
         return nums[0];
     }
-    
+
     bool isDigit(char ch){
         return ch <= '9' && ch >= '0';
     }
@@ -91,19 +91,19 @@ private:
         }
         return ans;
     }
-    
+
     bool isDigit(char ch) {
         return ch >= '0' && ch <= '9';
     }
-    
+
     bool isOps(char ch) {
         return ch == '(' || ch == '+' || ch == '-' || ch == '*' || ch == '/';
     }
-    
+
 public:
     int calculate(string s) {
         s = deleteBlanks(s);
-        
+
         stack<char> ops;
         stack<int> nums;
         int index = 0;
@@ -115,7 +115,7 @@ public:
                 int end = index+1;
                 while (end < s.size() && isDigit(s[end])) end++;
                 int num2 = stoi(s.substr(index, end-index));
-                
+
                 while (ops.size() > 0 && (ops.top() == '*' || ops.top() == '/')) {
                     int num1 = nums.top(); nums.pop();
                     if (ops.top() == '*') {
@@ -137,7 +137,7 @@ public:
                 }
                 ans += nums.top();
                 nums.pop();
-                
+
                 if (ops.size() > 0 && ops.top() == '*' || ops.top() == '/') {
                     int num1 = nums.top();
                     nums.pop();
@@ -151,7 +151,7 @@ public:
                 index++;
             }
         }
-        
+
         int ans = 0;
         while (ops.size() > 0) {
             if (ops.top() == '+') ans += nums.top();
@@ -159,6 +159,58 @@ public:
             nums.pop(); ops.pop();
         }
         ans += nums.top();
+        return ans;
+    }
+};
+/*
+ * ok
+ */
+class Solution {
+private:
+    string deleteBlanks(const string s) {
+        string ans;
+        for (auto ch : s) {
+            if (ch != ' ') ans.push_back(ch);
+        }
+        return ans;
+    }
+
+    bool isOperator(char ch) {
+        return ch == '+' || ch == '-' || ch == '*' || ch == '/';
+    }
+
+public:
+    int calculate(string s) {
+        s = deleteBlanks(s);
+        if (s.size() == 0) return 0;
+
+        int index = 0;
+        while (index < s.size() && !isOperator(s[index])) index++;
+        int ans = stoi(s.substr(0, index)), last = ans;
+        while (index < s.size()) {
+            char op = s[index];
+            index++;
+            int next = index+1;
+            while (next < s.size() && !isOperator(s[next])) next++;
+            int right = stoi(s.substr(index, next-index));
+
+            if (op == '*') {
+                ans -= last;
+                last *= right;
+                ans += last;
+            } else if (op == '/') {
+                ans -= last;
+                last /= right;
+                ans += last;
+            } else if (op == '+') {
+                ans += right;
+                last = right;
+            } else {
+                ans -= right;
+                last = -right;
+            }
+            index = next;
+        }
         return ans;
     }
 };

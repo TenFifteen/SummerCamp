@@ -29,7 +29,7 @@ public:
                         else if (cur == '-')
                             result.push_back(n1 - n2);
                         else
-                            result.push_back(n1 * n2);    
+                            result.push_back(n1 * n2);
                     }
                 }
             }
@@ -111,7 +111,7 @@ public:
         }
         numbers.push_back(tmp);
         if(ops.size() == 0)return numbers;
-        
+
         //method2
         return sub2(numbers, ops, 0, ops.size());
 
@@ -143,14 +143,14 @@ public:
         }
         return dp[0][ops.size()-1];
     }
-    
+
     vector<int> sub2(vector<int> &numbers, vector<char> &ops, int left, int right){
         vector<int> ans;
         if(left == right){
             ans.push_back(numbers[left]);
             return ans;
         }
-        
+
         for(int i = left; i < right; ++i){
             auto ret_l = sub2(numbers, ops, left, i);
             auto ret_r = sub2(numbers, ops, i+1, right);
@@ -161,7 +161,7 @@ public:
             }
         }
     }
-    
+
     int sub(int a, int b, char op){
         switch(op){
             case '+':
@@ -182,7 +182,7 @@ public:
     vector<int> diffWaysToCompute(string input) {
         vector<int> ans;
         if (input.size() == 0) return ans;
-        
+
         for (int i = 0; i < input.size(); ++i) {
             if (input[i] == '-' || input[i] == '+' || input[i] == '*') {
                 auto left = diffWaysToCompute(input.substr(0, i));
@@ -196,8 +196,39 @@ public:
                 }
             }
         }
-        
+
         if (ans.size() == 0) ans.push_back(stoi(input));
+        return ans;
+    }
+};
+/*
+ * ok
+ */
+class Solution {
+public:
+    vector<int> diffWaysToCompute(string input) {
+        vector<int> ans;
+        bool found = false;
+        for (int i = 0; i < input.size(); ++i) {
+            if (input[i] == '+') {
+                found = true;
+                auto left = diffWaysToCompute(input.substr(0, i));
+                auto right = diffWaysToCompute(input.substr(i+1));
+                for (auto l : left) for (auto r : right) ans.push_back(l + r);
+            } else if (input[i] == '-') {
+                found = true;
+                auto left = diffWaysToCompute(input.substr(0, i));
+                auto right = diffWaysToCompute(input.substr(i+1));
+                for (auto l : left) for (auto r : right) ans.push_back(l - r);
+            } else if (input[i] == '*') {
+                found = true;
+                auto left = diffWaysToCompute(input.substr(0, i));
+                auto right = diffWaysToCompute(input.substr(i+1));
+                for (auto l : left) for (auto r : right) ans.push_back(l * r);
+            }
+        }
+
+        if (!found) ans.push_back(stoi(input));
         return ans;
     }
 };

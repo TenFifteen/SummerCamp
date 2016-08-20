@@ -30,12 +30,12 @@ public:
             tmp -= add;
             one -= add;
             two += add;
-            
+
             add = tmp & two;
             tmp -= add;
             two -= add;
             three += add;
-            
+
             add = tmp & three;
             three -= add;
             one += add;
@@ -56,6 +56,23 @@ public:
         for (auto n : nums) {
             one = (one ^ n) & ~two;
             two = (two ^ n) & ~one;
+        }
+        return one;
+    }
+};
+/*
+ * old question. but this time finally resolve it
+ */
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int one = 0, two = 0;
+        for (auto n : nums) {
+            int tmp = n - (n & (one | two));
+            two -= two & n;
+            two += one & n;
+            one -= one & n;
+            one += tmp;
         }
         return one;
     }

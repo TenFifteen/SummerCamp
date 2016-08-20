@@ -71,7 +71,7 @@ private:
         }
         return len;
     }
-    
+
     ListNode* reverse(ListNode *head) {
         if (head == NULL) return NULL;
         ListNode *ret = head;
@@ -90,16 +90,16 @@ public:
     bool isPalindrome(ListNode* head) {
         int len = getLenght(head);
         if (len < 2) return true;
-        
+
         ListNode *right = head;
         for (int i = 0; i < (len-1)/2; ++i) {
             right = right->next;
         }
-        
+
         ListNode *last = right;
         right = reverse(right->next);
         last->next = NULL;
-        
+
         bool isP = true;
         ListNode *L = head, *R = right;
         while (L && R) {
@@ -110,7 +110,59 @@ public:
             L = L->next;
             R = R->next;
         }
-        
+
+        last->next = reverse(right);
+        return isP;
+    }
+};
+/*
+ * ok
+ */
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    ListNode *reverse(ListNode *head) {
+        ListNode *ret = NULL;
+        while (head) {
+            ListNode *next = head->next;
+            head->next = ret;
+            ret = head;
+            head = next;
+        }
+        return ret;
+    }
+
+public:
+    bool isPalindrome(ListNode* head) {
+        if (head == NULL || head->next == NULL) return true;
+        ListNode *front = head, *end = head, *last = end;
+        while (front) {
+            front = front->next;
+            last = end;
+            end = end->next;
+            if (front) front = front->next;
+        }
+
+        last->next = NULL;
+        ListNode *right = reverse(end);
+        bool isP = true;
+        ListNode *left = head;
+        while (left && right) {
+            if (left->val != right->val) {
+                isP = false;
+                break;
+            }
+            left = left->next;
+            right = right->next;
+        }
+
         last->next = reverse(right);
         return isP;
     }

@@ -64,14 +64,63 @@ public:
     vector<string> findRepeatedDnaSequences(string s) {
         unordered_map<string, int> hash;
         int n = s.size();
-        
+
         for (int i = 0; i < n-9; ++i) {
             hash[s.substr(i, 10)]++;
         }
-        
+
         vector<string> ans;
         for (auto h : hash) {
             if (h.second > 1) ans.push_back(h.first);
+        }
+        return ans;
+    }
+};
+/*
+ * good
+ */
+class Solution {
+private:
+    int toInt(const string &s) {
+        int ret = 0;
+        unordered_map<char, int> um;
+        um['A'] = 0;
+        um['C'] = 1;
+        um['G'] = 2;
+        um['T'] = 3;
+
+        for (int i = 0; i < s.size(); ++i) {
+            ret <<= 2;
+            ret |= um[s[i]];
+        }
+        return ret;
+    }
+
+    string toString(int x) {
+        string ha = "ACGT";
+        string ans;
+        for (int i = 0; i < 10; ++i) {
+            ans.push_back(ha[x&0x3]);
+            x >>= 2;
+        }
+
+        int left = 0, right = ans.size()-1;
+        while (left < right) swap(ans[left++], ans[right--]);
+        return ans;
+    }
+
+public:
+    vector<string> findRepeatedDnaSequences(string s) {
+        unordered_map<int, int> um;
+        for (int i = 0; i+9 < s.size(); ++i) {
+            um[toInt(s.substr(i, 10))]++;
+        }
+
+        vector<string> ans;
+        for (auto p : um) {
+            if (p.second > 1) {
+                ans.push_back(toString(p.first));
+            }
         }
         return ans;
     }

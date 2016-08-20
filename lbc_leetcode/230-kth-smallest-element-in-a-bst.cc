@@ -33,7 +33,7 @@ public:
         if(left == k-1)return root->val;
         return kthSmallest(root->right, k-left-1);
     }
-    
+
     int count(TreeNode *root){
         if(root == NULL)return 0;
         return 1 + count(root->left) + count(root->right);
@@ -65,5 +65,32 @@ public:
         if (left+1 == k) return root->val;
         else if (left+1 < k) return kthSmallest(root->right, k-left-1);
         else return kthSmallest(root->left, k);
+    }
+};
+/*
+ * so so
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    int count(TreeNode *root) {
+        if (root == NULL) return 0;
+        return 1 + count(root->left) + count(root->right);
+    }
+
+public:
+    int kthSmallest(TreeNode* root, int k) {
+        int left = count(root->left);
+        if (left+1 == k) return root->val;
+        if (left >= k) return kthSmallest(root->left, k);
+        return kthSmallest(root->right, k - 1 - left);
     }
 };

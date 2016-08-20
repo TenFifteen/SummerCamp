@@ -17,18 +17,18 @@ class Solution {
 public:
     int maxProfit(vector<int>& prices) {
         if (prices.size() < 2) return 0;
-        
+
         int buy = -prices[0], sell = 0, cooldown = 0;
         for (int i = 1; i < prices.size(); ++i) {
             int new_buy = max(cooldown - prices[i], buy);
             int new_sell = max(buy + prices[i], sell);
             int new_cooldown = max(cooldown, sell);
-            
+
             buy = new_buy;
             sell = new_sell;
             cooldown = new_cooldown;
         }
-        
+
         return max(sell, cooldown);
     }
 };
@@ -40,7 +40,7 @@ class Solution {
 public:
     int maxProfit(vector<int>& prices) {
         if (prices.size() < 2) return false;
-        
+
         int sell1 = 0, sell2 = 0, buy = INT_MIN;
         for (int i = 0; i < prices.size(); ++i) {
             int newbuy = max(buy, sell1-prices[i]);
@@ -49,7 +49,29 @@ public:
             sell2 = newsell;
             buy = newbuy;
         }
-        
+
         return sell2;
     }
 };
+/*
+ * ok
+ */
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        if (prices.size() < 2) return 0;
+
+        int sell_last = 0, buy = -prices[0], sell = 0;
+        for (int i = 1; i < prices.size(); ++i) {
+            int new_buy = max(buy, sell_last-prices[i]);
+            int new_sell = max(sell, buy+prices[i]);
+            sell_last = sell;
+            sell = new_sell;
+            buy = new_buy;
+        }
+
+        return sell;
+    }
+};
+
+

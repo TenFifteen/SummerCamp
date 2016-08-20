@@ -49,7 +49,7 @@ public:
     vector<int> majorityElement(vector<int>& nums) {
         return sub(nums, 0, nums.size()-1);
     }
-    
+
     vector<int> sub(vector<int> &nums, int left, int right){
         vector<int> ans;
         if(right < left)return ans;
@@ -65,9 +65,9 @@ public:
         int mid = left + (right-left+1)/2;
         auto ret_l = sub(nums, left, mid);
         auto ret_r = sub(nums, mid+1, right);
-        
+
         set<int> visited;
-        
+
         for(auto r:ret_l){
             if(visited.count(r))continue;
             int cnt = 0;
@@ -103,7 +103,7 @@ public:
     vector<int> majorityElement(vector<int>& nums) {
         long long a = LONG_LONG_MAX, b = a;
         int cnt1 = 0, cnt2 = 0;
-        
+
         for (auto n : nums) {
             if (a == n) {
                 cnt1++;
@@ -120,16 +120,51 @@ public:
                 cnt2--;
             }
         }
-        
+
         cnt1 = cnt2 = 0;
         for (auto n : nums) {
             if (n == a) cnt1++;
             else if (n == b) cnt2++;
         }
-        
+
         vector<int> ans;
         if (cnt1 > nums.size()/3) ans.push_back(a);
         if (cnt2 > nums.size()/3) ans.push_back(b);
+        return ans;
+    }
+};
+/*
+ * very good question. prone to be wrong
+ */
+class Solution {
+public:
+    vector<int> majorityElement(vector<int>& nums) {
+        int x1, x2, cnt1 = 0, cnt2 = 0;
+        for (int i = 0; i < nums.size(); ++i) {
+            if (x1 == nums[i] && cnt1 > 0) {
+                cnt1++;
+            } else if (x2 == nums[i] && cnt2 > 0) {
+                cnt2++;
+            } else if (cnt1 == 0) {
+                cnt1 = 1;
+                x1 = nums[i];
+            } else if (cnt2 == 0) {
+                cnt2 = 1;
+                x2 = nums[i];
+            } else {
+                cnt1--;
+                cnt2--;
+            }
+        }
+
+        vector<int> ans;
+        cnt1 = 0, cnt2 = 0;
+        for (int i = 0; i < nums.size(); ++i) {
+            if (nums[i] == x1) cnt1++;
+            if (nums[i] == x2) cnt2++;
+        }
+        if (cnt1 > nums.size()/3) ans.push_back(x1);
+        if (cnt2 > nums.size()/3 && (ans.size() == 0 || ans.back() != x2)) ans.push_back(x2);
         return ans;
     }
 };

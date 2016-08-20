@@ -78,7 +78,7 @@ class Solution {
 public:
     int maxPoints(vector<Point>& points) {
         if (points.size() < 3) return points.size();
-        
+
         int n = points.size(), ans = 0;
         for (int i = 0; i < n; ++i) {
             unordered_map<double, int> um;
@@ -92,14 +92,57 @@ public:
                     um[slope]++;
                 }
             }
-            
+
             ans = max(ans, line+1);
             ans = max(ans, dup+1);
             for (auto u : um) {
                 ans = max(u.second+1+dup, ans);
             }
         }
-        
+
+        return ans;
+    }
+};
+/*
+ * it's ok
+ */
+/**
+ * Definition for a point.
+ * struct Point {
+ *     int x;
+ *     int y;
+ *     Point() : x(0), y(0) {}
+ *     Point(int a, int b) : x(a), y(b) {}
+ * };
+ */
+class Solution {
+public:
+    int maxPoints(vector<Point>& points) {
+        if (points.size() < 2) return points.size();
+        int ans = 1, n = points.size();
+
+        for (int i = 0; i < n; ++i) {
+            int y = 0, self = 0;
+            unordered_map<double, int> um;
+            for (int j = 0; j < n; ++j) {
+                if (points[j].x == points[i].x) {
+                    if (points[j].y == points[i].y) {
+                        self++;
+                    } else {
+                        y++;
+                    }
+                } else {
+                    double slope = points[i].x - points[j].x;
+                    slope = (points[i].y - points[j].y) / slope;
+                    um[slope]++;
+
+                    ans = max(ans, um[slope]+self);
+                }
+            }
+
+            ans = max(ans, y+self);
+        }
+
         return ans;
     }
 };

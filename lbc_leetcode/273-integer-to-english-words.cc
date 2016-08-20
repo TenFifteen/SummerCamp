@@ -67,11 +67,11 @@ public:
             {80, "Eighty"},
             {90, "Ninety"}
         };
-        
+
         if (num == 0) {
             return "Zero";
         }
-        
+
         vector<string> ans;
         if (num >= 1000000000) {
             int cur = num/1000000000;
@@ -85,7 +85,7 @@ public:
             }
             ans.push_back("Billion");
         }
-        
+
         if (num >= 1000000) {
             int cur = num/1000000;
             num %= 1000000;
@@ -103,7 +103,7 @@ public:
             }
             ans.push_back("Million");
         }
-        
+
         if (num >= 1000) {
             int cur = num/1000;
             num %= 1000;
@@ -121,7 +121,7 @@ public:
             }
             ans.push_back("Thousand");
         }
-        
+
         if (num) {
             int cur = num;
             if (cur >= 100) {
@@ -137,13 +137,13 @@ public:
                 ans.push_back(trans[cur]);
             }
         }
-        
+
         string ret = ans[0];
         for (int i = 1; i < ans.size(); ++i) {
             ret += " ";
             ret += ans[i];
         }
-        
+
         return ret;
     }
 };
@@ -157,7 +157,7 @@ public:
 class Solution {
 private:
     unordered_map<int, string> m;
-    
+
     string count(int n) {
         string ans;
         if (n >= 100) {
@@ -176,7 +176,7 @@ private:
         } else {
             ans += " " + m[n];
         }
-        
+
         return ans.substr(1);
     }
 
@@ -211,12 +211,12 @@ public:
         m[80] = "Eighty";
         m[90] = "Ninety";
     }
-    
+
     string numberToWords(int num) {
         int mul = 1000000000;
         vector<string> unit = {"Billion", "Million", "Thousand"};
         string ans;
-        
+
         for (int i = 0; i < 3; ++i) {
             int tail = num / mul;
             if (tail != 0) {
@@ -226,7 +226,7 @@ public:
             num %= mul;
             mul /= 1000;
         }
-        
+
         if (num == 0) {
             if (ans.size() == 0) {
                 ans += " " + count(0);
@@ -234,7 +234,80 @@ public:
         } else {
             ans += " " + count(num);
         }
-        
+
+        return ans.substr(1);
+    }
+};
+/*
+ * very tedious
+ */
+class Solution {
+private:
+    string toWords(int num) {
+        unordered_map<int, string> mapping;
+        mapping[1] = "One";
+        mapping[2] = "Two";
+        mapping[3] = "Three";
+        mapping[4] = "Four";
+        mapping[5] = "Five";
+        mapping[6] = "Six";
+        mapping[7] = "Seven";
+        mapping[8] = "Eight";
+        mapping[9] = "Nine";
+        mapping[10] = "Ten";
+        mapping[11] = "Eleven";
+        mapping[12] = "Twelve";
+        mapping[13] = "Thirteen";
+        mapping[14] = "Fourteen";
+        mapping[15] = "Fifteen";
+        mapping[16] = "Sixteen";
+        mapping[17] = "Seventeen";
+        mapping[18] = "Eighteen";
+        mapping[19] = "Nineteen";
+        mapping[20] = "Twenty";
+        mapping[30] = "Thirty";
+        mapping[40] = "Forty";
+        mapping[50] = "Fifty";
+        mapping[60] = "Sixty";
+        mapping[70] = "Seventy";
+        mapping[80] = "Eighty";
+        mapping[90] = "Ninety";
+        mapping[100] = "Hundred";
+
+        string ans;
+        if (num >= 100) {
+            ans += " " + mapping[num/100] + " " + mapping[100];
+            num %= 100;
+        }
+        if (num >= 20) {
+            ans += " " + mapping[num/10*10];
+            if (num % 10) ans += " " + mapping[num%10];
+        } else if (num != 0) {
+            ans += " " + mapping[num];
+        }
+        return ans.substr(1);
+    }
+
+public:
+    string numberToWords(int num) {
+        if (num == 0) return "Zero";
+
+        string ans;
+        if (num >= 1000000000) {
+            ans += " " + toWords(num / 1000000000) + " Billion";
+            num %= 1000000000;
+        }
+        if (num >= 1000000) {
+            ans += " " + toWords(num / 1000000) + " Million";
+            num %= 1000000;
+        }
+        if (num >= 1000) {
+            ans += " " + toWords(num / 1000) + " Thousand";
+            num %= 1000;
+        }
+        if (num != 0) {
+            ans += " " + toWords(num);
+        }
         return ans.substr(1);
     }
 };

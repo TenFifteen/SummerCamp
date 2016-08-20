@@ -72,7 +72,7 @@ public:
             lines.push_back(make_pair(b[1], -b[2]));
         }
         sort(lines.begin(), lines.end(), Cmp());
-        
+
         vector<pair<int, int>> ans;
         multiset<int> s;
         for (auto l : lines) {
@@ -86,7 +86,39 @@ public:
                 }
             }
         }
-        
+
         return  ans;
+    }
+};
+/*
+ * good question. but I have remember it.
+ */
+class Solution {
+public:
+    vector<pair<int, int>> getSkyline(vector<vector<int>>& buildings) {
+        vector<pair<int, int>> lines(buildings.size()*2);
+        for (int i = 0; i < buildings.size(); ++i) {
+            lines[i*2] = make_pair(buildings[i][0], -buildings[i][2]);
+            lines[i*2+1] = make_pair(buildings[i][1], buildings[i][2]);
+        }
+        sort(lines.begin(), lines.end());
+
+        vector<pair<int, int>> ans;
+        multiset<int> height;
+        height.insert(0);
+        for (int i = 0; i < lines.size(); ++i) {
+            if (lines[i].second < 0) {
+                if (*height.rbegin() < -lines[i].second) {
+                    ans.push_back(make_pair(lines[i].first, -lines[i].second));
+                }
+                height.insert(-lines[i].second);
+            } else {
+                height.erase(height.find(lines[i].second));
+                if (*height.rbegin() < lines[i].second) {
+                    ans.push_back(make_pair(lines[i].first, *height.rbegin()));
+                }
+            }
+        }
+        return ans;
     }
 };

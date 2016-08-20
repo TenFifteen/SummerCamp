@@ -74,7 +74,7 @@ public:
         head = NULL;
         last = NULL;
     }
-    
+
     int get(int key) {
         if(cache.count(key) != 0){
             mov(cache[key]);
@@ -82,7 +82,7 @@ public:
         }
         return -1;
     }
-    
+
     void set(int key, int value) {
         if(cache.count(key) != 0){
             cache[key]->val = value;
@@ -94,7 +94,7 @@ public:
         }
         insert(new List(key, value));
     }
-    
+
     void mov(List *node){
         if(node == head)return;
         node->before->next = node->next;
@@ -108,7 +108,7 @@ public:
         node->next = NULL;
         insert(node);
     }
-    
+
     void pop(){
         if(head == last){
             cache.erase(head->key);
@@ -123,7 +123,7 @@ public:
         delete tmp;
         last->next = NULL;
     }
-    
+
     void insert(List *node){
         if(head == NULL){
             head = node;
@@ -148,13 +148,13 @@ private:
         ListNode *next, *pre;
         ListNode(int k, int v): key(k), val(v), next(NULL), pre(NULL) {}
     };
-    
+
     typedef unordered_map<int, ListNode *> hash;
-    
+
     int _cap, total;
     hash cache;
     ListNode *head, *tail;
-    
+
     void insert(int k, int v) {
         auto next = head->next;
         head->next = new ListNode(k, v);
@@ -162,20 +162,20 @@ private:
         head->next->next = next;
         next->pre = head->next;
     }
-    
+
     void erase(ListNode *node) {
         node->pre->next = node->next;
         node->next->pre = node->pre;
         delete node;
     }
-    
+
     void pop() {
         auto remove = tail->pre;
         tail->pre = remove->pre;
         remove->pre->next = tail;
         delete remove;
     }
-    
+
 public:
     LRUCache(int capacity) {
         _cap = capacity;
@@ -185,7 +185,7 @@ public:
         tail->pre = head;
         total = 0;
     }
-    
+
     int get(int key) {
         if (cache.find(key) == cache.end()) {
             return -1;
@@ -196,7 +196,7 @@ public:
             return cache[key]->val;
         }
     }
-    
+
     void set(int key, int value) {
         if (cache.find(key) == cache.end()) {
             insert(key, value);
@@ -212,5 +212,73 @@ public:
             erase(cache[key]);
             cache[key] = head->next;
         }
+    }
+};
+/*
+ * good question
+ */
+class LRUCache{
+private:
+    struct Node {
+        Node *left, *right;
+        int key, val;
+        Node(int k, int v) : key(k), val(v), left(NULL), right(NULL) {}
+    };
+
+    Node *head, *tail;
+    int cap;
+    unordered_map<int, Node*> um;
+
+    void deleteNode(Node *node) {
+        node->left->right = node->right;
+        node->right->left = node->left;
+        um.erase(node->key);
+        delete node;
+    }
+
+    void pushNode(int key, int val) {
+        Node *node = new Node(key, val);
+        node->left = head;
+        node->right = head->right;
+        head->right->left = node;
+        head->right = node;
+        um[key] = node;
+    }
+
+    void popNode() {
+        Node *node = tail->left;
+        node->left->right = node->right;
+        node->right->left = node->left;
+        um.erase(node->key);
+        delete node;
+    }
+
+public:
+    LRUCache(int capacity) {
+        this->cap = capacity;
+        head = new Node(-1, -1);
+        tail = new Node(-1, -1);
+        head->right = tail;
+        tail->left = head;
+    }
+
+    int get(int key) {
+        if (um.find(key) == um.end()) return -1;
+        int val = um[key]->val;
+        deleteNode(um[key]);
+        pushNode(key, val);
+        return val;
+    }
+
+    void set(int key, int value) {
+        if (um.find(key) != um.end()) {
+            deleteNode(um[key]);
+        }
+
+        if (um.size() == cap) {
+            popNode();
+        }
+
+        pushNode(key, value);
     }
 };

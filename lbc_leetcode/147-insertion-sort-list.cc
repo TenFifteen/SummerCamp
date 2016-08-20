@@ -95,10 +95,10 @@ class Solution {
 public:
     ListNode* insertionSortList(ListNode* head) {
         ListNode tmp(0), *ret = &tmp;
-        
+
         while (head) {
             auto next = head->next;
-            
+
             ListNode *cur = ret->next, *tail = ret;
             while (cur && cur->val < head->val) {
                 tail = cur;
@@ -106,10 +106,50 @@ public:
             }
             tail->next = head;
             head->next = cur;
-            
+
             head = next;
         }
-        
+
         return ret->next;
+    }
+};
+/*
+ * easy
+ */
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* insertionSortList(ListNode* head) {
+        if (head == NULL || head->next == NULL) return head;
+
+        ListNode *ret = head;
+        head = head->next;
+        ret->next = NULL;
+
+        while (head) {
+            ListNode *next = head->next;
+
+            if (head->val <= ret->val) {
+                head->next = ret;
+                ret = head;
+            } else {
+                ListNode *cur = ret, *tail;
+                while (cur && cur->val < head->val) {
+                    tail = cur;
+                    cur = cur->next;
+                }
+                tail->next = head;
+                head->next = cur;
+            }
+            head = next;
+        }
+        return ret;
     }
 };

@@ -39,7 +39,7 @@ public:
         if(p == q)return p;
         return sub(root, p, q).first;
     }
-    
+
     pair<TreeNode *, int> sub(TreeNode *root, TreeNode *p, TreeNode *q){
         if(root == NULL)return make_pair(root, 0);
         pair<TreeNode *, int> ret;
@@ -76,7 +76,7 @@ class Solution {
 private:
     bool findPath(TreeNode *root, TreeNode *q, vector<TreeNode *> &path) {
         if (root == NULL) return false;
-        
+
         path.push_back(root);
         if (root == q) return true;
         if (findPath(root->left, q, path)) return true;
@@ -84,15 +84,39 @@ private:
         path.pop_back();
         return false;
     }
-    
+
 public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
         vector<TreeNode *> p_path, q_path;
         findPath(root, p, p_path);
         findPath(root, q, q_path);
-        
+
         int i = 0;
         while (i < p_path.size() && i < q_path.size() && p_path[i] == q_path[i]) i++;
         return p_path[i-1];
+    }
+};
+/*
+ * good
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (root == NULL) return root;
+        if (root == p || root == q) return root;
+        TreeNode *left = lowestCommonAncestor(root->left, p, q);
+        TreeNode *right = lowestCommonAncestor(root->right, p, q);
+        if (left && right) return root;
+        if (left) return left;
+        return right;
     }
 };

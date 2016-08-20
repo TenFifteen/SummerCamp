@@ -54,14 +54,29 @@ class Solution {
 public:
     int rob(vector<int>& nums) {
         if (nums.size() == 0) return 0;
-        
+
         int n = nums.size(), rob = nums[0], norob = 0;
         for (int i = 1; i < nums.size(); ++i) {
             int now = max(rob, norob+nums[i]);
             norob = max(rob, norob);
             rob = now;
         }
-        
+
         return rob;
+    }
+};
+/*
+ * easy
+ */
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        int rob = 0, norob = 0;
+        for (int i = 0; i < nums.size(); ++i) {
+            int new_rob = norob + nums[i];
+            norob = max(norob, rob);
+            rob = new_rob;
+        }
+        return max(norob, rob);
     }
 };

@@ -35,7 +35,7 @@ public:
 
     int maxProfit_test(int k, vector<int>& prices) {
         vector<vector<vector<int>>> dp(prices.size(), vector<vector<int>>(k+1, vector<int>(2, 0)));
-        
+
         if(prices.size() < 2)return 0;
         if(k > prices.size()/2)return maxProfit2(prices);
         for(int i = 0; i < k; ++i){
@@ -51,7 +51,7 @@ public:
         }
         return dp[prices.size()-1][k][0];
     }
-    
+
     int maxProfit2(vector<int>& prices) {
         if(prices.size() < 2)return 0;
         int lowest = 0;
@@ -87,24 +87,54 @@ private:
 public:
     int maxProfit(int k, vector<int>& prices) {
         if (prices.size() < 2 || k < 1) return 0;
-        
+
         int n = prices.size();
         if (k*2 >= n) return maxProfitWithoutLimit(prices);
-        
+
         vector<vector<int> > buy(n+1, vector<int>(k+1, 0)), sell(buy);
-        
-        
+
+
         for (int i = 0; i <= k; ++i) {
             buy[0][i] = INT_MIN;
         }
-        
+
         for (int i = 1; i <= n; ++i) {
             for (int j = 1; j <= k; ++j) {
                 buy[i][j] = max(buy[i-1][j], sell[i-1][j-1]-prices[i-1]);
                 sell[i][j] = max(sell[i-1][j], buy[i-1][j]+prices[i-1]);
             }
         }
-        
+
         return sell[n][k];
+    }
+};
+/*
+ * found new land.
+ */
+class Solution {
+private:
+    int maxProfitWithoutLimit(const vector<int> &prices) {
+        if (prices.size() < 2) return 0;
+        int ans = 0;
+        for (int i = 1; i < prices.size(); ++i) {
+            if (prices[i] > prices[i-1]) ans += prices[i] - prices[i-1];
+        }
+        return ans;
+    }
+
+public:
+    int maxProfit(int k, vector<int>& prices) {
+        if (k*2 >= prices.size()) return maxProfitWithoutLimit(prices);
+        if (k <= 0) return 0;
+
+        vector<vector<int>> dp(k+1, vector<int>(prices.size()));
+        for (int i = 1; i <= k; ++i) {
+            int localMax = -prices[0];
+            for (int j = 1; j < prices.size(); ++j) {
+                dp[i][j] = max(dp[i][j-1], prices[j] + localMax);
+                localMax = max(localMax, dp[i-1][j-1] - prices[j]);
+            }
+        }
+        return dp[k][prices.size()-1];
     }
 };

@@ -23,7 +23,7 @@ bool searchMatrix(vector<vector<int>>& matrix, int target) {
             return true;
         else if (matrix[i][j] > target) {
             j--;
-        } else 
+        } else
             i++;
     }
     return false;
@@ -35,7 +35,7 @@ public:
         if(matrix.size() == 0 || matrix[0].size() == 0)return false;
         return sub(matrix, 0, matrix[0].size()-1, 0, matrix.size()-1, target);
     }
-    
+
     bool sub(vector<vector<int>> &matrix, int left, int right, int top, int bot, int target){
         if(left > right || top > bot)return false;
         if(left == right){
@@ -56,7 +56,7 @@ public:
             }
             return false;
         }
-        
+
         int h_mid = top + (bot-top)/2;
         int v_mid = left +(right-left)/2;
         bool ret = false;
@@ -83,12 +83,29 @@ public:
         if (m == 0) return false;
         int n = matrix[0].size();
         if (n == 0) return false;
-        
+
         int i = 0, j = n-1;
         while (i < m && j >= 0) {
             if (matrix[i][j] == target) return true;
             else if (matrix[i][j] < target) i++;
             else j--;
+        }
+        return false;
+    }
+};
+/*
+ * good
+ */
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        if (matrix.size() == 0 || matrix[0].size() == 0) return false;
+
+        int x = 0, y = matrix[0].size()-1;
+        while (x < matrix.size() && y >= 0) {
+            if (matrix[x][y] == target) return true;
+            if (matrix[x][y] < target) x++;
+            else y--;
         }
         return false;
     }

@@ -26,7 +26,7 @@ public:
         if(root == NULL)return 0;
         return sub(0, root);
     }
-    
+
     int sub(int fa, TreeNode *root){
         if(root->left == NULL && root->right == NULL){
             return fa*10 + root->val;
@@ -41,3 +41,36 @@ public:
 第二次做：
 简单递归。
 */
+/*
+ * I find that second time, I did not post my code. Anyway, a little easy
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    int ans;
+    void sub(TreeNode *root, int fa) {
+        if (root->left == NULL && root->right == NULL) {
+            ans += fa*10 + root->val;
+            return;
+        }
+
+        if (root->left != NULL) sub(root->left, fa*10 + root->val);
+        if (root->right != NULL) sub(root->right, fa*10 + root->val);
+    }
+
+public:
+    int sumNumbers(TreeNode* root) {
+        if (root == NULL) return 0;
+        ans = 0;
+        sub(root, 0);
+        return ans;
+    }
+};

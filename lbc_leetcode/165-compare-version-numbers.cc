@@ -12,9 +12,9 @@
 看到了上次的“遇到的问题”部分，感觉这次做还是会遇到的。
 另外就是这其实真是一道简单题目。不过代码还可以有另外一种写法：
 int compareVersion(string version1, string version2) {
-    int i = 0; 
+    int i = 0;
     int j = 0;
-    int n1 = version1.size(); 
+    int n1 = version1.size();
     int n2 = version2.size();
 
     int num1 = 0;
@@ -66,7 +66,7 @@ public:
         }
         return 0;
     }
-    
+
     vector<int> split(string s){
         vector<int> ret;
         int index = 0;
@@ -94,7 +94,7 @@ private:
             ret *= 10;
             ret += s[index++] - '0';
         }
-        
+
         index++;
         return ret;
     }
@@ -103,13 +103,49 @@ public:
     int compareVersion(string version1, string version2) {
         int len1 = version1.size(), len2 = version2.size();
         int index1 = 0, index2 = 0;
-        
+
         while (index1 < len1 || index2 < len2) {
             int num1 = getNext(version1, index1);
             int num2 = getNext(version2, index2);
             if (num1 < num2) return -1;
             if (num1 > num2) return 1;
         }
+        return 0;
+    }
+};
+/*
+ * it's ok
+ */
+class Solution {
+public:
+    int compareVersion(string version1, string version2) {
+        int i1 = 0, i2 = 0;
+        int v1 = 0, v2 = 0;
+
+        while (i1 < version1.size() || i2 < version2.size()) {
+            if (i1 < version1.size()) {
+                int next = i1;
+                while (next < version1.size() && version1[next] != '.') next++;
+                v1 = stoi(version1.substr(i1, next-i1));
+                cout << v1 << endl;
+                i1 = next + 1;
+            } else {
+                v1 = 0;
+            }
+
+            if (i2 < version2.size()) {
+                int next = i2;
+                while (next < version2.size() && version2[next] != '.') next++;
+                v2 = stoi(version2.substr(i2, next-i2));
+                i2 = next + 1;
+            } else {
+                v2 = 0;
+            }
+
+            if (v1 < v2) return -1;
+            else if (v1 > v2) return 1;
+        }
+
         return 0;
     }
 };

@@ -38,17 +38,17 @@ class Solution {
 public:
     bool wordBreak(string s, unordered_set<string>& wordDict) {
         if (wordDict.size() == 0) return false;
-        
+
         int minlen = INT_MAX, maxlen = INT_MIN;
         for (auto s : wordDict) {
             int n = s.size();
             minlen = min(minlen, n);
             maxlen = max(maxlen, n);
         }
-        
+
         if (s.size() < minlen) return false;
         int n = s.size();
-        
+
         vector<bool> dp(n+1, false);
         dp[0] = true;
         for (int i = minlen-1; i < n; ++i) {
@@ -59,7 +59,36 @@ public:
                 }
             }
         }
-        
+
         return dp[n];
+    }
+};
+/*
+ * easy
+ */
+class Solution {
+public:
+    bool wordBreak(string s, unordered_set<string>& wordDict) {
+        if (wordDict.size() == 0) return false;
+
+        int max_len = INT_MIN, min_len = INT_MAX;
+        for (auto w : wordDict) {
+            int len = w.size();
+            max_len = max(max_len, len);
+            min_len = min(min_len, len);
+        }
+
+        vector<bool> dp(s.size()+1, false);
+        dp[0] = true;
+        for (int i = min_len; i <= s.size(); ++i) {
+            for (int j = i-min_len; j >= max(0, i-max_len); --j) {
+                if (dp[j] && wordDict.find(s.substr(j, i-j)) != wordDict.end()) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+
+        return dp[s.size()];
     }
 };

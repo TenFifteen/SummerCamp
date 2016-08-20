@@ -75,15 +75,15 @@ private:
         bool operator() (int lh, int rh) {
             string left = to_string(lh), right = to_string(rh);
             int index = 0;
-            
+
             return left+right < right+left;
-            
+
             while (index < left.size() && index < right.size()) {
                 if (left[index] < right[index]) return true;
                 if (left[index] > right[index]) return false;
                 index++;
             }
-            
+
             if (index == left.size()) return operator()(lh, stoi(right.substr(index)));
             if (index == right.size()) return operator()(stoi(left.substr(index)), rh);
             return false;
@@ -93,17 +93,42 @@ private:
 public:
     string largestNumber(vector<int>& nums) {
         if (nums.size() == 0) return "";
-        
+
         sort(nums.begin(), nums.end(), Cmp());
-        
+
         string ans;
         for (int i = nums.size()-1; i >= 0; --i) {
             ans += to_string(nums[i]);
         }
-        
+
         int index = 0;
         while (index < ans.size() && ans[index] == '0') index++;
         if (index == ans.size()) return "0";
         return ans.substr(index);
+    }
+};
+/*
+ * ok, but special case
+ */
+class Solution {
+private:
+    struct Cmp {
+        bool operator() (int a, int b) const {
+            string as = to_string(a), bs = to_string(b);
+            return as+bs < bs+as;
+        }
+    };
+
+public:
+    string largestNumber(vector<int>& nums) {
+        sort(nums.begin(), nums.end(), Cmp());
+
+        string ans;
+        for (int i = nums.size()-1; i >= 0; --i) {
+            ans += to_string(nums[i]);
+        }
+
+        if (ans.size() > 1 && ans[0] == '0') return "0"; // special case
+        return ans;
     }
 };

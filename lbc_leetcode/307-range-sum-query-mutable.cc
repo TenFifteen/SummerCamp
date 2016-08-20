@@ -133,12 +133,12 @@ class NumArray {
         long long sum;
         int a, b;
         Node *left, *right;
-        
+
         Node() {
             left = right = NULL;
         }
     };
-    
+
     Node *create(vector<int> &nums, int left, int right) {
         if (left > right) return NULL;
         if (left == right) {
@@ -147,40 +147,40 @@ class NumArray {
             ans->a = ans->b = left;
             return ans;
         }
-        
+
         int mid = left + (right-left)/2;
         Node *left_child = create(nums, left, mid);
         Node *right_child = create(nums, mid+1, right);
-        
+
         Node *ans = new Node();
         ans->sum = left_child->sum + right_child->sum;
         ans->left = left_child;
         ans->right = right_child;
         ans->a = left;
         ans->b = right;
-        
+
         return ans;
     }
-    
+
     Node *root;
-    
+
     void up(Node *root, int index, int val) {
         if (root == NULL) return;
         if (root->a == root->b) {
             root->sum = val;
             return;
         }
-        
+
         int mid = root->a + (root->b - root->a)/2;
         if (index <= mid) {
             up(root->left, index, val);
         } else {
             up(root->right, index, val);
         }
-        
+
         root->sum = root->left->sum + root->right->sum;
     }
-    
+
     int getSum(Node *root, int left, int right) {
         if (root == NULL) return 0;
         if (left <= root->a && right >= root->b) {
@@ -189,10 +189,10 @@ class NumArray {
         if (left > root->b || right < root->a) {
             return 0;
         }
-        
+
         return getSum(root->left, left, right) + getSum(root->right, left, right);
     }
-    
+
 public:
     NumArray(vector<int> &nums) {
         if (nums.size() != 0) root = create(nums, 0, nums.size()-1);
@@ -222,7 +222,7 @@ public:
 class NumArray {
     vector<long long> sum;
     vector<int> old;
-    
+
     long long getSum(int i) {
         long long ret = 0;
         while (i) {
@@ -231,12 +231,12 @@ class NumArray {
         }
         return ret;
     }
-    
+
 public:
     NumArray(vector<int> &nums) {
         sum = vector<long long>(nums.size()+1, 0);
         old = vector<int>(nums.size()+1, 0);
-        
+
         for (int i = 1; i <= nums.size(); ++i) {
             update(i-1, nums[i-1]);
         }
@@ -264,3 +264,76 @@ public:
 // numArray.sumRange(0, 1);
 // numArray.update(1, 10);
 // numArray.sumRange(1, 2);
+/*
+ * ok
+ */
+class NumArray {
+private:
+struct Node {
+    long long sum;
+    int start, end;
+    Node *left, *right;
+    Node(int start, int end): sum(0), left(NULL), right(NULL), start(start), end(end) {}
+};
+
+vector<int> nums;
+Node *root;
+
+Node *build(int start, int end) {
+    Node *ret = new Node(start, end);
+    if (start == end) {
+        ret->sum = nums[start];
+        return ret;
+    }
+
+    int mid = (start + end) / 2;
+    ret->left = build(start, mid);
+    ret->right = build(mid+1, end);
+    ret->sum = ret->left->sum + ret->right->sum;
+    return ret;
+}
+
+void update(Node *node, int index) {
+    if (node->start > index || node->end < index) return;
+    if (node->start == node->end) {
+        node->sum = nums[index];
+        return;
+    }
+
+    update(node->left, index);
+    update(node->right, index);
+    node->sum = node->left->sum + node->right->sum;
+}
+
+int find(Node *node, int start, int end) {
+    if (node->start > end || node->end < start) return 0;
+    if (node->start >= start && node->end <= end) return node->sum;
+    return find(node->left, start, end) + find(node->right, start, end);
+}
+
+public:
+    NumArray(vector<int> &nums) {
+        this->nums = nums;
+        if (nums.size() != 0) this->root = build(0, nums.size()-1);
+    }
+
+    void update(int i, int val) {
+        cout << "updating " << i << endl;
+        nums[i] = val;
+        update(this->root, i);
+    }
+
+    int sumRange(int i, int j) {
+        cout << "summing " << i << endl;
+        return find(this->root, i, j);
+    }
+};
+
+
+// Your NumArray object will be instantiated and called as such:
+// NumArray numArray(nums);
+// numArray.sumRange(0, 1);
+// numArray.update(1, 10);
+// numArray.sumRange(1, 2);
+
+

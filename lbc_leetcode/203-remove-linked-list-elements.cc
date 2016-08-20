@@ -80,7 +80,7 @@ class Solution {
 public:
     ListNode* removeElements(ListNode* head, int val) {
         ListNode tmp(0), *ret = &tmp;
-        
+
         while (head) {
             if (head->val != val) {
                 ret->next = head;
@@ -89,7 +89,33 @@ public:
             head = head->next;
         }
         ret->next = NULL;
-        
+
+        return tmp.next;
+    }
+};
+/*
+ * ok
+ */
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        ListNode tmp(0), *pre = &tmp;
+        while (head) {
+            if (head->val != val) {
+                pre->next = head;
+                pre = head;
+            }
+            head = head->next;
+        }
+        pre->next = NULL; // do not forget this.
         return tmp.next;
     }
 };

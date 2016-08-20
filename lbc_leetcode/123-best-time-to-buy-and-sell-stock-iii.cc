@@ -21,7 +21,7 @@ public class Solution {
             release2 = Math.max(release2, hold2+i);     // The maximum if we've just sold 2nd stock so far.
             hold2    = Math.max(hold2,    release1-i);  // The maximum if we've just buy  2nd stock so far.
             release1 = Math.max(release1, hold1+i);     // The maximum if we've just sold 1nd stock so far.
-            hold1    = Math.max(hold1,    -i);          // The maximum if we've just buy  1st stock so far. 
+            hold1    = Math.max(hold1,    -i);          // The maximum if we've just buy  1st stock so far.
         }
         return release2; ///Since release1 is initiated as 0, so release2 will always higher than release1.
     }
@@ -63,14 +63,14 @@ class Solution {
 public:
     int maxProfit(vector<int>& prices) {
         if (prices.size() < 2) return 0;
-        
+
         vector<int> ans(prices.size(), 0);
         int buy = prices[0];
         for (int i = 1; i < prices.size(); ++i) {
             ans[i] = max(ans[i-1], prices[i]-buy);
             buy = min(buy, prices[i]);
         }
-        
+
         int ret = ans.back(), sell = -1;
         for (int i = prices.size()-1; i > 0; --i) {
             int deal = max(0, sell-prices[i]);
@@ -78,7 +78,32 @@ public:
             ret = max(ret, ans[i-1] + deal);
         }
         ret = max(ret, sell-prices.front());
-        
+
+        return ret;
+    }
+};
+/*
+ * some easy too
+ */
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        if (prices.size() < 2) return 0;
+
+        vector<int> ans(prices.size());
+        int buy = prices[0];
+        for (int i = 1; i < prices.size(); ++i) {
+            ans[i] = max(ans[i-1], prices[i] - buy);
+            buy = min(buy, prices[i]);
+        }
+
+        int ret = ans.back();
+        int sell = prices.back(), right = 0;
+        for (int i = prices.size()-2; i > 1; --i) {
+            right = max(right, sell - prices[i]);
+            sell = max(prices[i], sell);
+            ret = max(ret, right + ans[i-1]);
+        }
         return ret;
     }
 };

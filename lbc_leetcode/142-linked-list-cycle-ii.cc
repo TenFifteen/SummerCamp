@@ -61,7 +61,7 @@ class Solution {
 public:
     ListNode *detectCycle(ListNode *head) {
         if (head == NULL) return NULL;
-        
+
         ListNode *front = head, *end = head;
         while (front) {
             front = front->next;
@@ -69,7 +69,7 @@ public:
             end = end->next;
             if (front == end) break;
         }
-        
+
         if (front == NULL) return NULL;
         end = head;
         while (end != front) {
@@ -77,5 +77,39 @@ public:
             end = end->next;
         }
         return end;
+    }
+};
+/*
+ * old question.
+ */
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        if (head == NULL) return head;
+
+        ListNode *front = head, *end = head;
+        do {
+            front = front->next;
+            if (front == NULL) return NULL;
+            front = front->next;
+            end = end->next;
+        } while (front != NULL && front != end);
+
+        if (front == NULL) return NULL;
+
+        end = head;
+        while (front != end) {
+            front = front->next;
+            end = end->next;
+        }
+        return front;
     }
 };

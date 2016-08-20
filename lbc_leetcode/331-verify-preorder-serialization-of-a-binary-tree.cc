@@ -39,7 +39,7 @@ public:
                 total++;
             }
         }
-        
+
         return total == 0;
     }
 };
@@ -62,7 +62,32 @@ public:
                 index = end+1;
             }
         }
-        
+
         return need == 0 && index >= preorder.size();
+    }
+};
+/*
+ * ok
+ */
+class Solution {
+public:
+    bool isValidSerialization(string preorder) {
+        int total = 1;
+        int index = 0;
+        stringstream ss(preorder);
+        string now;
+        bool finish = false;
+        while (getline(ss, now, ',')) {
+            if (now[0] == '#') {
+                total--;
+                if (total == 0) {
+                    finish = true;
+                }
+            } else {
+                if (finish) return false;
+                total++;
+            }
+        }
+        return !total;
     }
 };

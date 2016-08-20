@@ -25,7 +25,7 @@ public:
         sub(nums, nums.size()-k, nums.size()-1);
         sub(nums, 0, nums.size()-1);
     }
-    
+
     void sub(vector<int> &nums, int left, int right){
         for(int i = left; i < left + (right-left+1)/2; ++i){
             swap(nums[i], nums[right+left-i]);
@@ -49,12 +49,34 @@ public:
     void rotate(vector<int>& nums, int k) {
         int n = nums.size();
         if (n == 0) return;
-        
+
         k %= n;
         if (k == 0) return;
-        
+
         rotateSub(nums, 0, n-1);
         rotateSub(nums, 0, k-1);
         rotateSub(nums, k, n-1);
+    }
+};
+/*
+ * ok
+ */
+class Solution {
+private:
+    void rotate(vector<int> &nums, int left, int right) {
+        while (left < right) {
+            swap(nums[left++], nums[right--]);
+        }
+    }
+
+public:
+    void rotate(vector<int>& nums, int k) {
+        if (nums.size() < 2) return;
+        k %= nums.size();
+        if (k == 0) return;
+
+        rotate(nums, 0, nums.size()-k-1);
+        rotate(nums, nums.size()-k, nums.size()-1);
+        rotate(nums, 0, nums.size()-1);
     }
 };

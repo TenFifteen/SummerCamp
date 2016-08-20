@@ -22,14 +22,14 @@ public:
         for (int i = 0; i < len; ++i) {
             if (secret[i] == guess[i]) bull++;
         }
-        
+
         map<char, int> m;
         for (int i = 0; i < secret.size(); ++i) {
             if (i >= guess.size() || secret[i] != guess[i]) {
                 m[secret[i]]++;
             }
         }
-        
+
         int cows = 0;
         for (int i = 0; i < guess.size(); ++i) {
             if (i >= secret.size() || secret[i] != guess[i]) {
@@ -38,7 +38,7 @@ public:
                 }
             }
         }
-        
+
         return to_string(bull) + "A" + to_string(cows) + "B";
     }
 };
@@ -51,7 +51,7 @@ public:
     string getHint(string secret, string guess) {
         int s[10] = {0}, g[10] = {0};
         int A = 0, B = 0;
-        
+
         for (int i = 0; i < secret.size(); ++i) {
             if (secret[i] == guess[i]) A++;
             else {
@@ -59,11 +59,35 @@ public:
                 g[guess[i]-'0']++;
             }
         }
-        
+
         for (int i = 0; i < 10; ++i) {
             B += min(s[i], g[i]);
         }
-        
+
         return to_string(A) + "A" + to_string(B) + "B";
     }
 };
+/*
+ * ok
+ */
+class Solution {
+public:
+    string getHint(string secret, string guess) {
+        int A = 0;
+        unordered_map<char, int> um;
+        for (int i = 0; i < secret.size(); ++i) {
+            if (secret[i] == guess[i]) A++;
+            um[secret[i]]++;
+        }
+
+        int B = 0;
+        for (int i = 0; i < guess.size(); ++i) {
+            if (um[guess[i]] > 0) B++;
+            um[guess[i]]--;
+        }
+
+        return to_string(A) + "A" + to_string(B-A) + "B";
+    }
+};
+
+

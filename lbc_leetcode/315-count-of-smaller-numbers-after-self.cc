@@ -14,7 +14,7 @@
 来着，只是没有想清楚下标应该怎么变化才行。下面这段代码值得好好的看看，尤其是关于indices数组的使用。
 class Solution {
 protected:
-    void merge_countSmaller(vector<int>& indices, int first, int last, 
+    void merge_countSmaller(vector<int>& indices, int first, int last,
                             vector<int>& results, vector<int>& nums) {
         int count = last - first;
         if (count > 1) {
@@ -61,13 +61,13 @@ private:
         SegmentTreeNode *left, *right;
         SegmentTreeNode(int l, int r):L(l), R(r), count(0), left(nullptr), right(nullptr){}
     };
-    
+
     void insert(SegmentTreeNode *root, int val) {
         root->count++;
         if (root->L == val && root->R == val) {
             return;
         }
-        
+
         int mid = ((long long)root->L + root->R) >> 1;
         if (val <= mid) {
             if (root->left == nullptr) {
@@ -81,28 +81,28 @@ private:
             insert(root->right, val);
         }
     }
-    
+
     int getSmaller(SegmentTreeNode *root, int val) {
         if (root == nullptr) return 0;
         if (val > root->R) return root->count;
         if (val <= root->L) return 0;
-        
+
         int mid = ((long long)root->L + root->R) >> 1;
         return getSmaller(root->left, val) + getSmaller(root->right, val);
     }
-    
+
 public:
     vector<int> countSmaller(vector<int>& nums) {
         vector<int> ans(nums.size(), 0);
         if (nums.size() < 2) return ans;
-        
+
         SegmentTreeNode *root = new SegmentTreeNode(INT_MIN, INT_MAX);
         insert(root, nums[nums.size()-1]);
         for (int i = nums.size()-2; i >= 0; --i) {
             ans[i] = getSmaller(root, nums[i]);
             insert(root, nums[i]);
         }
-        
+
         return ans;
     }
 };
@@ -124,15 +124,15 @@ class Solution {
             left = right = NULL;
         }
     };
-    
+
     SegmentTreeNode *root;
-    
+
     void insert(SegmentTreeNode *node, int val) {
         if (node->start != node->end) {
             long long mid = node->start;
             mid += node->end;
             mid >>= 1;
-            
+
             if (val > mid) {
                 if (node->right == NULL) {
                     node->right = new SegmentTreeNode(mid+1, node->end);
@@ -145,28 +145,28 @@ class Solution {
                 insert(node->left, val);
             }
         }
-        
+
         node->count++;
     }
-    
+
     int getCount(SegmentTreeNode *node, int start, int end) {
         if (node == NULL || node->start > end || node->end < start) return 0;
         if (node->start >= start && node->end <= end) return node->count;
         return getCount(node->left, start, end) + getCount(node->right, start, end);
     }
-    
+
     void destroy(SegmentTreeNode *node) {
         if (node->left) destroy(node->left);
         if (node->right) destroy(node->right);
         delete node;
     }
-    
+
 public:
     vector<int> countSmaller(vector<int>& nums) {
         if (nums.size() == 0) return nums;
-        
+
         root = new SegmentTreeNode(INT_MIN, INT_MAX);
-        
+
         vector<int> ans(nums.size(), 0);
         for (int i = nums.size()-1; i >= 0; --i) {
             if (nums[i] != INT_MIN) {
@@ -174,9 +174,63 @@ public:
             }
             insert(root, nums[i]);
         }
-        
+
         destroy(root);
-        
+
         return ans;
     }
 };
+/*
+ * ok
+ * segmentTree must be cautious with interval : (-2 + -1) / 2 = -1.
+ */
+class Solution {
+private:
+struct Node {
+    int start, end;
+    Node *left, *right;
+    int cnt;
+    Node(int s, int e) : start(s), end(e), left(NULL), right(NULL), cnt(0) {}
+};
+
+void insert(Node *node, int val) {
+    node->cnt++;
+    if (node->start == node->end) return;
+
+    int mid = node->start + (node->end - node->start) / 2; // maybe overflow.
+    if (val <= mid) {
+        if (node->left == NULL)  node->left = new Node(node->start, mid);
+        insert(node->left, val);
+    } else {
+        if (node->right == NULL) node->right = new Node(mid+1, node->end);
+        insert(node->right, val);
+    }
+}
+
+int count(Node *node, int start, int end) {
+    if (start > end || node == NULL || node->start > end || node->end < start) return 0;
+    if (node->start >= start && node->end <= end) return node->cnt;
+    return count(node->left, start, end) + count(node->right, start, end);
+}
+
+public:
+    vector<int> countSmaller(vector<int>& nums) {
+        if (nums.size() < 2) return vector<int>(nums.size());
+
+        int small = INT_MAX, large = INT_MIN;
+        for (int i = 0; i < nums.size(); ++i) {
+            small = min(nums[i], small);
+            large = max(nums[i], large);
+        }
+
+        Node *node = new Node(small, large);
+        vector<int> ans(nums.size());
+        for (int i = nums.size()-1; i >= 0; --i) {
+            ans[i] = count(node, small, nums[i]-1);
+            insert(node, nums[i]);
+        }
+        return ans;
+    }
+};
+
+

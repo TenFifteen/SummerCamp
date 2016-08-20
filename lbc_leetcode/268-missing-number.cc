@@ -31,11 +31,11 @@ class Solution {
 public:
     int missingNumber(vector<int>& nums) {
         long long sum = (long long )nums.size() * (nums.size()+1) / 2;
-        
+
         for (auto n : nums) {
             sum -= n;
         }
-        
+
         return sum;
     }
 };
@@ -47,10 +47,10 @@ class Solution {
 public:
     int missingNumber(vector<int>& nums) {
         if (nums.size() == 0) return 0;
-        
+
         for (int i = 0; i < nums.size(); ++i) {
             if (nums[i] == i) continue;
-            
+
             int cur = nums[i];
             nums[i] = -1;
             while (cur >= 0 && cur < nums.size()) {
@@ -59,10 +59,25 @@ public:
                 cur = next;
             }
         }
-        
+
         for (int i = 0; i < nums.size(); ++i) {
             if (nums[i] != i) return i;
         }
         return nums.size();
+    }
+};
+/*
+ * ok
+ */
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        long long sum = nums.size();
+        sum = sum * (sum+1) / 2;
+
+        for (auto n : nums) {
+            sum -= n;
+        }
+        return sum;
     }
 };

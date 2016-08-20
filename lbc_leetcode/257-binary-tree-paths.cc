@@ -24,10 +24,10 @@ class Solution {
 public:
     vector<string> binaryTreePaths(TreeNode* root) {
         if (root == NULL) return vector<string>();
-        
+
         auto rleft = binaryTreePaths(root->left);
         auto rright = binaryTreePaths(root->right);
-        
+
         vector<string> ans;
         for (auto i : rleft) {
             ans.push_back(to_string(root->val) + "->" + i);
@@ -35,7 +35,7 @@ public:
         for (auto i : rright) {
             ans.push_back(to_string(root->val) + "->" + i);
         }
-        
+
         if (ans.size() == 0) {
             ans.push_back(to_string(root->val));
         }
@@ -60,12 +60,12 @@ private:
     void subPath(TreeNode *root, vector<string> &ans, string now) {
         if (root == NULL) return;
         now += to_string(root->val);
-        
+
         if (root->left == NULL && root->right == NULL) {
             ans.push_back(now);
             return;
         }
-        
+
         if (root->left != NULL) subPath(root->left, ans, now+"->");
         if (root->right != NULL) subPath(root->right, ans, now+"->");
     }
@@ -74,6 +74,41 @@ public:
     vector<string> binaryTreePaths(TreeNode* root) {
         vector<string> ans;
         subPath(root, ans, "");
+        return ans;
+    }
+};
+/*
+ * ok
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    void dfs(TreeNode *root, vector<string> &ans, string now) {
+        if (now == "") now += to_string(root->val);
+        else now += "->" + to_string(root->val);
+
+        if (root->left == NULL && root->right == NULL) {
+            ans.push_back(now);
+            return;
+        }
+
+        if (root->left) dfs(root->left, ans, now);
+        if (root->right) dfs(root->right, ans, now);
+    }
+
+public:
+    vector<string> binaryTreePaths(TreeNode* root) {
+        vector<string> ans;
+        if (root == NULL) return ans;
+        dfs(root, ans, "");
         return ans;
     }
 };

@@ -30,7 +30,7 @@ public:
         if(num==sum) return true;
         if(num.size()<=sum.size() || sum.compare(num.substr(0,sum.size()))!=0) return false;
         else return check(num2, sum, num.substr(sum.size()));
-    } 
+    }
     string add(string n, string m){
         string res;
         int i=n.size()-1, j=m.size()-1, carry=0;
@@ -58,12 +58,12 @@ private:
 public:
     bool isAdditiveNumber(string num) {
         if (num.size() < 3) return false;
-        
+
         for (int i = 0; i < num.size(); ++i) {
             if (i != 0 && num[0] == '0') continue;
             for (int j = i+1; j < num.size(); ++j) {
                 if (j != i+1 && num[i+1] == '0') continue;
-                
+
                 long long a = stoll(num.substr(0, i+1));
                 long long b = stoll(num.substr(i+1, j-i));
                 long long c = a + b;
@@ -72,7 +72,7 @@ public:
                 if (dfs(a, b, num.substr(j+1))) return true;
             }
         }
-        
+
         return false;
     }
 };
@@ -83,7 +83,7 @@ public:
 class Solution {
     string add(const string s1, const string s2) {
         string ans(max(s1.size(), s2.size()) + 1, '0');
-        
+
         int i1 = s1.size()-1, i2 = s2.size()-1, index = ans.size()-1;
         int carry = 0;
         while (i1 >= 0 || i2 >= 0) {
@@ -93,32 +93,99 @@ class Solution {
             carry /= 10;
         }
         if (carry) ans[index--] = carry + '0';
-        
+
         return ans.substr(index+1);
     }
-    
+
     bool dfs(string num, string n1, string n2) {
         string sum = add(n1, n2);
         if (sum.size() > num.size()) return false;
-        
+
         for (int i = 0; i < sum.size(); ++i) if (sum[i] != num[i]) return false;
         if (sum.size() == num.size()) return true;
         return dfs(num.substr(sum.size()), n2, sum);
     }
-    
+
 public:
     bool isAdditiveNumber(string num) {
         if (num.size() < 3) return false;
-        
+
         for (int i = 0; i < num.size(); ++i) {
             if (i != 0 && num[0] == '0') break;
-            
+
             for (int j = i+1; j < num.size(); ++j) {
                 if (j != i+1 && num[i+1] == '0') break;
-                
+
                 if (dfs(num.substr(j+1), num.substr(0, i+1), num.substr(i+1, j-i))) return true;
             }
         }
         return false;
     }
 };
+/*
+ * ok, but very tedious.
+ */
+class Solution {
+private:
+string add(const string &s1, const string &s2) {
+    string ret(max(s1.size(), s2.size())+1, '0');
+    int i1 = s1.size()-1, i2 = s2.size()-1, i3 = ret.size()-1;
+    int carry = 0;
+    while (i1 >= 0 || i2 >= 0) {
+        if (i1 >= 0) carry += s1[i1--] - '0';
+        if (i2 >= 0) carry += s2[i2--] - '0';
+        ret[i3--] = '0' + carry % 10;
+        carry /= 10;
+    }
+    if (carry) ret[i3--] = '0' + carry;
+    return ret.substr(i3+1);
+}
+
+bool isPrefix(const string s1, const string &s2) {
+    if (s1.size() > s2.size()) return false;
+    for (int i = 0; i < s1.size(); ++i) {
+        if (s1[i] != s2[i]) return false;
+    }
+    return true;
+}
+
+public:
+    bool isAdditiveNumber(string num) {
+        if (num.size() < 3) return false;
+
+        for (int i = 0; i < num.size(); ++i) {
+            string s1 = num.substr(0, i+1);
+            if (s1[0] == '0' && s1.size() > 1) break;
+
+            for (int j = i+1; j < num.size(); ++j) {
+                string s2 = num.substr(i+1, j-i);
+                if (s2[0] == '0' && s2.size() > 1) break;
+
+                string num1 = s1, num2 = s2;
+                string sum = add(num1, num2);
+                if (!isPrefix(sum, num.substr(j+1))) continue;
+
+                num1 = num2;
+                num2 = sum;
+                int index = j+sum.size()+1;
+                bool ok = true;
+                while (index < num.size()) {
+                    sum = add(num1, num2);
+                    if (!isPrefix(sum, num.substr(index))) {
+                        ok = false;
+                        break;
+                    }
+                    num1 = num2;
+                    num2 = sum;
+                    index += sum.size();
+                }
+
+                if (ok) return true;
+            }
+        }
+
+        return false;
+    }
+};
+
+
