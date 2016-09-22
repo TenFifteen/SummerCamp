@@ -56,7 +56,7 @@ struct ListNode* reverseBetween(struct ListNode* head, int m, int n) {
 	}
 }
 
-int main() 
+int main()
 {
 	int n, a, b;
 	int arr[N];
@@ -65,7 +65,7 @@ int main()
 		for (i = 0; i < n; ++i) {
 			scanf("%d", &arr[i]);
 		}
-		
+
 		struct ListNode * head = convert_to_list(arr, n);
 		print_list(head);
 		head = reverseBetween(head, a, b);
@@ -77,13 +77,13 @@ int main()
 struct ListNode *convert_to_list(int arr[], int n)
 {
 	int i;
-	
-	struct ListNode *head = malloc(sizeof(struct ListNode)); 
+
+	struct ListNode *head = malloc(sizeof(struct ListNode));
 	head->next = NULL;
 	struct ListNode *tail = head;
 
 	for (i = 0; i < n; ++i) {
-		struct ListNode *temp = malloc(sizeof(struct ListNode)); 
+		struct ListNode *temp = malloc(sizeof(struct ListNode));
 		temp->val = arr[i];
 		temp->next = NULL;
 
@@ -114,3 +114,28 @@ void print_list(struct ListNode *head)
 	}
 	printf("NULL\n");
 }
+
+
+ListNode* reverseBetween(ListNode* head, int m, int n) {
+        ListNode h(0);
+        h.next = head;
+
+        ListNode *it = &h;
+        n = n - m + 1;
+        while (--m) it = it->next;
+
+        ListNode *left = it, *th = NULL, *right = it->next;
+        it = it->next;
+        while (n--) {
+            ListNode *tmp = it;
+            it = it->next;
+
+            tmp->next = th;
+            th = tmp;
+        }
+
+        left->next = th;
+        right->next = it;
+
+        return h.next;
+    }

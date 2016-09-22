@@ -85,3 +85,41 @@ class Solution {
             return head;
         }
 };
+
+class Solution {
+    int cntList(ListNode *h) {
+        int cnt = 0;
+        while (h) {
+            h = h->next;
+            ++cnt;
+        }
+
+        return cnt;
+    }
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if (head == NULL || head->next == NULL) return head;
+
+        int cnt = cntList(head);
+        k = cnt - k % cnt;
+
+        ListNode left(0);
+        ListNode *tail1 = &left;
+        tail1->next = head;
+        while (k--) {
+            tail1 = tail1->next;
+        }
+
+        ListNode right(0);
+        ListNode *tail2 = &right;
+        tail2->next = tail1->next;
+        while (tail2->next) {
+            tail2 = tail2->next;
+        }
+
+        tail2->next = left.next;
+        tail1->next = NULL;
+
+        return right.next;
+    }
+};

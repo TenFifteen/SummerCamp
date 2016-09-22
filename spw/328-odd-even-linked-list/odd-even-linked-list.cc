@@ -38,3 +38,31 @@ class Solution {
             return odd->next;
         }
 };
+
+class Solution {
+public:
+    ListNode* oddEvenList(ListNode* head) {
+        ListNode h1(0), h2(0);
+
+        ListNode *tail1 = &h1, *tail2 = &h2;
+        int cnt = 1;
+
+        while (head) {
+            if (cnt % 2 == 1) {
+                tail1->next = head;
+                tail1 = head;
+            } else {
+                tail2->next = head;
+                tail2 = head;
+            }
+
+            ++cnt;
+            head = head->next;
+        }
+
+        tail2->next = NULL;
+        tail1->next = h2.next;
+
+        return h1.next;
+    }
+};

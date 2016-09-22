@@ -65,3 +65,32 @@ class Solution {
             return dummy->next;
         }
 };
+
+
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        ListNode h(0);
+        h.next = head;
+
+        ListNode *it = &h;
+        while (it->next) {
+            ListNode *tmp = it->next;
+            while (tmp->next && tmp->next->val == tmp->val) {
+                ListNode *del = tmp;
+                tmp = tmp->next;
+                delete del;
+            }
+
+            if (it->next != tmp) {
+                ListNode *del = tmp;
+                it->next = tmp->next;
+                delete del;
+            } else {
+                it = tmp;
+            }
+        }
+
+        return h.next;
+    }
+};
