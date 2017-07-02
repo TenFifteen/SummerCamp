@@ -29,3 +29,32 @@ class Solution {
             return sell[n-1];
         }
 };
+/**
+ *buy[i] means "before" day i what is the maxProfit for any sequence end with buy.
+ * for example: buy sell rest rest buy (rest rest)
+ *sell[i] means before day i what is the maxProfit for any sequence end with sell.
+ *rest[i] means before day i what is the maxProfit for any sequence end with rest.
+ *
+ */
+class Solution {
+    public:
+        int maxProfit(vector<int>& prices) {
+            int n = prices.size();
+            if (n < 2) return 0;
+
+            int buy = -prices[0], sell = 0, rest = 0;
+            for (int i = 1; i < n; ++i) {
+                int prev_sell = sell;
+
+                sell = max(buy+prices[i], sell);
+                buy = max(rest-prices[i], buy);
+
+                rest = prev_sell;
+
+            }
+
+            return sell;
+
+        }
+
+};
