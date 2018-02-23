@@ -91,4 +91,38 @@ public:
 
         return ans;
     }
+
+};
+
+class Solution {
+public:
+    string simplifyPath(string path) {
+        vector<string> folders;
+        int i = 0, n = path.size();
+
+        while (i < n) {
+            if (path[i] == '/') {
+                int j = i + 1;
+                while (j < n && path[j] != '/') ++j;
+
+                string now = path.substr(i+1, j-i-1);
+                if (now == ".." ) {
+                    if (!folders.empty()) folders.pop_back();
+                } else if (now != "." && now != "") {
+                    folders.push_back(now);
+                }
+
+                i = j;
+            } else {
+                ++i;
+            }
+        }
+
+        string res;
+        for (int i = 0; i < folders.size(); ++i) {
+            res += "/" + folders[i];
+        }
+
+        return res == "" ? "/" : res;
+    }
 };

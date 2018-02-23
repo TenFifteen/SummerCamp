@@ -76,3 +76,44 @@ public:
         return ans;
     }
 };
+
+
+
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        int cnt = 0;
+        unordered_map<string, int> index;
+
+        vector<vector<string>> res;
+        for (auto& str : strs) {
+            string key = getKey(str);
+            if (index.find(key) == index.end()) {
+                index[key] = cnt++;
+            }
+
+            if (res.size() < cnt) {
+                res.push_back(vector<string>());
+            }
+
+            res[index[key]].push_back(str);
+        }
+
+        return res;
+    }
+
+    string getKey(const string& str) {
+        int cnt[256] = {0};
+        for (auto& c : str) {
+            cnt[c]++;
+        }
+
+        string res;
+        for (char c = 'a'; c <= 'z'; ++c) {
+            res.push_back(c);
+            res.push_back('0'+cnt[c]);
+        }
+
+        return res;
+    }
+};

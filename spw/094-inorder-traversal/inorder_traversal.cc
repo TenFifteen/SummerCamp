@@ -73,3 +73,58 @@ public:
         return ans;
     }
 };
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+// Morris inorder traversal
+/*
+1. Initialize current as root
+2. While current is not NULL
+If current does not have left child
+a) Print current’s data
+b) Go to the right, i.e., current = current->right
+Else
+a) Make current as right child of the rightmost
+node in current's left subtree
+b) Go to this left child, i.e., current = current->left
+*/
+class Solution {
+    public:
+        vector<int> inorderTraversal(TreeNode* root) {
+            vector<int> ans;
+
+            TreeNode* current = root;
+            while (current != NULL) {
+                if (current->left == NULL) {
+                    ans.push_back(current->val);
+                    current = current->right;
+                } else {
+                    // find the rightmost node of the left child
+                    TreeNode* prev = current->left;
+                    while (prev->right != NULL && prev->right != current) {
+                        prev = prev->right;
+                    }
+
+                    // first traverse the root
+                    if (prev->right == NULL) {
+                        prev->right = current;
+                        current = current->left;
+                        // second traverse the root, back from the
+                    } else if (prev->right == current) {
+                        ans.push_back(current->val);
+                        current = current->right;
+                        prev->right = NULL;
+                    }
+                }
+            }
+
+            return ans;
+        }
+};
