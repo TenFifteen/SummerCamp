@@ -33,12 +33,17 @@ class Solution {
 
             while (mid <= right) {
                 if (nums[mid] == 0) {
+                    // consider case:nums[0] == 0
+                    // if mid don't add one, then left will be ahead of mid
                     swap(nums[left++], nums[mid++]);
                 } else if (nums[mid] == 2) {
                     swap(nums[right--], nums[mid]);
                 } else {
+                    // in this time mid will be ahead of left
                     ++mid;
                 }
             }
         }
 };
+
+

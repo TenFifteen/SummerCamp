@@ -1,33 +1,55 @@
 void dfs(vector<int> &ans, TreeNode* root) {
-	ans.push_back(root->val);
-	if (root->left) dfs(ans, root->left);
-	if (root->right) dfs(ans, root->right);
+    ans.push_back(root->val);
+    if (root->left) dfs(ans, root->left);
+    if (root->right) dfs(ans, root->right);
 }
 vector<int> preorderTraversal(TreeNode* root) {
-	vector<int> ans;
-	if (root == NULL) return ans;
-	dfs(ans, root);
+    vector<int> ans;
+    if (root == NULL) return ans;
+    dfs(ans, root);
 }
 
 /**
  * Problem: given an binary tree, return its preorder traversal of its nodes' values.
- * Solve: simple idea. 
+ * Solve: simple idea.
  * Tips: none
  */
 vector<int> preorderTraversal(TreeNode* root) {
-	vector<int> ans;
-	if (root == NULL) return ans;
+    vector<int> ans;
+    if (root == NULL) return ans;
 
-	stack<TreeNode*> s;
-	s.push(root);
-	while (!s.empty()) {
-		TreeNode* now = s.top();
-		s.pop();
+    stack<TreeNode*> s;
+    s.push(root);
+    while (!s.empty()) {
+        TreeNode* now = s.top();
+        s.pop();
 
-		ans.push_back(now->val);
-		if (now->right) s.push(now->right);
-		if (now->left) s.push(now->left);
-	}
+        ans.push_back(now->val);
+        if (now->right) s.push(now->right);
+        if (now->left) s.push(now->left);
+    }
 
-	return ans;
+    return ans;
 }
+class Solution {
+    public:
+        vector<int> preorderTraversal(TreeNode* root) {
+            vector<int> ans;
+
+            stack<TreeNode*> s;
+            TreeNode* current = root;
+
+            while (!s.empty() || current) {
+                while (current) {
+                    ans.push_back(current->val);
+                    s.push(current);
+                    current = current->left;
+                }
+
+                current = s.top()->right;
+                s.pop();
+            }
+
+            return ans;
+        }
+};

@@ -6,6 +6,7 @@ TreeNode* prev = NULL;
  * Solve: copy from the discuss board
  * Tips: prev
  */
+// the prev was updated in any nod
 void flatten(TreeNode* root) {
     if (root == NULL) return;
 
@@ -75,3 +76,23 @@ class Solution {
         return root;
     }
 };
+
+void flatten(TreeNode* root) {
+    stack<TreeNode*> s;
+    if (root) s.push(root);
+
+    TreeNode dummy(0);
+    TreeNode* tail = &dummy;
+
+    while (!s.empty()) {
+        TreeNode* now = s.top();
+        s.pop();
+
+        if(now->right) s.push(now->right);
+        if(now->left) s.push(now->left);
+
+        tail->right = now;
+        tail->left = NULL;
+        tail = tail->right;
+    }
+}
